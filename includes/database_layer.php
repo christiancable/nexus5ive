@@ -1288,6 +1288,24 @@ function escape_input($untrusted_string)
 {
     return nl2br(htmlspecialchars($untrusted_string, ENT_NOQUOTES)); 
     // return  mysql_escape_string(nl2br($untrusted_string));
-} 
-// ####
+}
+
+function find_next_unread_topic($user_id){
+# returns the next unread topic or false if all topics are read
+	$sql = "SELECT section_id FROM sectiontable";
+
+	if(!$sql_result = mysql_query($sql)){
+		return false;
+	} else {
+		if($current_section = mysql_fetch_array($sql)){
+			if(new_messages_in_section($user_id, $current_section[section_id])){
+				return $current_section[section_id];
+			}
+		} else {
+			return false;
+		}
+	}
+}
+
+
 ?>
