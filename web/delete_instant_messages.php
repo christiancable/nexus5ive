@@ -1,5 +1,5 @@
 <?php
-include('../includes/theme.php');
+
 include('../includes/database.php');
 
 $db = opendata();
@@ -12,8 +12,9 @@ if (!validlogin()){
 
 # delete messages
 
-delete_instant_messages($_SESSION[current_id]);
+$message_id_array = $HTTP_POST_VARS[MessChk];
 
+delete_instant_messages($message_id_array);
 header("Location: http://".$_SERVER['HTTP_HOST']."/messages.php");
 
 
