@@ -220,6 +220,8 @@ function emote_text($text){
 	# check to see if the user has turned off pictures here
 	#if user has pictures turned off
 
+	# stop matching with not surrounded by non words!!!
+
 	# WORD BOUNDARIES!
 
 	if($_SESSION[no_pictures]<>'n') {
@@ -227,47 +229,47 @@ function emote_text($text){
 	} else {
 
 		$pattern = '/:-? ?D/i';
-		$replacement = '<img src="'.$emotes.'big_smile.png'.'">' ;
+		$replacement = '<img src="'.$emotes.'big_smile.png'.'" alt=":-D">' ;
 		$text = preg_replace($pattern, $replacement, $text);
 
 		$pattern = '/:-? ?\)/';
-		$replacement = '<img src="'.$emotes.'smile.png'.'">' ;
+		$replacement = '<img src="'.$emotes.'smile.png'.'" alt=":-)">' ;
 		$text = preg_replace($pattern, $replacement, $text);
 
 		$pattern = '/;-? ?\)/';
-		$replacement = '<img src="'.$emotes.'wink.png'.'">' ;
+		$replacement = '<img src="'.$emotes.'wink.png'.'" alt=";-)">' ;
 		$text = preg_replace($pattern, $replacement, $text);
 
 		$pattern = '/:-? ?\[/';
-		$replacement = '<img src="'.$emotes.'confused.png'.'">' ;
+		$replacement = '<img src="'.$emotes.'confused.png'.'" alt=":-\">' ;
 		$text = preg_replace($pattern, $replacement, $text);
 
 		$pattern = '/8-? ?\)/';
-		$replacement = '<img src="'.$emotes.'cool.png'.'">' ;
+		$replacement = '<img src="'.$emotes.'cool.png'.'" alt="8-)">' ;
 		$text = preg_replace($pattern, $replacement, $text);
 
 		$pattern = '/:-? ?@/';
-		$replacement = '<img src="'.$emotes.'angry.png'.'">' ;
+		$replacement = '<img src="'.$emotes.'angry.png'.'" alt=":-@">' ;
 		$text = preg_replace($pattern, $replacement, $text);
 
 		$pattern = '/\bLOL\b/i';
-		$replacement = '<img src="'.$emotes.'lol.png'.'">' ;
+		$replacement = '<img src="'.$emotes.'lol.png'.'" alt="LOL">' ;
 		$text = preg_replace($pattern, $replacement, $text);
 
 		$pattern = '/:-? ?\(/';
-		$replacement = '<img src="'.$emotes.'sad.png'.'">' ;
+		$replacement = '<img src="'.$emotes.'sad.png'.'" alt=":-(">' ;
 		$text = preg_replace($pattern, $replacement, $text);
 
 		$pattern = '/:-? ?P/'; # will this match lower case?
-		$replacement = '<img src="'.$emotes.'tounge_out.png'.'">' ;
+		$replacement = '<img src="'.$emotes.'tongue_out.png'.'" alt=":-P">' ;
 		$text = preg_replace($pattern, $replacement, $text);
 
 		$pattern = '/:-? ?0/';
-		$replacement = '<img src="'.$emotes.'ooooh.png'.'">' ;
+		$replacement = '<img src="'.$emotes.'ooooh.png'.'" alt=":-0">' ;
 		$text = preg_replace($pattern, $replacement, $text);
 
 		$pattern = '/:-? ?o/i';
-		$replacement = '<img src="'.$emotes.'ooooh.png'.'">' ;
+		$replacement = '<img src="'.$emotes.'ooooh.png'.'" alt=":-0">' ;
 		$text = preg_replace($pattern, $replacement, $text);
 	}
 
