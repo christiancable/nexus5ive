@@ -1,5 +1,7 @@
 <?php
 
+# this should all be replaced by templates and functions in interface_layer.php
+
 // functions used to control formatting
 
 // colours and things
