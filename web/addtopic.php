@@ -25,7 +25,7 @@ if (!$moderator_name = get_username($section_array[user_id])) {
 } 
 
 # can user add a topic to this section
-if (!can_user_edit_topic($user_array, $topic_array)){
+if (!can_user_edit_section($user_array, $section_array)){
     # section exists but the user can not add topics here
     header("Location: http://" . $_SERVER['HTTP_HOST'] . "/section.php?section_id=1");
     exit();
