@@ -2,6 +2,9 @@
 // non-visual functions
 // all database bits will eventuall move to database_layer.php
 // env
+
+// will change the name of this to nexuslib.php I think - cfc
+
 putenv("TZ=GB");
 
 // needed libs
@@ -504,7 +507,13 @@ function nx_code($text){
 	$replacement = '<a href="'."$1".'" target="_blank">['."$1".']</a>';
 	$text = preg_replace($pattern, $replacement, $text);
 	
+	$pattern ="/\[I\-\](.*)\[\-I\]/Ui";
+	$replacement = '<I>'."$1".'</I>';
+	$text = preg_replace($pattern, $replacement, $text);
 	
+	$pattern ="/\[B\-\](.*)\[\-B\]/Ui";
+	$replacement = '<B>'."$1".'</B>';
+	$text = preg_replace($pattern, $replacement, $text);
 	
 	$pattern ="#\[ASCII\-\](.+?)\[\-ASCII\]#is";
 	$replacement = '<pre> '."$1".'</pre>';
