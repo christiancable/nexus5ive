@@ -201,8 +201,23 @@ function change_password($user_id, $new_password)
     } else {
         // echo $sql;
         return false;
-    } 
-} 
+    }
+}
+
+
+function setuser_offline($user_id)
+{
+	$sql = 'UPDATE usertable SET user_status="Offline" WHERE user_id='.$user_id;
+
+	if (mysql_query($sql)) {
+	        return true;
+    	} else {
+	        // echo $sql;
+	        return false;
+    	}
+
+
+}
 // end user account functions
 /**
  * messagetable functions
