@@ -491,7 +491,7 @@ function nx_code($text){
 	# regular expressions ROX	
 	# can we check for http here somehow? - cfc
 	
-	$pattern ="/\[PICTURE\-\](.*)\[\-PICTURE\]/Ui";
+	$pattern ="#\[PICTURE\-\](.*)\[\-PICTURE\]#is";
 
 	# check to see if the user has turned off pictures here 
 	#if user has pictures turned off
@@ -503,15 +503,15 @@ function nx_code($text){
 	}
 	$text = preg_replace($pattern, $replacement, $text);
 	
-	$pattern ="/\[WWW\-\](.*)\[\-WWW\]/Ui";
+	$pattern ="#\[WWW\-\](.*)\[\-WWW\]#is";
 	$replacement = '<a href="'."$1".'" target="_blank">['."$1".']</a>';
 	$text = preg_replace($pattern, $replacement, $text);
 	
-	$pattern ="/\[I\-\](.*)\[\-I\]/Ui";
+	$pattern ="#\[I\-\](.*)\[\-I\]#is";
 	$replacement = '<I>'."$1".'</I>';
 	$text = preg_replace($pattern, $replacement, $text);
 	
-	$pattern ="/\[B\-\](.*)\[\-B\]/Ui";
+	$pattern ="#\[B\-\](.*)\[\-B\]#is";
 	$replacement = '<B>'."$1".'</B>';
 	$text = preg_replace($pattern, $replacement, $text);
 	
