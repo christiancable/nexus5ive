@@ -1279,14 +1279,14 @@ function get_top_topic_array()
             return $top_posters_array;
         } else {
             return false;
-        } 
-    } 
-} 
+        }
+    }
+}
 // ## end scoreboard functions
 // ### sanity
 function escape_input($untrusted_string)
 {
-    return nl2br(htmlspecialchars($untrusted_string, ENT_NOQUOTES)); 
+    return nl2br(htmlspecialchars($untrusted_string, ENT_NOQUOTES));
     // return  mysql_escape_string(nl2br($untrusted_string));
 }
 
@@ -1297,10 +1297,13 @@ function find_next_unread_topic($user_id){
 	if(!$sql_result = mysql_query($sql)){
 		return false;
 	} else {
-		if($current_section = mysql_fetch_array($sql)){
-			if(new_messages_in_section($user_id, $current_section[section_id])){
-				return $current_section[section_id];
-			}
+		if($current_section = mysql_fetch_array($sql_result)){
+			do {
+				if(new_messages_in_section($user_id, $current_section[section_id])){
+					return $current_section[section_id];
+				}
+			} while ($current_section = mysql_fetch_array($sql_result));
+
 		} else {
 			return false;
 		}
