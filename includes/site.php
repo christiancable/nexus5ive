@@ -15,6 +15,6 @@ define('MYSQL_SERVER','localhost');
 define('MYSQL_DATABASE','nexus');
 define('HTMLROOT','/web/');
 define('BBS_NAME','xxxxxxxx');
-
+define('MAX_MSG_SIZE','600000');
 
 ?>
