@@ -417,7 +417,7 @@ function add_nexusmessage($nexusmessage_array)
     $sql = "INSERT INTO nexusmessagetable (user_id, from_id,text) values (
 	'$nexusmessage_array[user_id]',
 	'$nexusmessage_array[from_id]',
-	'$nexusmessage_array[text]')"; 
+	'$nexusmessage_array[text]')";
     // echo "debug $sql";
     if (mysql_query($sql)) {
         return true;
@@ -725,6 +725,8 @@ function unsubscribe_from_topic($topic_id, $user_id)
 
     $sql = "UPDATE topicview SET unsubscribe=1 WHERE topic_id=$topic_id AND user_id=$user_id";
 
+    #echo "<!-- $sql -->";
+    
     if (mysql_query($sql)) {
         return true;
     } else {
@@ -1152,6 +1154,7 @@ function get_count_unread_comments($user_id)
 
 function delete_instant_messages($array_of_message_ids)
 {
+
     if (!sizeof($array_of_message_ids)) {
         return false;
     }
