@@ -5,7 +5,7 @@
 
 
 mail( "sysop@nexus5.org.uk", "Nexus Account Request",
-	"New account time\n\nUser Name is $username\nReal Name is $realname\nPassword is $password\nEmail is $email", "From: $email" );
+	"New account time\n\nUser Name is $username\nReal Name is $realname\nPassword is $password\nEmail is $email\nIP address is $_SERVER[REMOTE_ADDR] ", "From: $email" );
 
 ?>
 
