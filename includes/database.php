@@ -63,22 +63,6 @@ function is_sysop($user_id)
 	} 
 } 
 
-function is_message_owner($message_id, $user_id, $db)
-{
-	$sql = "SELECT sectiontable.user_id FROM messagetable, topictable,sectiontable
-           WHERE message_id=$message_id AND
-           messagetable.topic_id=topictable.topic_id AND
-           sectiontable.section_id=topictable.section_id";
-
-	$ownerinfo = mysql_query($sql);
-	$owner = mysql_result($ownerinfo, 0, "user_id");
-
-	if (($owner == $user_id) or is_sysop($user_id)) {
-		return true;
-	} else {
-		return false;
-	} 
-} 
 
 function is_topic_owner($topic_id, $user_id, $db)
 {
@@ -111,54 +95,6 @@ function is_section_owner($section_id, $user_id, $db)
 	} 
 } 
 
-function get_section_owner($section_id, $db)
-{
-	$sql = "SELECT user_id FROM sectiontable WHERE section_id=$section_id";
-	$ownerinfo = mysql_query($sql);
-	$owner = mysql_result($ownerinfo, 0, "user_id");
-	return $owner;
-} 
-
-# removed as this is not used - cfc
-/*
-function get_topic_name($topic_id, $db)
-{
-	$sql = "SELECT topic_title FROM topictable WHERE topic_id=$topic_id";
-	$topicinfo = mysql_query($sql);
-	$topic = mysql_result($topicinfo, 0, "topic_title");
-	return $topic;
-} 
-*/
-
-# removed as this is not used - cfc
-/*
-function is_user_owner($currentuser, $user)
-{
-	
-	if ($currentuser == $user) {
-		return true;
-	} else {
-		return false;
-	} 
-} 
-*/
-
-function is_message_secret($message_id)
-{
-	$sql = "SELECT topictable.topic_annon FROM topictable, messagetable
-           WHERE messagetable.message_id=$message_id AND
-           messagetable.topic_id=topictable.topic_id";
-
-	$ownerinfo = mysql_query($sql);
-	$owner = mysql_result($ownerinfo, 0, "topictable.topic_annon");
-
-	if ($owner == 'n') {
-		return false;
-	} else {
-		return true;
-	} 
-} 
-
 function get_username($user_id)
 {
 	$sql = "SELECT user_name FROM usertable WHERE user_id=$user_id";
@@ -177,30 +113,6 @@ function get_username($user_id)
 
 } 
 
-#removed as this is not used - cfc
-/*
-function newmessages($user_id)
-{
-	
-	# returns true if user has instand messages waiting to be read
-	# 
-	# last update Nov 3 2001 - xian
-	
-	 
-	$sql = "SELECT nexusmessage_id FROM nexusmessagetable WHERE user_id = $user_id";
-
-	if (!$nexusmessageinfo = mysql_query($sql)) {
-		nexus_error();
-	} 
-
-	if (mysql_num_rows($nexusmessageinfo)) {
-		return true;
-	} else {
-		return false;
-	} 
-} 
-
-*/
 
 function count_instant_messages($user_id)
 {
@@ -238,66 +150,6 @@ function count_messages_in_topic($topic_id)
 	}
 }
 
-
-function displaytopic($topicrow, $db, $user)
-{
-         # update this to use templates!
-	 # this is used in deltopic.php and section.php - cfc
-
-	echo "\n\n\n";
-	echo '<table width="100%"><tr><td>';
-	$new_msg = new_messages_in_topic($topicrow[0], $user);
-	if ($new_msg > 0) {
-		echo "<b><FONT size=+1>";
-		echo "<a href=\"readtopic.php?section_id=$topicrow[2]&topic_id=$topicrow[0]\">";
-		echo "<img src=\"images/xp/star.gif\" alt=\"*\" border=\"0\">$topicrow[1]<img src=\"images/xp/star.gif\" alt=\"*\" border=\"0\">";
-		echo "</FONT></a></b>";
-		echo "<blockquote>$topicrow[3]<br>";
-		
-	} else {
-		echo "<a href=\"readtopic.php?section_id=$topicrow[2]&topic_id=$topicrow[0]\">";
-		echo "<FONT  size=+1><b>$topicrow[1]</b></font></a>";
-		echo "<blockquote>$topicrow[3]<br>";
-	} 
-
-	echo '<font size="-1">';
-	if (is_topic_owner($topicrow[0], $user, $db)) {
-		echo "<a href=\"altertopic.php?topic_id=$topicrow[0]\">[ edit ]</a>";
-		echo" --- <a href=\"deltopic.php?topic_id=$topicrow[0]\">[ delete ]</a> -- ";
-	} 
-
-	if (!unsubscribed_from_topic($topicrow[0], $_SESSION[current_id]))
-		echo"<a href=\"unsub.php?section_id=$topicrow[2]&topic_id=$topicrow[0]\">[ unsubscribe ]</a>";
-
-	echo "</blockquote></font>";
-	echo "\n</td></tr></table>";
-} 
-
-function sectionheader($myrow)
-{
-	global $current_id;
-	$db = opendata();
-
-	$user_array = get_user_array($current_id);
-
-	echo "<font size=+2><b><a href=\"section.php?section=" . $myrow["section_id"];
-
-	if (new_messages_in_section($current_id, $myrow[section_id])) {
-		echo "\">" . SECTION_GRAPHIC_MSG . $myrow["section_title"] . "</a></b></font>";
-	} else {
-		echo "\">" . SECTION_GRAPHIC . $myrow["section_title"] . "</a></b></font>";
-	}
-	echo '<br><small style="color: rgb(129, 129, 129);"><span style="font-style: italic;">'.$myrow[section_intro].'</span></small><br>';
-	if ($num = get_count_section_messages($myrow[section_id])) {
-		$sql = "SELECT messagetable.message_id FROM messagetable, topictable, topicview WHERE messagetable.topic_id = topictable.topic_id AND topictable.section_id =" . $myrow["section_id"] . " AND topicview.user_id =$current_id AND messagetable.message_time > topicview.msg_date AND topicview.topic_id = messagetable.topic_id";
-		echo "<font size=-2> " . $num . " messages</font>";
-	} 
-	// add section owner functions references here
-	if (can_user_edit_section($user_array, $myrow)) { // # ADD moderator here too!
-		echo '<font size="-1"><a href="altersection.php?section_id=' . $myrow[section_id] . '">&nbsp;[ edit ]<a></font><br>';
-	} 
-	echo "<br>";
-} 
 
 function nexus_error()
 {
@@ -424,101 +276,12 @@ function nx_code($text){
 	
 	$pattern ="#\[ASCII\-\](.+?)\[\-ASCII\]#isU";
 	$replacement = '<pre> '."$1".'</pre>';
-    	$text = preg_replace($pattern, $replacement, $text);
+    $text = preg_replace($pattern, $replacement, $text);
 	
 	return $text;
 	
 	
 }
-
-
-
-
-# removed as this is not used - cfc
-/*
-
-function emotetext($text)
-{
-	
-	 # takes text and replaces common text emotes with htmled graphical emotes
-	 # intention is that things will call this up before displaying messages etc
-	 # so the database is untouched 
-	 #
-	 # 
-	 # Christian - July 2002
-	 # 
-	 # - July 25 - put spaces round emotes so they pick up less unintentioned emotes - cfc
-	 # emotes supported
-	 # 
-	 # happy :) :-) : )
-	 # unhappy :( : ( :-(  
-	 # angry :-@ :@
-	 # confused :-S :S :s
-	 # crying :'(
-	 # super happy :-D : D :d : d
-	 # tounge smile :-P :P ; P :p
-	 # what :-| : | :|
-	 # wink ;-) ;) ; )
-	 # 
-	 # 
-	 # emotes ripped off msn until we come up with a nicer set 
-	 # 
-	 # to do
-	 # come up with no ms replacement emotes
-	 # - was going to use hudsons but now he's in a sulk, why did i ever bother?
-	 # 
-	 # give uses ability to not bw shown emotes 
-	 # find a better way to do this, I think this might not be the fastest way
-	
-	$emotedtext = $text;
-	// sod this
-	return $text;
-	// happy
-	$emotedtext = str_replace(' :) ', ' <img src="emotes/regular_smile.gif" alt="* happy *"> ', $emotedtext);
-	$emotedtext = str_replace(' : ) ', ' <img src="emotes/regular_smile.gif" alt="* happy *"> ', $emotedtext);
-	$emotedtext = str_replace(' :-) ', ' <img src="emotes/regular_smile.gif" alt="* happy *"> ', $emotedtext); 
-	// unhappy
-	$emotedtext = str_replace(' :( ', ' <img src="emotes/sad_smile.gif" alt="* unhappy *"> ', $emotedtext);
-	$emotedtext = str_replace(' :-( ', ' <img src="emotes/sad_smile.gif" alt="* unhappy *"> ', $emotedtext);
-	$emotedtext = str_replace(' : ( ', ' <img src="emotes/sad_smile.gif" alt="* unhappy *"> ', $emotedtext); 
-	// angry
-	$emotedtext = str_replace(' :@ ', ' <img src="emotes/angry_smile.gif" alt="* angry *"> ', $emotedtext);
-	$emotedtext = str_replace(' : @ ', ' <img src="emotes/angry_smile.gif" alt="* angry *"> ', $emotedtext);
-	$emotedtext = str_replace(' :-@ ', ' <img src="emotes/angry_smile.gif" alt="* angry *"> ', $emotedtext); 
-	// confused
-	$emotedtext = str_replace(' :S ', ' <img src="emotes/confused_smile.gif" alt="* confused *"> ', $emotedtext);
-	$emotedtext = str_replace(' :-S ', ' <img src="emotes/confused_smile.gif" alt="* confused *"> ', $emotedtext);
-	$emotedtext = str_replace(' :s ', ' <img src="emotes/confused_smile.gif" alt="* confused *"> ', $emotedtext);
-	$emotedtext = str_replace(' :S ', ' <img src="emotes/confused_smile.gif" alt="* confused *"> ', $emotedtext);
-	$emotedtext = str_replace(': S', ' <img src="emotes/confused_smile.gif" alt="* confused *"> ', $emotedtext);
-	$emotedtext = str_replace(' :-s ', ' <img src="emotes/confused_smile.gif" alt="* confused *"> ', $emotedtext); 
-	// crying
-	$emotedtext = str_replace(" :&#039;( ", ' <img src="emotes/cry_smile.gif" alt="* crying* "> ', $emotedtext); 
-	// super happy
-	$emotedtext = str_replace(' :-D ', ' <img src="emotes/teeth_smile.gif" alt="* super happy *"> ', $emotedtext);
-	$emotedtext = str_replace(' : D ', ' <img src="emotes/teeth_smile.gif" alt="* super happy *"> ', $emotedtext);
-	$emotedtext = str_replace(' :-d ', ' <img src="emotes/teeth_smile.gif" alt="* super happy *"> ', $emotedtext);
-	$emotedtext = str_replace(' : d ', ' <img src="emotes/teeth_smile.gif" alt="* super happy *"> ', $emotedtext);
-	$emotedtext = str_replace(' :D ', ' <img src="emotes/teeth_smile.gif" alt="* super happy *"> ', $emotedtext);
-	$emotedtext = str_replace(' :d ', ' <img src="emotes/teeth_smile.gif" alt="* super happy *"> ', $emotedtext); 
-	// rasp
-	$emotedtext = str_replace(' :-P ', ' <img src="emotes/tounge_smile.gif" alt="* pulling a face *"> ', $emotedtext);
-	$emotedtext = str_replace(' : P ', ' <img src="emotes/tounge_smile.gif" alt="* pulling a face *"> ', $emotedtext);
-	$emotedtext = str_replace(' :P ', ' <img src="emotes/tounge_smile.gif" alt="* pulling a face *"> ', $emotedtext);
-	$emotedtext = str_replace(' :-p ', ' <img src="emotes/tounge_smile.gif" alt="* pulling a face *"> ', $emotedtext);
-	$emotedtext = str_replace(' : p ', ' <img src="emotes/tounge_smile.gif" alt="* pulling a face *"> ', $emotedtext);
-	$emotedtext = str_replace(' :p ', ' <img src="emotes/tounge_smile.gif" alt="* pulling a face *"> ', $emotedtext); 
-	// what?
-	$emotedtext = str_replace(' :| ', ' <img src="emotes/whatchutalkingabout_.gif" alt="* frown *"> ', $emotedtext);
-	$emotedtext = str_replace(' : | ', ' <img src="emotes/whatchutalkingabout_.gif" alt="* frown *"> ', $emotedtext);
-	$emotedtext = str_replace(' :-| ', ' <img src="emotes/whatchutalkingabout_.gif" alt="* frown *"> ', $emotedtext); 
-	// wink
-	$emotedtext = str_replace(' ;) ', ' <img src="emotes/wink_smile.gif" alt="* cheeky *"> ', $emotedtext);
-	$emotedtext = str_replace(' ; ) ', ' <img src="emotes/wink_smile.gif" alt="* cheeky *"> ', $emotedtext);
-	$emotedtext = str_replace(' ;-) ', ' <img src="emotes/wink_smile.gif" alt="* cheeky *"> ', $emotedtext);
-	return $emotedtext;
-} 
-*/
 
 
 function get_section_parent_info($section_id)
