@@ -1,4 +1,4 @@
-<?php 
+<?php
 // ### Basic functions ####
 /**
  * these all work on a single row of data
@@ -490,6 +490,34 @@ function get_topic($topic_id)
         } 
     } 
 } 
+
+function get_section_topics($section_id)
+{ 
+    // returns an array of topics within a given section
+    $topic_array = array();
+
+    $sql = "SELECT * FROM topictable WHERE section_id=$section_id ORDER BY topic_weight";
+
+    if (!$sql_result = mysql_query($sql)) {
+        return false;
+    } else {
+        if ($current_array = mysql_fetch_array($sql_result)) {
+            do {
+                array_push($topic_array, $current_array);
+            } while ($current_array = mysql_fetch_array($sql_result));
+
+            return $topic_array;
+        } else {
+            return false;
+        } 
+    } 
+} 
+
+
+
+
+
+
 // ## section functions
 function add_section($section_array)
 {
@@ -870,7 +898,7 @@ function inc_total_edits($user_array)
 } 
 
 function get_userlist_array()
-{ 
+{
     // returns number of messages in section
     $userlist_array = array();
 
@@ -884,11 +912,11 @@ function get_userlist_array()
             array_push($userlist_array, $current_array);
         } while ($current_array = mysql_fetch_array($sql_result));
         return $userlist_array;
-    } 
-} 
+    }
+}
 
 function get_sectionlist_array($user_array)
-{ 
+{
     // returns list of sections the user can moderate
     $sectionlist_array = array();
 
@@ -896,7 +924,7 @@ function get_sectionlist_array($user_array)
         $sql = "SELECT section_id, section_title FROM sectiontable WHERE user_id = $user_array[user_id] ORDER BY section_title";
     } else {
         $sql = "SELECT section_id, section_title FROM sectiontable ORDER BY section_title";
-    } 
+    }
 
     if (!$sql_result = mysql_query($sql)) {
         return false;
@@ -908,9 +936,31 @@ function get_sectionlist_array($user_array)
             return $sectionlist_array;
         } else {
             return false;
-        } 
-    } 
-} 
+        }
+    }
+}
+
+function get_subsectionlist_array($section_id)
+{
+    // returns list of sub sections
+
+    $sectionlist_array = array();
+
+   $sql = "SELECT * FROM sectiontable WHERE parent_id = $section_id ORDER BY section_weight";
+   echo "<!-- debug $sql -->";
+    if (!$sql_result = mysql_query($sql)) {
+        return false;
+    } else {
+        if ($current_array = mysql_fetch_array($sql_result)) {
+            do {
+                array_push($sectionlist_array, $current_array);
+            } while ($current_array = mysql_fetch_array($sql_result));
+            return $sectionlist_array;
+        } else {
+            return false;
+        }
+    }
+}
 
 function get_topiclist_array($user_array)
 { 
