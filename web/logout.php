@@ -13,7 +13,10 @@ if(!mysql_query($sql)){
  nexus_error();
 }
 
-#session_destroy();
+# I had this session_destroy commented out before, but can't remember why as it's needed
+# will have to keep an eye on this bit I guess - cfc
+
+session_destroy();
 header("Location: http://".$_SERVER['HTTP_HOST']."/");
 exit;
 
