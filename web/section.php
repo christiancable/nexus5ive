@@ -1,5 +1,5 @@
 <?php
-include('../includes/theme.php');
+
 include('../includes/database.php');
 
 $db = opendata();
@@ -129,8 +129,11 @@ if ($topics_list = get_section_topics($section) ) {
 
 // ########## subsections
 
+# this bit here is a mess, we have to ship this off to templates asap
 $subsectionlist = get_subsectionlist_array($section);
-echo "<!-- looking for subsections of $section_id section -->";
+
+#echo "<!-- looking for subsections of $section_id section -->";
+
 if ($subsectionlist) {
     // table begin
     $count = 0;
@@ -141,10 +144,11 @@ if ($subsectionlist) {
 	if ($count % 2 == 0) {
 		echo "<TR VALIGN=TOP>";
 		}
-	echo "<TD>";
-        sectionheader($current_sub_section_array);
+		
+        #sectionheader($current_sub_section_array);
+		display_sectionheader($current_sub_section_array, $user_array,$t);
         // }
-        echo "</b></font></TD>";
+        
         $count ++;
     }
     if ($count % 2) {
