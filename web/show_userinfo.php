@@ -122,7 +122,7 @@ if($examine_user_array[user_id]==$user_array[user_id]){
 	#alter user_info
 	
 	$t->set_var("user_email",$examine_user_array[user_email]);
-	$t->set_var("user_comment",ereg_replace("<br />","",(nx_code($examine_user_array[user_comment]))));
+	$t->set_var("user_comment",ereg_replace("<br />","",($examine_user_array[user_comment])));
 	
 	
 	// backwards
