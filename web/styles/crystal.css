@@ -1,28 +1,38 @@
-.navigationBar {
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	background-color: #d6dff5;
-	color: #000000;
-	font-size: small;
-
-
-}
 body {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 	color: #000000;
 	background-color: #FFFFFF;
-	font-size: small;
+
 }
-table {
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	color: #000000;
-	font-size: small;
+
+.navigationBar {
+	background-color: #d6dff5;
+	color:#000000;
+	font-size: 80%
 }
+
+.navigationBar a:link {
+	color: #0000CC;
+	text-decoration: underline;
+}
+
+.navigationBar a:visited {
+	color: #0000CC;
+	text-decoration: underline;
+}
+.navigationBar a:hover {
+	color: #0000CC;
+	text-decoration: underline;
+
+}
+
 .titleBar {
 
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 	background-color: #d6dff5;
 	color: #000000;
-	font-size: x-large;
+	font-size: 150%
+
 }
 .titleBarMail {
 
@@ -30,22 +40,35 @@ table {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 	background-color: #DEF7DE;
 	color: #000000;
-	font-size: x-large;
+	font-size: 150%
 }
+
+.navigation {
+	font-size: 80%
+}
+
+
+.post {
+	font-size: 90%
+}
+
 a:link {
-color: #0000CC;
-text-decoration: none;
+	color: #0000CC;
+	text-decoration: none;
 }
+
 a:visited {
-color: #0000CC;
-text-decoration: none;
+	color: #0000CC;
+	text-decoration: none;
 }
+
 a:hover {
 	color: #0000CC;
 	text-decoration: underline;
 
 }
+
 a:active {
-color: #0000CC;
+	color: #0000CC;
 }
 
