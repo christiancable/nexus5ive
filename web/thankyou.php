@@ -5,7 +5,7 @@
 
 
 mail( "sysop@nexus5.org.uk", "Nexus Account Request",
-	"---Cut and Paste---\ninsert into usertable (user_name, user_realname, user_password, user_email ) values ('$username', '$realname', '$password', '$email');\n----\nRequest From $_SERVER[REMOTE_ADDR] ", "From: $email" );
+	"Cut and Paste\n insert into usertable (user_name, user_realname, user_password, user_email ) values ('$username', '$realname', '$password', '$email');\n from $_SERVER[REMOTE_ADDR] ", "From: $email" );
 
 ?>
 
