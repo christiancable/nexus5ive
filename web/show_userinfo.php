@@ -4,7 +4,7 @@
 // displays info in a readonly format
 
 //includes
-include('../includes/theme.php');
+
 include('../includes/database.php');
 
 

@@ -1,7 +1,7 @@
 <?php
 # leaps to the next section containg unread messages or to main menu
 
-include('../includes/theme.php');
+
 include('../includes/database.php');
 
 $db = opendata();
