@@ -696,7 +696,7 @@ function add_topicview($topicview_array)
     } else {
         return false;
     } 
-} 
+}
 
 function unsubscribed_from_topic($topic_id, $user_id)
 {
@@ -704,21 +704,21 @@ function unsubscribed_from_topic($topic_id, $user_id)
 
     if (!$unsub_info = mysql_query($sql)) {
         return false;
-    } 
+    }
 
     if (mysql_num_rows($unsub_info)) {
         $unsub_result = mysql_fetch_array($unsub_info, MYSQL_ASSOC);
         return $unsub_result[unsubscribe];
     } else {
         return false;
-    } 
-} 
+    }
+}
 
 function unsubscribe_from_topic($topic_id, $user_id)
 {
     /**
      * INPUT topic_id and user_id
-     * 
+     *
      * OUTPUT true or false
      */
 
@@ -728,32 +728,58 @@ function unsubscribe_from_topic($topic_id, $user_id)
         return true;
     } else {
         return false;
-    } 
-} 
+    }
+}
 
 function subscribe_to_topic($topic_id, $user_id)
 {
     /**
      * INPUT topic_id and user_id
-     * 
+     *
      * OUTPUT true or false
-     */ 
+     */
     // if unsubed use insert rather than update
     if (unsubscribed_from_topic($topic_id, $user_id)) {
         $sql = "INSERT INTO topicview SET (unsubscribe,topic_id,user_id) VALUES (0,$topic_id,$user_id)";
     } else {
         $sql = "UPDATE topicview SET unsubscribe=0 WHERE topic_id=$topic_id AND user_id=$user_id";
-    } 
+    }
 
     if (mysql_query($sql)) {
         return true;
     } else {
         return false;
-    } 
-} 
+    }
+}
+
+
+function set_topicread($user_id, $topic_id){
+# update topic_view
+	# remove any existing info
+    	$sql = "DELETE FROM topicview WHERE topic_id=$topic_id AND user_id=$user_id";
+    	if (!mysql_query($sql)) {
+	        nexus_error();
+    	}
+	# get latest message time
+	$sql = "SELECT max(message_time) as latest_date FROM messagetable WHERE topic_id=$topic_id";
+    	if (!$timeinfo = mysql_query($sql)) {
+	        nexus_error();
+    	}
+
+	# insert latest time into topicview table
+	if (mysql_num_rows($timeinfo)) {
+        	$lastdate = mysql_fetch_array($timeinfo);
+        	$sql = "INSERT INTO topicview (user_id, topic_id, msg_date) VALUES ('$user_id','$topic_id','$lastdate[latest_date]')";
+
+        	if (!mysql_query($sql)) {
+            		nexus_error();
+        	}
+    	}
+
+}
 // ####### FUNCTIONS THAT USE JOINS
 function get_count_section_messages($section_id)
-{ 
+{
     // returns number of messages in section
     $sql = "SELECT COUNT(messagetable.message_id) AS totalmsg FROM messagetable, topictable WHERE messagetable.topic_id = topictable.topic_id AND topictable.section_id = $section_id";
 
