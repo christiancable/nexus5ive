@@ -6,7 +6,7 @@ backend for the change password screen
 */
 
 //includes
-include('../includes/theme.php');
+
 include('../includes/database.php');
 
 

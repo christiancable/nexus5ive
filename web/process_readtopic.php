@@ -1,6 +1,6 @@
 <?php
 // backend to readtopic - cfc
-include('../includes/theme.php');
+
 include('../includes/database.php');
 
 $db = opendata();
