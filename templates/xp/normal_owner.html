@@ -10,12 +10,14 @@
 	  <a href="show_userinfo.php?user_id={user_id}">{username}</a> 
         <br>
         <b>Date: </b>{date}
-		<br>{subject}</font>
-	  </td>
-      <td width="17%"> 
-        <div align="right"><font size="-1" face="Verdana, Arial, Helvetica, sans-serif"><a href="delpost.php?message_id={message_id}&&topic_id={topic_id}">
-		<img src="images/xp/delete.gif" border="0" alt="delete message"></a> 
-          </font></div>
+		<br>
+      <strong>{subject}</strong></font> </td>
+      
+    <td width="17%"> <div align="right"><font size="-1" face="Verdana, Arial, Helvetica, sans-serif">Select</font> 
+        <input type="checkbox" name="MessChk[]" value="{message_id}">
+      </div>
+      <div align="right"><font size="-1" face="Verdana, Arial, Helvetica, sans-serif"> 
+        </font></div>
       </td>
     </tr>
   </table>

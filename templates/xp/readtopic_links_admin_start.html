@@ -1,0 +1,18 @@
+<table border="0" width="100%">
+  <tr> 
+    <td colspan="4" bgcolor="#d6dff5"> <font face="Verdana, Arial, Helvetica, sans-serif" size="-1"> 
+      <a href="leap.php">[ Topic Leap ]</a> -- <a href="section.php?section={section_id}">[ 
+      Return To Section ]</a> -- <a href="userson.php">[ Who's Online ]</a> -- 
+      <a href="post.php?topic_id={topic_id}">[ Post Comment ]</a></td>
+  </tr>
+  <tr> 
+    <td colspan="4">
+	<form method="post" action="process_readtopic.php">
+	  <input type="submit" name="Delete" value="Delete Posts"> 
+	  <input type="hidden" name="topic_id" value="{topic_id}">
+      <select name="select">
+       {SELECT_CODE}
+      </select> <input type="submit" name="Move" value="Move">
+    </td>
+  </tr>
+</table>
