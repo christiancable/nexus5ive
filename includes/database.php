@@ -477,6 +477,13 @@ function nx_code($text)
 	 * [-picture] = ">
 	 */
 
+	$text = str_replace('[www-]', '[WWW-]', $text);
+	$text = str_replace('[-www]', '[-WWW]', $text);
+	$text = str_replace('[picture-]', '[PICTURE-]', $text);
+	$text = str_replace('[-picture]', '[-PICTURE]', $text);
+	$text = str_replace('[-ascii]', '[-ASCII]', $text);
+	$text = str_replace('[ascii-]', '[ASCII-]', $text);
+	
 	$first_www_dashpos = strpos($text, '[WWW-]');
 
 	if (!is_integer(!$first_www_dashpos)) {
