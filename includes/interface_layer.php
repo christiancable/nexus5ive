@@ -211,4 +211,69 @@ if ($total_messages>0){
 return $html_code;
 
 }
+
+function emote_text($text){
+
+	#update this, make it part of the theme
+	$emotes = "/emotes/$_SESSION[my_theme]/";
+
+	# check to see if the user has turned off pictures here
+	#if user has pictures turned off
+
+	# WORD BOUNDARIES!
+
+	if($_SESSION[no_pictures]<>'n') {
+		# text mode faces
+	} else {
+
+		$pattern = '/:-? ?D/i';
+		$replacement = '<img src="'.$emotes.'big_smile.png'.'">' ;
+		$text = preg_replace($pattern, $replacement, $text);
+
+		$pattern = '/:-? ?\)/';
+		$replacement = '<img src="'.$emotes.'smile.png'.'">' ;
+		$text = preg_replace($pattern, $replacement, $text);
+
+		$pattern = '/;-? ?\)/';
+		$replacement = '<img src="'.$emotes.'wink.png'.'">' ;
+		$text = preg_replace($pattern, $replacement, $text);
+
+		$pattern = '/:-? ?\[/';
+		$replacement = '<img src="'.$emotes.'confused.png'.'">' ;
+		$text = preg_replace($pattern, $replacement, $text);
+
+		$pattern = '/8-? ?\)/';
+		$replacement = '<img src="'.$emotes.'cool.png'.'">' ;
+		$text = preg_replace($pattern, $replacement, $text);
+
+		$pattern = '/:-? ?@/';
+		$replacement = '<img src="'.$emotes.'angry.png'.'">' ;
+		$text = preg_replace($pattern, $replacement, $text);
+
+		$pattern = '/\bLOL\b/i';
+		$replacement = '<img src="'.$emotes.'lol.png'.'">' ;
+		$text = preg_replace($pattern, $replacement, $text);
+
+		$pattern = '/:-? ?\(/';
+		$replacement = '<img src="'.$emotes.'sad.png'.'">' ;
+		$text = preg_replace($pattern, $replacement, $text);
+
+		$pattern = '/:-? ?P/'; # will this match lower case?
+		$replacement = '<img src="'.$emotes.'tounge_out.png'.'">' ;
+		$text = preg_replace($pattern, $replacement, $text);
+
+		$pattern = '/:-? ?0/';
+		$replacement = '<img src="'.$emotes.'ooooh.png'.'">' ;
+		$text = preg_replace($pattern, $replacement, $text);
+
+		$pattern = '/:-? ?o/i';
+		$replacement = '<img src="'.$emotes.'ooooh.png'.'">' ;
+		$text = preg_replace($pattern, $replacement, $text);
+	}
+
+
+	return $text;
+
+
+}
 ?>
