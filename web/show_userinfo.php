@@ -34,6 +34,12 @@ $breadcrumbs = '<font size="-1"><a href="section.php?section_id=1">Main Menu</a>
 
 $t = new Template($template_location);
 
+if($_SESSION[current_id] == $user_id){ # are we looking at ourselves if so we dont have new comments
+	$unread_comments = 0;
+} else {
+	$unread_comments = get_count_unread_comments($_SESSION[current_id]);
+
+}
  display_header($t,
 	       $breadcrumbs,
 	       "Examining $examine_user_array[user_name]",
@@ -43,7 +49,7 @@ $t = new Template($template_location);
 	       count_instant_messages($_SESSION[current_id]),
 	       SYSOP_ID,
 	       SYSOP_NAME,
-	       get_count_unread_comments($_SESSION[current_id]),
+	       $unread_comments,
 	       get_count_unread_messages($_SESSION[current_id]));
 
 #get array of all user_ids and names
