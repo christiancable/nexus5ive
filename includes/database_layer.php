@@ -75,6 +75,51 @@ function add_user($user_array){
      }
 
 
+function autoadduser($username, $password, $realname, $email)
+{
+/*
+ *  checks if the user_name/user_email combination has already been taken
+ *  IF so it reports back as FALSE ELSE it tries to add the user to the usertable
+ *
+ *  Added Sept 29 2003 - Coyote (who hates people who use TAB instead of 2 spaces)
+ *
+ */
+
+ // we could maybe feed this into the add_user function above so that gets called if 
+ // this function doesn't find an existing user? - cfc
+ 
+
+
+  $sql = "SELECT user_name, user_email FROM usertable WHERE user_name = '$username' ";
+  $userInfo = mysql_query($sql);
+    $myrow     = mysql_fetch_array($userInfo);
+    $user_name = $myrow["user_name"];
+  if ($user_name == '' && $password != '') {
+
+    if (SnowCheckMail($email,$Debug=false)){
+//    echo "USERNAME OK : ";
+
+      $sql = "INSERT INTO usertable SET user_name = '$username', user_password = '$password', user_email = '$email', user_priv = '100', user_realname = '$realname' ";
+
+//    echo $sql . " : ";
+
+      if (!mysql_query($sql)) {
+        return false;
+      }  
+      else {
+        return true;
+      }
+    }
+    else {
+      return false;
+    }
+  }  
+  else {
+    return false;
+  }  
+} 
+     
+     
 function new_user_array(){
     /**
      * returns a blank user_array
