@@ -71,12 +71,7 @@ if ($new_msg_total <= $user_array[user_display]) {
 $limit_sql = " LIMIT $limit , $page_length";
 
 $sql = $sql . $limit_sql;
-echo "\n\n<!-- DEBUG: $sql<br> -->";
-echo "\n<!-- DEBUG: $location_str<br> -->";
-echo "\n<!-- new messages $new_msg_total -->\n";
-echo "<!-- page length $page_length -->\n";
-echo "<!-- topic_array[topic_id] is  $topic_array[topic_id] -->\n";
-echo "<!-- user_array[user_id] is $user_array[user_id] -->\n"; 
+
 // ## end new here ###
 // select messages to display
 if (!$messages_to_show = mysql_query($sql, $db)) {
