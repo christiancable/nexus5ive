@@ -1080,7 +1080,7 @@ function get_count_unread_messages($user_id)
 
 function get_count_unread_comments($user_id)
 {
-    $sql = "SELECT count(comment_id) AS total_msg FROM commenttable WHERE readstatus <> 'y' AND user_id=$user_id";
+    $sql = "SELECT count(comment_id) AS total_msg FROM commenttable WHERE readstatus IS NULL AND user_id=$user_id";
 
     if (!$query_result = mysql_query($sql)) {
         return false;
