@@ -38,8 +38,8 @@ if (!$topic_array = get_topic($topic_id)){
 	// at this point the current user can edit the section 
   
 	//get and check http vars
-
-	$topic_array[topic_title] = $HTTP_POST_VARS[title];
+	#strip html from topic title
+	$topic_array[topic_title] = htmlspecialchars($HTTP_POST_VARS[title]);
 	$topic_array[section_id] = $HTTP_POST_VARS[section];
 	
 	//echo  "<h1>".$HTTP_POST_VARS[section]."</h1>";
@@ -53,12 +53,18 @@ if (!$topic_array = get_topic($topic_id)){
 		$topic_array[topic_annon] = 'n';
 	}
 	
-	if($HTTP_POST_VARS[readonly]=='yes'){ 
+	if($HTTP_POST_VARS[readonly]=='yes'){
 		$topic_array[topic_readonly] = 'y';
 	} else {
 		$topic_array[topic_readonly] = 'n';
 	}
-	
+
+	if($HTTP_POST_VARS[hidden]=='yes'){
+		$topic_array[topic_title_hidden] = 'y';
+	} else {
+		$topic_array[topic_title_hidden] = 'n';
+	}
+
 	$topic_array[topic_weight] = $HTTP_POST_VARS[weight];
 	
 
