@@ -65,24 +65,5 @@ $t->set_var("SELECT_CODE",$select_code);
   
 $t->pparse("MyFinalOutput","choose_user");  
 page_end($breadcrumbs);
-/*
-
-echo "<H1>this bit is broken, come back in a bit</H1>";
-$sql = "SELECT * FROM usertable ORDER BY user_name";
-$usersinfo = mysql_query( $sql,$db);
-echo '<form method="post" action="show_userinfo.php?user_id'.$=1\">";
-echo '<select name="lookat">';
-
-if( $usersrow = mysql_fetch_array($usersinfo) )
-  do {
-      echo "<option value=\"$usersrow[0]\">$usersrow[1]</option>";
-     }
-  while ( $usersrow = mysql_fetch_array($usersinfo) );
-echo "</select><br><br><input type=\"Submit\" name=\"Okay\" value=\"Okay\">";
-echo "</form>";
-*/
-
-#htmlfooter();
-#header("Location: http://".$_SERVER['HTTP_HOST']."/section.php?section_id=1");
 
 ?>
