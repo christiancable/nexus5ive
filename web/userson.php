@@ -6,7 +6,7 @@ displays users who are currently using nexus
 */
 
 //includes
-include('../includes/theme.php');
+
 include('../includes/database.php');
 
 
@@ -20,7 +20,13 @@ if (!validlogin()){
 	eject_user();	
 }
 
+//update user activity
+
+
+
 $user_array = get_user_array($_SESSION[current_id]);
+
+update_location("Who's Online");
 
 $users_on_array = get_users_online($_SESSION[current_id], true);
 
@@ -40,9 +46,7 @@ $t = new Template($template_location);
 	       get_count_unread_comments($_SESSION[current_id]),
 	       get_count_unread_messages($_SESSION[current_id]));
 
-//update user activity
 
-update_location("Who's Online");
 
 
 $num_of_users = count($users_on_array);
