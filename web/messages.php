@@ -10,7 +10,7 @@ $t = new Template($template_location);
 
 // check login
 if (!validlogin()){
-	eject_user();	
+	eject_user();
 }
 
 if(!$user_array = get_user_array($_SESSION[current_id])){
@@ -18,44 +18,29 @@ if(!$user_array = get_user_array($_SESSION[current_id])){
 }
 
 
-
-if (get_count_unread_messages($_SESSION[current_id])>0) {
-       $t->set_file("header","mail_page.html");
-	
-	} else {
-       $t->set_file("header","page.html");
-	}
-
-
-
-
 $breadcrumbs = '<font size="-1"><a href="section.php?section_id=1">Main Menu</a> -&gt; </font>';
-$t->set_var("breadcrumbs",$breadcrumbs);
-$t->set_var("user_name",$user_array["user_name"]);
-$t->set_var("user_popname",$user_array["user_popname"]);
-$t->set_var("user_id",$_SESSION[current_id]);
 
-#this is cheating ....
-$t->set_var("owner_id",SYSOP_ID);
-$t->set_var("ownername",SYSOP_NAME);
-#cheating ends
+$num_msg = count_instant_messages($_SESSION[current_id]);
 
-if ($num_msg = count_instant_messages($_SESSION[current_id])){
-	$t->set_var("num_msg",$num_msg);
-}else{
-	$t->set_var("num_msg","no");
-}
+display_header($t,
+	       $breadcrumbs,
+	       "Instant Messages",
+	       $user_array["user_name"],
+	       $user_array["user_popname"],
+	       $_SESSION[current_id],
+	       $num_msg,
+	       SYSOP_ID,
+	       SYSOP_NAME,
+	       get_count_unread_comments($_SESSION[current_id]),
+	       get_count_unread_messages($_SESSION[current_id]));
 
-$t->set_var("pagetitle","Instant Messages");
 update_location("Instant Messages");
-$t->pparse("output","header");
+
 
 
 $refresh_url = 'http://'.$_SERVER[HTTP_HOST].$_SERVER[PHP_SELF];
 if($_SERVER[QUERY_STRING])
 	$refresh_url = $refresh_url.'?'.$_SERVER[QUERY_STRING];
-	
-#echo $refresh_url;
 
 if($num_msg){
 // show the messages we do have

@@ -47,42 +47,26 @@ if (!$topic_array = get_topic($topic_id)){
   
   
   // show header
-  
-  if(get_count_unread_messages($_SESSION[current_id])>0){
-       $t->set_file("header","mail_page.html");
-  } else {
-       $t->set_file("header","page.html");
-  }
-  
+  display_header($t,
+	       $breadcrumbs,
+	       "Adding Comment to ".$topic_array[topic_title],
+	       $user_array["user_name"],
+	       $user_array["user_popname"],
+	       $_SESSION[current_id],
+	       count_instant_messages($_SESSION[current_id]),
+	       $owner_array[owner_id],
+	       $owner_array[owner_name],
+	       get_count_unread_comments($_SESSION[current_id]),
+	       get_count_unread_messages($_SESSION[current_id]));
 
-  if ($num_msg = count_instant_messages($_SESSION[current_id])){
-	$t->set_var("num_msg",$num_msg);
-  }else{
-	$t->set_var("num_msg","no");
-  }
-  
-  $location_str = '<a href="readtopic.php?section_id='.$topic_array[section_id].'&topic_id='.$topic_array[topic_id].'"><i>Posting</i> '.$topic_array[topic_title].'</a>';  
-#  $location_str = "Adding Comment to ".$topic_array[topic_title];
-  $t->set_var("pagetitle","Adding Comment to ".$topic_array[topic_title]);
+
+
+  $location_str = '<a href="readtopic.php?section_id='.$topic_array[section_id].'&topic_id='.$topic_array[topic_id].'"><i>Posting</i> '.$topic_array[topic_title].'</a>';
   update_location($location_str);
-  
-  $t->set_var("breadcrumbs",$breadcrumbs);
 
-  $t->set_var("owner_id",$owner_array[owner_id]);
-  $t->set_var("ownername",$owner_array[owner_name]);
-
-  $t->set_var("user_name",$user_array["user_name"]);
-  $t->set_var("user_popname",$user_array["user_popname"]);
-  $t->set_var("user_id",$_SESSION[current_id]);
-
-  $t->set_var("section_id",$topic_array[section_id]);
-
-  $t->pparse("HeaderOutput","header");
 
   // show post comment
 
-
-  
   $t->set_file("postform","post.html");
   
 
