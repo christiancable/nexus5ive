@@ -10,7 +10,7 @@ setuser_offline($_SESSION[current_id]);
 
 session_destroy();
 
-header("Location: http://".$_SERVER['HTTP_HOST']."/");
+header("Location: http://".$_SERVER['HTTP_HOST'].get_bbsroot());
 exit;
 ?>
 

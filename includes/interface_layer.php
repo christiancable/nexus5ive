@@ -1,6 +1,7 @@
 <?php
 
 #high level interface functions, things that deal with templates and output to the screen
+# remove any deps to other libs here 
 
 function display_message($message_id, $user_id, $template, $mode, $db){
 #takes a message_id and template and the id of the current user and displays one message
@@ -150,10 +151,22 @@ function display_sectionheader($section_array, $user_array, $template)
 */	
 	if (can_user_edit_section($user_array, $section_array)) { # admin user
 
+		# check for existance of subsection
+		$subsection_list_array = get_subsectionlist_array($section_array[section_id]);
+
 		if (new_messages_in_section($user_array[user_id], $section_array[section_id])) {
-		    $template->set_file('topic_handle','section_admin_new.html');
+			if($subsection_list_array){
+				$template->set_file('topic_handle','section_admin_new.html');
+			} else {
+				$template->set_file('topic_handle','section_admin_new_empty.html');
+			}
 		} else {
-			$template->set_file('topic_handle','section_admin.html');
+			if($subsection_list_array){
+				$template->set_file('topic_handle','section_admin.html');
+
+			} else {
+				$template->set_file('topic_handle','section_admin_empty.html');
+			}
 		}
 	    
 	} else { # standard user
@@ -189,7 +202,7 @@ function eject_user(){
 	$t = new Template($template_location);
 	session_destroy();
 	$t->set_file("MyFileHandle", "timeout.html");
-	$t->set_var("REDIRECT_URL","http://".$_SERVER['HTTP_HOST']."/");
+	$t->set_var("REDIRECT_URL","http://".$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'])."/");
 	$t->pparse("MyOutput","MyFileHandle");
     exit();
 }
@@ -313,6 +326,16 @@ function emote_text($text){
 
 	return $text;
 
+
+}
+
+
+function get_dummybreadcrumbs(){
+
+  $top_section_array = get_section(1);
+  $breadcrumbs = '<font size="-1"><a href="section.php?section_id=1">'.$top_section_array[section_title].'</a> -&gt; </font>';
+
+  return $breadcrumbs;
 
 }
 ?>

@@ -4,9 +4,12 @@
 
 include('../includes/database.php');
 
+//parameters
+$message_id = $_POST[message_id];
+
 $db = opendata();
 session_start();
-$template_location =TEMPLATE_HOME.$my_theme; 
+$template_location =TEMPLATE_HOME.$_SESSION[my_theme]; 
 $t = new Template($template_location);
 
 
@@ -76,7 +79,7 @@ if (!$message_array = get_message($message_id)){
 #		nexus_error();
 	}
 
-	header("Location: http://".$_SERVER['HTTP_HOST']."/readtopic.php?section_id=$topic_array[section_id]&topic_id=$topic_array[topic_id]"); 	
+	header("Location: http://".$_SERVER['HTTP_HOST'].get_bbsroot()."readtopic.php?section_id=$topic_array[section_id]&topic_id=$topic_array[topic_id]"); 	
 	exit();
 }
 

@@ -37,7 +37,7 @@ foreach ($all_post_date_array as $post_date_array){
 }
 
 # refresh to main menu
-header("Location: http://".$_SERVER['HTTP_HOST']."/section.php?section_id=1");
+header("Location: http://".$_SERVER['HTTP_HOST'].get_bbsroot()."section.php?section_id=1");
 
 ?>
 

@@ -13,7 +13,7 @@ include('../includes/database.php');
 //common stuff
 $db = opendata();
 session_start();
-$template_location =TEMPLATE_HOME.$my_theme; 
+$template_location =TEMPLATE_HOME.$_SESSION[my_theme]; 
 
 // check login
 if (!validlogin()){
@@ -30,9 +30,9 @@ $new_password2 = $HTTP_POST_VARS[new_password2];
 if (($current_password == $user_array[user_password]) and ($new_password == $new_password2)){
     	#echo "good<br>";
 	change_password($_SESSION[current_id], $new_password);
-	header ("Location: http://".$_SERVER['HTTP_HOST']."/show_userinfo.php?user_id=$_SESSION[current_id]");
+	header ("Location: http://".$_SERVER['HTTP_HOST'].get_bbsroot()."show_userinfo.php?user_id=$_SESSION[current_id]");
 } else {
-	header ("Location: http://".$_SERVER['HTTP_HOST']."/change_password.php?error=1");
+	header ("Location: http://".$_SERVER['HTTP_HOST'].get_bbsroot()."change_password.php?error=1");
 }
 	
 	

@@ -3,13 +3,16 @@
 # backend to post.php
 # should do no output to the screen here
 
+// parameters
+$topic_id=$_POST[topic_id];
+
 
 include('../includes/database.php');
 
 $db = opendata();
 session_start();
 
-$template_location =TEMPLATE_HOME.$my_theme; 
+$template_location =TEMPLATE_HOME.$_SESSION[my_theme]; 
 $t = new Template($template_location);
 
 
@@ -28,12 +31,12 @@ if(!$user_array = get_user_array($_SESSION[current_id])){
 
 if (!$topic_array = get_topic($topic_id)){
 	// no such topic
-	header("Location: http://".$_SERVER['HTTP_HOST']."/section.php?section_id=1");
+	header("Location: http://".$_SERVER['HTTP_HOST'].get_bbsroot()."section.php?section_id=1");
     exit();  	
 } else {
  
 	if(!can_user_add_message($user_array, $topic_array)){
-    	header("Location: http://".$_SERVER['HTTP_HOST']."/readtopic.php?section_id=$topic_array[section_id]&topic_id=$topic_array[topic_id]");
+    	header("Location: http://".$_SERVER['HTTP_HOST'].get_bbsroot()."readtopic.php?section_id=$topic_array[section_id]&topic_id=$topic_array[topic_id]");
 	    exit();
     }
      
@@ -78,7 +81,7 @@ if (!$topic_array = get_topic($topic_id)){
 	inc_total_edits($user_array);
  
 	// redirect to readtopic
-	header("Location: http://".$_SERVER['HTTP_HOST']."/readtopic.php?section_id=$topic_array[section_id]&topic_id=$topic_array[topic_id]");
+	header("Location: http://".$_SERVER['HTTP_HOST'].get_bbsroot()."readtopic.php?section_id=$topic_array[section_id]&topic_id=$topic_array[topic_id]");
 	exit();
 
 }

@@ -1,12 +1,15 @@
 <?php
 // new add post code - interface
 
+// parameters
+
+$section_id=$_GET[section_id];
 
 include('../includes/database.php');
 
 $db = opendata();
 session_start();
-$template_location =TEMPLATE_HOME.$my_theme; 
+$template_location =TEMPLATE_HOME.$_SESSION[my_theme]; 
 $t = new Template($template_location);
 
 
@@ -23,12 +26,12 @@ if(!$user_array = get_user_array($_SESSION[current_id])){
 
 if (!$section_array = get_section($section_id)){
 	// no such section
-	header("Location: http://".$_SERVER['HTTP_HOST']."/section.php?section_id=1");
+	header("Location: http://".$_SERVER['HTTP_HOST'].get_bbsroot()."section.php?section_id=1");
     exit();  	
 } else {
 // section exists 
 	if(!can_user_edit_section($user_array, $section_array)){
-    	header("Location: http://".$_SERVER['HTTP_HOST']."/section.php?section_id=$section_array[section_id]");
+    	header("Location: http://".$_SERVER['HTTP_HOST'].get_bbsroot()."section.php?section_id=$section_array[section_id]");
 	    exit();
     }
      
@@ -66,6 +69,7 @@ display_header($t,
 
   $t->set_var("SECTION_NAME",$section_array[section_title]);
   $t->set_var("SECTION_ID",$section_array[section_id]);
+  $t->set_var("PARENT_ID", $section_array[parent_id]);
   $t->set_var("DESCRIPTION",$section_array[section_intro]);
   $t->set_var("WEIGHT",$section_array[section_weight]);
 

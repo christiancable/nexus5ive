@@ -4,7 +4,11 @@ include('../includes/database.php');
 
 $db = opendata();
 session_start();
-$template_location = TEMPLATE_HOME . $my_theme;
+
+# get vars 
+$section = $_GET['section_id'];
+
+$template_location = TEMPLATE_HOME . $_SESSION[my_theme];
 // check login
 
 if (!validlogin()) {
@@ -13,10 +17,6 @@ if (!validlogin()) {
 // ADD CHECKS HERE
 $user_array = get_user_array($_SESSION[current_id]);
 
-// temp - transsistional vars
-if (isset($section_id))
-    $section = $section_id;
-// end temp
 
 
 if (!$sectioninfodetails = get_section($section)) {
@@ -29,10 +29,12 @@ $sectionparent = $sectioninfodetails["parent_id"];
 
 $breadcrumbs = get_breadcrumbs($section);
 
-$location_str = '<a href="section.php?section=' . $sectioninfodetails[section_id] . '">' . $sectionname . '</a>';
+
+$location_str = '<a href="section.php?section_id=' . $sectioninfodetails[section_id] . '">' . $sectionname . '</a>';
 
 
 update_location($location_str);
+
 
 if(!$ownername = get_username($sectionowner)){
 	$ownername = "unknowm moderator";

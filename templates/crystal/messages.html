@@ -1,21 +1,3 @@
-   <script language="JavaScript" type="text/javascript">
-<!-- Begin
-var checkflag = "false";
-function check(field) {
-if (checkflag == "false") {
-for (i = 0; i < field.length; i++) {
-field[i].checked = true;}
-checkflag = "true";
-return "Uncheck All"; }
-else {
-for (i = 0; i < field.length; i++) {
-field[i].checked = false; }
-checkflag = "false";
-return "Check All"; }
-}
-//  End -->
-</script>
-
   <TABLE width="100%" border=0 cellspacing=1 cellpadding="0">
   <TBODY>
     <TR>
@@ -37,7 +19,7 @@ return "Check All"; }
     <!-- END MessageBlock -->
 
     <TR>
-      <TD colspan="3" height="30"><a href="{reload_page}"><img src="images/crystal/reload.gif"  border="0"> 
+      <TD colspan="3" height="30"><a href="{reload_page}"><img src="images/crystal/reload.gif"  border="0">
           <span class="navigation">Recheck</span></a>&nbsp;<img src="images/crystal/delete_msg.gif" border="0">
         <input type="submit" name="Delete Selected Messages" value="Delete Selected Messages">	</TD>
     </form>

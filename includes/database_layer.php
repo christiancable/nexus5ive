@@ -461,7 +461,7 @@ function update_topic($topic_array)
 } 
 
 function delete_topic($topic_id)
-{ 
+{
     // removes a topic and all comments within
     $sql = "DELETE FROM messagetable WHERE topic_id=$topic_id";
     if (mysql_query($sql)) {
@@ -479,13 +479,13 @@ function delete_topic($topic_id)
             echo "$sql";
             exit();
             return false;
-        } 
+        }
     } else {
         echo "$sql";
         exit();
         return false;
-    } 
-} 
+    }
+}
 
 function add_topic($topic_array)
 {
@@ -571,7 +571,6 @@ function add_section($section_array)
 	'$section_array[parent_id]',
 	'$section_array[section_weight]',
 	'$section_array[section_intro]')"; 
-    // echo "<h1>debug".$sql."</h1>";
     if (mysql_query($sql)) {
         return true;
     } else {
@@ -616,11 +615,16 @@ function update_section($section_array)
     } 
 } 
 
-
-function is_section_empty($section_id){
-# returns true if the section has either topics or subsections
-	$sql = "SELECT topictable.topic_id, sectiontable.section_id WHERE topictable.section_id = sectiontable.parent_id and sectiontable.parent_id=$section_id";
-	## FINISH THIS OFF - this query is bogus man, might have to do two after all
+function delete_section($section_id)
+{
+    // removes a topic and all comments within
+    $sql = "DELETE FROM sectiontable WHERE section_id=$section_id";
+    if (!mysql_query($sql)) {
+	#echo "$sql";
+        return false;
+    } else {
+	return true;
+    }
 }
 // # end section functions
 // # comment functions
@@ -629,7 +633,7 @@ function get_user_comment($user_id)
 {
     /**
      * INPUT message_id
-     * 
+     *
      * OUTPUT message_array or false
      */
 
@@ -831,7 +835,7 @@ function get_count_new_section_messages($user_id, $section_id)
 } 
 
 function new_messages_in_section($user_id, $section_id)
-{ 
+{
     // returns true if new messages exist in the section
     // get all topics in section
     $sql = "SELECT topic_id FROM topictable WHERE section_id = $section_id"; 
@@ -1020,7 +1024,6 @@ function get_subsectionlist_array($section_id)
     $sectionlist_array = array();
 
    $sql = "SELECT * FROM sectiontable WHERE parent_id = $section_id ORDER BY section_weight";
-   echo "<!-- debug $sql -->";
     if (!$sql_result = mysql_query($sql)) {
         return false;
     } else {
@@ -1036,7 +1039,7 @@ function get_subsectionlist_array($section_id)
 }
 
 function get_topiclist_array($user_array)
-{ 
+{
     // returns list of topics the user can moderate
     $topiclist_array = array();
 
@@ -1044,7 +1047,7 @@ function get_topiclist_array($user_array)
         $sql = "SELECT topic_id, topic_title FROM topictable, sectiontable WHERE sectiontable.user_id = $user_array[user_id] AND sectiontable.section_id = topictable.section_id ORDER BY sectiontable.section_id"; # do this!
     } else {
         $sql = "SELECT topic_id, topic_title FROM topictable ORDER BY section_id";
-    } 
+    }
 
     if (!$sql_result = mysql_query($sql)) {
         return false;
@@ -1056,12 +1059,12 @@ function get_topiclist_array($user_array)
             return $topiclist_array;
         } else {
             return false;
-        } 
-    } 
-} 
+        }
+    }
+}
 
 function get_users_online($self_id, $include_self)
-{ 
+{
     // returns list of users currently online
     $users_online_array = array();
 
@@ -1069,7 +1072,7 @@ function get_users_online($self_id, $include_self)
         $sql = "SELECT whoison.user_id, usertable.user_popname, usertable.user_location, MINUTE(now() - whoison.timeon) as minutes, SECOND(now() - whoison.timeon) as seconds, user_name from whoison, usertable WHERE timeon > date_sub(now(), INTERVAL 5 minute) and whoison.user_id = usertable.user_id and usertable.user_status='Online' and usertable.user_id <> $self_id ORDER BY timeon DESC";
     } else {
         $sql = "SELECT whoison.user_id, usertable.user_popname, usertable.user_location, MINUTE(now() - whoison.timeon) as minutes, SECOND(now() - whoison.timeon) as seconds, user_name from whoison, usertable WHERE timeon > date_sub(now(), INTERVAL 5 minute) and whoison.user_id = usertable.user_id and usertable.user_status='Online' ORDER BY timeon DESC";
-    } 
+    }
 
     if (!$sql_result = mysql_query($sql)) {
         return false;
@@ -1077,7 +1080,7 @@ function get_users_online($self_id, $include_self)
         if ($current_array = mysql_fetch_array($sql_result)) {
             do {
                 array_push($users_online_array, $current_array);
-            } while ($current_array = mysql_fetch_array($sql_result)); 
+            } while ($current_array = mysql_fetch_array($sql_result));
             // echo "debug: here";
             return $users_online_array;
         } else {
@@ -1172,7 +1175,7 @@ function delete_instant_messages($array_of_message_ids)
     if (!sizeof($array_of_message_ids)) {
         return false;
     }
-
+	
     $sql = "DELETE FROM nexusmessagetable WHERE ";
     for($i = 0; $i < sizeof($array_of_message_ids); $i++) {
         $sql = $sql . " nexusmessage_id = $array_of_message_ids[$i]";

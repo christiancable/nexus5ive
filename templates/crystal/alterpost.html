@@ -11,15 +11,14 @@
 	</br>	
     <table width="100%" border="0" cellpadding="0" cellspacing="0">
       <tr> 
-        <td class="navigationBar" > 
+        <td valign="top" class="navigationBar" > 
           <p><b>From:</b><b> </b>({message_popname}) <a href="show_userinfo.php?user_id={message_user_id}">{message_username}</a> 
             <br>
             <b>Date:</b><b> </b>{date} <br>
             <strong>Subject:</strong> 
             <input name="subject" type="text" value="{subject}" size="35" maxlength="50">
             <br>
-          </p>
-          </td>
+        </p>        </td>
         <td rowspan="2" valign="top" class="navigationBar"> 
           <p> <img src="images/crystal/help.gif" alt="Help Icon" width="32" height="32"> 
             Hints and Tips</p>
@@ -35,7 +34,7 @@
             careful to check for errors.</p></td>
       </tr>
       <tr>
-        <td><p> 
+        <td valign="top"><p> 
             <textarea name="comment" cols="55" rows="10" wrap="VIRTUAL">{message}</textarea>
             <br>
             <input name="allowhtml" type="checkbox" id="allowhtml" value="1" checked>
@@ -43,10 +42,10 @@
           <p> 
             <input type="submit" name="submit" value="Update Comment">
             <a href="readtopic.php?section_id={section_id}&topic_id={topic_id}">[ 
-            Cancel ]</a> </p></td>
+        Cancel ]</a> </p></td>
       </tr>
     </table>
-    </form></div>
+  </form></div>
 		<table border="0" width="100%">
       <tr> 
         <td colspan="4" class="navigationBar" > <a href="leap.php">[ Topic Leap 

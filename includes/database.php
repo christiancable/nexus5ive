@@ -13,7 +13,8 @@ include('database_layer.php');
 include('interface_layer.php');
 include('site.php');
 
-// defines
+// defines 
+// this should be in the site
 define('TEMPLATE_HOME', '../templates/');
 
 // functions
@@ -33,7 +34,7 @@ function validlogin()
 	if (session_is_registered("current_id")) {
 
 		$db = opendata();
-		global $current_id;
+		$current_id = $_SESSION[current_id];
 
 		$sql = "DELETE FROM whoison WHERE user_id=$current_id";
 		mysql_query($sql, $db);
@@ -191,13 +192,12 @@ function update_location($location)
 	 * 
 	 * update nov 3 2001 - xian
 	 */
-	global $current_id;
+        $current_id = $_SESSION[current_id];
 	$location = mysql_real_escape_string($location);
 	$sql = "UPDATE usertable SET user_location='" . $location . "' WHERE user_id=$current_id";
 #		echo "< !-- debug update_location is $sql -- >";
 	if (!$sql_result = mysql_query($sql)) {
-
-		nexus_error();
+			nexus_error();
 	} 
 
 	update_last_time_on($current_id);
@@ -412,7 +412,8 @@ ifsnow is korean phper. Is sorry to be unskillful to English. *^^*;;
 
 function SnowCheckMail($Email,$Debug=false) 
 { 
-    global $HTTP_HOST; 
+    $HTTP_HOST = $_SERVER['HTTP_HOST'];
+ 
     $Return =array();   
     // Variable for return. 
     // $Return[0] : [true|false] 
@@ -482,6 +483,18 @@ function SnowCheckMail($Email,$Debug=false)
         return false; 
     } 
     $Return[0]=true; 
-    return true; 
-} 
+    return true;
+}
+
+function get_bbsroot(){
+	$dirname = dirname($_SERVER[PHP_SELF]);
+	if($dirname != "/") {
+
+		$dirname = dirname($_SERVER[PHP_SELF])."/";
+	} else {
+
+	}
+
+	return $dirname;
+}
 ?>

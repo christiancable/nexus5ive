@@ -1,12 +1,15 @@
 <?php
 // new add post code - interface
 
+// parameters
+
+$topic_id = $_GET[topic_id];
 
 include('../includes/database.php');
 
 $db = opendata();
 session_start();
-$template_location =TEMPLATE_HOME.$my_theme; 
+$template_location =TEMPLATE_HOME.$_SESSION[my_theme]; 
 $t = new Template($template_location);
 
 
@@ -25,13 +28,13 @@ if(!$user_array = get_user_array($_SESSION[current_id])){
 
 if (!$topic_array = get_topic($topic_id)){
 	// no such topic
-	header("Location: http://".$_SERVER['HTTP_HOST']."/section.php?section_id=1");
+	header("Location: http://".$_SERVER['HTTP_HOST'].get_bbsroot()."section.php?section_id=1");
     exit();  	
 } else {
 // topic exists 
 	if(!can_user_edit_topic($user_array, $topic_array)){
 		// topic exists but user can not edit it
-    	header("Location: http://".$_SERVER['HTTP_HOST']."/section.php?section_id=$topic_array[section_id]");
+    	header("Location: http://".$_SERVER['HTTP_HOST'].get_bbsroot()."section.php?section_id=$topic_array[section_id]");
 	    exit();
     }
 

@@ -4,9 +4,13 @@
 
 include('../includes/database.php');
 
+// parameters
+$message_id=$_GET[message_id];
+$topic_id=$_GET[topic_id];
+
 $db = opendata();
 session_start();
-$template_location =TEMPLATE_HOME.$my_theme; 
+$template_location =TEMPLATE_HOME.$_SESSION[my_theme]; 
 $t = new Template($template_location);
 
 
@@ -22,18 +26,18 @@ if(!$user_array = get_user_array($_SESSION[current_id])){
 if (!$message_array = get_message_with_time($message_id)){
 	// check to see if the message exists 
 	// no such message
-	header("Location: http://".$_SERVER['HTTP_HOST']."/section.php?section_id=1");
+	header("Location: http://".$_SERVER['HTTP_HOST'].get_bbsroot()."section.php?section_id=1");
     exit();  	
 } else {
 // topic exists 
 	// get the topic id here
 	if(!$topic_array = get_topic($message_array[topic_id])){
-		header("Location: http://".$_SERVER['HTTP_HOST']."/section.php?section_id=1");
+		header("Location: http://".$_SERVER['HTTP_HOST'].get_bbsroot()."section.php?section_id=1");
 	    	exit();  	
 	}	
 	if(!can_user_edit_topic($user_array, $topic_array)){
 		// topic exists but user can not edit it
-    		header("Location: http://".$_SERVER['HTTP_HOST']."/section.php?section_id=$topic_array[section_id]");
+    		header("Location: http://".$_SERVER['HTTP_HOST'].get_bbsroot()."section.php?section_id=$topic_array[section_id]");
 	    	exit();
     }
      

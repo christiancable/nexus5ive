@@ -47,6 +47,9 @@ body {
 	font-size: 80%
 }
 
+.userlistItem {
+	font-size: 90%
+}
 
 .post {
 	font-size: 90%
@@ -72,3 +75,15 @@ a:active {
 	color: #0000CC;
 }
 
+.sectionTitle {
+	font-size: 150%;
+	font-weight: bold;
+}
+.sectionIntro {
+	font-size: 80%;
+	font-style: italic;
+	color: #999999;
+}
+.sectionMessages {
+	font-size: 60%;
+}

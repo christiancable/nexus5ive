@@ -12,7 +12,7 @@ include('../includes/database.php');
 //common stuff
 $db = opendata();
 session_start();
-$template_location =TEMPLATE_HOME.$my_theme; 
+$template_location =TEMPLATE_HOME.$_SESSION[my_theme]; 
 
 // check login
 if (!validlogin()){
@@ -27,10 +27,10 @@ $users_on_array = get_users_online($_SESSION[current_id], true);
 
 // is the current user a sysop
 if($user_array[user_sysop]<>'y')
-	header("Location: http://".$_SERVER[HTTP_HOST]."/section.php?section_id=1");
+	header("Location: http://".$_SERVER[HTTP_HOST].get_bbsroot()."section.php?section_id=1");
 
 // update this once the utilities menu is online
-$breadcrumbs = '<font size="-1"><a href="section.php?section_id=1">Main Menu</a> -&gt; </font>';
+$breadcrumbs = get_dummybreadcrumbs();
 
 $t = new Template($template_location);
 

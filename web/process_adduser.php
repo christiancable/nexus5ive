@@ -24,7 +24,7 @@ $user_array = get_user_array($_SESSION[current_id]);
 
 // is the current user a sysop
 if($user_array[user_sysop]<>'y')
-	header("Location: http://".$_SERVER[HTTP_HOST]."/section.php?section_id=1");
+	header("Location: http://".$_SERVER[HTTP_HOST].get_bbsroot()."section.php?section_id=1");
 
 $username =  htmlspecialchars($HTTP_POST_VARS[username],ENT_QUOTES);;
 $realname = htmlspecialchars($HTTP_POST_VARS[realname],ENT_QUOTES);
@@ -39,7 +39,6 @@ if ($HTTP_POST_VARS[random] = 'yes'){
 }
 
 // call add user function here
-#header("Location: http://".$_SERVER[HTTP_HOST]."/section.php?section_id=1"); 	
 
 // check for existing user accounts with same email or username
 
@@ -63,7 +62,7 @@ echo "$new_user_array[user_password]";
 exit();
 
 if (add_user($new_user_array)){
-	header("Location: http://".$_SERVER[HTTP_HOST]."/section.php?section_id=1"); 	
+	header("Location: http://".$_SERVER[HTTP_HOST].get_bbsroot()."section.php?section_id=1"); 	
 } else {
 	echo "<h1>bobobo</h1>";
 }

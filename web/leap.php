@@ -23,5 +23,6 @@ if($target = find_next_unread_topic($_SESSION[current_id])){
 	$target = 1;
 }
 
-header("Location: http://".$_SERVER['HTTP_HOST']."/section.php?section=$target");
+header("Location: http://".$_SERVER['HTTP_HOST'].get_bbsroot()."section.php?section_id=$target");
+
 ?>

@@ -16,9 +16,9 @@ if (!validlogin()){
 
 $instant_message = array();
 #get post vars
-$instant_message[text]= escape_input($HTTP_POST_VARS[comment]);
+$instant_message[text]= escape_input($_POST[comment]);
 $instant_message[from_id] = $_SESSION[current_id];
-$instant_message[user_id] = $HTTP_POST_VARS[user_id]; # should I check this guy exists or do I trust the form
+$instant_message[user_id] = $_POST[user_id]; # should I check this guy exists or do I trust the form
 
 add_user_comment($instant_message);
 
@@ -30,7 +30,7 @@ echo "text: $instant_message[text]<br>";
 echo "<br><br>";
 #echo "<a href=\"show_userinfo.php?user_id=".$instant_message[user_id].'"> continue </a>';
 */
-header("Location: http://".$_SERVER['HTTP_HOST']."/show_userinfo.php?user_id=".$HTTP_POST_VARS[user_id]);
+header("Location: http://".$_SERVER['HTTP_HOST'].get_bbsroot()."show_userinfo.php?user_id=".$HTTP_POST_VARS[user_id]);
 
 
 ?>

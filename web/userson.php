@@ -13,7 +13,7 @@ include('../includes/database.php');
 //common stuff
 $db = opendata();
 session_start();
-$template_location =TEMPLATE_HOME.$my_theme; 
+$template_location =TEMPLATE_HOME.$_SESSION[my_theme]; 
 
 // check login
 if (!validlogin()){
@@ -30,7 +30,7 @@ update_location("Who's Online");
 
 $users_on_array = get_users_online($_SESSION[current_id], true);
 
-$breadcrumbs = '<font size="-1"><a href="section.php?section_id=1">Main Menu</a> -&gt; </font>';
+$breadcrumbs = get_dummybreadcrumbs();
 
 $t = new Template($template_location);
 
@@ -54,7 +54,7 @@ $num_of_users = count($users_on_array);
 if($num_of_users) {
 
 	$t->set_file("userson", "userson.html");
-
+	$t->set_var("bbs_name", BBS_NAME);
 	$t->set_var("num_of_users",$num_of_users);
 	$t->set_var("php_self",$_SERVER['PHP_SELF']);
 	switch ($num_of_users) {

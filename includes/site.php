@@ -11,7 +11,6 @@ define('MYSQL_USER', 'xxxx');
 define('MYSQL_PASSWORD','xxxx');
 define('MYSQL_SERVER','xxxx');
 define('MYSQL_DATABASE','xxxx');
-
-
+define('BBS_NAME','xxxx');
 
 ?>

@@ -1,6 +1,14 @@
 <?php
 // new add post code - interface
 
+// parameters
+
+//get form data
+$title = $_POST[title];
+$description = $_POST[description];
+$weight = $_POST[weight];
+$moderator = $_POST[moderator];
+$section_id = $_POST[section_id];
 
 include('../includes/database.php');
 
@@ -21,25 +29,24 @@ if(!$user_array = get_user_array($_SESSION[current_id])){
 // section id of parent comes from form var
 $parent_id = $HTTP_POST_VARS[section_id];
 
+
 if (!$parent_section_array = get_section($parent_id)){
 	// no such section
-	header("Location: http://".$_SERVER['HTTP_HOST']."/section.php?section_id=1");
+	header("Location: http://".$_SERVER['HTTP_HOST'].get_bbsroot()."section.php?section_id=1");
     exit();  	
+	
+	
 } else {
 // section exists 
 	if(!can_user_edit_section($user_array, $parent_section_array)){
-    	header("Location: http://".$_SERVER['HTTP_HOST']."/section.php?section_id=$parent_section_array[section_id]");
+    	header("Location: http://".$_SERVER['HTTP_HOST'].get_bbsroot()."section.php?section_id=$parent_section_array[section_id]");
 	    exit();
     }
      
 // at this point the current user can edit the parent section
   
 
-//get form data
-$title = $HTTP_POST_VARS[title];
-$description = $HTTP_POST_VARS[description];
-$weight = $HTTP_POST_VARS[weight];
-$moderator = $HTTP_POST_VARS[moderator];
+
 // does the moderator exist?
 
 // check form data
@@ -65,8 +72,7 @@ if(!add_section($section_array)){
 }
 
 //redirect to the parent section  
-#echo "Redirecting to ".$_SERVER['HTTP_HOST']."/section.php?section_id=$parent_section_array[section_id]";
-header("Location: http://".$_SERVER['HTTP_HOST']."/section.php?section_id=$parent_section_array[section_id]");
+header("Location: http://".$_SERVER['HTTP_HOST'].get_bbsroot()."section.php?section_id=$parent_section_array[section_id]");
 exit();
 }
 

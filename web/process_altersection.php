@@ -1,6 +1,12 @@
 <?php
 // new add post code - interface
 
+// parameters
+$title = $_POST[title];
+$section_id = $_POST[section_id];
+$description = $_POST[description];
+$moderator = $_POST[moderator];
+$weight = $_POST[weight];
 
 include('../includes/database.php');
 
@@ -20,21 +26,21 @@ if(!$user_array = get_user_array($_SESSION[current_id])){
 
 if (!$section_array = get_section($section_id)){
 	// no such section
-	header("Location: http://".$_SERVER['HTTP_HOST']."/section.php?section_id=1");
+	header("Location: http://".$_SERVER['HTTP_HOST'].get_bbsroot()."section.php?section_id=1");
     exit();  	
 } else {
 // section exists 
 	if(!can_user_edit_section($user_array, $section_array)){
-    	header("Location: http://".$_SERVER['HTTP_HOST']."/section.php?section_id=$section_array[section_id]");
+    	header("Location: http://".$_SERVER['HTTP_HOST'].get_bbsroot()."section.php?section_id=$section_array[section_id]");
 	    exit();
     }
      
 // at this point the current user can edit the section 
   
-$section_array[section_title] = htmlspecialchars($HTTP_POST_VARS[title], ENT_QUOTES);
-$section_array[user_id] = $HTTP_POST_VARS[moderator];
-$section_array[section_weight] = $HTTP_POST_VARS[weight];
-$section_array[section_intro] = htmlspecialchars($HTTP_POST_VARS[description], ENT_QUOTES);
+$section_array[section_title] = htmlspecialchars($title, ENT_QUOTES);
+$section_array[user_id] = $moderator;
+$section_array[section_weight] = $weight;
+$section_array[section_intro] = htmlspecialchars($description, ENT_QUOTES);
 
 if(update_section($section_array)){
 	//worked
@@ -46,7 +52,7 @@ if(update_section($section_array)){
 
  
  // redirect to sections parent
-header("Location: http://".$_SERVER['HTTP_HOST']."/section.php?section_id=$section_array[parent_id]");
+header("Location: http://".$_SERVER['HTTP_HOST'].get_bbsroot()."section.php?section_id=$section_array[parent_id]");
 }
 
 

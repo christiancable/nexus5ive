@@ -4,15 +4,20 @@
 displays a number of posts in a given topic, paginates them accounting to user preferences
 
 */
+//parameters 
+$topic_id=$_GET[topic_id];
+$section_id=$_GET[section_id];
+$limit=$_GET[limit];
+
 // includes
 
 include('../includes/database.php');
 // common stuff
+
 $db = opendata();
 session_start();
-global $_SESSION;
 
-$template_location = TEMPLATE_HOME . $my_theme; 
+$template_location = TEMPLATE_HOME . $_SESSION[my_theme]; 
 // check login
 if (!validlogin()) {
     eject_user();
@@ -84,7 +89,7 @@ $messages_shown_count = mysql_num_rows($messages_to_show);
 $t = new Template($template_location);
 // chose display mode
 if ($topic_array["topic_annon"] == 'y') {
-    if (is_topic_owner($topic_id, $current_id, $db)) {
+    if (is_topic_owner($topic_id, $user_array[user_id], $db)) {
         // can see
         // echo "DEBUG: annon and owner<br>";
         $t->set_file('topic_handle', 'secret_owner.html');
@@ -94,7 +99,7 @@ if ($topic_array["topic_annon"] == 'y') {
         $t->set_file('topic_handle', 'secret_comment.html');
     } 
 } else {
-    if (is_topic_owner($topic_id, $current_id, $db)) {
+    if (is_topic_owner($topic_id, $user_array[user_id], $db)) {
         // owner
         // echo "DEBUG: owner<br>";
         $t->set_file('topic_handle', 'normal_owner.html');
@@ -154,7 +159,7 @@ $t->pparse('content', 'buttons');
 // END DISPLAY TOP SET OF BUTTONS
 // forward and back
 // Create Next / Prev Links and $Result_Set Value
-$browse_html = browse_links($total_messages, $limit, $page_length, $_SERVER['PHP_SELF'], $topic_array[section_id], $topic_id);
+$browse_html = browse_links($total_messages, $limit, $page_length, "readtopic.php", $topic_array[section_id], $topic_id);
 echo $browse_html;
 // echo "DEBUG $owner_array[owner_name] and $owner_array[owner_id]";
 // ##END DEBUG

@@ -5,6 +5,10 @@ let user change their password - cfc
 
 */
 
+//parameters
+if($_GET[error])
+	$error = $_GET[error];
+	
 //includes
 
 include('../includes/database.php');
@@ -13,7 +17,7 @@ include('../includes/database.php');
 //common stuff
 $db = opendata();
 session_start();
-$template_location =TEMPLATE_HOME.$my_theme; 
+$template_location =TEMPLATE_HOME.$_SESSION[my_theme]; 
 
 // check login
 if (!validlogin()){
@@ -24,7 +28,7 @@ $user_array = get_user_array($_SESSION[current_id]);
 
 $users_on_array = get_users_online($_SESSION[current_id], true);
 
-$breadcrumbs = '<font size="-1"><a href="section.php?section_id=1">Main Menu</a> -&gt; <a href="show_userinfo.php?user_id='.$_SESSION[current_id].'">Examining '.$user_array[user_name].'</a></font> -&gt;';
+$breadcrumbs = get_dummybreadcrumbs().' <a href="show_userinfo.php?user_id='.$_SESSION[current_id].'">Examining '.$user_array[user_name].'</a></font> -&gt;';
 
 $t = new Template($template_location);
 

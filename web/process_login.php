@@ -13,7 +13,7 @@ if($user_array=get_user_array_from_name($username)){
 	# check password
 	if($user_array[user_password]<>$password){
 		#echo "debug password";
-		header("Location: http://".$_SERVER['HTTP_HOST']."/login_error.html");
+		header("Location: http://".$_SERVER['HTTP_HOST'].get_bbsroot()."login_error.html");
 		exit;
 	}
 
@@ -24,12 +24,11 @@ if($user_array=get_user_array_from_name($username)){
 		$error_txt = " $username attempt from $_SERVER[REMOTE_ADDR]\n";
 		$str = "[" . date("Y/m/d h:i:s", mktime()) . "] " . $error_txt;
 	        mail($email_to, "nexus alert", $str, $email_from);
-		header("Location: http://".$_SERVER['HTTP_HOST']."/banned.html");
-		#echo "debug banned $user_array[user_banned]";
+		header("Location: http://".$_SERVER['HTTP_HOST'].get_bbsroot()."banned.html");
+
 		exit;
 	}
 
-	global $current_id;
 	$current_id = $user_array[user_id];
 	session_register("current_id");
 	session_register("my_theme");
@@ -40,13 +39,14 @@ if($user_array=get_user_array_from_name($username)){
 	// increase number of times on nexus here
 	$num_of_visits = $user_array[user_totalvisits]+1;
 	setuser_logon($user_array[user_id],$_SERVER[REMOTE_ADDR], $num_of_visits);
-	header("Location: http://".$_SERVER['HTTP_HOST']."/section.php?section=1");
+
+	header("Location: http://".$_SERVER['HTTP_HOST'].get_bbsroot()."section.php?section_id=1");
 	exit;
 
 } else {
 	# check username and password page
 	#echo "final error";
-	header("Location: http://".$_SERVER['HTTP_HOST']."/login_error.html");
+	header("Location: http://".$_SERVER['HTTP_HOST'].get_bbsroot()."/login_error.html");
 }
 ?>
 

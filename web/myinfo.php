@@ -8,7 +8,7 @@ $db = opendata();
 
 $db = opendata();
 session_start();
-$template_location =TEMPLATE_HOME.$my_theme; 
+$template_location =TEMPLATE_HOME.$_SESSION[my_theme]; 
 
 // check login
 if (!validlogin()){
@@ -17,7 +17,7 @@ if (!validlogin()){
 
 $user_array = get_user_array($_SESSION[current_id]);
 
-$breadcrumbs = '<font size="-1"><a href="section.php?section_id=1">Main Menu</a> -&gt;</font>';
+$breadcrumbs = get_dummybreadcrumbs();
 
 $t = new Template($template_location);
 

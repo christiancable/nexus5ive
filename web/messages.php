@@ -4,7 +4,7 @@ include('../includes/database.php');
 
 $db = opendata();
 session_start();
-$template_location =TEMPLATE_HOME.$my_theme; 
+$template_location =TEMPLATE_HOME.$_SESSION[my_theme]; 
 $t = new Template($template_location);
 
 
@@ -18,7 +18,7 @@ if(!$user_array = get_user_array($_SESSION[current_id])){
 }
 
 
-$breadcrumbs = '<font size="-1"><a href="section.php?section_id=1">Main Menu</a> -&gt; </font>';
+$breadcrumbs = get_dummybreadcrumbs();
 
 $num_msg = count_instant_messages($_SESSION[current_id]);
 
@@ -55,7 +55,7 @@ if($num_msg){
 	foreach ($instant_message_array as $current_message_array){
 	    $t->set_var("message_id", $current_message_array[nexusmessage_id]);
    	    $t->set_var("user_id",$current_message_array[from_id]);
-	    $t->set_var("message",$current_message_array[text]); # strip this?
+	    $t->set_var("message", $current_message_array[text]); # strip this?
 	    $t->set_var("user_name",$current_message_array[user_name]);		  
 	    $t->parse('tablerow', 'MessageBlock', true); 	
 

@@ -3,6 +3,12 @@
 // accepts user_id as a argument
 // displays info in a readonly format
 
+// parameters
+if($_GET[user_id])
+     $user_id=$_GET[user_id];
+
+ if($_POST[user_id])
+     $user_id=$_POST[user_id];
 //includes
 
 include('../includes/database.php');
@@ -11,26 +17,25 @@ include('../includes/database.php');
 //common stuff
 $db = opendata();
 session_start();
-$template_location =TEMPLATE_HOME.$my_theme; 
+$template_location =TEMPLATE_HOME.$_SESSION[my_theme]; 
 
 // check login
 if (!validlogin()){
 	eject_user();	
 }
 
-if($HTTP_POST_VARS[user_id])
- $user_id=$HTTP_POST_VARS[user_id];
+
 
 // check if user exists if not check them to the main menu
 if (!$examine_user_array = get_user_array($user_id)) {
-    header("Location: http://".$_SERVER['HTTP_HOST']."/section.php?section_id=1");
+    header("Location: http://".$_SERVER['HTTP_HOST'].get_bbsroot()."section.php?section_id=1");
     exit();
 }
 
 
 $user_array = get_user_array($_SESSION[current_id]);
 
-$breadcrumbs = '<font size="-1"><a href="section.php?section_id=1">Main Menu</a> -&gt; </font>';
+$breadcrumbs = get_dummybreadcrumbs();
 
 $t = new Template($template_location);
 

@@ -1,11 +1,11 @@
 <?php
 // new add post code - interface
 
-include('../includes/database.php');
-
 // parameters
 
-$parent_id = $_GET[parent_id];
+$section_id=$_GET[section_id];
+
+include('../includes/database.php');
 
 $db = opendata();
 session_start();
@@ -22,36 +22,41 @@ if(!$user_array = get_user_array($_SESSION[current_id])){
 	nexus_error();
 }
 
-// can_user_edit the parent section
+// can_user_edit fuction here
 
-// parent id must come from passed var 
-
-if (!$section_array = get_section($parent_id)){
+if (!$section_array = get_section($section_id)){
 	// no such section
 	header("Location: http://".$_SERVER['HTTP_HOST'].get_bbsroot()."section.php?section_id=1");
-        exit();  	
+    exit();
 } else {
-// section exists 
+// section exists
 	if(!can_user_edit_section($user_array, $section_array)){
     	header("Location: http://".$_SERVER['HTTP_HOST'].get_bbsroot()."section.php?section_id=$section_array[section_id]");
 	    exit();
     }
-     
-// at this point the current user can the parent section
-  
- 
+
+// at this point the current user can edit the section
+
+  if($subsection_array_list=get_subsectionlist_array($section_array[section_id])) {
+	header("Location: http://".$_SERVER['HTTP_HOST'].get_bbsroot()."section.php?section_id=$section_array[parent_id]");
+	exit();
+   }
+
+ //section owner info
  // this is just a simple username look up
-  
   if(!$moderator_name = get_username($section_array[user_id]))
   	nexus_error();
-  
- $breadcrumbs = get_breadcrumbs_topic($section_array[section_id]);
-#  	nexus_error();
-	
+
+  if(!$breadcrumbs = get_breadcrumbs($section_array[section_id]))
+  	nexus_error();
+
+
   // show header
+# if we have sub sections bounce them back
+
 display_header($t,
 	       $breadcrumbs,
-	       "Create Menu",
+	       "Delete ".$section_array[section_title]."?",
 	       $user_array["user_name"],
 	       $user_array["user_popname"],
 	       $_SESSION[current_id],
@@ -64,24 +69,26 @@ display_header($t,
 
   // show modify section comment
 
-  // get create section template
-  // fill in section_id
-  $t->set_file("sectionform","create_section.html");
-  
-  
-  $t->set_var("SECTION_ID",$section_array[section_id]);
-  
+  $t->set_file("sectionform","delsection.html");
+
+
   // SELECT
-  $select_code = '<option value="'.$section_array[user_id].'">'.$moderator_name.'</option>';
-  $userlist_array=get_userlist_array();
-  foreach ($userlist_array  as $current_element){
-	$select_code = $select_code.'<option value="'.$current_element[user_id].'">'.$current_element[user_name].'</option>';
+
+  # get number of topics in section to check there is no subsections
+  $topics_list = get_section_topics($section_array[section_id]);
+  if(!$subsection_array_list){
+	if($topics_list){
+		$t->set_var("TOPICS_COUNT",count($topics_list));
+	} else {
+		$t->set_var("TOPICS_COUNT"," no ");
+	}
+	$t->set_var("PARENT_ID",$section_array[parent_id]);
+	$t->set_var("SECTION_ID",$section_array[section_id]);
   }
-  $t->set_var("SELECT_CODE",$select_code);
-  
-  $t->pparse("SectionOutput","sectionform");	
+  # get array of topics in section and delete each one
+  $t->pparse("SectionOutput","sectionform");
 	
-	
+  page_end($breadcrumbs, $t);
 # UPDATE include breadcrumbs and bottom code
 }
 

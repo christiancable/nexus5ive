@@ -14,7 +14,6 @@ if (!validlogin()){
 
 delete_user_comments($_SESSION[current_id]);
 
-#header("Location: http://".$_SERVER['HTTP_HOST']."/messages.php");
-header("Location: http://".$_SERVER['HTTP_HOST']."/show_userinfo.php?user_id=".$_SESSION[current_id]);
+header("Location: http://".$_SERVER['HTTP_HOST'].get_bbsroot()."show_userinfo.php?user_id=".$_SESSION[current_id]);
 
 ?>

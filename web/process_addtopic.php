@@ -4,9 +4,12 @@
 
 include('../includes/database.php');
 
+// parameters
+$section_id = $_POST[section_id];
+
 $db = opendata();
 session_start();
-$template_location =TEMPLATE_HOME.$my_theme; 
+$template_location =TEMPLATE_HOME.$_SESSION[my_theme]; 
 $t = new Template($template_location);
 
 
@@ -26,7 +29,7 @@ if (!$section_array = get_section($section_id))
 
 if(!can_user_edit_section($user_array, $section_array)){
 	# user can not add a topic in this section, bounce them to the main menu
-	header("Location: http://".$_SERVER[HTTP_HOST]."/section.php?section_id=".$topic_array[section_id]);
+	header("Location: http://".$_SERVER[HTTP_HOST].get_bbsroot()."section.php?section_id=".$topic_array[section_id]);
 	exit();
 }
 
@@ -61,6 +64,6 @@ if(add_topic($topic_array)){
 
 
 
-header("Location: http://".$_SERVER[HTTP_HOST]."/section.php?section_id=".$topic_array[section_id]); 
+header("Location: http://".$_SERVER[HTTP_HOST].get_bbsroot()."section.php?section_id=".$topic_array[section_id]); 
 
 ?>
