@@ -4,12 +4,12 @@ include('../includes/database.php');
 
 $db = opendata();
 session_start();
-$template_location = TEMPLATE_HOME . $my_theme; 
+$template_location = TEMPLATE_HOME . $my_theme;
 // check login
 
 if (!validlogin()) {
     eject_user();
-} 
+}
 // ADD CHECKS HERE
 $user_array = get_user_array($_SESSION[current_id]);
 
@@ -39,41 +39,29 @@ if(!$ownername = get_username($sectionowner)){
 }
 
 $t = new Template($template_location);
-// BEGIN DISPLAY TOPIC TITLE
-// change page template if new messages are waiting
-if (get_count_unread_messages($_SESSION[current_id]) > 0) {
-    $t->set_file("WholePage", "mail_page.html");
-} else {
-    $t->set_file("WholePage", "page.html");
-} 
 
-if ($num_msg = count_instant_messages($_SESSION[current_id])) {
-    $t->set_var("num_msg", $num_msg);
-} else {
-    $t->set_var("num_msg", "no");
-} 
-$t->set_var("pagetitle", $sectionname);
-$t->set_var("breadcrumbs", $breadcrumbs);
+$new_comments = get_count_unread_comments($_SESSION[current_id]);
 
-$t->set_var("section_id", $section);
+display_header($t,
+	       $breadcrumbs,
+	       $sectionname,
+	       $user_array["user_name"],
+	       $user_array["user_popname"],
+	       $_SESSION[current_id],
+	       count_instant_messages($_SESSION[current_id]),
+	       $sectionowner,
+	       $ownername,
+	       $new_comments,
+	       get_count_unread_messages($_SESSION[current_id]));
 
-$t->set_var("owner_id", $sectionowner);
-$t->set_var("ownername", $ownername);
 
-$t->set_var("user_name", $user_array["user_name"]);
-$t->set_var("user_popname", $user_array["user_popname"]);
-$t->set_var("user_id", $_SESSION[current_id]);
+#$t->set_var("section_id", $section);
 
-$t->pparse("MyFinalOutput", "WholePage");
-// END DISPLAY TOPIC TITLE
-// ## DO LINKS TEMPLATE
-// ## END LINKS TEMPLATE
-// BEGIN DISPLAY TOP SET OF BUTTONS
-if (is_section_owner($sectioninfodetails[section_id], $user_array[user_id], $db)) {
+if(is_section_owner($sectioninfodetails[section_id], $user_array[user_id], $db)) {
     $t->set_file('top_links', 'menu_topic_links_admin.html');
 } else {
     $t->set_file('top_links', 'menu_topic_links.html');
-} 
+}
 
 $t->set_var("section_id", $section);
 $t->pparse('content', 'top_links');
