@@ -11,7 +11,9 @@ include_once('../includes/site.php');
 // parameters
 $section_id = $_POST['section_id'];
 $topic_title = $_POST['title'];
+
 $dest_section_id = $_POST['section'];
+
 $description = $_POST['description'];
 $weight = $_POST['weight'];
 
@@ -69,7 +71,8 @@ if(!can_user_edit_section($user_array, $section_array))
 $topic_array['topic_title'] = htmlspecialchars($topic_title);
 
 $topic_array['section_id'] = $dest_section_id;	
-$topic_array['topic_description'] = nl2br($description);
+//$topic_array['topic_description'] = nl2br($description);
+$topic_array['topic_description'] = $description;
 
 if($secret=='yes')
 {

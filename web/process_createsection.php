@@ -62,14 +62,16 @@ $section_array = array();
 
 // sql update
 $temp_title = htmlspecialchars($title,ENT_QUOTES);
-$section_array[section_title] = nl2br($temp_title);
+// $section_array[section_title] = nl2br($temp_title);
+$section_array[section_title] = $temp_title;
 
 $section_array[user_id] = $moderator;
 $section_array[parent_id] = $section_id;
 $section_array[section_weight] = $weight;
 
 $temp_intro = htmlspecialchars($description,ENT_QUOTES);
-$section_array[section_intro] = nl2br($temp_intro);
+// $section_array[section_intro] = nl2br($temp_intro);
+$section_array[section_intro] = $temp_intro;
 
 
 //call add section function from database_layer

@@ -52,19 +52,21 @@ else
   // subject and comment HTML VARS
   
   $tempsubject = htmlspecialchars($subject,ENT_QUOTES);
-  $subject = nl2br($tempsubject);
+  //  $subject = nl2br($tempsubject);
+  $subject = $tempsubject;
   
   
   if( is_section_owner($topic_array['section_id'],$user_array['user_id'],$db) )
     {
       // if we have the privs use html   
-      $comment = nl2br($comment);
+      // $comment = nl2br($comment);
     } 
   else 
     {
       // strip out html replace line endings
       $tempmessage = htmlspecialchars($comment, ENT_QUOTES);
-      $comment = nl2br($tempmessage);
+      // $comment = nl2br($tempmessage);
+      $comment = $tempmessage;
     }
 
 	

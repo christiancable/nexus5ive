@@ -304,7 +304,8 @@ function new_messages_in_topic($topic_id, $user_id)
 function nx_code($text)
 {
   
-  
+  // this function gets the data ready from printing on the screen via html
+
   if($_SESSION['no_pictures']<>'n')
     {
       
@@ -343,10 +344,22 @@ function nx_code($text)
   $replacement = '<B>'."$1".'</B>';
   $text = preg_replace($pattern, $replacement, $text);
   
-  $pattern ="#\[ASCII\-\](.+?)\[\-ASCII\]#isU";
+  $pattern ="#\[ASCII\-\](.*)\[\-ASCII\]#isU";
   $replacement = '<pre> '."$1".'</pre>';
   $text = preg_replace($pattern, $replacement, $text);
   
+  $text = nl2br($text);
+
+  // now remove <br /> tags from preformatted blocks
+
+  $pattern ="#\<pre>(.*)</pre>#isU";
+  $text = preg_replace_callback($pattern,
+				create_function(
+						'$matches',
+						'return str_replace("<br />","",$matches[0]);'
+						),
+				$text);
+
   return $text;  
 }
 

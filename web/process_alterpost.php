@@ -51,13 +51,16 @@ if (!$message_array = get_message($message_id)){
 	$subject = $HTTP_POST_VARS[subject];
 	
 	$tempsubject = htmlspecialchars($subject,ENT_QUOTES);
-	$subject = nl2br($tempsubject);
+	// $subject = nl2br($tempsubject);
+	$subject = $tempsubject;
 	
 	if($HTTP_POST_VARS[allowhtml])  {
-	   $comment = nl2br($comment);
+	  //   $comment = nl2br($comment);
+	  $comment = $comment;	
 	} else {
 	   $tempmessage = htmlspecialchars($comment, ENT_QUOTES);
-	   $comment = nl2br($tempmessage);
+	   // $comment = nl2br($tempmessage);
+	   $comment = $tempmessage;
 	}
 	$message_array[text]=$comment;
 	$message_array[message_title]=$subject;

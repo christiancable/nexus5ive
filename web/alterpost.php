@@ -86,7 +86,8 @@ if (!$message_array = get_message_with_time($message_id)){
   
   $t->set_var("date",$message_array[format_time]);
 #  $t->set_var("date","today is the day");
-  $t->set_var("message",ereg_replace("<br />","",$message_array[message_text]));
+  //  $t->set_var("message",ereg_replace("<br />","",$message_array[message_text]));
+  $t->set_var("message",$message_array[message_text]);
   
   $t->set_var("section_id",$topic_array[section_id]);
   $t->set_var("topic_id", $topic_array[topic_id]);

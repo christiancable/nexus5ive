@@ -91,7 +91,8 @@ else
   $topic_array['topic_title'] = htmlspecialchars($title);
   $topic_array['section_id'] = $section;
   
-  $topic_array['topic_description'] = nl2br($description);
+  //  $topic_array['topic_description'] = nl2br($description);
+  $topic_array['topic_description'] = $description;
   
   if($secret=='yes')
     {

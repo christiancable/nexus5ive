@@ -241,6 +241,7 @@ if(count($messages_to_show_array))
       $t->set_var('user_moto', $current_message['message_popname']);
       
       echo "<!-- DEBUG : message length is ".strlen($current_message['message_text'])." -->";
+      // really I should be converting line breaks here and no upon input!
       if(strlen($current_message['message_text']) < MAX_MSG_SIZE)
 	{
 	  $nx_message = nx_code($current_message['message_text']);
