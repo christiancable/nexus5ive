@@ -5,9 +5,9 @@
 function display_message($message_id, $user_id, $template, $mode, $db){
 #takes a message_id and template and the id of the current user and displays one message
 
-	// fetch message	
-	$message_array = get_message_with_time($message_id);	
-	
+	// fetch message
+	$message_array = get_message_with_time($message_id);
+
 	// set template file according to display mode
 	switch ($mode) {
     case "SECRET_OWNER":
@@ -25,9 +25,9 @@ function display_message($message_id, $user_id, $template, $mode, $db){
     default:
 	    $template->set_file('topic_handle','normal_comment.html');
 	}
-	
+
    $template->set_block('topic_handle','CommentBlock','messagerow');
-   
+
    // get author name
 
 	$author=get_username($message_array[user_id]);
@@ -35,18 +35,18 @@ function display_message($message_id, $user_id, $template, $mode, $db){
 
 	//$template->set_var("section_id", $topic_array[section_id]);
 	$template->set_var("user_moto",$message_array[message_popname]);
-            
-	//replace emotes with html gubbings 
+
+	//replace emotes with html gubbings
 	//$template->set_var("edit",$current_message["message_text"]);
 
 	$nx_message = nx_code($message_array[message_text]);
 	$template->set_var("edit",$nx_message);
-			
+
 	$template->set_var("user_id",$message_array["user_id"]);
 	$template->set_var("date",$message_array["format_time"]);
 	$template->set_var("message_id",$message_array["message_id"]);
 	$template->set_var("topic_id",$message_array[topic_id]);
-	
+
 	if(strlen($message_array["message_title"])){
 		$template->set_var("subject","<b>Subject:</b> ".$message_array["message_title"]);
 	}else{
@@ -54,6 +54,52 @@ function display_message($message_id, $user_id, $template, $mode, $db){
 	}
     $template->pparse('messagerow','CommentBlock');
 }
+
+
+###
+function display_topic($topic_array, $user_id, $template, $mode){
+	# outputs a topic menu entry
+
+
+	// set template file according to display mode
+	switch ($mode) {
+		case "NEW_ADMIN_SUB":
+			$template->set_file('topic_handle','topic_new_admin_sub.html');
+			break;
+		case "NEW_ADMIN_UNSUB":
+			$template->set_file('topic_handle','topic_new_admin_unsub.html');
+			break;
+		case "NEW_NORMAL_SUB":
+			$template->set_file('topic_handle','topic_new_sub.html');
+			break;
+		case "NEW_NORMAL_UNSUB":
+			$template->set_file('topic_handle','topic_admin_unsub.html');
+			break;
+		case "ADMIN_SUB":
+			$template->set_file('topic_handle','topic_admin_sub.html');
+			break;
+		case "ADMIN_UNSUB":
+			$template->set_file('topic_handle','topic_admin_unsub.html');
+			break;
+		case "NORMAL_SUB":
+			$template->set_file('topic_handle','topic_sub.html');
+			break;
+		case "NORMAL_UNSUB":
+			$template->set_file('topic_handle','topic_unsub.html');
+			break;
+
+		default:
+			$template->set_file('topic_handle','topic_sub.html');
+	}
+
+
+	$template->set_var("TOPICTITLE", $topic_array[topic_title]);
+	$template->set_var("TOPIC_ID", $topic_array[topic_id]);
+	$template->set_var("SECTION_ID", $topic_array[section_id]);
+	$template->set_var("TOPIC_TEXT", nx_code($topic_array[topic_desctiption]));
+	$template->pparse('output','topic_handle');
+}
+
 
 function eject_user(){
 	/*
@@ -73,9 +119,9 @@ function eject_user(){
 function page_end($breadcrumbs){
 
 	$template_location = TEMPLATE_HOME.DEFAULT_TEMPLATE;
-	
+
 	$t = new Template($template_location);
-	
+
 	$t->set_file("PageEnd","page_end.html");
 	$t->set_var("BREADCRUMBS",$breadcrumbs);
 	$t->pparse("OutPut","PageEnd");
