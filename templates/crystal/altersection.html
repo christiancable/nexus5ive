@@ -1,0 +1,51 @@
+    
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr> 
+    <td colspan="2" class="navigationBar"> <a href="leap.php">[ Topic Leap ]</a> 
+      -- <a href="userson.php">[ Who's Online ]</a> -- <a href="myinfo.php">[ 
+      Examine User ]</a></td>
+  </tr>
+  <form method="post" action="process_altersection.php">
+    <tr> 
+      <td valign="top"> 
+        <p>Title 
+          <input name="title" type="text" value="{SECTION_NAME}" size="50" maxlength="50">
+          <input name="section_id" type="hidden" value="{SECTION_ID}">
+          <br>
+          Description 
+          <input name="description" type="text" id="description" size="50" maxlength="100" value="{DESCRIPTION}">
+        </p>
+        <p> 
+          <input type="submit" name="submit" value="Update Section">
+          <a href="section.php?section={SECTION_ID}">[ Cancel ]</a> </p></td>
+      <td nowrap class="navigationBar" > 
+        <p><img src="images/xp/ksysguard.png" width="32" height="32" align="top"> 
+          Options</p>
+        <p>Weight 
+          <select name="weight" id="weight">
+            <option value="{WEIGHT}" selected>{WEIGHT}</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+          </select>
+          <br>
+          Moderator 
+          <select name="moderator" id="moderator">
+		  {SELECT_CODE}
+          </select>
+        </p></td>
+    </tr>
+  </form>
+  <tr> 
+    <td colspan="2" class="navigationBar" > <a href="leap.php">[ Topic Leap ]</a> 
+      -- <a href="userson.php">[ Who's Online ]</a> -- <a href="myinfo.php">[ 
+      Examine User ]</a></td>
+  </tr>
+</table>

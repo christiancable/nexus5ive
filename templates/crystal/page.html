@@ -1,0 +1,23 @@
+<html>
+<head>
+<title> {pagetitle} </title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link href="styles/crystal.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<font size="-1">{breadcrumbs}</font> 
+<table align="center" border="0" width="100%" cellpadding="4" cellspacing="0">
+  <tr class="titleBar" > 
+    <td> {pagetitle} </td>
+    <td width="0"> 
+      <div align="right" class="navigationBar"><font size="-2" > logout <a href="logout.php"><img src="images/xp/logout.gif" alt="logout"  border=0 align="middle"></a> 
+        </font></div></td>
+  </tr>
+  <tr> 
+    <td > <p><font size="-1" face="Verdana, Arial, Helvetica, sans-serif">User 
+        <a href="show_userinfo.php?user_id={user_id}">{user_name} ({user_popname})</a> 
+        you have {num_msg} <a href="messages.php">messages</a></font></p></td>
+    <td> <div align="right"><font size="-1" face="Verdana, Arial, Helvetica, sans-serif">Moderator 
+        <a href="show_userinfo.php?user_id={owner_id}">{ownername}</a></font></div></td>
+  </tr>
+</table>

@@ -1,0 +1,89 @@
+ 
+<table width="100%" height="4" border="0" cellspacing="0">
+  <tr> 
+    <td colspan="6" class="navigationBar" ><a href="leap.php">[ Topic Leap ]</a>
+      -- <a href="userson.php">[ Who's Online ]</a> -- <a href="myinfo.php">[ 
+      Examine User ]</a> </td>
+  </tr>
+  <tr> 
+    <td colspan="6"> <div align="center"><a href="show_userinfo.php?user_id={previous_user_id}">{previous_user_name}</a> 
+        User {examine_user_id} of {total_users} <a href="show_userinfo.php?user_id={next_user_id}">{next_user_name}</a> 
+      </div></td>
+  </tr>
+  <tr align="left"> 
+    <td width="6%" valign="bottom" nowrap > <div align="left"><b>Name<br>
+        Email <br>
+        Motto</b> <br>
+      </div></td>
+    <td width="5%" valign="bottom" nowrap > {user_realname}<br>
+      {user_email} <br>
+      {user_motto} </td>
+    <td width="45%" valign="bottom" nowrap > <div align="left"><br>
+      </div></td>
+    <td width="6%" valign="bottom" nowrap > <p align="left"><b>Age<br>
+        Sex<br>
+        Location<br>
+        </b></p></td>
+    <td width="6%" valign="bottom" nowrap > {user_age}<br>
+      {user_sex}<br>
+      {user_town}<b>&nbsp;</b></td>
+    <td width="32%" valign="bottom" nowrap > <p align="left"><br>
+      </p></td>
+  </tr>
+  <tr align="left" valign="top" > 
+    <td height="1" colspan="6" class="navigationBar">&nbsp;</td>
+  </tr>
+  <tr align="left" valign="bottom"> 
+    <td nowrap ><b>Last Visit<br>
+      Total Visits<br>
+      Total Posts&nbsp;</b></td>
+    <td nowrap >{last_visit}<br>
+      {user_totalvisits}<br>
+      {number_of_posts}</td>
+    <td nowrap >&nbsp;</td>
+    <td nowrap><b>Fave Film<br>
+      Fave Band<br>
+      &nbsp;</b></td>
+    <td nowrap >{user_film}<br>
+      {user_band}<br> &nbsp;</td>
+    <td nowrap >&nbsp;</td>
+  </tr>
+  <tr class="navigationBar"> 
+    <td colspan="3" valign="bottom" nowrap ><b>Further Information</b></td>
+    <td colspan="3" valign="bottom" nowrap >&nbsp;</td>
+  </tr>
+  <tr valign="top" > 
+    <td colspan="3" > <div align="left">{user_comment}<br>
+      </div></td>
+    <td colspan="3" > <p align="left"><b>{moderated_title}</b>{moderated_links}<b>{Most_Recent_Post_in}</b> 
+        {topic_link}<br>
+      </p></td>
+  </tr>
+  <tr > 
+    <td colspan="6" valign="bottom" nowrap class="navigationBar"><b>Comments From 
+      Other Users</b></td>
+  </tr>
+  <tr> 
+    <form method="post" action="leave_user_comment.php">
+      <td colspan="6" valign="bottom" nowrap><b>Leave Comment</b> 
+        <input name="comment" type="text" id="comment" size="50" maxlength="100"> 
+		<input name="user_id" type="hidden" id="user_id" value="{shown_user_id}" >
+        <input name="Add" type="submit" id="Add" value="Submit"></td>
+    </form>
+  </tr>
+  <!-- BEGIN CommentBlock -->
+  <tr> 
+    <td colspan="6" valign="bottom" nowrap><a href="show_userinfo.php?user_id={comment_from_id}"><b>{comment_user}</b></a> 
+      {comment_text}</td>
+  </tr>
+  <!-- END CommentBlock -->
+  <tr>
+    <td colspan="6" valign="bottom" nowrap>&nbsp;</td>
+  </tr>
+  
+  <tr> 
+    <td colspan="6" valign="bottom" class="navigationBar" nowrap > <a href="leap.php">[ 
+      Topic Leap ]</a> -- <a href="userson.php">[ Who's Online ]</a> -- <a href="myinfo.php">[ 
+      Examine User ]</a> </td>
+  </tr>
+</table>
