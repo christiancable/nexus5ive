@@ -1,0 +1,25 @@
+ <form name="form1" method="post" action="process_delsection.php">
+  <table width="100%"  border="0">
+  <tr>
+    <td colspan="2" class="navigationBar"><a href="leap.php">[ Topic Leap ]</a> -- <a href="userson.php">[ Who's Online ]</a> -- <a href="myinfo.php">[ Examine User ]</a></td>
+  </tr>
+  <tr>
+    <td rowspan="2"><img src="images/crystal/folder_delete.gif" width="128" height="128" align="left"> </td>
+    <td><p><strong>WARNING</strong></p>
+    <p>The menu contains <strong>{TOPICS_COUNT}</strong> topics, if you delete this menu all these topics will be removed.</p></td>
+  </tr>
+  <tr>
+    <td valign="bottom">Tick here if you are sure
+      <input type="checkbox" name="confirm" value="yes">
+      <input type="hidden" name="section_id" value="{SECTION_ID}">
+
+</td>
+</tr>
+<tr>
+  <td colspan="2"><input type="submit" name="Delete" value="Delete Menu"></form>
+    <a href="section.php?section_id={PARENT_ID}">[ cancel ]</a></td>
+</tr>
+<tr> 
+  <td colspan="2" class="navigationBar"><a href="leap.php">[ Topic Leap ]</a> -- <a href="userson.php">[ Who's Online ]</a> -- <a href="myinfo.php">[ Examine User ]</a></td> 
+</tr> 
+</table> 

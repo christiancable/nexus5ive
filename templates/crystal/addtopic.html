@@ -1,0 +1,62 @@
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr> 
+    <td colspan="2" class="navigationBar" > <a href="leap.php">[ Topic Leap ]</a> 
+      -- <a href="userson.php">[ Who's Online ]</a> -- <a href="myinfo.php">[ 
+      Examine User ]</a></td>
+  </tr>
+  <form method="post" action="process_addtopic.php">
+    <tr> 
+      <td width="77%"><p>Title 
+          <input name="title" type="text" value="" size="50" maxlength="50">
+          <input name="section_id" type="hidden" value="{SECTION_ID}">
+                    <br>
+          Description<br>
+          <textarea name="description" cols="80" rows="10" id="description"></textarea>
+          <br>
+          <input type="submit" name="submit" value="Create Topic">
+          <a href="section.php?section_id={SECTION_ID}">[ Cancel ]</a></p></td>
+      <td width="23%" valign="top" nowrap class="navigationBar" > 
+        <p><img src="images/crystal/ksysguard.png" width="32" height="32" align="top"> 
+          Options</p>
+        <p> 
+          <input name="readonly" type="checkbox" id="readonly" value="yes" {READONLY_CHECKED}>
+          Read Only<br>
+          <input name="secret" type="checkbox" id="secret" value="yes" {SECRET_CHECKED}>
+          Secret <br>
+          Weight 
+          <select name="weight" id="weight">
+            <option value="1" selected>1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+            <option value="13">13</option>
+            <option value="14">14</option>
+            <option value="15">15</option>
+            <option value="16">16</option>
+            <option value="17">17</option>
+            <option value="18">18</option>
+            <option value="19">19</option>
+            <option value="20">20</option>
+          </select>
+          <br>
+          Section 
+          <select name="section" id="section">{SELECT_CODE}
+          </select>
+          </p></td>
+    </tr>
+  </form>
+  <tr> 
+    <td colspan="2" class="navigationBar" > <a href="leap.php">[ Topic Leap ]</a> 
+      -- <a href="userson.php">[ Who's Online ]</a> -- <a href="myinfo.php">[ 
+      Examine User ]</a></td>
+  </tr>
+</table>
+
