@@ -83,7 +83,7 @@ if($num_of_users) {
  // could be bad
 }
 
-page_end($breadcrumbs);
+page_end($breadcrumbs,$t);
 ?>
 
 

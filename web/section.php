@@ -167,6 +167,6 @@ if (is_section_owner($sectioninfodetails[section_id], $user_array[user_id], $db)
 $t->set_var("SECTION_ID", $section);
 $t->pparse('content', 'bottom_links');
 
-page_end($breadcrumbs);
+page_end($breadcrumbs,$t);
 
 ?>

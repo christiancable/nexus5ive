@@ -66,7 +66,7 @@ $t -> set_var("SELECT_CODE", $select_code);
 
 $t -> pparse("TopicOutput", "topicform");
 
-page_end($breadcrumbs);
+page_end($breadcrumbs, $t);
 // UPDATE include breadcrumbs and bottom code
  
 

@@ -79,7 +79,7 @@ display_header($t,
   
   $t->pparse("SectionOutput","sectionform");	
 	
-  page_end($breadcrumbs);
+  page_end($breadcrumbs, $t);
 # UPDATE include breadcrumbs and bottom code
 }
 

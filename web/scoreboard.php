@@ -97,7 +97,7 @@ if ($topic_array = get_top_topic_array()) {
 
 $t->pparse("MyFinalOutput","scoreboard");
 
-page_end($breadcrumbs);
+page_end($breadcrumbs,$t);
 ?>
 
 

@@ -54,7 +54,7 @@ $t->set_file("change_password", "change_password.html");
 
 $t->pparse("MyFinalOutput","change_password");
 
-page_end($breadcrumbs);
+page_end($breadcrumbs,$t);
 ?>
 
 

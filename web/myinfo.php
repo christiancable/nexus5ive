@@ -49,6 +49,6 @@ foreach ($userlist_array  as $current_element){
 $t->set_var("SELECT_CODE",$select_code);
   
 $t->pparse("MyFinalOutput","choose_user");  
-page_end($breadcrumbs);
+page_end($breadcrumbs,$t);
 
 ?>

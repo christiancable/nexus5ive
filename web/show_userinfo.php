@@ -262,5 +262,5 @@ if($comments_array =  get_user_comment($examine_user_array[user_id])){
 
 $t->pparse("MyFinalOutput","userinfo");
 
-page_end($breadcrumbs);
+page_end($breadcrumbs,$t);
 ?>

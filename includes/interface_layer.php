@@ -159,15 +159,15 @@ function eject_user(){
     exit();
 }
 
-function page_end($breadcrumbs){
+function page_end($breadcrumbs, $template){
 
-	$template_location = TEMPLATE_HOME.DEFAULT_TEMPLATE;
+#	$template_location = TEMPLATE_HOME.DEFAULT_TEMPLATE;
 
-	$t = new Template($template_location);
+#	$t = new Template($template_location);
 
-	$t->set_file("PageEnd","page_end.html");
-	$t->set_var("BREADCRUMBS",$breadcrumbs);
-	$t->pparse("OutPut","PageEnd");
+	$template->set_file("PageEnd","page_end.html");
+	$template->set_var("BREADCRUMBS",$breadcrumbs);
+	$template->pparse("OutPut","PageEnd");
 
 }
 

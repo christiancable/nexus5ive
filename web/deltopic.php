@@ -77,7 +77,7 @@ display_header($t,
   
   $t->pparse("TopicOutput","topicform");	
 	
-page_end($breadcrumbs);
+page_end($breadcrumbs,$t);
 # UPDATE include breadcrumbs and bottom code
 }
 

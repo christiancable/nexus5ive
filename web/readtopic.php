@@ -227,7 +227,7 @@ $t->set_var("section_id", $topic_array[section_id]);
 $t->set_var("topic_id", $topic_id);
 $t->pparse('content', 'buttons');
 // END DISPLAY BOTTOM SET OF BUTTONS
-page_end($breadcrumbs);
+page_end($breadcrumbs,$t);
 
 ?>
 

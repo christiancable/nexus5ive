@@ -55,7 +55,7 @@ $t->set_file("createuser", "adduser.html");
 
 $t->pparse("MyFinalOutput","createuser");
 
-page_end($breadcrumbs);
+page_end($breadcrumbs, $t);
 ?>
 
 
