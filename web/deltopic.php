@@ -89,7 +89,7 @@ if (!$topic_array = get_topic($topic_id)){
   $t->set_var("SECTION_ID",$topic_array[section_id]);
 
   
-  $t->set_var("DESCRIPTION",$topic_array[topic_desctiption]);
+  $t->set_var("DESCRIPTION",$topic_array[topic_description]);
   $t->set_var("TOPIC_ID",$topic_array[topic_id]);
   
   

@@ -36,7 +36,7 @@ $topic_array[topic_title] = $HTTP_POST_VARS[title];
 $topic_array[section_id] = $HTTP_POST_VARS[section];
 	
 
-$topic_array[topic_desctiption] = nl2br($HTTP_POST_VARS[description]);
+$topic_array[topic_description] = nl2br($HTTP_POST_VARS[description]);
 	
 if($HTTP_POST_VARS[secret]=='yes'){
 	$topic_array[topic_annon] = 'y';

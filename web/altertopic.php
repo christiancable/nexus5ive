@@ -84,7 +84,7 @@ if (!$topic_array = get_topic($topic_id)){
   $t->set_var("TOPIC_NAME",$topic_array[topic_title]);
   $t->set_var("SECTION_ID",$topic_array[section_id]);
 
-  $t->set_var("DESCRIPTION", ereg_replace("<br />","",$topic_array[topic_desctiption]));
+  $t->set_var("DESCRIPTION", ereg_replace("<br />","",$topic_array[topic_description]));
   $t->set_var("WEIGHT",$topic_array[topic_weight]);
   $t->set_var("TOPIC_ID",$topic_array[topic_id]);
   // annon

@@ -76,7 +76,7 @@ CREATE TABLE topictable (
   topic_id int(11) NOT NULL auto_increment,
   topic_title varchar(50) default NULL,
   section_id int(11) default NULL,
-  topic_desctiption mediumtext,
+  topic_description mediumtext,
   topic_annon enum('y','n') default 'n',
   topic_readonly enum('y','n') default 'n',
   topic_weight tinyint(4) default '10',
