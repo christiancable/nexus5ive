@@ -294,7 +294,7 @@ function sectionheader($myrow)
 	} 
 	// add section owner functions references here
 	if (can_user_edit_section($user_array, $myrow)) { // # ADD moderator here too!
-		echo '<font size="-1"><a href="altersection.php?section_id=' . $myrow[section_id] . '">[ edit ]<a></font><br>';
+		echo '<font size="-1"><a href="altersection.php?section_id=' . $myrow[section_id] . '">&nbsp;[ edit ]<a></font><br>';
 	} 
 	echo "<br>";
 } 
