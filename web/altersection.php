@@ -59,7 +59,7 @@ display_header($t,
 	       get_count_unread_comments($_SESSION[current_id]),
 	       get_count_unread_messages($_SESSION[current_id]));
 
-  }
+  
   // show modify section comment
 
   $t->set_file("sectionform","altersection.html");
