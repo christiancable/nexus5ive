@@ -3,26 +3,35 @@
 include('../includes/theme.php');
 include('../includes/database.php');
 
-
-
-# to do
-# get user from session
-# open connection with user privs
-
 $db = opendata();
+session_start();
+$user_id = $_SESSION[current_id];
+
+
 
 if(isset($submit)){
-  
-  htmlheader("Returning...","readtopic.php?section_id=".$section_id."&topic_id=".$topic_id,1);
-  pagetitle("Returning...");
-  $userid=$current_id;
 
-  if(isset($confirm) && is_message_owner($message_id,$userid,$db))
-  {
-	$sql="DELETE FROM messagetable WHERE message_id=$message_id";
-	echo "Deleted ".mysql_query($sql, $db)." messages<br>";
-    echo "<br><a href=\"readtopic.php?section_id=$section_id&topic_id=$topic_id\"> Return </a>";
- }
+	$message_id = $HTTP_POST_VARS[message_id];
+	$topic_id = $HTTP_POST_VARS[topic_id];  
+	$section_id = $HTTP_POST_VARS[section_id];
+	
+	if(isset($confirm) && is_message_owner($message_id,$user_id,$db))
+	{
+		if(delete_message($message_id))
+		{
+			# deleted message		
+		} else {
+			# delete has failed, what should happen here then?
+		}
+	} else {
+		# user has not selected to delete the message so do nothing
+	}
+ 
+	# in all cases return to section here
+	header("Location: http://".$_SERVER['HTTP_HOST']."/readtopic.php?section=$section_id&topic_id=$topic_id");
+	exit();
+ 
+ 
 } else {
 
 // not submit
@@ -33,22 +42,18 @@ if(isset($submit)){
 
         <form method="post" action="<? echo $PHP_SELF?>">
         <?php
-        $sql = "SELECT * FROM messagetable WHERE message_id=".$message_id;
-        $messageresult = mysql_query($sql,$db);
-        $messagerow= mysql_fetch_array($messageresult);
+	
+	$message_array = get_message($message_id);
+	$topic_array = get_topic($topic_id);
 
-                $sql = "SELECT section_id FROM topictable WHERE topic_id=$topic_id ";
-        $topicinfo = mysql_query($sql, $db);
-                $topicrow = mysql_fetch_row($topicinfo);
-
-                #echo "$sql debug: $messagerow[0]";
-        displaymessage($messagerow,$topic_id,$db,NULL);
+               
+	displaymessage($message_array,$topic_id,$db,NULL);
         drawline();
         ?>
 
 
         <input type="hidden" name="topic_id" value="<?php echo $topic_id ?>">
-                <input name="section_id" type=hidden value="<?php echo $topicrow[0]?>">
+        <input name="section_id" type=hidden value="<?php echo $topic_array[section_id]?>">
 
         <input type="hidden" name="message_id" value="<?php echo $message_id ?>">
         Delete the above message ?
