@@ -143,6 +143,41 @@ function display_topic($topic_array, $user_id, $template, $mode){
 	$template->pparse('output','topic_handle');
 }
 
+function display_sectionheader($section_array, $user_array, $template)
+{
+/*
+* displays a menu entry for a subsection
+*/	
+	if (can_user_edit_section($user_array, $section_array)) { # admin user
+
+		if (new_messages_in_section($user_array[user_id], $section_array[section_id])) {
+		    $template->set_file('topic_handle','section_admin_new.html');
+		} else {
+			$template->set_file('topic_handle','section_admin.html');
+		}
+	    
+	} else { # standard user
+	
+		if (new_messages_in_section($user_array[user_id], $section_array[section_id])) {
+			$template->set_file('topic_handle','section_user_new.html');
+		} else {
+			$template->set_file('topic_handle','section_user.html');
+		}
+	
+	}	
+	
+	$template->set_var("section_id",$section_array[section_id] );
+	$template->set_var("section_intro",$section_array[section_intro]);
+	$template->set_var("section_title", $section_array[section_title]);
+	if ($num = get_count_section_messages($section_array[section_id])) {
+		$template->set_var("messages",$num);
+	} else {
+		$template->set_var("messages","0");
+	}
+	
+	$template->pparse('output','topic_handle');
+	
+} 
 
 function eject_user(){
 	/*
