@@ -581,8 +581,8 @@ vaguely based on bb code
       print "<!-- gets here -->";
   	  if (substr_count($text,'[ASCII-]') == substr_count($text,'[-ASCII]')){
     
-			  $text = str_replace('[ASCII-]','<pre>',$text);
-			  $text = str_replace('[-ASCII]','</pre>',$text);
+			  $text = str_replace('[ASCII-]','<tt>',$text);
+			  $text = str_replace('[-ASCII]','</tt>',$text);
 
 		  }
 	  
