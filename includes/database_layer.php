@@ -467,7 +467,14 @@ function delete_topic($topic_id)
     if (mysql_query($sql)) {
         $sql = "DELETE FROM topictable WHERE topic_id=$topic_id";
         if (mysql_query($sql)) {
-            return true;
+            $sql = "DELETE FROM topicview WHERE topic_id=$topic_id";
+			if(mysql_query($sql)){
+				return true;
+			} else {
+				 echo "$sql";
+	            exit();
+    	        return false;
+			}
         } else {
             echo "$sql";
             exit();
@@ -608,6 +615,13 @@ function update_section($section_array)
         return false;
     } 
 } 
+
+
+function is_section_empty($section_id){
+# returns true if the section has either topics or subsections
+	$sql = "SELECT topictable.topic_id, sectiontable.section_id WHERE topictable.section_id = sectiontable.parent_id and sectiontable.parent_id=$section_id";
+	## FINISH THIS OFF - this query is bogus man, might have to do two after all
+}
 // # end section functions
 // # comment functions
 // use the nexusmessage ones
