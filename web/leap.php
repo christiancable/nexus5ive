@@ -45,7 +45,6 @@ if($current_section = mysql_fetch_array($unreadsection)){
 		// exit
 		
 		header("Location: http://".$_SERVER['HTTP_HOST']."/section.php?section=$current_section[section_id]");
-		echo '<font face="Verdana, Arial, Helvetica, sans-serif">Leaping to unread messages...</font>';
 		exit;
 		}
  	  
@@ -57,4 +56,4 @@ if($current_section = mysql_fetch_array($unreadsection)){
 
 // leap to main menu
 header("Location: http://".$_SERVER['HTTP_HOST']."/section.php?section=1");
-echo '<font face="Verdana, Arial, Helvetica, sans-serif">Leaping to Main Menu</font>';
+?>

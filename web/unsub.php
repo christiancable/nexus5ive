@@ -4,21 +4,17 @@
 include('../includes/theme.php');
 include('../includes/database.php');
 
-
 $db = opendata();
-htmlheader("Unsubscribing","section.php?section=".$section_id,1);
-pagetitle("Unsubscribing ...");
+session_start();
 
-
-//$sql = "DELETE FROM topicview WHERE topic_id=$topic_id AND user_id=$current_id";
+// check login
+if (!validlogin()){
+	eject_user();	
+}
 
 unsubscribe_from_topic($topic_id, $_SESSION[current_id]);
 
-
-mysql_query($sql);
-
-htmlfooter();
-
+header("Location: http://".$_SERVER['HTTP_HOST']."/section.php?section=$section_id");
 ?>
 
 
