@@ -1,46 +1,28 @@
-   <script language="JavaScript" type="text/javascript">
-<!-- Begin
-var checkflag = "false";
-function check(field) {
-if (checkflag == "false") {
-for (i = 0; i < field.length; i++) {
-field[i].checked = true;}
-checkflag = "true";
-return "Uncheck All"; }
-else {
-for (i = 0; i < field.length; i++) {
-field[i].checked = false; }
-checkflag = "false";
-return "Check All"; }
-}
-//  End -->
-</script>
-
   <TABLE width="100%" border=0 cellspacing=1 cellpadding="0">
   <TBODY>
-    <TR>
+    <TR>  
       <TD colspan="3" class="navigationBar"><a href="leap.php">[
-        Topic Leap ]</a> -- <a href="userson.php">[ Who's Online ]</a> -- <a href="myinfo.php">[
+	Topic Leap ]</a> -- <a href="userson.php">[ Who's Online ]</a> -- <a href="myinfo.php">[
         Examine User ]</a></TD>
-    </TR>
-
+	</TR>
+    
     <form method="post" action="delete_instant_messages.php">
     <!-- <input type=button value="Select All" onclick="this.value=check(this.form.MessCheck[])"> -->
-
-    <!-- BEGIN MessageBlock -->
-    <TR>
+    
+    <!--BEGIN MessageBlock -->
+    <TR> 
       <TD width="6%"> <input type="checkbox" name="MessChk[]" value="{message_id}" checked><A href="messages.php?sendtoid={user_id}"><IMG alt="[ reply ]" src="images/crystal/msg.gif" border="0"></A></TD>
-      <TD width="9%"><A href="show_userinfo.php?user_id={user_id}">{user_name}</A>&nbsp;</TD>
-      <TD width="85%">{message} </TD>
+	<TD width="9%"><A href="show_userinfo.php?user_id={user_id}">{user_name}</A>&nbsp;</TD>
+	<TD width="85%">{message} </TD>
 
-    </TR>
+	</TR>
     <!-- END MessageBlock -->
-
+    
     <TR>
-      <TD colspan="3" height="30"><a href="{reload_page}"><img src="images/crystal/reload.gif"  border="0"> 
-          <span class="navigation">Recheck</span></a>&nbsp;<img src="images/crystal/delete_msg.gif" border="0">
-        <input type="submit" name="Delete Selected Messages" value="Delete Selected Messages">	</TD>
-    </form>
+      <TD colspan="3" height="30"><a href="messages.php"><img src="images/crystal/reload.gif"  border="0"> 
+      	    <span class="navigation">Recheck</span></a>&nbsp;<img src="images/crystal/delete_msg.gif" border="0">
+	    	      <input type="submit" name="Delete Selected Messages" value="Delete Selected Messages">	</TD>
+    </form>   
     </TR>
   </TBODY>
 </TABLE>
