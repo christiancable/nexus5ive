@@ -666,7 +666,10 @@ function get_breadcrumbs($section)
 
 	for($loop_count = 0; $loop_count < $num_of_crumbs-1; $loop_count++) {
 		$crumb_urls .= '<a href="section.php?section_id=' . $breadcrumbs[$loop_count]["section_id"] . '">';
-		$crumb_urls .= $breadcrumbs[$loop_count]["section_title"] . "</a> -&gt; ";
+		if(strlen($breadcrumbs[$loop_count]["section_title"]))
+			$crumb_urls .= $breadcrumbs[$loop_count]["section_title"] . "</a> -&gt; ";
+		else
+			$crumb_urls .= " - " . "</a> -&gt; ";
 	} 
 	return $crumb_urls;
 } 
@@ -679,7 +682,10 @@ function get_breadcrumbs_topic($section)
 
 	for($loop_count = 0; $loop_count < $num_of_crumbs; $loop_count++) {
 		$crumb_urls .= '<a href="section.php?section_id=' . $breadcrumbs[$loop_count]["section_id"] . '">';
-		$crumb_urls .= $breadcrumbs[$loop_count]["section_title"] . "</a> -&gt; ";
+		if(strlen($breadcrumbs[$loop_count]["section_title"]))
+			$crumb_urls .= $breadcrumbs[$loop_count]["section_title"] . "</a> -&gt; ";
+		else
+			$crumb_urls .= " - " . "</a> -&gt; ";
 	} 
 	return $crumb_urls;
 } 
