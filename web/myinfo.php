@@ -1,7 +1,7 @@
 <?php
 
 
-include('../includes/theme.php');
+
 include('../includes/database.php');
 $db = opendata();
 

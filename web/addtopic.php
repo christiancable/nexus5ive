@@ -1,6 +1,6 @@
 <?php
 // new add post code - interface
-include('../includes/theme.php');
+
 include('../includes/database.php');
 
 $db = opendata();

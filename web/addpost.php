@@ -3,7 +3,7 @@
 # backend to post.php
 # should do no output to the screen here
 
-include('../includes/theme.php');
+
 include('../includes/database.php');
 
 $db = opendata();

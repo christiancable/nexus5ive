@@ -6,7 +6,7 @@ sets last viewed dates on all files
 */
 
 //includes
-include('../includes/theme.php');
+
 include('../includes/database.php');
 
 

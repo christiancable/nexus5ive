@@ -6,7 +6,7 @@ let user change their password - cfc
 */
 
 //includes
-include('../includes/theme.php');
+
 include('../includes/database.php');
 
 

@@ -5,7 +5,7 @@ add a new user - interface
 */
 
 //includes
-include('../includes/theme.php');
+
 include('../includes/database.php');
 
 
