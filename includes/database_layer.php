@@ -218,6 +218,21 @@ function setuser_offline($user_id)
 
 
 }
+
+
+function setuser_logon($user_id, $ip_address, $visits)
+{ # sets user online, updates their ip address and number of visits
+
+	$sql = 'UPDATE usertable SET user_status="Online", user_ipaddress="'.$ip_address.'", user_totalvisits="'.$visits.'" WHERE user_id='.$user_id;
+
+	if (mysql_query($sql)) {
+	        return true;
+    	} else {
+	        return false;
+    	}
+
+
+}
 // end user account functions
 /**
  * messagetable functions
