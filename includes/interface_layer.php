@@ -86,7 +86,11 @@ function display_header($template,
 
 	$template->set_var("user_popname",$user_popname);
 	$template->set_var("user_id",$user_id);
-	$template->set_var("num_msg",$num_msg);
+
+	if($num_msg)
+		$template->set_var("num_msg",$num_msg);
+	else
+		$template->set_var("num_msg", "no");
 	$template->set_var("owner_id",$owner_id);
 	$template->set_var("ownername",$owner_name);
 	$template->pparse('output','header');
