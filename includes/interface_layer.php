@@ -132,7 +132,11 @@ function display_topic($topic_array, $user_id, $template, $mode){
 	}
 
 
-	$template->set_var("TOPICTITLE", $topic_array[topic_title]);
+	if($topic_array[topic_title_hidden]=='y'){
+		$template->set_var("TOPICTITLE", "");
+	} else {
+		$template->set_var("TOPICTITLE", $topic_array[topic_title]);
+	}
 	$template->set_var("TOPIC_ID", $topic_array[topic_id]);
 	$template->set_var("SECTION_ID", $topic_array[section_id]);
 	$template->set_var("TOPIC_TEXT", nx_code($topic_array[topic_description]));
@@ -219,8 +223,6 @@ function emote_text($text){
 
 	# check to see if the user has turned off pictures here
 	#if user has pictures turned off
-
-	# stop matching with not surrounded by non words!!!
 
 	# WORD BOUNDARIES!
 
