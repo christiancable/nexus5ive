@@ -56,7 +56,42 @@ function display_message($message_id, $user_id, $template, $mode, $db){
 }
 
 
-###
+function display_header($template,
+			$breadcrumbs,
+			$page_title,
+			$user_name,
+			$user_popname,
+			$user_id,
+			$num_msg,
+			$owner_id,
+			$owner_name,
+			$new_comments,
+			$new_messages)
+{
+
+	if($new_messages){
+		$template->set_file("header","mail_page.html");
+	} else {
+		$template->set_file("header","page.html");
+	}
+
+	$template->set_var("breadcrumbs",$breadcrumbs);
+	$template->set_var("pagetitle",$page_title);
+
+	if($new_comments){
+		$template->set_var("user_name","<b>$user_name</b>");
+	} else {
+		$template->set_var("user_name","$user_name");
+	}
+
+	$template->set_var("user_popname",$user_popname);
+	$template->set_var("user_id",$user_id);
+	$template->set_var("num_msg",$num_msg);
+	$template->set_var("owner_id",$owner_id);
+	$template->set_var("ownername",$owner_name);
+	$template->pparse('output','header');
+}
+
 function display_topic($topic_array, $user_id, $template, $mode){
 	# outputs a topic menu entry
 
@@ -106,7 +141,7 @@ function eject_user(){
 	 ejects a user from the bbs
 	*/
 
-	$template_location = TEMPLATE_HOME.DEFAULT_TEMPLATE; 
+	$template_location = TEMPLATE_HOME.DEFAULT_TEMPLATE;
 
 	$t = new Template($template_location);
 	session_destroy();
