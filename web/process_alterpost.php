@@ -1,7 +1,7 @@
 <?php
 // alter existing post - cfc
 
-include('../includes/theme.php');
+
 include('../includes/database.php');
 
 $db = opendata();
