@@ -1,100 +1,82 @@
-<?php
-
+<?php 
+// new add post code - interface
 include('../includes/theme.php');
 include('../includes/database.php');
 
-
-
-# to do
-# get user from session
-# open connection with user privs
-
-#$topicid=1;
-
 $db = opendata();
+session_start();
+$template_location = TEMPLATE_HOME . $my_theme;
+$t = new Template($template_location);
 
-if(isset($parent_id)){
-} else {
-$parent_id=NULL;
+if (!validlogin()) {
+    eject_user();
+} 
+
+if (!$user_array = get_user_array($_SESSION[current_id])) {
+    nexus_error();
+} 
+
+if (!$section_array = get_section($section_id)){
+    nexus_error();
 }
 
-if(isset($submit)){
-  htmlheader("Returning...","section.php?section=$section_id",1);
-  pagetitle("Returning...");
-  $userid=$current_id;
+if (!$moderator_name = get_username($section_array[user_id])) {
+    nexus_error();
+} 
 
-  // never trust the client ...
-
-  $sql = "SELECT user_id FROM  sectiontable WHERE section_id=$section_id ";
- # echo $sql;
-
-  $ownerinfo = mysql_query($sql);
-  if (mysql_num_rows($ownerinfo))
-  {
-   $ownerrow = mysql_fetch_array($ownerinfo);
-    if(!is_section_owner($section_id,$userid,$db)){
-     echo"<b1>You are not the section owner</h1>";
-     exit() ;
-    }
-  } else {
-    echo"<b1>No such section</h1>";
+# can user add a topic to this section
+if (!can_user_edit_topic($user_array, $topic_array)){
+    # section exists but the user can not add topics here
+    header("Location: http://" . $_SERVER['HTTP_HOST'] . "/section.php?section_id=1");
     exit();
-  }
-
-
-
-
-  if(isset($usehtml)){
-      $title = nl2br($title);
-      $text  = nl2br($text);
-  // use html
-  } else {
-  // strip out html replace line endings
-   $title = htmlspecialchars($title, ENT_QUOTES);
-   $text = htmlspecialchars($text, ENT_QUOTES);
-   $title = nl2br($title);
-   $text = nl2br($text);
-  }
-
-  $sql = "INSERT topictable(topic_title, topic_desctiption,section_id)VALUES('$title','$text','$section_id')";
- # echo $sql;
-  # should really check somethings here : _ )
- # echo $sql;
-  mysql_query($sql);
-  echo "<a href=\"section.php?section=$section_id\"> Return </a>";
-} else {
-
-# default subject should be "re".$parent_id->message_title
-
-htmlheader("Create Topic ",NULL,1);
-pagetitle("Create Topic");
-$userid=$current_id;
-
-#$sql = "SELECT * FROM topictable WHERE topic_id=$topic_id";
-#$topicinfo = mysql_query($sql);
-#$topicrow = mysql_fetch_array($topicinfo);
-
-?>
-
-
-<form method="post" action="<? echo $PHP_SELF?>">
-<b>Title:</b><input type="Text" name="title" ><br><br>
-<b>Topic Info:</b><br><textarea name="text" rows="10" cols="80"></textarea><br>
-<?php
-
-   echo "<input type=\"checkbox\" name=\"usehtml\"> Use HTML";
-
-?>
-<input name="section_id" type=hidden value="<?php echo $section_id?>"><br><br>
-<input type="Submit" name="submit" value="Create Topic">
-<a href="section.php?section=<?php echo $section_id?>">[ Cancel ]</a>
-
-
-</form>
-
-<?php
-
 }
 
-htmlfooter();
+if (!$breadcrumbs = get_breadcrumbs_topic($section_array[section_id])){
+    nexus_error(); 
+}
+// show header
+// change page template if new messages are waiting
+if (get_count_unread_messages($_SESSION[current_id]) > 0) {
+    $t -> set_file("header", "mail_page.html");
+} else {
+    $t -> set_file("header", "page.html");
+} 
+
+if ($num_msg = count_instant_messages($_SESSION[current_id])) {
+    $t -> set_var("num_msg", $num_msg);
+} else {
+    $t -> set_var("num_msg", "no");
+} 
+
+$t -> set_var("pagetitle", "Create Topic " . $topic_array[topic_title]);
+$t -> set_var("breadcrumbs", $breadcrumbs);
+
+$t -> set_var("owner_id", $section_array[user_id]);
+$t -> set_var("ownername", $moderator_name);
+
+$t -> set_var("user_name", $user_array["user_name"]);
+$t -> set_var("user_popname", $user_array["user_popname"]);
+$t -> set_var("user_id", $_SESSION[current_id]);
+
+$t -> set_var("section_id", $section_array[section_id]);
+$t -> pparse("HeaderOutput", "header");
+
+$t -> set_file("topicform", "addtopic.html");
+$t -> set_var("SECTION_ID", $section_array[section_id]);
+// SELECT
+$select_code = '<option value="' . $section_array[section_id] . '">' . $section_array[section_title] . '</option>';
+
+$sectionlist_array = get_sectionlist_array($user_array);
+
+foreach ($sectionlist_array as $current_element) {
+    $select_code = $select_code . '<option value="' . $current_element[section_id] . '">' . $current_element[section_title] . '</option>';
+} 
+$t -> set_var("SELECT_CODE", $select_code);
+
+$t -> pparse("TopicOutput", "topicform");
+
+page_end($breadcrumbs);
+// UPDATE include breadcrumbs and bottom code
+ 
+
 ?>
