@@ -1,0 +1,51 @@
+.navigationBar {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	background-color: #d6dff5;
+	color: #000000;
+	font-size: small;
+
+
+}
+body {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	color: #000000;
+	background-color: #FFFFFF;
+	font-size: small;
+}
+table {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	color: #000000;
+	font-size: small;
+}
+.titleBar {
+
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	background-color: #d6dff5;
+	color: #000000;
+	font-size: x-large;
+}
+.titleBarMail {
+
+
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	background-color: #DEF7DE;
+	color: #000000;
+	font-size: x-large;
+}
+a:link {
+color: #0000CC;
+text-decoration: none;
+}
+a:visited {
+color: #0000CC;
+text-decoration: none;
+}
+a:hover {
+	color: #0000CC;
+	text-decoration: underline;
+
+}
+a:active {
+color: #0000CC;
+}
+
