@@ -457,7 +457,7 @@ function add_topic($topic_array)
      * OUTPUT true or false
      */
 
-    $sql = "INSERT INTO topictable (topic_title, section_id, topic_description, topic_annon, topic_readonly, topic_weight) 
+    $sql = "INSERT INTO topictable (topic_title, section_id, topic_description, topic_annon, topic_readonly, topic_weight)
 	values (
 	'$topic_array[topic_title]',
 	'$topic_array[section_id]',
@@ -617,7 +617,7 @@ function add_user_comment($comment_array)
     $sql = "INSERT INTO commenttable (user_id, from_id,text) values (
 	'$comment_array[user_id]',
 	'$comment_array[from_id]',
-	'$comment_array[text]')"; 
+	'$comment_array[text]')";
     // echo "debug $sql";
     if (mysql_query($sql)) {
         return true;
@@ -1060,7 +1060,7 @@ function mark_messages_read($user_id)
         return false;
     } else {
         return true;
-    } 
+    }
 } 
 
 function get_count_unread_messages($user_id)
@@ -1074,9 +1074,24 @@ function get_count_unread_messages($user_id)
             return false;
         } else {
             return $result_array[total_msg];
-        } 
-    } 
-} 
+        }
+    }
+}
+
+function get_count_unread_comments($user_id)
+{
+    $sql = "SELECT count(comment_id) AS total_msg FROM commenttable WHERE readstatus <> 'y' AND user_id=$user_id";
+
+    if (!$query_result = mysql_query($sql)) {
+        return false;
+    } else {
+        if (!$result_array = mysql_fetch_array($query_result, MYSQL_ASSOC)) {
+            return false;
+        } else {
+            return $result_array[total_msg];
+        }
+    }
+}
 
 function delete_instant_messages($user_id)
 {
