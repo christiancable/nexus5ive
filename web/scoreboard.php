@@ -105,7 +105,7 @@ if ($topic_array = get_top_topic_array()) {
 
 	foreach ($topic_array  as $current_topic_array){
 	  $t->set_var("topic_id", $current_topic_array[topic_id]);
-	  $t->set_var("topic_name", $current_topic_array[topic_title]);
+	  $t->set_var("topic_name", htmlspecialchars($current_topic_array[topic_title],ENT_QUOTES));
 	  $t->set_var("topic_score", $current_topic_array[total]);
 	  $t->parse('topicrow', 'TopicBlock', true);
 	}    
