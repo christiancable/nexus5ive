@@ -1,92 +1,104 @@
 <?php
+// alter existing post - cfc
 
 include('../includes/theme.php');
 include('../includes/database.php');
+
 $db = opendata();
+session_start();
+$template_location =TEMPLATE_HOME.$my_theme; 
+$t = new Template($template_location);
 
 
-if(isset($submit)){
-#  htmlheader("Returning...",NULL,1);
-   htmlheader("Returning...","readtopic.php?section_id=".$section_id."&topic_id=".$topic_id,1);
-   pagetitle("Returning...");
-   $userid=$current_id;
-
-   if(isset($usehtml)){
-      $comment = nl2br($comment);
-      // use html
-   } else {
-     // strip out html replace line endings
-      $tempmessage = htmlspecialchars($comment, ENT_QUOTES);
-      $comment = nl2br($tempmessage);
-   }
-  $sql = "SELECT * FROM usertable WHERE user_id=$userid";
-  $result=mysql_query($sql);
-  $resultarray=mysql_fetch_array($result);
-
-
-  $sql = "UPDATE messagetable SET message_title='$subject', message_text='$comment' WHERE message_id=$message_id";
-
-  if (is_message_owner($message_id,$userid,$db) ){
-      $sql = "UPDATE messagetable SET message_title='$subject', message_text='$comment' WHERE message_id=$message_id";
-      mysql_query($sql);
-  } else {
-    echo "<h2>Not Section Owner</h2>";
-  }
-  echo "<a href=\"readtopic.php?section_id=$section_id&topic_id=$topic_id\"> Return </a>";
-
-} else {
-
-  $sql = "SELECT * FROM topictable WHERE topic_id=$topic_id";
-  $topicinfo = mysql_query($sql);
-  $topicrow = mysql_fetch_array($topicinfo);
-
-  $sql = "SELECT * FROM messagetable WHERE message_id=$message_id";
-  #echo $sql;
-  $messageinfo = mysql_query($sql);
-  $messagerow = mysql_fetch_array($messageinfo);
-
-  htmlheader("Edit Message : ".$topicrow["topic_title"],NULL,1);
-  pagetitle("Edit Message : ".$topicrow["topic_title"]);
-  $userid=$current_id;
-
-  ?>
-  <form method="post" action="<? echo $PHP_SELF?>">
-  <?php
-
-  $sql = "SELECT user_name FROM usertable WHERE user_id=".$messagerow["user_id"];
-  #echo $sql;
-  $ownerinfo = mysql_query($sql);
-  $ownerrow = mysql_fetch_array($ownerinfo);
-
-  echo "<b>User:</b> ".$ownerrow[0]."<br>";
-  ?>
-  <b>Subject: </b><input type="Text" name="subject" value="
-  <?php
-  echo $messagerow["message_title"]."\"";
-
-
-  $sql = "SELECT user_id FROM sectiontable, topictable WHERE topictable.topic_id=$topic_id AND topictable.section_id=sectiontable.section_id;";
-  $ownerinfo = mysql_query($sql);
-  $ownerrow = mysql_fetch_array($ownerinfo);
-  // current section owner is now in owerrow[1]
-  $messagetext = ereg_replace("<br />","",$messagerow["message_text"]);
-  ?>
-  ><br>
-  <br>
-  <b>Comment:</b><br><textarea name="comment" rows="10" cols="80"><?php echo $messagetext?></textarea><br>
-  <input name="topic_id" type=hidden value="<?php echo $topic_id?>">
-  <input name="message_id" type=hidden value="<?php echo $message_id?>">
-  <input name="section_id" type=hidden value="<?php echo $topicrow[2]?>">
-  <input type="checkbox" name="usehtml"> Use HTML<br><br>
-
-  <input type="Submit" name="submit" value="Update Comment">
-  <a href="readtopic.php?section_id=<?php echo $topicrow[2]?>&topic_id=<?php echo $topic_id?>">[ Cancel ]</a>
-  </form>
-
-  <?php
-
-
+// check login
+if (!validlogin()){
+	eject_user();	
 }
 
-htmlfooter();
+if(!$user_array = get_user_array($_SESSION[current_id])){
+	nexus_error();
+}
+
+if (!$message_array = get_message_with_time($message_id)){
+	// check to see if the message exists 
+	// no such message
+	header("Location: http://".$_SERVER['HTTP_HOST']."/section.php?section_id=1");
+    exit();  	
+} else {
+// topic exists 
+	// get the topic id here
+	if(!$topic_array = get_topic($message_array[topic_id])){
+		header("Location: http://".$_SERVER['HTTP_HOST']."/section.php?section_id=1");
+	    	exit();  	
+	}	
+	if(!can_user_edit_topic($user_array, $topic_array)){
+		// topic exists but user can not edit it
+    		header("Location: http://".$_SERVER['HTTP_HOST']."/section.php?section_id=$topic_array[section_id]");
+	    	exit();
+    }
+     
+// at this point the current user can edit the message
+
+ //section owner info
+ // this is just a simple username look up
+  $section_array = get_section($topic_array[section_id]);
+
+  if(!$moderator_name = get_username($section_array[user_id]))
+  	nexus_error();
+
+  if(!$breadcrumbs = get_breadcrumbs_topic($section_array[section_id]))
+  	nexus_error();
+
+  // show header
+  ## header
+  // change page template if new messages are waiting
+	if (get_count_unread_messages($_SESSION[current_id])>0) {
+        $t->set_file("header","mail_page.html");
+	} else {
+       $t->set_file("header","page.html");
+	}
+
+  if ($num_msg = count_instant_messages($_SESSION[current_id])){
+	$t->set_var("num_msg",$num_msg);
+  }else{
+	$t->set_var("num_msg","no");
+  }
+
+  $t->set_var("pagetitle","Alter Post in ... ".$topic_array[topic_title]);
+  $t->set_var("breadcrumbs",$breadcrumbs);
+
+
+  $t->set_var("owner_id",$section_array[user_id]);
+  $t->set_var("ownername",$moderator_name);
+
+  $t->set_var("user_name",$user_array["user_name"]);
+  $t->set_var("user_popname",$user_array["user_popname"]);
+  $t->pparse("HeaderOutput","header");  
+  
+  ## message
+
+  $t->set_file("topicform","alterpost.html");
+  if(!$post_username = get_username($message_array[user_id]))
+  	 $post_username = "unknown";
+	 
+  $t->set_var("message_username",$post_username);	
+  $t->set_var("message_user_id",$message_array[user_id]);
+  $t->set_var("message_popname",$message_array[message_popname]);
+  $t->set_var("subject", $message_array[message_title]);
+  
+  $t->set_var("date",$message_array[format_time]);
+#  $t->set_var("date","today is the day");
+  $t->set_var("message",ereg_replace("<br />","",$message_array[message_text]));
+  
+  $t->set_var("section_id",$topic_array[section_id]);
+  $t->set_var("topic_id", $topic_array[topic_id]);
+  $t->set_var("message_id", $message_id);
+  
+  $t->pparse("TopicOutput","topicform");	
+	
+page_end($breadcrumbs);
+# UPDATE include breadcrumbs and bottom code
+}
+
+
 ?>

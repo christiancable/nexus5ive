@@ -230,7 +230,12 @@ if(mysql_num_rows($messages_to_show)){
 
 			$t->set_var("message_id",$current_message["message_id"]);
 			$t->set_var("topic_id",$topic_id);
-            $t->set_var("subject",$current_message["message_title"]);
+			if(strlen($current_message["message_title"])){
+				$t->set_var("subject","<b>Subject:</b> ".$current_message["message_title"]);
+			}else{
+				$t->set_var("subject","");
+			}
+            
             $t->pparse('messagerow','CommentBlock',false);
 
 	} while ($current_message = mysql_fetch_array($messages_to_show));
