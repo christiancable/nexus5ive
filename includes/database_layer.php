@@ -1167,6 +1167,7 @@ function delete_instant_messages($array_of_message_ids)
         // Delete the row from the database, etc ...
     }
 
+
     if (mysql_query($sql)) {
         return true;
     } else {
