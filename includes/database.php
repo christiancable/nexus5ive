@@ -124,6 +124,8 @@ function get_section_owner($section_id, $db)
 	return $owner;
 } 
 
+# removed as this is not used - cfc
+/*
 function get_topic_name($topic_id, $db)
 {
 	$sql = "SELECT topic_title FROM topictable WHERE topic_id=$topic_id";
@@ -131,7 +133,10 @@ function get_topic_name($topic_id, $db)
 	$topic = mysql_result($topicinfo, 0, "topic_title");
 	return $topic;
 } 
+*/
 
+# removed as this is not used - cfc
+/*
 function is_user_owner($currentuser, $user)
 {
 	
@@ -141,6 +146,7 @@ function is_user_owner($currentuser, $user)
 		return false;
 	} 
 } 
+*/
 
 function is_message_secret($message_id)
 {
@@ -167,13 +173,15 @@ function get_username($user_id)
 	return $userresult;
 } 
 
+#removed as this is not used - cfc
+/*
 function newmessages($user_id)
 {
-	/**
-	 * returns true if user has instand messages waiting to be read
-	 * 
-	 * last update Nov 3 2001 - xian
-	 */
+	
+	# returns true if user has instand messages waiting to be read
+	# 
+	# last update Nov 3 2001 - xian
+	
 	 
 	$sql = "SELECT nexusmessage_id FROM nexusmessagetable WHERE user_id = $user_id";
 
@@ -187,6 +195,8 @@ function newmessages($user_id)
 		return false;
 	} 
 } 
+
+*/
 
 function count_instant_messages($user_id)
 {
@@ -228,7 +238,8 @@ function displaymessage($messagerow, $topic_id, $db, $user)
 {
    
     // displays a single topic message, this function shouldn't be used anymore ? - cfc
-	   
+    # currently only used in delpost.php	   
+    
 	$userinfo = mysql_query("SELECT * FROM usertable WHERE user_id=$messagerow[user_id]", $db);
 	$userrow = mysql_fetch_array($userinfo);
 
@@ -298,6 +309,9 @@ function displaymessage($messagerow, $topic_id, $db, $user)
 
 function displaytopic($topicrow, $db, $user)
 { 
+         # update this to use templates!
+	 # this is used in deltopic.php and section.php - cfc
+	 
 	// topicheader();
 	echo "\n\n\n";
 	echo '<table width="100%"><tr><td>';
@@ -447,6 +461,8 @@ function new_messages_in_topic($topic_id, $user_id)
 	return $new_messages;
 } 
 
+# removed as this is not used - cfc
+/*
 function get_score($user_id)
 {
 	$sql = "SELECT user_totalvisits, user_totaledits FROM usertable WHERE user_id=$user_id";
@@ -473,11 +489,12 @@ function get_score($user_id)
 
 	return $score;
 } 
-
+*/
 
 function nx_code($text){
 
 	# regular expressions ROX	
+	# can we check for http here somehow? - cfc
 	
 	$pattern ="/\[PICTURE\-\](.*)\[\-PICTURE\]/Ui";
 
@@ -509,41 +526,42 @@ function nx_code($text){
 
 
 
-
+# removed as this is not used - cfc
+/*
 
 function emotetext($text)
 {
-	/**
-	 * takes text and replaces common text emotes with htmled graphical emotes
-	 * intention is that things will call this up before displaying messages etc
-	 * so the database is untouched 
-	 * 
-	 * 
-	 * Christian - July 2002
-	 * 
-	 * - July 25 - put spaces round emotes so they pick up less unintentioned emotes - cfc
-	 * emotes supported
-	 * 
-	 * happy :) :-) : )
-	 * unhappy :( : ( :-(  
-	 * angry :-@ :@
-	 * confused :-S :S :s
-	 * crying :'(
-	 * super happy :-D : D :d : d
-	 * tounge smile :-P :P ; P :p
-	 * what :-| : | :|
-	 * wink ;-) ;) ; )
-	 * 
-	 * 
-	 * emotes ripped off msn until we come up with a nicer set 
-	 * 
-	 * to do
-	 * come up with no ms replacement emotes
-	 * - was going to use hudsons but now he's in a sulk, why did i ever bother?
-	 * 
-	 * give uses ability to not bw shown emotes 
-	 * find a better way to do this, I think this might not be the fastest way
-	 */
+	
+	 # takes text and replaces common text emotes with htmled graphical emotes
+	 # intention is that things will call this up before displaying messages etc
+	 # so the database is untouched 
+	 #
+	 # 
+	 # Christian - July 2002
+	 # 
+	 # - July 25 - put spaces round emotes so they pick up less unintentioned emotes - cfc
+	 # emotes supported
+	 # 
+	 # happy :) :-) : )
+	 # unhappy :( : ( :-(  
+	 # angry :-@ :@
+	 # confused :-S :S :s
+	 # crying :'(
+	 # super happy :-D : D :d : d
+	 # tounge smile :-P :P ; P :p
+	 # what :-| : | :|
+	 # wink ;-) ;) ; )
+	 # 
+	 # 
+	 # emotes ripped off msn until we come up with a nicer set 
+	 # 
+	 # to do
+	 # come up with no ms replacement emotes
+	 # - was going to use hudsons but now he's in a sulk, why did i ever bother?
+	 # 
+	 # give uses ability to not bw shown emotes 
+	 # find a better way to do this, I think this might not be the fastest way
+	
 	$emotedtext = $text;
 	// sod this
 	return $text;
@@ -592,6 +610,8 @@ function emotetext($text)
 	$emotedtext = str_replace(' ;-) ', ' <img src="emotes/wink_smile.gif" alt="* cheeky *"> ', $emotedtext);
 	return $emotedtext;
 } 
+*/
+
 
 function get_section_parent_info($section_id)
 { 
