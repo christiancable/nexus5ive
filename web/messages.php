@@ -53,11 +53,12 @@ if($num_msg){
 	if(!$instant_message_array = get_instant_messages($_SESSION[current_id]))
 		echo "danger";
 	foreach ($instant_message_array as $current_message_array){
+	    $t->set_var("message_id", $current_message_array[nexusmessage_id]);
    	    $t->set_var("user_id",$current_message_array[from_id]);
 	    $t->set_var("message",$current_message_array[text]); # strip this?
 	    $t->set_var("user_name",$current_message_array[user_name]);		  
 	    $t->parse('tablerow', 'MessageBlock', true); 	
-		
+
 	}
 	$t->pparse("messageoutput","messages");	
 	
@@ -101,6 +102,6 @@ if($users_on_array){
 	$t->pparse("sendoutput","sendmessages");
 
 }
-page_end($breadcrumbs);
+page_end($breadcrumbs,$t);
 
 ?>
