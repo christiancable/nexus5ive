@@ -394,7 +394,29 @@ function delete_topic($topic_id){
 }
 
 function add_topic($topic_array){
+/*
+* INPUT topic_array
+* 
+* OUTPUT true or false
+*/
 
+	$sql = "INSERT INTO topictable (topic_title, section_id, topic_desctiption, topic_annon, topic_readonly, topic_weight) 
+	values (
+	'$topic_array[topic_title]',
+	'$topic_array[section_id]',
+	'$topic_array[topic_desctiption]',
+	'$topic_array[topic_annon]',
+	'$topic_array[topic_readonly]',
+	'$topic_array[topic_weight]'
+	)";
+	
+	if(mysql_query($sql)){
+		return true;
+	} else {
+		echo "$sql";
+		exit();
+		return false;
+	}
 }
 
 
