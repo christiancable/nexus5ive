@@ -710,4 +710,103 @@ function mkPasswd() {
 	
 	return $const[0] . $vow[0] .$const[2] . $const[1] . $vow[1] . $const[3] . $vow[3] . $const[4];
 }
+
+
+/* ======================================================================= 
+    
+ifsnow's email valid check function SnowCheckMail Ver 0.1 
+   
+funtion SnowCheckMail ($Email,$Debug=false) 
+
+$Email : E-Mail address to check. 
+$Debug : Variable for debugging. 
+
+* Can use everybody if use without changing the name of function. 
+
+Reference : O'REILLY - Internet Email Programming 
+
+HOMEPAGE : http://www.hellophp.com 
+
+ifsnow is korean phper. Is sorry to be unskillful to English. *^^*;; 
+
+========================================================================= */ 
+
+function SnowCheckMail($Email,$Debug=false) 
+{ 
+    global $HTTP_HOST; 
+    $Return =array();   
+    // Variable for return. 
+    // $Return[0] : [true|false] 
+    // $Return[1] : Processing result save. 
+
+    if (!eregi("^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$", $Email)) { 
+        $Return[0]=false; 
+        if ($Debug) echo "Error : {$Email} is E-Mail form that is not right.<br>";          
+        return false; 
+    } 
+    else if ($Debug) echo "Confirmation : {$Email} is E-Mail form that is not right.<br>"; 
+
+    list ( $Username, $Domain ) = split ("@",$Email); 
+
+    if ( checkdnsrr ( $Domain, "MX" ) )  { 
+        if($Debug) echo "Confirmation : MX record about {$Domain} exists.<br>"; 
+        if ( getmxrr ($Domain, $MXHost))  { 
+      if($Debug) { 
+                echo "Confirmation : Is confirming address by MX LOOKUP.<br>"; 
+              for ( $i = 0,$j = 1; $i < count ( $MXHost ); $i++,$j++ ) { 
+            echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Result($j) - $MXHost[$i]<BR>";   
+        } 
+            } 
+        } 
+        $ConnectAddress = $MXHost[0]; 
+    } 
+    else { 
+        // If there is no MX record simply @ to next time address socket connection do . 
+        $ConnectAddress = $Domain;          
+        if ($Debug) echo "Confirmation : MX record about {$Domain} does not exist.<br>"; 
+    } 
+
+    $Connect = fsockopen ( $ConnectAddress, 25 ); 
+
+    if ($Connect)    
+    { 
+        if ($Debug) echo "Connection succeeded to {$ConnectAddress} SMTP.<br>"; 
+        if ( ereg ( "^220", $Out = fgets ( $Connect, 1024 ) ) ) { 
+              
+            fputs ( $Connect, "HELO $HTTP_HOST\r\n" ); 
+                if ($Debug) echo "Run : HELO $HTTP_HOST<br>"; 
+            $Out = fgets ( $Connect, 1024 ); // Receive server's answering cord. 
+
+            fputs ( $Connect, "MAIL FROM: <{$Email}>\r\n" ); 
+                if ($Debug) echo "Run : MAIL FROM: &lt;{$Email}&gt;<br>"; 
+            $From = fgets ( $Connect, 1024 ); // Receive server's answering cord. 
+
+            fputs ( $Connect, "RCPT TO: <{$Email}>\r\n" ); 
+                if ($Debug) echo "Run : RCPT TO: &lt;{$Email}&gt;<br>"; 
+            $To = fgets ( $Connect, 1024 ); // Receive server's answering cord. 
+
+            fputs ( $Connect, "QUIT\r\n"); 
+                if ($Debug) echo "Run : QUIT<br>"; 
+
+            fclose($Connect); 
+
+                if ( !ereg ( "^250", $From ) || !ereg ( "^250", $To )) { 
+                    $Return[0]=false; 
+                    if ($Debug) echo "{$Email} is address done not admit in E-Mail server.<br>"; 
+                    return false; 
+                } 
+        } 
+    } 
+    else { 
+        $Return[0]=false; 
+        if ($Debug) echo "Can not connect E-Mail server ({$ConnectAddress}).<br>"; 
+        return false; 
+    } 
+    $Return[0]=true; 
+    return true; 
+} 
+
+
 ?>
+
+
