@@ -40,7 +40,6 @@ if(!$ownername = get_username($sectionowner)){
 
 $t = new Template($template_location);
 
-$new_comments = get_count_unread_comments($_SESSION[current_id]);
 
 display_header($t,
 	       $breadcrumbs,
@@ -51,7 +50,7 @@ display_header($t,
 	       count_instant_messages($_SESSION[current_id]),
 	       $sectionowner,
 	       $ownername,
-	       $new_comments,
+	       get_count_unread_comments($_SESSION[current_id]),
 	       get_count_unread_messages($_SESSION[current_id]));
 
 
