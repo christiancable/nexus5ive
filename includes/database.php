@@ -517,7 +517,7 @@ function nx_code($text){
 	
 	$pattern ="#\[ASCII\-\](.+?)\[\-ASCII\]#is";
 	$replacement = '<pre> '."$1".'</pre>';
-    $text = preg_replace($pattern, $replacement, $text);
+    	$text = preg_replace($pattern, $replacement, $text);
 	
 	return $text;
 	
@@ -814,8 +814,4 @@ function SnowCheckMail($Email,$Debug=false)
     $Return[0]=true; 
     return true; 
 } 
-
-
 ?>
-
-
