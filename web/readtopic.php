@@ -50,7 +50,7 @@ $new_msg_total = new_messages_in_topic($topic_array['topic_id'], $user_array['us
 
 // update user activity
 $location_str = '<a href="readtopic.php?&topic_id=' . $topic_array['topic_id'] .
-                  '"><i>Reading</i> ' . $topic_array['topic_title'] . '</a>';
+'"><i>Reading</i> ' . $topic_array['topic_title'] . '</a>';
 
 update_location($location_str);
 
@@ -185,9 +185,10 @@ if (($owner_array['owner_id'] == $_SESSION['current_id']) or (is_sysop($_SESSION
 }
 else
 {
-  if ($topic_array['topic_readonly'] == 'y') {
-    $t->set_file('buttons', 'readtopic_links_readonly.html');
-  }
+  if ($topic_array['topic_readonly'] == 'y') 
+    {
+      $t->set_file('buttons', 'readtopic_links_readonly.html');
+    }
   else
     {
       $t->set_file('buttons', 'readtopic_links.html');
@@ -219,15 +220,16 @@ if (mysql_num_rows($messages_to_show))
     while ($current_message = mysql_fetch_array($messages_to_show));
 } 
 
-if ($user_array['user_backwards'] == "y") {
+if ($user_array['user_backwards'] == "y") 
+{
   $messages_to_show_array = array_reverse($messages_to_show_array);
 }
 
+mysql_free_result($messages_to_show);
 unset($current_message);
 
-if (mysql_num_rows($messages_to_show)) 
+if(count($messages_to_show_array))
 {
-  // reverse array here for backwards people
   $t->set_block('topic_handle', 'CommentBlock', 'messagerow');
   
   foreach($messages_to_show_array as $current_message) 
@@ -237,8 +239,17 @@ if (mysql_num_rows($messages_to_show))
       $t->set_var('username', get_username($current_message['user_id']));
       $t->set_var('section_id', $topic_array['section_id']);
       $t->set_var('user_moto', $current_message['message_popname']);
-      $nx_message = nx_code($current_message['message_text']);
-      $t->set_var('edit', $nx_message);
+      
+      echo "<!-- DEBUG : message length is ".strlen($current_message['message_text'])." -->";
+      if(strlen($current_message['message_text']) < MAX_MSG_SIZE)
+	{
+	  $nx_message = nx_code($current_message['message_text']);
+	  $t->set_var('edit', $nx_message);
+	}
+      else
+	{
+	  $t->set_var('edit', '<font color=red>THIS MESSAGE IS TOO LARGE TO DISPLAY</FONT>');
+	}
       $t->set_var('user_id', $current_message['user_id']);
       $t->set_var('date', $current_message['format_time']);
       $t->set_var('message_id', $current_message['message_id']);
@@ -252,12 +263,22 @@ if (mysql_num_rows($messages_to_show))
 	  $t->set_var('subject', '');
         } 
       
-      $t->pparse('messagerow', 'CommentBlock', false);
+      //    $t->pparse('messagerow', 'CommentBlock', false);
+      
+      $t->parse('messagerow','CommentBlock');
+      $t->varkeys->CommentBlock ='';
+#     echo "<!-- Last error is ".$t->last_error."\n $cable_debug -->";
+#     echo "<!-- ".print_r($t)." -->";
+      $cable_debug = $t->p('messagerow');
+      echo "<!-- $cable_debug -->";
+      //$t->varkeys->CommentBlock='';
+      $t->varkeys->messagerow='';
+      
     } 
   
   // now update last view time here
   subscribe_to_topic($topic_id, $_SESSION['current_id']);
-  
+  $t->varkeys->topic_handle='';
   set_topicread($_SESSION['current_id'],$topic_id);
   
 } 
