@@ -1,7 +1,7 @@
 <?php
 // new add post code - interface
 
-include('../includes/theme.php');
+
 include('../includes/database.php');
 
 $db = opendata();
@@ -31,8 +31,8 @@ if(!can_user_edit_section($user_array, $section_array)){
 }
 
    
-
-$topic_array[topic_title] = $HTTP_POST_VARS[title];
+#strip html from topic title
+$topic_array[topic_title] = htmlspecialchars($HTTP_POST_VARS[title]);
 $topic_array[section_id] = $HTTP_POST_VARS[section];
 	
 
