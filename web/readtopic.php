@@ -5,7 +5,7 @@ displays a number of posts in a given topic, paginates them accounting to user p
 
 */
 // includes
-include('../includes/theme.php');
+
 include('../includes/database.php');
 // common stuff
 $db = opendata();

@@ -6,7 +6,7 @@ displays users who are currently using nexus
 */
 
 //includes
-include('../includes/theme.php');
+
 include('../includes/database.php');
 
 
