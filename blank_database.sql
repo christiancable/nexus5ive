@@ -79,6 +79,7 @@ CREATE TABLE topictable (
   topic_description mediumtext,
   topic_annon enum('y','n') default 'n',
   topic_readonly enum('y','n') default 'n',
+  topic_title_hidden enum('y','n') default 'n',
   topic_weight tinyint(4) default '10',
   PRIMARY KEY  (topic_id),
   KEY topictable_section_id (section_id)
