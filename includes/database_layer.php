@@ -5,12 +5,197 @@
 * these all work on a single row of data
 */
 
+
+
+# user account functions
+
+
+function get_user_array($user_id)
+{
+	/**
+	 * takes user_id and returns an array of their userinfo
+	 * INPUT user_id
+	 * OUTPUT assoc array of user_info or false if user is not found
+	 */
+	// get array
+	$sql = "SELECT * FROM usertable WHERE user_id = $user_id";
+
+	if (!$user_info = mysql_query($sql)) {
+		return false;
+	} 
+
+	if (mysql_num_rows($user_info)) {
+		$user_array = mysql_fetch_array($user_info, MYSQL_ASSOC);
+		return $user_array;
+	} else {
+		return false;
+	} 
+} 
+
+
+function add_user($user_array){
+/*
+INPUT: user array
+
+OUTPUT: true or false
+*/
+
+	$sql = "INSERT INTO usertable (user_name, user_email, user_comment, user_popname, user_password, user_realname, user_priv, user_display,
+		user_backwards, user_sysop, user_location, user_theme, user_totaledits, user_totalvisits, user_status, user_banned, user_film, 
+		user_band, user_sex, user_town, user_age, user_ipaddress) 
+		values ('$user_array[user_name]', 
+		        '$user_array[user_email]',
+		        '$user_array[user_comment]',
+			'$user_array[user_popname]',
+			'$user_array[user_password]',
+			'$user_array[user_realname]',
+			'$user_array[user_priv]',
+			'$user_array[user_display]',
+			'$user_array[user_backwards]',
+			'$user_array[user_sysop]',
+			'$user_array[user_location]',
+			'$user_array[user_theme]',
+			'$user_array[user_totaledits]',
+			'$user_array[user_totalvisits]',
+			'$user_array[user_status]',
+			'$user_array[user_banned]',
+			'$user_array[user_film]',
+			'$user_array[user_band]',
+			'$user_array[user_sex]',
+			'$user_array[user_town]',
+			'$user_array[user_age]',
+			'$user_array[user_ipaddress]')";
+			
+			
+	if(mysql_query($sql)){
+		return true;
+		} else {
+		echo $sql;
+		return false;
+	}
+
+}
+
+
+function new_user_array(){
+/*
+ returns a blank user_array
+ 
+ not sure I like this as it takes away the point of the default values in the database .. hmmm
+ 
+*/
+	$user_array = array(
+			'user_name' => 'change_me', 
+		        'user_email' => '',
+		        'user_comment' => 'be nice to me I am new',
+			'user_popname' => 'be nice to me I am new',
+			'user_password' => '',
+			'user_realname' => '',
+			'user_priv' => '100',
+			'user_display' => '20',
+			'user_backwards' => 'n',
+			'user_sysop' => 'n',
+			'user_location' => '',
+			'user_theme' => 'xp',
+			'user_totaledits' => '0',
+			'user_totalvisits' => '0',
+			'user_status' => 'Invalid',
+			'user_banned' => '0',
+			'user_likes' => '',
+			'user_hates' => '',
+			'user_sex' => 'male',
+			'user_town' => '',
+			'user_age' => '13',
+			'user_ipaddress' => '127.0.0.1' );
+			
+	return $user_array;
+
+}
+
+
+function update_user_array($user_array){
+/* takes a user array and updates the database */
+
+	$sql = "UPDATE usertable set 
+		user_name = '$user_array[user_name]',
+		user_email =  '$user_array[user_email]',
+		user_comment = '$user_array[user_comment]',
+		user_popname = '$user_array[user_popname]',
+		user_password = '$user_array[user_password]',
+		user_realname = '$user_array[user_realname]',
+		user_priv = '$user_array[user_priv]',
+		user_display ='$user_array[user_display]',
+		user_backwards = '$user_array[user_backwards]',
+		user_sysop = '$user_array[user_sysop]',
+		user_location = '$user_array[user_location]',
+		user_theme = '$user_array[user_theme]',
+		user_totaledits = '$user_array[user_totaledits]',
+		user_totalvisits = '$user_array[user_totalvisits]',
+		user_status = '$user_array[user_status]',
+		user_banned = '$user_array[user_banned]',
+		user_film = '$user_array[user_film]',
+		user_band = '$user_array[user_band]',
+		user_sex = '$user_array[user_sex]',
+		user_town = '$user_array[user_town]',
+		user_age = '$user_array[user_age]',
+		user_ipaddress = '$user_array[user_ipaddress]',
+		user_no_pictures = '$user_array[user_no_pictures]'
+		WHERE user_id = $user_array[user_id]";
+			
+			
+	
+	if(mysql_query($sql)){
+		return true;
+		} else {
+		echo $sql;
+		return false;
+	}
+}
+
+function lookup_user_id($username, $email){
+/*
+looks for an existing user account with a given username or email address and returns user_id or false
+
+*/
+$sql = "SELECT user_id FROM usertable WHERE user_name='$username' OR user_email='$email' LIMIT 1";
+
+if(!$query_result = mysql_query($sql)){
+		return false;
+	} else {
+		if(!$result_array = mysql_fetch_array($query_result,MYSQL_ASSOC)){
+			return false;
+		} else {
+			return $result_array[user_id];;
+		}
+	}
+
+
+
+}
+
+
+function change_password($user_id, $new_password){
+
+	$sql = "UPDATE usertable SET user_password='$new_password' WHERE user_id = '$user_id'";
+
+	if(mysql_query($sql)){
+		return true;
+		} else {
+	#	echo $sql;
+		return false;
+	}
+}
+
+# end user account functions
+
 /*
 * messagetable functions
 * 
 * $message_array fields are assumed to be sql safe and escaped where needed
 * 
 */
+
+
 
 function update_message($message_array){
 /*
@@ -311,6 +496,86 @@ function update_section($section_array){
 }
 
 ## end section functions
+
+
+## comment functions
+
+# use the nexusmessage ones
+
+function get_user_comment($user_id){
+/*
+* INPUT message_id
+* 
+* OUTPUT message_array or false
+*/
+	
+	$instant_message_array = array();
+		
+
+	$sql = "SELECT comment_id, text, from_id, user_name FROM commenttable, usertable WHERE commenttable.user_id=$user_id AND usertable.user_id = from_id ORDER BY comment_id ASC";
+
+	if(!$sql_result = mysql_query($sql)){
+		return false;
+		
+	} else {
+		if($current_array = mysql_fetch_array($sql_result)){
+			do {
+				array_push($instant_message_array, $current_array);		
+			} while ($current_array = mysql_fetch_array($sql_result) );
+			
+			return 	$instant_message_array;			
+		} else {
+			return false;
+		}		
+				
+	}
+
+}
+
+function add_user_comment($comment_array){
+/*
+* INPUT message_array
+* 
+* OUTPUT true or false
+*/
+	$sql = "INSERT INTO commenttable (user_id, from_id,text) values (
+	'$comment_array[user_id]',
+	'$comment_array[from_id]',
+	'$comment_array[text]')";
+	
+#	echo "debug $sql";
+	if(mysql_query($sql)){
+		return true;
+	} else {
+		return false;
+	}
+
+}
+
+function delete_user_comments($user_id){
+	
+	$sql ="DELETE FROM commenttable WHERE user_id=$user_id AND readstatus='y'";
+	 
+	 if(!mysql_query($sql)){
+		return false;
+	 } else {
+	 	return true;
+	 }
+}
+
+
+function mark_comments_read($user_id){
+	
+	$sql ="UPDATE commenttable SET readstatus='y' WHERE user_id = $user_id";
+	 
+	 if(!mysql_query($sql)){
+		return false;
+	 } else {
+	 	return true;
+	 }
+}
+## end comment functions
+
 
 ## topicview functions
 
@@ -852,4 +1117,134 @@ function get_last_time_on($user_id){
 	return $lasttimeon;
 }
 
+function get_last_edited_topic($user_id){
+
+	$sql = "SELECT topic_title, messagetable.topic_id  FROM messagetable, topictable where user_id=$user_id and messagetable.topic_id=topictable.topic_id order by message_id desc limit 1";
+	
+	 if(!$lastedit = mysql_query($sql)){
+		return false;
+     }
+	 
+	 $result_array = mysql_fetch_array($lastedit, MYSQL_ASSOC);
+	 
+	 return $result_array;
+	
+}
+#### scoreboard functions
+
+function get_top_posters_array(){
+
+	$sql = 'select count(message_id) as total , user_name, usertable.user_id from messagetable, usertable where message_time >  date_sub(now(), INTERVAL 30 day) and usertable.user_id = messagetable.user_id group by messagetable.user_id order by total desc limit 10';
+
+	$top_posters_array = array();
+		
+
+	if(!$sql_result = mysql_query($sql)){
+		return false;
+		
+	} else {
+		if($current_array = mysql_fetch_array($sql_result)){
+			do {
+				array_push($top_posters_array, $current_array);		
+			} while ($current_array = mysql_fetch_array($sql_result) );
+			
+			return 	$top_posters_array;			
+		} else {
+			return false;
+		}		
+				
+	}
+
+
+}
+
+
+function get_top_moderator_array(){
+
+	$sql = 'select user_name, count(message_id) as total, usertable.user_id  from messagetable, topictable, sectiontable, usertable  where message_time >  date_sub(now(), INTERVAL 30 day) and topictable.topic_id = messagetable.topic_id and topictable.section_id = sectiontable.section_id and usertable.user_id = sectiontable.user_id group by sectiontable.user_id order by total desc limit 10';
+
+	$top_posters_array = array();
+		
+
+	if(!$sql_result = mysql_query($sql)){
+		return false;
+		
+	} else {
+		if($current_array = mysql_fetch_array($sql_result)){
+			do {
+				array_push($top_posters_array, $current_array);		
+			} while ($current_array = mysql_fetch_array($sql_result) );
+			
+			return 	$top_posters_array;			
+		} else {
+			return false;
+		}		
+				
+	}
+
+
+}
+
+
+function get_top_section_array(){
+
+	$sql = 'select section_title, count(message_id) as total, sectiontable.section_id  from messagetable, topictable, sectiontable  where message_time >  date_sub(now(), INTERVAL 30 day) and topictable.topic_id = messagetable.topic_id and sectiontable.section_id = topictable.section_id group by sectiontable.section_id order by total desc limit 10';
+
+	$top_posters_array = array();
+		
+
+	if(!$sql_result = mysql_query($sql)){
+		return false;
+		
+	} else {
+		if($current_array = mysql_fetch_array($sql_result)){
+			do {
+				array_push($top_posters_array, $current_array);		
+			} while ($current_array = mysql_fetch_array($sql_result) );
+			
+			return 	$top_posters_array;			
+		} else {
+			return false;
+		}		
+				
+	}
+
+
+}
+
+
+function get_top_topic_array(){
+
+	$sql = 'select topic_title, count(message_id)  as total, topictable.topic_id from messagetable, topictable  where message_time >  date_sub(now(), INTERVAL 30 day) and topictable.topic_id = messagetable.topic_id group by messagetable.topic_id order by total desc limit 10';
+
+	$top_posters_array = array();
+		
+
+	if(!$sql_result = mysql_query($sql)){
+		return false;
+		
+	} else {
+		if($current_array = mysql_fetch_array($sql_result)){
+			do {
+				array_push($top_posters_array, $current_array);		
+			} while ($current_array = mysql_fetch_array($sql_result) );
+			
+			return 	$top_posters_array;			
+		} else {
+			return false;
+		}		
+				
+	}
+
+
+}
+### end scoreboard functions
+
+#### sanity
+function escape_input($untrusted_string)
+{
+	return  nl2br(htmlspecialchars($untrusted_string,ENT_NOQUOTES));
+	#return  mysql_escape_string(nl2br($untrusted_string));
+}
+#####
 ?>

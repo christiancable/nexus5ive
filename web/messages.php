@@ -36,8 +36,8 @@ $t->set_var("user_popname",$user_array["user_popname"]);
 $t->set_var("user_id",$_SESSION[current_id]);
 
 #this is cheating ....
-$t->set_var("owner_id",1);
-$t->set_var("ownername",'fraggle');
+$t->set_var("owner_id",SYSOP_ID);
+$t->set_var("ownername",SYSOP_NAME);
 #cheating ends
 
 if ($num_msg = count_instant_messages($_SESSION[current_id])){

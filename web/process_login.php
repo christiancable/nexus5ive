@@ -33,8 +33,10 @@ if($user_array=get_user_array_from_name($username)){
 	$current_id = $user_array[user_id];
 	session_register("current_id");
 	session_register("my_theme");
+	session_register("no_pictures");
 	$current_id = $user_array[user_id];
 	$my_theme = $user_array[user_theme];
+	$no_pictures = $user_array[user_no_pictures];
 	// increase number of times on nexus here
 	$num_of_visits = $user_array[user_totalvisits]+1;
 	$sql = "UPDATE usertable SET user_totalvisits=".$num_of_visits." WHERE user_id=$current_id";

@@ -44,8 +44,13 @@ $sectionowner=$sectioninfodetails["user_id"];
 $sectionparent=$sectioninfodetails["parent_id"];
 
 $breadcrumbs=get_breadcrumbs($section);
+
+$location_str = '<a href="section.php?section='.$sectioninfodetails[section_id].'">'.$sectionname.'</a>';
+echo "<!-- $location_str -->";
+#$location_str = $sectionname;
+update_location($location_str);
  
-update_location($sectionname);
+#update_location($sectionname);
 
 if(!$ownernameinfo = mysql_query("SELECT user_name FROM usertable where user_id=$sectionowner")){
 	nexus_error();

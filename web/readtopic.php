@@ -4,7 +4,8 @@
 displays a number of posts in a given topic
 
 update log
-26 jan 2002 - updated function to use templates - xian
+10 april 2003 - trying to get the results to paginate
+
 
 */
 
@@ -15,6 +16,7 @@ include('../includes/database.php');
 //common stuff
 $db = opendata();
 session_start();
+global $_SESSION;
 
 $template_location =TEMPLATE_HOME.$my_theme; 
 
@@ -38,63 +40,70 @@ if (!$topic_array=get_topic($topic_id)){
 
 $breadcrumbs = get_breadcrumbs_topic($topic_array[section_id]);
 
+
+$new_msg_total = new_messages_in_topic($topic_array[topic_id],$user_array[user_id]);
 //update user activity
-update_location("reading ".$topic_array[topic_title]);
+
+
+$location_str = '<a href="readtopic.php?section_id='.$topic_array[section_id].'&topic_id='.$topic_array[topic_id].'"><i>Reading</i> '.$topic_array[topic_title].'</a>';
+update_location($location_str);
+#update_location($sausages);
 
 $total_messages = get_count_topic_messages($topic_array[topic_id]);
 
 // how many messages to display
 
-$new_msg_total = new_messages_in_topic($topic_array[topic_id],$user_array[user_id]);
 
 
-$sql = 'SELECT *, DATE_FORMAT(message_time,"%a %b %D - %H:%i %Y") AS format_time FROM messagetable WHERE topic_id='.$topic_id.'  ORDER BY  message_id ';
+# should I be setting the limit here???
+
+#if ($limit) {
+#	$limit = $new_msg_total = new_messages_in_topic($topic_array[topic_id],$user_array[user_id]);    
+#}
+
+#### new here ###
+
+$sql = 'SELECT *, DATE_FORMAT(message_time,"%a %b %D - %H:%i %Y") AS format_time FROM messagetable WHERE topic_id='.$topic_id.'  ORDER BY  message_id  ';
+
 $limit_sql = "";
-if($user_array[user_display]=="255"){
-// viewing all messages
-	if($user_array[user_backwards]=="n"){
-		$limit_sql = " ";
-	} else {
-		$limit_sql = " DESC ";
+	
+if(!isset($limit)){
+	#$limit=0; # this should perhaps be count messages minus user_displa
+	$limit=$total_messages - $user_array[user_display];
+#	$limit=$total_messages - $page_length;
+	if($limit < 0){
+		$limit = 0;
 	}
 	
-} else {
+}else{
+	if($limit < 0){
+		$limit = 0;
+	}
 
-
-	if( ($new_msg_total +2) < ($user_array[user_display]) ) {
-		
-		$num_of_messages_to_display = $user_array[user_display];
-		
-		
-	} else {
-		
-		$num_of_messages_to_display = $new_msg_total + 2;
-		
-	// view depth		
-	
-	}
-	
-	# look at this later okay
-	
-	$limit_start = $total_messages - $num_of_messages_to_display;
-	if($limit_start < 0)
-		$limit_start=0;
-		
-	if($user_array[user_backwards]=="n"){
-		$limit_sql = " LIMIT $limit_start, $num_of_messages_to_display";
-	} else {
-		$limit_sql = " DESC LIMIT $num_of_messages_to_display";
-	}
 }
 
 
-$sql = $sql.$limit_sql;
+if($new_msg_total <= $user_array[user_display]){
+	$page_length = $user_array[user_display];
+} else {
+	$page_length = $new_msg_total;
+	$limit=$total_messages - $page_length;
+}
 
-echo "<!-- displaying $num_of_messages_to_display<br> $sql<br> -->";
+#$limit_sql = " LIMIT $limit , $user_array[user_display]";
+$limit_sql = " LIMIT $limit , $page_length";
 
+$sql = $sql.$limit_sql; 
+echo "\n\n<!-- DEBUG: $sql<br> -->";
+echo "\n<!-- DEBUG: $location_str<br> -->";
+echo "\n<!-- new messages $new_msg_total -->\n";
+echo "<!-- page length $page_length -->\n";
+echo "<!-- topic_array[topic_id] is  $topic_array[topic_id] -->\n";
+echo "<!-- user_array[user_id] is $user_array[user_id] -->\n";
 
-// if backwards
+			
 
+### end new here ###
 
 
 
@@ -103,7 +112,12 @@ echo "<!-- displaying $num_of_messages_to_display<br> $sql<br> -->";
 
 if(!$messages_to_show = mysql_query($sql, $db)){
 	nexus_error();
+#	echo "$sql";
+	#exit();
 }
+
+#echo "here 71";
+$messages_shown_count = mysql_num_rows($messages_to_show);
 
 // choose what template
 $t = new Template($template_location);
@@ -189,21 +203,39 @@ $t->pparse('content','buttons');
 
 # END DISPLAY TOP SET OF BUTTONS
 
-###DEBUG
+#forward and back
+// Create Next / Prev Links and $Result_Set Value
 
-
+$browse_html =  browse_links($total_messages, $limit, $page_length, $_SERVER['PHP_SELF'], $topic_array[section_id], $topic_id);
+echo $browse_html;
 #echo "DEBUG $owner_array[owner_name] and $owner_array[owner_id]";
 ###END DEBUG
 
-if(mysql_num_rows($messages_to_show)){
-	
-	if(!$current_message = mysql_fetch_array($messages_to_show)){
-		nexus_error();
-	}
+# put all messages into an array so I can reverse it
+# this would better be done in the SQL but I can't get my head round it today
 
+$messages_to_show_array = array();
+if(mysql_num_rows($messages_to_show)){
+	if($current_message = mysql_fetch_array($messages_to_show))
+		do {
+			array_push($messages_to_show_array, $current_message);						
+		} while ($current_message = mysql_fetch_array($messages_to_show) );
+}
+
+if($user_array[user_backwards]=="y"){
+		$messages_to_show_array = array_reverse($messages_to_show_array);
+}
+
+unset($current_message);
+
+if(mysql_num_rows($messages_to_show)){
+
+	#reverse array here for backwards people
+	
+	
 	$t->set_block('topic_handle','CommentBlock','messagerow');
 
-	do {
+	foreach($messages_to_show_array as $current_message ) {
 			set_time_limit(60);			 
      	
 			// get user message author info
@@ -219,8 +251,6 @@ if(mysql_num_rows($messages_to_show)){
 
 			$t->set_var("user_moto",$current_message["message_popname"]);
             
-			//replace emotes with html gubbings 
-			//$t->set_var("edit",$current_message["message_text"]);
 
 			$nx_message = nx_code($current_message["message_text"]);
 			$t->set_var("edit",$nx_message);
@@ -238,7 +268,7 @@ if(mysql_num_rows($messages_to_show)){
             
             $t->pparse('messagerow','CommentBlock',false);
 
-	} while ($current_message = mysql_fetch_array($messages_to_show));
+	}
 	
 
 
@@ -273,6 +303,10 @@ if(mysql_num_rows($messages_to_show)){
 }
  
 # DISPLAY BOTTOM SET OF BUTTONS
+
+echo $browse_html;
+
+
 if( ($owner_array[owner_id] == $_SESSION[current_id]) or (is_sysop($_SESSION[current_id])) ) {
 	$t->set_file('buttons','readtopic_links.html');
 } else {
@@ -287,7 +321,6 @@ $t->set_var("topic_id",$topic_id);
 $t->pparse('content','buttons');
 # END DISPLAY BOTTOM SET OF BUTTONS
 page_end($breadcrumbs);
-#echo '<font face="Verdana, Arial, Helvetica, sans-serif" size="-1">'.$breadcrumbs.'</font>';
 
 ?>
 

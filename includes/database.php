@@ -1,26 +1,33 @@
 <?php 
 // non-visual functions
-// this will eventually be replaced by database_layer.php
+// all database bits will eventuall move to database_layer.php
 // env
 putenv("TZ=GB");
+
 // needed libs
 include('../phplib/php/template.inc');
 include('database_layer.php');
 include('interface_layer.php');
-// defines
+
+// site specific stuff
+
 define('TEMPLATE_HOME', '../templates/');
 define('DEFAULT_TEMPLATE', 'xp');
-// you may wish to change the following values
-define('SYSOP_NAME', "Christian");
-define('SYSOP_MAIL', 'sysop@nexus5.org.uk');
+define('SYSOP_NAME', "xxxx");
+define('SYSOP_MAIL', 'xxxx');
+define('SYSOP_ID','xxxx');
+define('MYSQL_USER', 'xxxx');
+define('MYSQL_PASSWORD','xxxx');
+define('MYSQL_SERVER','xxxx');
+define('MYSQL_DATABASE','xxxx');
+
 // functions
 function opendata()
 {
-	// quick function to open the database connection
-	// update with your details
-	$db = mysql_pconnect('localhost:/tmp/mysql.cable109', "sysop", "PASSWORD");
-	// $db = mysql_pconnect('localhost',"root","");
-	mysql_select_db("fraggle", $db);
+	//return a connection handle to the database
+	
+	$db = mysql_pconnect(MYSQL_SERVER, MYSQL_USER, MYSQL_PASSWORD);
+	mysql_select_db(MYSQL_DATABASE, $db);
 
 	return $db;
 } 
@@ -29,10 +36,7 @@ function validlogin()
 {
 	// to check to see if there is a valid current_id session var
 	if (session_is_registered("current_id")) {
-		// echo "logged in";
-		// put user_id in to loggedin table
-		// for a list of who's on
-		// echo " $_id<br>";
+
 		$db = opendata();
 		global $current_id;
 
@@ -70,7 +74,7 @@ function is_message_owner($message_id, $user_id, $db)
            WHERE message_id=$message_id AND
            messagetable.topic_id=topictable.topic_id AND
            sectiontable.section_id=topictable.section_id"; 
-	// echo $sql;
+
 	$ownerinfo = mysql_query($sql);
 	$owner = mysql_result($ownerinfo, 0, "user_id");
 
@@ -166,10 +170,11 @@ function get_username($user_id)
 function newmessages($user_id)
 {
 	/**
-	 * returns true if user has messages waiting to be read
+	 * returns true if user has instand messages waiting to be read
 	 * 
 	 * last update Nov 3 2001 - xian
 	 */
+	 
 	$sql = "SELECT nexusmessage_id FROM nexusmessagetable WHERE user_id = $user_id";
 
 	if (!$nexusmessageinfo = mysql_query($sql)) {
@@ -185,7 +190,8 @@ function newmessages($user_id)
 
 function count_instant_messages($user_id)
 {
-	// this is intended to replace the user of newmessages()
+    // returns the number of instant messages
+	
 	$sql = "SELECT nexusmessage_id FROM nexusmessagetable WHERE user_id=$user_id";
 
 	if (!$nexusmessageinfo = mysql_query($sql)) {
@@ -203,6 +209,7 @@ function count_messages_in_topic($topic_id)
 {
 	// returns the total amount of messages in a given topic
 	// returns false if any probs
+	
 	$sql = "SELECT COUNT(message_id) AS total_msg FROM messagetable WHERE topic_id=$topic_id";
 
 	if (!$message_info = mysql_query($sql)) {
@@ -216,8 +223,12 @@ function count_messages_in_topic($topic_id)
 		return false;
 	} 
 } 
+
 function displaymessage($messagerow, $topic_id, $db, $user)
 {
+   
+    // displays a single topic message, this function shouldn't be used anymore ? - cfc
+	   
 	$userinfo = mysql_query("SELECT * FROM usertable WHERE user_id=$messagerow[user_id]", $db);
 	$userrow = mysql_fetch_array($userinfo);
 
@@ -230,7 +241,7 @@ function displaymessage($messagerow, $topic_id, $db, $user)
 	} else {
 		$owner = "invalid";
 	} 
-	// echo $sql;
+
 	$sql = "SELECT section_id FROM topictable WHERE topic_id=$messagerow[topic_id]";
 	$sectioninfo = mysql_query($sql, $db);
 	$sectionrow = mysql_fetch_array($sectioninfo); 
@@ -364,7 +375,7 @@ function nexus_error()
 	 * $t->set_var("pagetitle","Error");
 	 * $error_message =  "<br>Sorry, something has gone all wrong. Life is a bit like that sometimes.<br>";
 	 * $error_message .= "Please make a note of the message below and tell <a href=\"mailto:".SYSOP_MAIL."\">";
-	 * $error_message .= SYSOP_NAME."</a><br><br>";
+	 * $error_message .= ."</a><br><br>";
 	 * $error_message .= "ERROR: ".mysql_errno()." ".mysql_error();
 	 * $error_message .= '<br><br><a href="index.php">Restart Nexus</a>';
 	 * $t->set_var("content",$error_message);
@@ -385,10 +396,11 @@ function update_location($location)
 	 * update nov 3 2001 - xian
 	 */
 	global $current_id;
-
-	$sql = "UPDATE usertable SET user_location=\"" . $location . "\" WHERE user_id=$current_id";
+	$location = mysql_real_escape_string($location);
+	$sql = "UPDATE usertable SET user_location='" . $location . "' WHERE user_id=$current_id";
+#		echo "< !-- debug update_location is $sql -- >";
 	if (!$sql_result = mysql_query($sql)) {
-		// echo $sql;
+
 		nexus_error();
 	} 
 
@@ -462,61 +474,42 @@ function get_score($user_id)
 	return $score;
 } 
 
-function nx_code($text)
-{
-	/**
-	 * replaces nx code with html for
-	 * links and images 
-	 * 
-	 * vaguely based on bb code
-	 * 
-	 * [web-] = <a href="
-	 * [-web] = " target="_blank">[ WWW link ]</a>
-	 * 
-	 * [picture-] = <img src="
-	 * [-picture] = ">
-	 */
 
-	$text = str_replace('[www-]', '[WWW-]', $text);
-	$text = str_replace('[-www]', '[-WWW]', $text);
-	$text = str_replace('[picture-]', '[PICTURE-]', $text);
-	$text = str_replace('[-picture]', '[-PICTURE]', $text);
-	$text = str_replace('[-ascii]', '[-ASCII]', $text);
-	$text = str_replace('[ascii-]', '[ASCII-]', $text);
+function nx_code($text){
+
+	# regular expressions ROX	
 	
-	$first_www_dashpos = strpos($text, '[WWW-]');
+	$pattern ="/\[PICTURE\-\](.*)\[\-PICTURE\]/Ui";
 
-	if (!is_integer(!$first_www_dashpos)) {
-		if (substr_count($text, '[WWW-]') == substr_count($text, '[-WWW]')) {
-			$text = str_replace('[WWW-]', '<a href="', $text);
-			$text = str_replace('[-WWW]', '" target="_blank">[ WWW link ]</a>', $text);
-		} 
-	} 
-
-	$first_pic_dashpos = strpos($text, '[PICTURE-]');
-	print "<!-- starts at  $first_pic_dashpos -->";
-
-	if (!is_integer(!$first_pic_dashpos)) {
-		print "<!-- gets here -->";
-		if (substr_count($text, '[PICTURE-]') == substr_count($text, '[-PICTURE]')) {
-			$text = str_replace('[PICTURE-]', '<img src="', $text);
-			$text = str_replace('[-PICTURE]', '">', $text);
-		} 
-	} 
-	// ASCII
-	$first_ascii_dashpos = strpos($text, '[PICTURE-]');
-	print "<!-- starts at  $first_ascii_dashpos -->";
-
-	if (!is_integer(!$first_ascii_dashpos)) {
-		print "<!-- gets here -->";
-		if (substr_count($text, '[ASCII-]') == substr_count($text, '[-ASCII]')) {
-			$text = str_replace('[ASCII-]', '<tt>', $text);
-			$text = str_replace('[-ASCII]', '</tt>', $text);
-		} 
-	} 
-
+	# check to see if the user has turned off pictures here 
+	#if user has pictures turned off
+	
+	if($_SESSION[no_pictures]<>'n') {
+		$replacement = '<a href="'."$1".'" target="_blank">[Click Here To See '."$1".']</a>';	    
+	} else {
+		$replacement = '<img src="'."$1".'" alt="'."$1".'">' ;
+	}
+	$text = preg_replace($pattern, $replacement, $text);
+	
+	$pattern ="/\[WWW\-\](.*)\[\-WWW\]/Ui";
+	$replacement = '<a href="'."$1".'" target="_blank">['."$1".']</a>';
+	$text = preg_replace($pattern, $replacement, $text);
+	
+	
+	
+	$pattern ="#\[ASCII\-\](.+?)\[\-ASCII\]#is";
+	$replacement = '<pre> '."$1".'</pre>';
+    $text = preg_replace($pattern, $replacement, $text);
+	
 	return $text;
-} 
+	
+	
+}
+
+
+
+
+
 
 function emotetext($text)
 {
@@ -617,27 +610,7 @@ function get_section_parent_info($section_id)
 	} 
 } 
 
-function get_user_array($user_id)
-{
-	/**
-	 * takes user_id and returns an array of their userinfo
-	 * INPUT user_id
-	 * OUTPUT assoc array of user_info or false if user is not found
-	 */
-	// get array
-	$sql = "SELECT * FROM usertable WHERE user_id = $user_id";
 
-	if (!$user_info = mysql_query($sql)) {
-		return false;
-	} 
-
-	if (mysql_num_rows($user_info)) {
-		$user_array = mysql_fetch_array($user_info, MYSQL_ASSOC);
-		return $user_array;
-	} else {
-		return false;
-	} 
-} 
 
 function get_section_parents($section_id)
 {
@@ -697,4 +670,32 @@ function get_breadcrumbs_topic($section)
 	return $crumb_urls;
 } 
 
+function mkPasswd() {
+// +----------------------------------------------------------------------+
+// | PHP Pronounceable Password Generator                                 |
+// +----------------------------------------------------------------------+
+// | Author: Max Dobbie-Holman <max@blueroo.net>                          |
+// +----------------------------------------------------------------------+
+//
+// View the demo at http://www.blueroo.net/max/pwdgen.php
+/**
+ * Generates an 8 character pronounceable password.
+ *
+ * @author        Max Dobbie-Holman <max@blueroo.net>
+ * @version       1.0
+ */
+
+// using GPL password function, copyright above	
+
+	$consts='bcdgklmnprst';
+	$vowels='aeiou';
+	
+	for ($x=0; $x < 6; $x++) {
+		mt_srand ((double) microtime() * 1000000);
+	$const[$x] = substr($consts,mt_rand(0,strlen($consts)-1),1);
+	$vow[$x] = substr($vowels,mt_rand(0,strlen($vowels)-1),1);
+	}
+	
+	return $const[0] . $vow[0] .$const[2] . $const[1] . $vow[1] . $const[3] . $vow[3] . $const[4];
+}
 ?>

@@ -60,9 +60,12 @@ if (!$topic_array = get_topic($topic_id)){
   }else{
 	$t->set_var("num_msg","no");
   }
-
+  
+  $location_str = '<a href="readtopic.php?section_id='.$topic_array[section_id].'&topic_id='.$topic_array[topic_id].'"><i>Posting</i> '.$topic_array[topic_title].'</a>';  
+#  $location_str = "Adding Comment to ".$topic_array[topic_title];
   $t->set_var("pagetitle","Adding Comment to ".$topic_array[topic_title]);
-
+  update_location($location_str);
+  
   $t->set_var("breadcrumbs",$breadcrumbs);
 
   $t->set_var("owner_id",$owner_array[owner_id]);
@@ -78,6 +81,8 @@ if (!$topic_array = get_topic($topic_id)){
 
   // show post comment
 
+
+  
   $t->set_file("postform","post.html");
   
 

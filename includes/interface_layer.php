@@ -81,4 +81,49 @@ function page_end($breadcrumbs){
 	$t->pparse("OutPut","PageEnd");
 
 }
+
+function browse_links($total_messages, $limit, $page_length, $current_url, $section_id, $topic_id){
+
+$html_code = "";
+
+if ($total_messages>0){
+   $html_code .= "<div align=center><font size=-1>";
+   if ($limit < $total_messages && $limit > 0)
+      {
+      $Res1=$limit-$page_length;
+      $html_code .= "<A HREF=\"$current_url?limit=$Res1&section_id=$section_id&topic_id=$topic_id\">[ << Previous Page ]</A> ";
+      }
+   
+   $Pages=$total_messages / $page_length;
+
+   $page_num = 1+ ($limit / $page_length);  
+   $html_code .= "Page ".ceil($page_num)." of ".ceil($Pages);
+
+   if ($Pages>1){
+      for ($b=0,$c=1; $b < $Pages; $b++,$c++){
+	          $Res1=$page_length * $b;
+			  # not sure I need this bit anymore - cfc
+			  #if ($c == $Pages) {
+			  #		echo "<A HREF=\"pages.php?limit=$Res1&section_id=$topic_array[section_id]&topic_id=$topic_id\"><b>[$c]></b></A> \n";   
+			  #	} else {
+		       #   	echo "<A HREF=\"pages.php?limit=$Res1&section_id=$topic_array[section_id]&topic_id=$topic_id\">[$c]</A> \n";
+			  #}
+          }
+      }
+ 
+   if ($limit>=0 && $limit<$total_messages)
+      {
+      $Res1=$limit+$page_length;
+      if ($Res1<$total_messages)
+         {
+         $html_code .= " <A HREF=\"$current_url?limit=$Res1&section_id=$section_id&topic_id=$topic_id\">[ Next Page >> ]</A>";
+         }
+      }
+	$html_code .= "</font></div>";   
+
+	}
+
+return $html_code;
+
+}
 ?>

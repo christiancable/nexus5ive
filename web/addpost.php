@@ -43,9 +43,12 @@ if (!$topic_array = get_topic($topic_id)){
 
 	$comment = $HTTP_POST_VARS[comment];
 	$subject = $HTTP_POST_VARS[subject];
+	$popname = $user_array[user_popname];
+	
 	
 	$tempsubject = htmlspecialchars($subject,ENT_QUOTES);
 	$subject = nl2br($tempsubject);
+	
 	
 	if( is_section_owner($topic_array[section_id],$user_array[user_id],$db) )  {
 		// if we have the privs use html   
@@ -65,7 +68,7 @@ if (!$topic_array = get_topic($topic_id)){
 	$message_array[topic_id]=$topic_array[topic_id];
 	$message_array[user_id]=$user_array[user_id];
 	$message_array[message_title]=$subject;
-	$message_array[message_popname]=$user_array[user_popname];
+	$message_array[message_popname]=addslashes($popname);
 	
 	if(!add_message($message_array)){
 		nexus_error();
