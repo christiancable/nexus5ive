@@ -34,7 +34,7 @@ if (!$topic_array = get_topic($topic_id)){
     	header("Location: http://".$_SERVER['HTTP_HOST']."/section.php?section_id=$topic_array[section_id]");
 	    exit();
     }
-     
+
 // at this point the current user can edit the section 
   
  
@@ -91,20 +91,26 @@ display_header($t,
   } else {
    	$t->set_var("READONLY_CHECKED","");
   }
-  
-  // SELECT  
-  
-  $select_code = '<option value="'.$section_array[section_id].'">'.$section_array[section_title].'</option>';  
-  
+
+  if($topic_array[topic_title_hidden]=='y'){
+  	$t->set_var("HIDDEN_CHECKED","checked");
+  } else {
+   	$t->set_var("HIDDEN_CHECKED","");
+  }
+
+  // SELECT
+
+  $select_code = '<option value="'.$section_array[section_id].'">'.$section_array[section_title].'</option>';
+
   $sectionlist_array=get_sectionlist_array($user_array);
-  
+
   foreach ($sectionlist_array  as $current_element){
 	$select_code = $select_code.'<option value="'.$current_element[section_id].'">'.$current_element[section_title].'</option>';
   }
   $t->set_var("SELECT_CODE",$select_code);
-  
-  $t->pparse("TopicOutput","topicform");	
-	
+
+  $t->pparse("TopicOutput","topicform");
+
 page_end($breadcrumbs);
 # UPDATE include breadcrumbs and bottom code
 }
