@@ -296,22 +296,22 @@ function delete_messages($array_of_message_ids)
 {
     if (!sizeof($array_of_message_ids)) {
         return false;
-    } 
+    }
 
     $sql = "DELETE FROM messagetable WHERE ";
     for($i = 0; $i < sizeof($array_of_message_ids); $i++) {
         $sql = $sql . " message_id = $array_of_message_ids[$i]";
         if ($i <> sizeof($array_of_message_ids)-1)
-            $sql = $sql . " OR"; 
+            $sql = $sql . " OR";
         // Delete the row from the database, etc ...
-    } 
+    }
 
     if (mysql_query($sql)) {
         return true;
     } else {
         return false;
-    } 
-} 
+    }
+}
 
 function move_messages($array_of_message_ids, $topic_id)
 {
@@ -1150,16 +1150,26 @@ function get_count_unread_comments($user_id)
     }
 }
 
-function delete_instant_messages($user_id)
+function delete_instant_messages($array_of_message_ids)
 {
-    $sql = "DELETE FROM nexusmessagetable WHERE user_id=$user_id AND readstatus='y'";
-
-    if (!mysql_query($sql)) {
+    if (!sizeof($array_of_message_ids)) {
         return false;
-    } else {
+    }
+
+    $sql = "DELETE FROM nexusmessagetable WHERE ";
+    for($i = 0; $i < sizeof($array_of_message_ids); $i++) {
+        $sql = $sql . " nexusmessage_id = $array_of_message_ids[$i]";
+        if ($i <> sizeof($array_of_message_ids)-1)
+            $sql = $sql . " OR";
+        // Delete the row from the database, etc ...
+    }
+
+    if (mysql_query($sql)) {
         return true;
-    } 
-} 
+    } else {
+        return false;
+    }
+}
 
 function delete_previous_topicview($user_id)
 { 
