@@ -1,0 +1,31 @@
+<!-- BEGIN CommentBlock --> 
+<table bgcolor="#d6dff5" align="center"   border="0" width="100%" cellpadding="4" cellspacing="0">
+    <tr> 
+      <td width="2%"> 
+        <a href="alterpost.php?message_id={message_id}&&topic_id={topic_id}">
+		<img src="images/crystal/prop.gif" border="0" alt="edit message"><br>
+        </a></td>
+      <td width="81%">
+	  <b>From: </b>({user_moto}) 
+	  <a href="show_userinfo.php?user_id={user_id}">{username}</a> 
+        <br>
+        <b>Date: </b>{date}
+		<br>
+      <strong>{subject}</strong> </td>
+      
+    <td width="17%"> <div align="right">Select 
+        <input type="checkbox" name="MessChk[]" value="{message_id}">
+      </div>
+      <div align="right"> 
+      </div>
+      </td>
+    </tr>
+  </table>
+  <table  align="center"  border="0" width="100%"
+         cellpadding="4" cellspacing="0">
+    <tr> 
+      <td width="100%"> {edit}<br> 
+        <br></td>
+    </tr>
+  </table>
+  <!-- END CommentBlock --> 

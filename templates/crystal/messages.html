@@ -21,7 +21,7 @@ return "Check All"; }
     <TR>
       <TD colspan="3" class="navigationBar"><a href="leap.php">[
         Topic Leap ]</a> -- <a href="userson.php">[ Who's Online ]</a> -- <a href="myinfo.php">[
-        Examine User ]</a></font></TD>
+        Examine User ]</a></TD>
     </TR>
 
     <form method="post" action="delete_instant_messages.php">
@@ -29,7 +29,7 @@ return "Check All"; }
 
     <!-- BEGIN MessageBlock -->
     <TR>
-      <TD width="6%"> <input type="checkbox" name="MessChk[]" value="{message_id}" checked><A href="messages.php?sendtoid={user_id}"><IMG alt="[ reply ]" src="images/xp/msg.gif" border="0"></A></TD>
+      <TD width="6%"> <input type="checkbox" name="MessChk[]" value="{message_id}" checked><A href="messages.php?sendtoid={user_id}"><IMG alt="[ reply ]" src="images/crystal/msg.gif" border="0"></A></TD>
       <TD width="9%"><A href="show_userinfo.php?user_id={user_id}">{user_name}</A>&nbsp;</TD>
       <TD width="85%">{message} </TD>
 
@@ -37,10 +37,10 @@ return "Check All"; }
     <!-- END MessageBlock -->
 
     <TR>
-      <TD colspan="3" height="30"><a href="{reload_page}"><img src="images/xp/reload.gif"  border="0"><font size="-1" face="Verdana, Arial, Helvetica, sans-serif"> 
-        Recheck</a>&nbsp;<img src="images/xp/delete_msg.gif" border="0"><input type="submit" name="Delete Selected Messages" value="Delete Selected Messages">
-	</font></TD>
-	    </form>
+      <TD colspan="3" height="30"><a href="{reload_page}"><img src="images/crystal/reload.gif"  border="0"> 
+          <span class="navigation">Recheck</span></a>&nbsp;<img src="images/crystal/delete_msg.gif" border="0">
+        <input type="submit" name="Delete Selected Messages" value="Delete Selected Messages">	</TD>
+    </form>
     </TR>
   </TBODY>
 </TABLE>
