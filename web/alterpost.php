@@ -51,30 +51,18 @@ if (!$message_array = get_message_with_time($message_id)){
 
   // show header
   ## header
-  // change page template if new messages are waiting
-	if (get_count_unread_messages($_SESSION[current_id])>0) {
-        $t->set_file("header","mail_page.html");
-	} else {
-       $t->set_file("header","page.html");
-	}
 
-  if ($num_msg = count_instant_messages($_SESSION[current_id])){
-	$t->set_var("num_msg",$num_msg);
-  }else{
-	$t->set_var("num_msg","no");
-  }
-
-  $t->set_var("pagetitle","Alter Post in ... ".$topic_array[topic_title]);
-  $t->set_var("breadcrumbs",$breadcrumbs);
-
-
-  $t->set_var("owner_id",$section_array[user_id]);
-  $t->set_var("ownername",$moderator_name);
-
-  $t->set_var("user_name",$user_array["user_name"]);
-  $t->set_var("user_popname",$user_array["user_popname"]);
-  $t->pparse("HeaderOutput","header");  
-  
+display_header($t,
+	       $breadcrumbs,
+	       "Alter Post in ... ".$topic_array[topic_title],
+	       $user_array["user_name"],
+	       $user_array["user_popname"],
+	       $_SESSION[current_id],
+	       count_instant_messages($_SESSION[current_id]),
+	       $section_array[user_id],
+	       $moderator_name,
+	       get_count_unread_comments($_SESSION[current_id]),
+	       get_count_unread_messages($_SESSION[current_id]));  
   ## message
 
   $t->set_file("topicform","alterpost.html");
