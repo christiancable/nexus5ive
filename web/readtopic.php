@@ -1,11 +1,7 @@
 <?php
 
 /* 
-displays a number of posts in a given topic
-
-update log
-10 april 2003 - trying to get the results to paginate
-
+displays a number of posts in a given topic, paginates them accounting to user preferences
 
 */
 // includes
@@ -87,8 +83,7 @@ if (!$messages_to_show = mysql_query($sql, $db)) {
     nexus_error();
     // echo "$sql"; 
     // exit();
-} 
-// echo "here 71";
+}
 $messages_shown_count = mysql_num_rows($messages_to_show);
 // choose what template
 $t = new Template($template_location);
@@ -180,7 +175,7 @@ if (mysql_num_rows($messages_to_show)) {
 
 if ($user_array[user_backwards] == "y") {
     $messages_to_show_array = array_reverse($messages_to_show_array);
-} 
+}
 
 unset($current_message);
 
@@ -190,13 +185,8 @@ if (mysql_num_rows($messages_to_show)) {
 
     foreach($messages_to_show_array as $current_message) {
         set_time_limit(60); 
-        // get user message author info
-        $sql = "SELECT user_name FROM usertable WHERE user_id=" . $current_message["user_id"];
-        if (!$message_user = mysql_query($sql, $db)) {
-            nexus_error();
-        } 
-        $message_user_info = mysql_fetch_array($message_user);
-        $t->set_var("username", $message_user_info["user_name"]);
+
+        $t->set_var("username", get_username($current_message[user_id]));
 
         $t->set_var("section_id", $topic_array[section_id]);
 
@@ -221,25 +211,8 @@ if (mysql_num_rows($messages_to_show)) {
     // now update last view time here
     subscribe_to_topic($topic_id, $_SESSION[current_id]);
 
-    $sql = "DELETE FROM topicview WHERE topic_id=$topic_id AND user_id=$_SESSION[current_id]";
-    if (!mysql_query($sql, $db)) {
-        nexus_error();
-    } 
+   set_topicread($_SESSION[current_id],$topic_id);
 
-    $sql = "SELECT max(message_time) FROM messagetable WHERE topic_id=$topic_id";
-    if (!$timeinfo = mysql_query($sql, $db)) {
-        nexus_error();
-    } 
-
-    if (mysql_num_rows($timeinfo)) {
-        $lastdate = mysql_fetch_row($timeinfo);
-        $sql = "INSERT INTO topicview (user_id, topic_id, msg_date) VALUES ('$current_id','$topic_id','$lastdate[0]')"; 
-        // UPDATE use add_topicview HERE
-        if (!mysql_query($sql, $db)) {
-            nexus_error();
-        } 
-    } 
-    // end update time
 } else {
     // No messages to display
 } 
