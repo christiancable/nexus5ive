@@ -448,7 +448,8 @@ function update_topic($topic_array)
 	topic_description=\"$topic_array[topic_description]\",
 	topic_annon=\"$topic_array[topic_annon]\",
 	topic_readonly=\"$topic_array[topic_readonly]\",
-	topic_weight=\"$topic_array[topic_weight]\"
+	topic_weight=\"$topic_array[topic_weight]\",
+	topic_title_hidden=\"$topic_array[topic_title_hidden]\"
 	WHERE topic_id=$topic_array[topic_id]"; 
     // echo "<h1>$sql</h1>";
     // exit();
