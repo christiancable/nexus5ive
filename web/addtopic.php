@@ -63,9 +63,21 @@ display_header($t,
 	       get_count_unread_comments($_SESSION['current_id']),
 	       get_count_unread_messages($_SESSION['current_id']));
 
-
-
-#####
+display_navigationBar(
+		      $topicleap=true,
+		      $whosonline=true,
+		      $mainmenu=false,
+		      $examineuser=true,
+		      $returntosection=false,
+		      
+		      $createtopic=false,
+		      $createmenu=false,
+		      $postcomment=false,
+		      
+		      $section_id=false,
+		      $parent_id=false,
+		      $topic_id=false
+		      );
 
 $t -> set_file("topicform", "addtopic.html");
 $t -> set_var("SECTION_ID", $section_array['section_id']);
@@ -83,6 +95,22 @@ foreach ($sectionlist_array as $current_element)
 $t -> set_var("SELECT_CODE", $select_code);
 
 $t -> pparse("TopicOutput", "topicform");
+
+display_navigationBar(
+		      $topicleap=true,
+		      $whosonline=true,
+		      $mainmenu=false,
+		      $examineuser=true,
+		      $returntosection=false,
+		      
+		      $createtopic=false,
+		      $createmenu=false,
+		      $postcomment=false,
+		      
+		      $section_id=false,
+		      $parent_id=false,
+		      $topic_id=false
+		      );
 
 page_end($breadcrumbs, $t);
 ?>

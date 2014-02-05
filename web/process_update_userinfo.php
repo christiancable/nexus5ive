@@ -16,7 +16,6 @@ $user_sex = $_POST['user_sex'];
 $user_display = $_POST['show_post'];
 $user_town = $_POST['user_town'];
 $user_film = $_POST['user_film'];
-
 $user_band = $_POST['user_band'];
 $user_age = $_POST['user_age'];
 $user_comment = $_POST['user_comment'];
@@ -40,6 +39,14 @@ else
   $backwards = false;
 }
 
+if(isset($_POST['hideemail']))
+{
+  $hideemail = true;
+}
+else
+{
+  $hideemail = false;
+}
 
 // function 
 
@@ -58,14 +65,6 @@ if (!validlogin())
 
 
 $user_array = get_user_array($_SESSION['current_id']);
-
-$user_array['user_realname'] = escape_input($user_realname);       
-$user_array['user_email'] = escape_input($user_email);
-$user_array['user_popname'] = escape_input($user_popname);
-$user_array['user_sex'] = $user_sex;
-$user_array['user_display'] = $user_display;
-$user_array['user_town'] = escape_input($user_town);
-$user_array['user_film'] = escape_input($user_film);
 
 
 if($pictures)
@@ -89,12 +88,33 @@ else
 { 
   $user_array['user_backwards'] = 'n';
 }
-	
-$user_array['user_town'] = escape_input($user_town);
-$user_array['user_band'] = escape_input($user_band);
-$user_array['user_age'] = escape_input($user_age);
-$user_array['user_comment'] = escape_input($user_comment);
 
+if ($hideemail)
+{
+  $user_array['user_hideemail'] = 'yes';
+}
+else
+{
+  $user_array['user_hideemail'] = 'no';
+}
+	
+
+$user_array['user_realname'] = $user_realname;       
+$user_array['user_email']    = $user_email;
+$user_array['user_popname']  = $user_popname;
+$user_array['user_sex']      = $user_sex;
+$user_array['user_display']  = $user_display;
+$user_array['user_town']     = $user_town;
+$user_array['user_film']     = $user_film;
+$user_array['user_town']     = $user_town;
+$user_array['user_band']     = $user_band;
+$user_array['user_age']      = $user_age;
+$user_array['user_comment']  = $user_comment;
+
+// escape input messes with line breaks so this is bad here
+// $user_array['user_comment'] = escape_input($user_comment);
+
+//$user_array['user_comment'] = htmlspecialchars($user_comment, ENT_NOQUOTES);
 
 if(!update_user_array($user_array))
 {
@@ -102,7 +122,8 @@ if(!update_user_array($user_array))
 	     .print_r($user_array,true));
 }
 
-header("Location: http://".$_SERVER['HTTP_HOST'].get_bbsroot()."/section.php?section_id=1");
+
+header("Location: http://".$_SERVER['HTTP_HOST'].get_bbsroot()."section.php?section_id=1");
 exit();
 
 ?>

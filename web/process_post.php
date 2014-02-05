@@ -36,7 +36,7 @@ if(!$user_array = get_user_array($_SESSION['current_id']))
 if (!$topic_array = get_topic($topic_id))
 {
   // no such topic
-  show_error($_SERVER['PHP_SELF'].' no such topic: topic_id = $topic_id, user_id='.
+  show_error($_SERVER['PHP_SELF']." no such topic: topic_id = $topic_id, user_id=".
 	     $user_array['user_id'].'<br>'.print_r($_POST,true)."<br>".print_r($HTTP_POST_VARS,true));
 } 
 else

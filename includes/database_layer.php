@@ -1,11 +1,46 @@
 <?php
-// ### Basic functions ####
-/**
- * these all work on a single row of data
- */
+// this should have every bit of sql in it.
+
+// login 
+
+function checkPassword($user_id, $user_password)
+     /*
+accepts user name and password
+returns true if valid, false if not
+      */
+
+{
+
+  $sql = 'SELECT  md5(user_password) AS md5Password  FROM usertable WHERE user_id='.$user_id;
+
+  if(!$login_result = mysql_query($sql))
+    {
+      return false;
+    }
+
+  if(mysql_num_rows($login_result))
+    {
+      $login_array = mysql_fetch_array($login_result, MYSQL_ASSOC);
+    }
+  else
+    {
+      return false;
+    }
+
+  if (md5($user_password) == $login_array['md5Password'])
+    {
+      //      echo 'md5 is '.md5($user_password);
+      //      echo '<br> stored hash is '.$login_array['md5Password'];
+      return true;
+    }
+  else
+    {
+      return false;
+    }
+}
+
+
 // user account functions
-
-
 
 function get_user_array($user_id)
 {
@@ -16,7 +51,7 @@ function get_user_array($user_id)
    */ 
   
   
-  $sql = "SELECT * FROM usertable WHERE user_id = $user_id";
+  $sql = 'SELECT * FROM usertable WHERE user_id = '.quote_smart($user_id);
   
   if (!$user_info = mysql_query($sql))
     {
@@ -36,7 +71,7 @@ function get_user_array($user_id)
 
 
 
-function add_user($user_array)
+function add_new_user($user_array)
 {
   /**
    * INPUT: user array
@@ -44,36 +79,17 @@ function add_user($user_array)
    * OUTPUT: true or false
    */
   
-  $sql = "INSERT INTO usertable (user_name, user_email, user_comment, user_popname, user_password, 
-          user_realname, user_priv, user_display, user_backwards, user_sysop, user_location, 
-          user_theme, user_totaledits, user_totalvisits, user_status, user_banned, user_film, 
-		user_band, user_sex, user_town, user_age, user_ipaddress) 
-		values ('".$user_array['user_name']."', 
-		        '".$user_array['user_email']."',
-		        '".$user_array['user_comment']."',
-			'".$user_array['user_popname']."',
-			'".$user_array['user_password']."',
-			'".$user_array['user_realname']."',
-			'".$user_array['user_priv']."',
-			'".$user_array['user_display']."',
-			'".$user_array['user_backwards']."',
-			'".$user_array['user_sysop']."',
-			'".$user_array['user_location']."',
-			'".$user_array['user_theme']."',
-			'".$user_array['user_totaledits']."',
-			'".$user_array['user_totalvisits']."',
-			'".$user_array['user_status']."',
-			'".$user_array['user_banned']."',
-			'".$user_array['user_film']."',
-			'".$user_array['user_band']."',
-			'".$user_array['user_sex']."',
-			'".$user_array['user_town']."',
-			'".$user_array['user_age']."',
-			'".$user_array['user_ipaddress']."')";
+  $sql = "INSERT INTO usertable (user_name, user_email, user_password, user_realname, user_hideemail, user_ipaddress)
+		values (".quote_smart($user_array['user_name']).", 
+		        ".quote_smart($user_array['user_email']).",
+			".quote_smart($user_array['user_password']).",
+			".quote_smart($user_array['user_realname']).",
+			".quote_smart($user_array['user_hideemail']).",
+			".quote_smart($user_array['user_ipaddress']).")";
   
   if (mysql_query($sql))
     {
-      return true;
+      return mysql_insert_id();
     }
   else
     {
@@ -92,30 +108,31 @@ function update_user_array($user_array)
      */
 
     $sql = "UPDATE usertable set 
-		user_name =        '".$user_array['user_name']."',
-		user_email =       '".$user_array['user_email']."',
-		user_comment =     '".$user_array['user_comment']."',
-		user_popname =     '".$user_array['user_popname']."',
-		user_password =    '".$user_array['user_password']."',
-		user_realname =    '".$user_array['user_realname']."',
-		user_priv =        '".$user_array['user_priv']."',
-		user_display =     '".$user_array['user_display']."',
-		user_backwards =   '".$user_array['user_backwards']."',
-		user_sysop =       '".$user_array['user_sysop']."',
-		user_location =    '".$user_array['user_location']."',
-		user_theme =       '".$user_array['user_theme']."',
-		user_totaledits =  '".$user_array['user_totaledits']."',
-		user_totalvisits = '".$user_array['user_totalvisits']."',
-		user_status =      '".$user_array['user_status']."',
-		user_banned =      '".$user_array['user_banned']."',
-		user_film =        '".$user_array['user_film']."',
-		user_band =        '".$user_array['user_band']."',
-		user_sex =         '".$user_array['user_sex']."',
-		user_town =        '".$user_array['user_town']."',
-		user_age =         '".$user_array['user_age']."',
-		user_ipaddress =   '".$user_array['user_ipaddress']."',
-		user_no_pictures = '".$user_array['user_no_pictures']."'
-		WHERE user_id =    '".$user_array['user_id']."'";
+		user_name =        ".quote_smart($user_array['user_name']).",
+		user_email =       ".quote_smart($user_array['user_email']).",
+		user_comment =     ".quote_smart($user_array['user_comment']).",
+		user_popname =     ".quote_smart($user_array['user_popname']).",
+		user_password =    ".quote_smart($user_array['user_password']).",
+		user_realname =    ".quote_smart($user_array['user_realname']).",
+		user_priv =        ".quote_smart($user_array['user_priv']).",
+		user_display =     ".quote_smart($user_array['user_display']).",
+		user_backwards =   ".quote_smart($user_array['user_backwards']).",
+		user_sysop =       ".quote_smart($user_array['user_sysop']).",
+		user_location =    ".quote_smart($user_array['user_location']).",
+		user_theme =       ".quote_smart($user_array['user_theme']).",
+		user_totaledits =  ".quote_smart($user_array['user_totaledits']).",
+		user_totalvisits = ".quote_smart($user_array['user_totalvisits']).",
+		user_status =      ".quote_smart($user_array['user_status']).",
+		user_banned =      ".quote_smart($user_array['user_banned']).",
+		user_film =        ".quote_smart($user_array['user_film']).",
+		user_band =        ".quote_smart($user_array['user_band']).",
+		user_sex =         ".quote_smart($user_array['user_sex']).",
+		user_town =        ".quote_smart($user_array['user_town']).",
+		user_age =         ".quote_smart($user_array['user_age']).",
+		user_ipaddress =   ".quote_smart($user_array['user_ipaddress']).",
+                user_hideemail =   ".quote_smart($user_array['user_hideemail']).",
+		user_no_pictures = ".quote_smart($user_array['user_no_pictures'])."
+		WHERE user_id =    ".quote_smart($user_array['user_id']);
 
     if (mysql_query($sql))
       {
@@ -130,12 +147,36 @@ function update_user_array($user_array)
 
 
 
-function lookup_user_id($username, $email)
+function lookup_username($username)
 {
   /**
-   * looks for an existing user account with a given username or email address and returns user_id or false
+   * looks for an existing user account with a given username and returns user_id or false
    */
-  $sql = "SELECT user_id FROM usertable WHERE user_name='$username' OR user_email='$email' LIMIT 1";
+  $sql = 'SELECT user_id FROM usertable WHERE user_name='.quote_smart($username).' LIMIT 1';
+  if (!$query_result = mysql_query($sql))
+    {
+      return false;
+    }
+  else
+    {
+      if (!$result_array = mysql_fetch_array($query_result, MYSQL_ASSOC))
+	{
+	  return false;
+        }
+      else
+	{
+	  return $result_array[user_id];
+        } 
+    } 
+} 
+
+
+function lookup_user_email($email)
+{
+  /**
+   * looks for an existing user account with a given email address and returns user_id or false
+   */
+  $sql = 'SELECT user_id FROM usertable WHERE  user_email='.quote_smart($email).' LIMIT 1';
   
   if (!$query_result = mysql_query($sql))
     {
@@ -149,7 +190,7 @@ function lookup_user_id($username, $email)
         }
       else
 	{
-	  return $result_array[user_id];;
+	  return $result_array[user_id];
         } 
     } 
 } 
@@ -158,7 +199,7 @@ function lookup_user_id($username, $email)
 
 function change_password($user_id, $new_password)
 {
-  $sql = "UPDATE usertable SET user_password='$new_password' WHERE user_id = '$user_id'";
+  $sql = 'UPDATE usertable SET user_password='.quote_smart($new_password).' WHERE user_id = '.quote_smart($user_id);
   
   if (mysql_query($sql))
     {
@@ -175,7 +216,7 @@ function change_password($user_id, $new_password)
 
 function setuser_offline($user_id)
 {
-	$sql = 'UPDATE usertable SET user_status="Offline" WHERE user_id='.$user_id;
+	$sql = 'UPDATE usertable SET user_status="Offline" WHERE user_id='.quote_smart($user_id);
 
 	if (mysql_query($sql))
 	  {
@@ -192,7 +233,7 @@ function setuser_offline($user_id)
 function setuser_logon($user_id, $ip_address, $visits)
 { 
   
-  $sql = 'UPDATE usertable SET user_status="Online", user_ipaddress="'.$ip_address.'", user_totalvisits="'.$visits.'" WHERE user_id='.$user_id;
+  $sql = 'UPDATE usertable SET user_status="Online", user_ipaddress="'.quote_smart($ip_address).'", user_totalvisits="'.quote_smart($visits).'" WHERE user_id='.quote_smart($user_id);
   
   if (mysql_query($sql))
     {
@@ -218,28 +259,30 @@ function update_message($message_array)
    * OUTPUT true or false
    */
   
-  if ($message_array['message_time'])
+  if (isset($message_array['message_time']))
     {
-      $sql = "UPDATE messagetable SET 
-		message_text =      '".$message_array['text']."',
-		topic_id =          '".$message_array['topic_id']."',
-		user_id =           '".$message_array['user_id']."',
-		message_title =     '".$message_array['message_title']."',
-		message_time =      '".$message_array['message_time']."',
-		message_popname =   '".$message_array['message_popname']."' 
-		WHERE message_id =  '".$message_array['message_id']."'";
+      $sql = 'UPDATE messagetable SET 
+		message_text =      '.quote_smart($message_array['text']).',
+		topic_id =          '.quote_smart($message_array['topic_id']).',
+		user_id =           '.quote_smart($message_array['user_id']).',
+		message_title =     '.quote_smart($message_array['message_title']).',
+		message_time =      '.quote_smart($message_array['message_time']).',
+		message_popname =   '.quote_smart($message_array['message_popname']).',
+                update_user_id =    '.quote_smart($message_array['update_user_id']).'
+      		WHERE message_id =  '.quote_smart($message_array['message_id']);
     }
   else
     {
-      $sql = "UPDATE messagetable SET 
-		message_text =      '".$message_array['text']."',
-		topic_id =          '".$message_array['topic_id']."',
-		user_id =           '".$message_array['user_id']."',
-		message_title =     '".$message_array['message_title']."',
-		message_popname =   '".$message_array['message_popname']."' 
-		WHERE message_id =  '".$message_array['message_id']."'";
+      $sql = 'UPDATE messagetable SET 
+		message_text =      '.quote_smart($message_array['text']).',
+		topic_id =          '.quote_smart($message_array['topic_id']).',
+		user_id =           '.quote_smart($message_array['user_id']).',
+		message_title =     '.quote_smart($message_array['message_title']).',
+       	        message_popname =   '.quote_smart($message_array['message_popname']).',
+                update_user_id =    '.quote_smart($message_array['update_user_id']).'
+		WHERE message_id =  '.quote_smart($message_array['message_id']);
     } 
-  
+
   if (mysql_query($sql))
     {
       return true;
@@ -260,7 +303,7 @@ function delete_message($message_id)
    * OUTPUT true or false
    */
   
-  $sql = "DELETE FROM messagetable WHERE message_id=$message_id";
+  $sql = "DELETE FROM messagetable WHERE message_id=".quote_smart($message_id);
   
   if (mysql_query($sql))
     {
@@ -332,6 +375,32 @@ function move_messages($array_of_message_ids, $topic_id)
     } 
 } 
 
+
+function html_messages($array_of_message_ids)
+{
+  if (!sizeof($array_of_message_ids))
+    {
+      return false;
+    }
+
+  $sql = "UPDATE messagetable SET message_html = true WHERE ";
+  for($i = 0; $i < sizeof($array_of_message_ids); $i++)
+    {
+      $sql = $sql . " message_id = $array_of_message_ids[$i]";
+      if ($i <> sizeof($array_of_message_ids)-1)
+        {
+          $sql = $sql . " OR";
+        }
+    }
+  if (mysql_query($sql))
+    {
+      return true;
+    }
+  else
+    {
+      return false;
+    }
+}
 
 
 function add_message($message_array)
@@ -413,6 +482,61 @@ function get_message_with_time($message_id)
         } 
     } 
 } 
+
+
+function get_page_of_topic_messages(
+				    $topic_id, 
+				    $num_of_messages_to_show, 
+				    $start_message,  
+				    $total_messages,
+				    $new_msg_total
+				    )
+{
+ 
+// $new_msg_total, $total_messages
+  $sql = 'SELECT *, DATE_FORMAT(message_time,"%a %b %D - %H:%i %Y") AS format_time FROM messagetable 
+        WHERE topic_id=' . $topic_id . '  ORDER BY  message_id  ';
+  
+  if(!isset($start_message))
+    {
+      $start_message = $total_messages - $num_of_messages_to_show;
+      
+      if($new_msg_total > $num_of_messages_to_show)
+	{
+	  $start_message = $total_messages - $new_msg_total;
+	  $num_of_messages_to_show = $new_msg_total + 1;
+	  
+	}
+      
+    }
+  else
+    {
+      if($start_message > ($total_messages - $num_of_messages_to_show) )
+	{
+	  $start_message = $total_messages - $num_of_messages_to_show;
+	}
+    }
+  
+  if($start_message < 0)
+    {
+      $start_message = 0;      
+    }
+  
+  $limit_sql = "LIMIT $start_message, $num_of_messages_to_show";
+  
+  $sql = $sql . $limit_sql;
+ 
+ 
+  if (!$messages_to_show = mysql_query($sql)) 
+    {
+      return false;
+    } 
+  else
+    {
+      return $messages_to_show;
+    }
+}
+
 
 /*
  * nexusmessagetable functions
@@ -598,6 +722,35 @@ function get_section_topics($section_id)
 } 
 
 
+function get_topic_posts($topic_id)
+{ 
+  // returns an array of message_ids within a given topic
+  $post_array = array();
+  
+  $sql = "SELECT message_id FROM messagetable WHERE topic_id=$topic_id ORDER BY message_id";
+  
+  if (!$sql_result = mysql_query($sql))
+    {
+      return false;
+    }
+  else
+    {
+      if ($current_array = mysql_fetch_array($sql_result))
+	{
+	  do 
+	    {
+	      array_push($post_array, $current_array['message_id']);
+            } 
+	  while ($current_array = mysql_fetch_array($sql_result));
+
+	  return $post_array;
+        }
+      else
+	{
+	  return false;
+        } 
+    } 
+} 
 
 function add_section($section_array)
 {
@@ -1139,7 +1292,54 @@ function can_user_edit_section($user_array, $section_array)
   return false;
 } 
 
+function can_user_edit_post($user_id, $user_sysop, $section_user_id, $message_user_id, $message_time)
+{
 
+/* 
+returns true if
+
+-  the user_id is the owner of the topic to which the message belongs
+
+or
+
+-  the user_id is the writer of the message and the message is not older
+   than the MAX_EDIT_TIME
+
+or
+
+- is the user is a sysop
+
+*/
+
+  if($user_sysop == 'y')
+    {
+      return true;
+    }
+  
+  if($section_user_id == $user_id)
+    {
+      return true;
+    }
+   
+  $now = time();
+
+  $year = substr($message_time,0,4);
+  $month = substr($message_time,4,2);
+  $day = substr($message_time,6,2);
+  $hour = substr($message_time,8,2);
+  $minute = substr($message_time,10,2);
+  $second = substr($message_time,12,2);
+ 
+  $then = mktime($hour, $minute, $second, $month, $day, $year);
+
+  if( ( ($now - $then) < MAX_EDIT_TIME) AND ($message_user_id == $user_id) )
+    {
+      return true;
+    }
+
+  return false;
+
+}
 
 function inc_total_edits($user_array)
 {
@@ -1514,7 +1714,6 @@ function get_latest_post_dates()
   $latest_post_array = array();
   
   $sql = "SELECT topic_id, max(message_time) as message_time FROM messagetable GROUP BY topic_id";
-  
   if (!$sql_result = mysql_query($sql))
     {
       return false;
@@ -1787,4 +1986,174 @@ function find_next_unread_topic($user_id){
 	}
     }
 }
+
+
+## invalid user functions
+
+function get_invalid_user_array($user_id)
+{
+  /**
+   * takes user_id and returns an array of their userinfo
+   * INPUT user_id
+   * OUTPUT assoc array of user_info or false if user is not found
+   */ 
+  
+  
+  $sql = "SELECT * FROM invalid_usertable WHERE user_id = $user_id";
+  
+  if (!$user_info = mysql_query($sql))
+    {
+      return false;
+    } 
+  
+  if (mysql_num_rows($user_info))
+    {
+      $user_array = mysql_fetch_array($user_info, MYSQL_ASSOC);
+      return $user_array;
+    }
+  else
+    {
+      return false;
+    } 
+} 
+
+function add_invalid_user($user_array)
+{
+  /**
+   * INPUT: invalid user array
+   * 
+   * OUTPUT: true or false
+   */
+  
+  $sql = "INSERT INTO invalid_usertable  (user_name, user_email, user_password, 
+          user_realname, user_hideemail, user_ipaddress) 
+		values (".quote_smart($user_array['user_name']).", 
+		        ".quote_smart($user_array['user_email']).",
+		        ".quote_smart($user_array['user_password']).",
+		        ".quote_smart($user_array['user_realname']).",
+		        ".quote_smart($user_array['user_hideemail']).",
+			".quote_smart($user_array['user_ipaddress']).")";
+  
+  if (mysql_query($sql))
+    {
+      return mysql_insert_id();
+    }
+  else
+    {
+      return false;
+    } 
+} 
+
+ 
+function delete_invalid_user($user_id)
+{
+  /**
+   * INPUT: invalid user_id
+   * 
+   * OUTPUT: true or false
+   */
+  
+  $sql = "DELETE FROM invalid_usertable WHERE user_id=".$user_id;
+  
+  if (mysql_query($sql))
+    {
+      return true;
+    }
+  else
+    {
+      return false;
+    } 
+} 
+
+
+
+function get_invalid_userlist_array()
+{
+
+    $userlist_array = array();
+    
+    $sql = 'SELECT * FROM invalid_usertable ORDER BY user_name';
+    
+    if (!$sql_result = mysql_query($sql))
+      {
+	return false;
+      }
+    else
+      {
+        if ($current_array = mysql_fetch_array($sql_result))
+	  {
+	    do 
+	      {
+		array_push($userlist_array, $current_array);
+	      } 
+	    while ($current_array = mysql_fetch_array($sql_result));
+	  }
+	
+        return $userlist_array;
+      }
+}
+
+function catchup($user_id)
+{
+  // get rid of current info
+  delete_previous_topicview($user_id);
+  
+  $all_post_date_array = get_latest_post_dates();
+  $topicview_array = array();
+  
+  foreach ($all_post_date_array as $post_date_array)
+    {
+      $topicview_array['user_id'] = $user_id;
+      $topicview_array['message_time'] = $post_date_array['message_time'];
+      $topicview_array['topic_id'] = $post_date_array['topic_id'];
+      add_topicview($topicview_array);
+    }
+}
+
+function message_search($token_array)
+{
+  // takes an array of strings and searches for them
+  // returns an array of message_ids up to the SEARCH_LIMIT limit
+
+  $search_results = array();
+
+  // generate sql
+  $sql = "SELECT message_id from messagetable WHERE ";
+
+  foreach($token_array as $token)
+    {
+      // add wildcards to token before quoting
+      $token = '%'.$token.'%';
+      $where_statement = $where_statement.'message_text LIKE '.quote_smart($token).' ';
+      if(next($token_array))
+	{
+	  $where_statement = $where_statement." AND ";
+	}
+    }
+  
+  $sql = $sql.$where_statement." ORDER BY message_id DESC LIMIT ".SEARCH_LIMIT;
+
+  // execute query
+
+  if (!$sql_result = mysql_query($sql))
+    {
+      return false;
+    }
+  else
+    {
+      if ($current_array = mysql_fetch_array($sql_result))
+	{
+	  do 
+	    {
+	      array_push($search_results, $current_array['message_id']);
+	    } 
+	  while ($current_array = mysql_fetch_array($sql_result));
+	}
+      
+      return $search_results;
+    }
+  
+
+}
+
 ?>

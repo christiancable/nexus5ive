@@ -63,33 +63,63 @@ display_header($t,
 	       get_count_unread_comments($_SESSION['current_id']),
 	       get_count_unread_messages($_SESSION['current_id']));
 
-
-#$t->set_var("section_id", $section);
-
 if(is_section_owner($sectioninfodetails['section_id'], $user_array['user_id'], $db)) 
 {
-  $t->set_file('top_links', 'menu_topic_links_admin.html');
+  display_navigationBar(
+			$topicleap=true,
+			$whosonline=true,
+			$mainmenu=false,
+		    $examineuser=true,
+			$returntosection=false,
+
+			$createtopic=true,
+			$createmenu=false,
+			$postcomment=false,
+			
+			$section_id=$sectioninfodetails['section_id'],
+			$parent_id=false,
+			$topic_id=false
+			);
+
 } 
 else 
 {
-  $t->set_file('top_links', 'menu_topic_links.html');
+  display_navigationBar(
+			$topicleap=true,
+			$whosonline=true,
+			$mainmenu=false,
+		        $examineuser=true,
+			$returntosection=false,
+
+			$createtopic=false,
+			$createmenu=false,
+			$postcomment=false,
+			
+			$section_id=$sectioninfodetails['section_id'],
+			$parent_id=false,
+			$topic_id=false
+			);
+
 }
 
-$t->set_var("section_id", $section);
-$t->pparse('content', 'top_links');
+
 // END DISPLAY TOP SET OF BUTTONS
 
 // ## topics
 
+// gets here fine - 20091008
 
 if ($topics_list = get_section_topics($section) ) 
 {
-  
+   
+
+
+
   foreach ($topics_list as $current_topic_array){
-    
+     
     if(new_messages_in_topic($current_topic_array['topic_id'], $_SESSION['current_id']))
       {
-	
+		
 	if(can_user_edit_topic($user_array, $current_topic_array))
 	  {
 	    
@@ -151,7 +181,7 @@ if ($topics_list = get_section_topics($section) )
 	
 	
       }
-    
+
     display_topic($current_topic_array, $_SESSION['current_id'], $t, $mode);
     
   }
@@ -161,57 +191,93 @@ if ($topics_list = get_section_topics($section) )
 
 // ########## subsections
 
-# this bit here is a mess, we have to ship this off to templates asap
 $subsectionlist = get_subsectionlist_array($section);
 
-#echo "<!-- looking for subsections of $section_id section -->";
+$numberOfSubSections = count($subsectionlist);
+$numberOfLeftSubSections = round($numberOfSubSections/2);
 
+$currentSubSection = 0;
 if ($subsectionlist) 
 {
-  // table begin
-  $count = 0;
-  
-  echo '<TABLE width="100%" border="0">';
-  
-  foreach ($subsectionlist as $current_sub_section_array)
-    {
-      if ($count % 2 == 0) 
-	{
-	  echo "<TR VALIGN=TOP>";
-	}
-      
-#sectionheader($current_sub_section_array);
-      display_sectionheader($current_sub_section_array, $user_array,$t);
-      // }
-      
-      $count ++;
-    }
+  echo '<div id="SubSectionContent">';
+  echo "<!-- left column -->";
+  echo '<div class="LeftSubSection">';  
 
-  if ($count % 2)
+  foreach ($subsectionlist as $current_sub_section_array) 
     {
-      echo "<TD></TD>";
-    }
-  // table end
-  // check if we need a filler cell
-  echo "</TABLE>";
+     
+     $currentSubSection ++;
+	
+	// this just seems to display the last topic rather than the section!? WTF! June 2010
+     display_sectionheader($current_sub_section_array, $user_array,$t);
+     
+     if($currentSubSection == $numberOfLeftSubSections)
+       {
+	 echo '</div>';
+	 echo '<!-- right column -->';
+	 echo '<div class="RightSubSection">';
+	 
+       }
+              
+   }
+  // clear floats - my goodness this was hard to find
+  echo '</div>'; 
+  echo '<div style="clear:both;"></div>';
+  echo '</div>';
+
 } 
 else
 {
   // no subsections
 }
 
+// BEGIN DISPLAY BOTTOM SET OF BUTTONS
 
-// BEGIN DISPLAY TOP SET OF BUTTONS
+
+
+
 if (is_section_owner($sectioninfodetails['section_id'], $user_array['user_id'], $db)) 
 {
-  $t->set_file('bottom_links', 'menu_menu_links_admin.html');
+  display_navigationBar(
+			$topicleap=true,
+			$whosonline=true,
+			$mainmenu=false,
+		        $examineuser=true,
+			$returntosection=false,
+
+			$createtopic=false,
+			$createmenu=true,
+			$postcomment=false,
+			
+			$section_id,
+			$parent_id=false,
+			$topic_id=false
+			);
+  
+
 } 
 else
 {
-  $t->set_file('bottom_links', 'menu_topic_links.html');
+
+  display_navigationBar(
+			$topicleap=true,
+			$whosonline=true,
+			$mainmenu=false,
+		    $examineuser=true,
+			$returntosection=false,
+
+			$createtopic=false,
+			$createmenu=false,
+			$postcomment=false,
+			
+			$section_id,
+			$parent_id=false,
+			$topic_id=false
+			);
+
+
+
 } 
-$t->set_var("SECTION_ID", $section);
-$t->pparse('content', 'bottom_links');
 
 page_end($breadcrumbs,$t);
 

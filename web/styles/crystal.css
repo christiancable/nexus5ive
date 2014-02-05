@@ -1,89 +1,202 @@
-body {
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	color: #000000;
-	background-color: #FFFFFF;
+body 
+{
+  font-family: Verdana,Arial,Helvetica,sans-serif;
+  color: rgb(0, 0, 0);
+  background-color: rgb(255, 255, 255);
+  }
 
-}
+.navigationBar 
+{ 
+  font-size: 80%;
+  color: rgb(0, 0, 0);
+  background-color: rgb(214, 223, 245);
+  }
 
-.navigationBar {
-	background-color: #d6dff5;
-	color:#000000;
-	font-size: 80%
-}
+.navigationBar a:link 
+{ 
+  color: rgb(0, 0, 204);
+  text-decoration: underline;
+  }
 
-.navigationBar a:link {
-	color: #0000CC;
-	text-decoration: underline;
-}
+.navigationBar a:visited 
+{
+  color: rgb(0, 0, 204);
+  text-decoration: underline;
+  }
 
-.navigationBar a:visited {
-	color: #0000CC;
-	text-decoration: underline;
-}
-.navigationBar a:hover {
-	color: #0000CC;
-	text-decoration: underline;
+.navigationBar a:hover 
+{ 
+  color: rgb(0, 0, 204);
+  text-decoration: underline;
+  }
 
-}
-
-.titleBar {
-
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	background-color: #d6dff5;
-	color: #000000;
-	font-size: 150%
-
-}
-.titleBarMail {
+.userEditBar 
+{
+  font-size: 80%;
+  color: rgb(0, 0, 0);
+  background-color: rgb(214, 245, 221);
+  }
 
 
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	background-color: #DEF7DE;
-	color: #000000;
-	font-size: 150%
-}
+.userEditBar a:link 
+{
+  color: rgb(0, 0, 204);
+  text-decoration: underline;
+  }
 
-.navigation {
-	font-size: 80%
-}
+.userEditBar a:visited 
+{
+  color: rgb(0, 0, 204);
+  text-decoration: underline;
+  }
 
-.userlistItem {
-	font-size: 90%
-}
+.userEditBar a:hover 
+{
+  color: rgb(0, 0, 204);
+  text-decoration: underline;
+  }
 
-.post {
-	font-size: 90%
-}
 
-a:link {
-	color: #0000CC;
-	text-decoration: none;
-}
+.titleBar 
+{ 
+  font-family: Verdana,Arial,Helvetica,sans-serif;
+  background-color: rgb(214, 223, 245);
+  color: rgb(0, 0, 0);
+  font-size: 150%;
+  }
 
-a:visited {
-	color: #0000CC;
-	text-decoration: none;
-}
+.titleBarMail 
+{ 
+  font-family: Verdana,Arial,Helvetica,sans-serif;
+  color: rgb(0, 0, 0);
+  font-size: 150%;
+  background-color: rgb(214, 245, 221);
+  }
 
-a:hover {
-	color: #0000CC;
-	text-decoration: underline;
+.navigation 
+{
+  font-size: 80%;
+  }
 
-}
+.userlistItem 
+{
+  font-size: 90%;
+  }
 
-a:active {
-	color: #0000CC;
-}
+.post 
+{
+  font-size: 90%;
+  }
 
-.sectionTitle {
-	font-size: 150%;
-	font-weight: bold;
-}
-.sectionIntro {
-	font-size: 80%;
+a:link 
+{
+  color: rgb(0, 0, 204);
+  text-decoration: none;
+  }
+
+a:visited 
+{ 
+  color: rgb(0, 0, 204);
+  text-decoration: none;
+  }
+
+a:hover 
+{
+  color: rgb(0, 0, 204);
+  text-decoration: underline;
+  }
+
+a:active 
+{
+  color: rgb(0, 0, 204);
+  }
+
+.sectionTitle 
+{
+  font-size: 150%;
+  font-weight: bold;
+  }
+
+.sectionIntro 
+{
+  font-size: 80%;
+  font-style: italic;
+  color: rgb(153, 153, 153);
+  }
+
+.sectionMessages 
+{
+  font-size: 60%;
+  }
+
+.quote 
+{
+  border-style: dashed;
+  border-width: 1px;
+  padding: 0.5em;
+  font-size: smaller;
+  opacity: 0.518;
+  background-color: rgb(235, 240, 255);
+  }
+
+.spoiler 
+{
+  border-style: dashed;
+  border-width: 1px;
+  color: rgb(0, 0, 0);
+  background-color: rgb(0, 0, 0);
+  }
+
+.footnote 
+{
+	border-style: none;
+	font-size: smaller;
 	font-style: italic;
-	color: #999999;
-}
-.sectionMessages {
-	font-size: 60%;
-}
+	text-align: right;
+	font-weight: bold;
+	color: rgb(153, 153, 153);
+	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  }
+
+/* navigation menus */
+
+.navigationMenu 
+{ 
+  font-size: 80%;
+  color: rgb(0, 0, 0);
+  background-color: rgb(214, 223, 245);
+  }
+
+.navigationMenu a:link 
+{ 
+  color: rgb(0, 0, 204);
+  text-decoration: underline;
+  }
+
+.navigationMenu a:visited 
+{ 
+  color: rgb(0, 0, 204);
+  text-decoration: underline;
+  }
+
+.navigationMenu a:hover 
+{
+  color: rgb(0, 0, 204);
+  text-decoration: underline;
+  }
+
+.navigationMenu ul 
+{
+  margin: 0;
+  padding-left: 0;
+  }
+
+.navigationMenu ul li 
+{
+  margin: 0;
+  padding: 0 6;
+  list-style: none;
+  display: inline;
+  }
+
+/* end navigation menus */

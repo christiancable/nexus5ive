@@ -71,7 +71,22 @@ else
 		 get_count_unread_comments($_SESSION['current_id']),
 		 get_count_unread_messages($_SESSION['current_id']));
   
-  
+  display_navigationBar(
+			$topicleap=true,
+			$whosonline=true,
+			$mainmenu=false,
+			$examineuser=true,
+			$returntosection=false,
+			
+			$createtopic=false,
+			$createmenu=false,
+			$postcomment=false,
+			
+			$section_id=false,
+			$parent_id=false,
+			$topic_id=false
+			);
+
   
   $location_str = '<a href="readtopic.php?section_id='.
     $topic_array['section_id'].'&topic_id='.
@@ -90,7 +105,7 @@ else
   // if the topic is read only, remind the user that they have privs to edit here
   if($topic_array['topic_readonly']=='y')
     {
-      $t->set_var("readonly_hint","<b>Remember:</b> Regular users can not add to this topic<br><br>");
+      $t->set_var("readonly_hint","<b>Remember:</b> Regular users can not add to this topic");
     }
   else
     {
@@ -133,8 +148,8 @@ else
 	}
       $t->set_var("reply text","Reply to...");
       $t->pparse("PostOutput","postform");	
-      
-      display_message($previous_message_id, $_SESSION['current_id'], $t, $display_mode, $db);
+      $previous_message_array = get_message_with_time($previous_message_id);
+      display_message($previous_message_array, $_SESSION['current_id'], $t, $display_mode, $db);
       
     } 
   else

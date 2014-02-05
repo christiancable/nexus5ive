@@ -44,6 +44,11 @@ if (!$topic_array = get_topic($topic_id))
   nexus_error();
 } 
 
+if (!$section_array = get_section($topic_array['section_id']))
+{
+  nexus_error();
+}
+
 $breadcrumbs = get_breadcrumbs_topic($topic_array['section_id']);
 
 $new_msg_total = new_messages_in_topic($topic_array['topic_id'], $user_array['user_id']);
@@ -61,9 +66,7 @@ update_location($location_str);
 
 $total_messages = get_count_topic_messages($topic_array['topic_id']);
 
-$sql = 'SELECT *, DATE_FORMAT(message_time,"%a %b %D - %H:%i %Y") AS format_time FROM messagetable 
-        WHERE topic_id=' . $topic_id . '  ORDER BY  message_id  ';
-
+$sql = 'SELECT message_id FROM messagetable WHERE topic_id=' . $topic_id . '  ORDER BY  message_id  ';
 
 $num_of_messages_to_show = $user_array['user_display'];
 
@@ -85,8 +88,6 @@ else
     {
       $start_message = $total_messages - $user_array['user_display'];
     }
-  
-  
 }
 
 if($start_message < 0)
@@ -98,7 +99,7 @@ if($start_message < 0)
 $limit_sql = "LIMIT $start_message, $num_of_messages_to_show";
 
 $sql = $sql . $limit_sql;
-echo "\n<!-- DEBUG $sql -->\n";
+
 ## end logic to see how many messages to display
 
 // select messages to display
@@ -115,20 +116,22 @@ $messages_shown_count = mysql_num_rows($messages_to_show);
 // choose what template
 $t = new Template($template_location);
 
+// set unknowns
+// $t->set_unknowns($unknowns = "keep");
+
 // chose display mode
 if ($topic_array['topic_annon'] == 'y') 
 {
   if (is_topic_owner($topic_id, $user_array['user_id'], $db)) 
     {
       // can see
-      // echo "DEBUG: annon and owner<br>";
-      $t->set_file('topic_handle', 'secret_owner.html');
+      $mode = "SECRET_OWNER";
     } 
   else
     {
       // can not see
       // echo "DEBUG: annon<br>";
-      $t->set_file('topic_handle', 'secret_comment.html');
+      $mode = "SECRET_COMMENT";
     } 
 } 
 else
@@ -136,14 +139,13 @@ else
   if (is_topic_owner($topic_id, $user_array['user_id'], $db)) 
     {
       // owner
-      // echo "DEBUG: owner<br>";
-      $t->set_file('topic_handle', 'normal_owner.html');
+      $mode = "NORMAL_OWNER";
     } 
   else
     {
       // not owner
       // echo "DEBUG: normal<br>";
-      $t->set_file('topic_handle', 'normal_comment.html');
+      $mode = "NORMAL_COMMENT";
     } 
 } 
 
@@ -170,39 +172,90 @@ display_header($t,
 
 if (($owner_array['owner_id'] == $_SESSION['current_id']) or (is_sysop($_SESSION['current_id'])))
 {
+
+
+  display_navigationBar(
+			$topicleap=true,
+			$whosonline=true,
+			$mainmenu=false,
+			$examineuser=false,
+			$returntosection=true,
+			
+			$createtopic=false,
+			$createmenu=false,
+			$postcomment=true,
+			
+			$section_id=false,
+			$parent_id=$topic_array['section_id'],
+			$topic_id=$topic_id
+			);
+
+
   $t->set_file('buttons', 'readtopic_links_admin_start.html'); 
   // SELECT
   $select_code = '<option value="' . $topic_array['topic_id'] . '">' . $topic_array['topic_title'] . '</option>';
   $sectionlist_array = get_topiclist_array($user_array);
   foreach ($sectionlist_array as $current_element) 
     {
-      $select_code = $select_code . '<option value="' . $current_element['topic_id'] . '">' . $current_element['topic_title'] . '</option>';
+      $select_code = $select_code . '<option value="' . 
+	$current_element['topic_id'] . '">' . $current_element['topic_title'] . '</option>';
     } 
   
   $t->set_var("SELECT_CODE", $select_code);
   
   $t->set_var("messages_shown", $messages_shown_count);
+  $t->set_var("section_id", $topic_array['section_id']);
+  $t->set_var("topic_id", $topic_id);
+  $t->pparse('content', 'buttons');
 }
 else
 {
   if ($topic_array['topic_readonly'] == 'y') 
     {
-      $t->set_file('buttons', 'readtopic_links_readonly.html');
+      display_navigationBar(
+			    $topicleap=true,
+			    $whosonline=true,
+			    $mainmenu=false,
+			    $examineuser=false,
+			    $returntosection=true,
+			    
+			    $createtopic=false,
+			    $createmenu=false,
+			    $postcomment=false,
+			    
+			    $section_id=false,
+			    $parent_id=$topic_array['section_id'],
+			    $topic_id=$topic_id
+			    );
     }
   else
     {
-      $t->set_file('buttons', 'readtopic_links.html');
+      display_navigationBar(
+			    $topicleap=true,
+			    $whosonline=true,
+			    $mainmenu=false,
+			    $examineuser=false,
+			    $returntosection=true,
+			    
+			    $createtopic=false,
+			    $createmenu=false,
+			    $postcomment=true,
+			    
+			    $section_id=false,
+			    $parent_id=$topic_array['section_id'],
+			    $topic_id=$topic_id
+			    );
+
     } 
 } 
 
-$t->set_var("section_id", $topic_array['section_id']);
-$t->set_var("topic_id", $topic_id);
-$t->pparse('content', 'buttons');
 
 // END DISPLAY TOP SET OF BUTTONS
 // forward and back
 // Create Next / Prev Links and $Result_Set Value
 
+# quick and dirty hack - FIXME
+echo '<div align="right" class="navigation"><a href="unsub.php?section_id='.$topic_array['section_id'].'&topic_id='.$topic_id.'">[ unsubscribe ]</a></div>';
 $browse_html = browse_links($total_messages, $num_of_messages_to_show, $start_message, "readtopic.php", $topic_array['topic_id']);
 echo $browse_html;
 
@@ -228,60 +281,71 @@ if ($user_array['user_backwards'] == "y")
 mysql_free_result($messages_to_show);
 unset($current_message);
 
+// echo "showing ".count($messages_to_show_array)." messages";
 if(count($messages_to_show_array))
 {
-  $t->set_block('topic_handle', 'CommentBlock', 'messagerow');
-  
-  foreach($messages_to_show_array as $current_message) 
+  foreach($messages_to_show_array as $current_message_id) 
     {
-      set_time_limit(60); 
-      
-      $t->set_var('username', get_username($current_message['user_id']));
-      $t->set_var('section_id', $topic_array['section_id']);
-      $t->set_var('user_moto', $current_message['message_popname']);
-      
-      echo "<!-- DEBUG : message length is ".strlen($current_message['message_text'])." -->";
-      // really I should be converting line breaks here and no upon input!
-      if(strlen($current_message['message_text']) < MAX_MSG_SIZE)
+      $current_message_array = get_message_with_time($current_message_id[message_id]);
+
+      if(can_user_edit_post(
+			    $user_array['user_id'],
+			    $user_array['user_sysop'],
+			    $section_array['user_id'],
+			    $current_message_array['user_id'],
+			    $current_message_array['message_time']
+			    )
+	 )
+	
 	{
-	  $nx_message = nx_code($current_message['message_text']);
-	  $t->set_var('edit', $nx_message);
+	
+
+	  if ($mode == "SECRET_COMMENT")
+	    {
+	      $editing_mode = "SECRET_OWNER";
+	    }
+	  
+	  if ($mode == "NORMAL_COMMENT")
+	    {
+	      $editing_mode = "NORMAL_OWNER";
+	    }
+
+	  if (($user_array['user_id'] <> $section_array['user_id']) AND ($user_array['user_sysop'] <> 'y'))
+	    {
+	      $editing_mode = "NORMAL_EDIT";
+	    }
+	
+	}
+
+
+      if(isset($editing_mode))
+	{
+
 	}
       else
 	{
-	  $t->set_var('edit', '<font color=red>THIS MESSAGE IS TOO LARGE TO DISPLAY</FONT>');
+
+	  $editing_mode = $mode;
+
 	}
-      $t->set_var('user_id', $current_message['user_id']);
-      $t->set_var('date', $current_message['format_time']);
-      $t->set_var('message_id', $current_message['message_id']);
-      $t->set_var('topic_id', $topic_id);
-      if (strlen($current_message['message_title']))
-	{
-	  $t->set_var('subject', '<b>Subject:</b> ' . $current_message['message_title']);
-        }
-      else
-	{
-	  $t->set_var('subject', '');
-        } 
       
-      //    $t->pparse('messagerow', 'CommentBlock', false);
+	display_message(
+		      $current_message_array, 
+		      $user_array['user_id'],
+		      $t,
+		      $editing_mode,
+		      $db
+		      );      
       
-      $t->parse('messagerow','CommentBlock');
-      $t->varkeys->CommentBlock ='';
-#     echo "<!-- Last error is ".$t->last_error."\n $cable_debug -->";
-#     echo "<!-- ".print_r($t)." -->";
-      $cable_debug = $t->p('messagerow');
-      echo "<!-- $cable_debug -->";
-      //$t->varkeys->CommentBlock='';
-      $t->varkeys->messagerow='';
+      unset($editing_mode);
       
-    } 
+    }
+  
+	 
   
   // now update last view time here
   subscribe_to_topic($topic_id, $_SESSION['current_id']);
-  $t->varkeys->topic_handle='';
   set_topicread($_SESSION['current_id'],$topic_id);
-  
 } 
 else
 {
@@ -291,49 +355,69 @@ else
 // DISPLAY BOTTOM SET OF BUTTONS
 echo $browse_html;
 
-if (($owner_array['owner_id'] == $_SESSION['current_id']) or (is_sysop($_SESSION['current_id']))) 
+
+if (($owner_array['owner_id'] == $_SESSION['current_id']) or (is_sysop($_SESSION['current_id'])))
 {
-  $t->set_file('buttons', 'readtopic_links_admin_end.html');
-} 
+
+
+  display_navigationBar(
+			$topicleap=true,
+			$whosonline=true,
+			$mainmenu=false,
+			$examineuser=false,
+			$returntosection=true,
+			
+			$createtopic=false,
+			$createmenu=false,
+			$postcomment=true,
+			
+			$section_id=false,
+			$parent_id=$topic_array['section_id'],
+			$topic_id=$topic_id
+			);
+
+
+}
 else
 {
-  if ($topic_array['topic_readonly'] == 'y')
+  if ($topic_array['topic_readonly'] == 'y') 
     {
-      $t->set_file('buttons', 'readtopic_links_readonly.html');
-    } else {
-      $t->set_file('buttons', 'readtopic_links.html');
+      display_navigationBar(
+			    $topicleap=true,
+			    $whosonline=true,
+			    $mainmenu=false,
+			    $examineuser=false,
+			    $returntosection=true,
+			    
+			    $createtopic=false,
+			    $createmenu=false,
+			    $postcomment=false,
+			    
+			    $section_id=false,
+			    $parent_id=$topic_array['section_id'],
+			    $topic_id=$topic_id
+			    );
+    }
+  else
+    {
+      display_navigationBar(
+			    $topicleap=true,
+			    $whosonline=true,
+			    $mainmenu=false,
+			    $examineuser=false,
+			    $returntosection=true,
+			    
+			    $createtopic=false,
+			    $createmenu=false,
+			    $postcomment=true,
+			    
+			    $section_id=false,
+			    $parent_id=$topic_array['section_id'],
+			    $topic_id=$topic_id
+			    );
+
     } 
 } 
 
-$t->set_var('section_id', $topic_array['section_id']);
-$t->set_var('topic_id', $topic_id);
-$t->pparse('content', 'buttons');
-
 page_end($breadcrumbs,$t);
 ?>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

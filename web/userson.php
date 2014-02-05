@@ -93,6 +93,22 @@ else
   // could be bad
 }
 
+display_navigationBar(
+		      $topicleap=true,
+		      $whosonline=false,
+		      $mainmenu=true,
+		      $examineuser=true,
+		      $returntosection=false,
+		      
+		      $createtopic=false,
+		      $createmenu=false,
+		      $postcomment=false,
+		      
+		      $section_id=false,
+		      $parent_id=false,
+		      $topic_id=false
+		      );
+     
 page_end($breadcrumbs,$t);
 ?>
 

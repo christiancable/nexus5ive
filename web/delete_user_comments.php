@@ -1,6 +1,15 @@
 <?php
-// includes
+/**********************************************/
+/* delete_user_comments.php                   */
+/*                                            */
+/* deletes the comments from the profile of   */
+/* a user                                     */
+/*                                            */
+/* called from show_userinfo.php for logged   */
+/* in user                                    */
+/**********************************************/
 
+// includes
 include_once('../includes/common.php');
 include_once('../includes/database_layer.php');
 include_once('../includes/site.php');
@@ -13,8 +22,6 @@ if (!validlogin())
 {
   eject_user();	
 }
-
-# delete messages
 
 delete_user_comments($_SESSION['current_id']);
 

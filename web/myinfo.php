@@ -49,6 +49,23 @@ update_location("Examine User");
 $userlist_array = array();
 $userlist_array = get_userlist_array();
 
+display_navigationBar(	
+		      $topicleap=true,			
+		      $whosonline=true,
+		      $mainmenu=false,
+		      $examineuser=false,
+		      $returntosection=false,
+		      
+		      $createtopic=false,
+		      $createmenu=false,
+                      $postcomment=false,
+		      
+		      		      
+		      $section_id=false,
+		      $parent_id=false,
+		      $topic_id=false
+		      );
+
 $t->set_file("choose_user", "choose_user.html");
 
 
@@ -61,5 +78,23 @@ foreach ($userlist_array  as $current_element)
 $t->set_var("SELECT_CODE",$select_code);
 
 $t->pparse("MyFinalOutput","choose_user");  
+
+display_navigationBar(	
+		      $topicleap=true,			
+		      $whosonline=true,
+		      $mainmenu=false,
+		      $examineuser=false,
+		      $returntosection=false,
+		      
+		      $createtopic=false,
+		      $createmenu=false,
+                      $postcomment=false,
+		      
+		      		      
+		      $section_id=false,
+		      $parent_id=false,
+		      $topic_id=false
+		      );
+
 page_end($breadcrumbs,$t);
 ?>

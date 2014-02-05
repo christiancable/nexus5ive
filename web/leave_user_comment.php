@@ -1,6 +1,11 @@
 <?php
 
-// place a comment on a user page to tell others about that user
+/**********************************************/
+/* leave_user_comment.php                     */
+/*                                            */
+/* leave a comment about a user for others to */
+/* read                                       */
+/**********************************************/
 
 include_once('../includes/common.php');
 include_once('../includes/database_layer.php');
@@ -15,15 +20,13 @@ if (!validlogin())
   eject_user();	
 }
 
-# delete messages
-
-#delete_instant_messages($_SESSION[current_id]);
 
 $instant_message = array();
-#get post vars
+
 $instant_message['text']= escape_input($_POST['comment']);
 $instant_message['from_id'] = $_SESSION['current_id'];
-$instant_message['user_id'] = $_POST['user_id']; # should I check this guy exists or do I trust the form
+$instant_message['user_id'] = $_POST['user_id']; # should I check this guy exists or do I trust the form,
+  // a missing user should come back as a fail from add_user_comment 
 
 add_user_comment($instant_message);
 

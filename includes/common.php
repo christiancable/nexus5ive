@@ -1,8 +1,16 @@
 <?php
-// general functions
+  // general functions
 
-// needed libs
+  // needed libs
 include('../phplib/php/template.inc');
+
+
+// error reporting settings - 20091008
+
+error_reporting(E_ALL | E_STRICT);
+ini_set("display_errors", "off");
+ini_set("log_errors", "on");
+ini_set("error_log", "/home/fraggle/nexus/logs/nexus-php-error.txt");
 
 // functions
 
@@ -50,6 +58,10 @@ function validlogin()
   else
     {
       // echo "Invalid Login";
+      /* if we have a valid cookie then log the user in as above 
+
+       */
+ 
       return false;
     } 
 } 
@@ -190,8 +202,12 @@ function count_messages_in_topic($topic_id)
 
 
 
-function nexus_error()
+function nexus_error($info = "")
 {  
+  if ($info)
+  {
+  	echo "$info";
+  }
   eject_user();
 } 
 
@@ -200,7 +216,7 @@ function nexus_error()
 function eject_user()
 {
   /*
-	 generic timeout error, consider combining this with show_error function
+   generic timeout error, consider combining this with show_error function
   */
   header("Location: http://".$_SERVER['HTTP_HOST'].get_bbsroot()."timeout.html");
   exit(); 
@@ -256,26 +272,30 @@ function new_messages_in_topic($topic_id, $user_id)
    * else false is returned
    */ 
   // check to see if unsubbed
+  
   if (!unsubscribed_from_topic($topic_id, $user_id))
     {
       // ###
-      $sql = "SELECT msg_date FROM topicview WHERE user_id=$user_id AND topic_id=$topic_id LIMIT 1";
       
+      $sql = "SELECT msg_date FROM topicview WHERE user_id=$user_id AND topic_id=$topic_id LIMIT 1";
       if (!$last_message_result = mysql_query($sql))
-	{
-	  nexus_error();
-	} 
+	  {
+	   nexus_error();
+	  } 
       
       if (mysql_num_rows($last_message_result))
 	{
 	  $last_message = mysql_fetch_array($last_message_result);
-	  
-	  $sql = "SELECT COUNT(messagetable.message_id) AS new_msg_count FROM messagetable 
-                  WHERE topic_id=$topic_id AND message_time > " . $last_message['msg_date'];
+
+	 // added quotes for msg_date - june 2010
+	  $sql = 'SELECT COUNT(messagetable.message_id) AS new_msg_count FROM messagetable 
+                  WHERE topic_id='.$topic_id.' AND message_time > "'.$last_message['msg_date'].'"';
 	  
 	  if (!$new_message_result = mysql_query($sql))
 	    {
-	      nexus_error();
+ 
+	      nexus_error(print_r($sql, $return=true));
+	     
 	    } 
 	  $new_messages_array = mysql_fetch_array($new_message_result);
 	  $new_messages = $new_messages_array['new_msg_count'];
@@ -296,6 +316,7 @@ function new_messages_in_topic($topic_id, $user_id)
     {
       $new_messages = false;
     }   
+ 
   return $new_messages;
 } 
 
@@ -348,6 +369,14 @@ function nx_code($text)
   $replacement = '<pre> '."$1".'</pre>';
   $text = preg_replace($pattern, $replacement, $text);
   
+  $pattern ="#\[U\-\](.*)\[\-U\]#isU";
+  $replacement = '<u>'."$1".'</u>';
+  $text = preg_replace($pattern, $replacement, $text);
+  
+  $pattern ="#\[SMALL\-\](.*)\[\-SMALL\]#isU";
+  $replacement = '<p style="font-size:xx-small">'."$1".'</p>';
+  $text = preg_replace($pattern, $replacement, $text);
+
   $text = nl2br($text);
 
   // now remove <br /> tags from preformatted blocks
@@ -359,6 +388,34 @@ function nx_code($text)
 						'return str_replace("<br />","",$matches[0]);'
 						),
 				$text);
+
+  $pattern ="#\[QUOTE\-\](.*)\[\-QUOTE\]#isU";
+  $replacement = '<div class="quote">'."$1".'</div>';
+  $text = preg_replace($pattern, $replacement, $text);
+
+  $pattern ="#\[UPDATED\-\](.*)\[\-UPDATED\]#isU";
+  $replacement = '<div class="updated">'."$1".'</div>';
+  $text = preg_replace($pattern, $replacement, $text);
+  
+  $pattern ="#\[HUDSON\-\](.*)\[\-HUDSON\]#isU";
+  $replacement = '<span class="spoiler">'."$1".'</span>';
+  $text = preg_replace($pattern, $replacement, $text);
+
+  $pattern ="#\[SPOILER\-\](.*)\[\-SPOILER\]#isU";
+  $replacement = '<span class="spoiler">'."$1".'</span>';
+  $text = preg_replace($pattern, $replacement, $text);
+  
+ # $pattern ="/\[youtube\-\](.*)\[\-youtube\]/Ui";
+ # $replacement = '<b>YouTube support coming soon</b><br/><a href="'."$1".'" target="_blank">['."Click Here To Open In A New Window".']</a>';
+  #$text = preg_replace($pattern, $replacement, $text);
+
+  
+  #$pattern = "#\[youtube\-\]http://(?:www\.)?youtube.com/watch\?v=(.*)\[-youtube\]#isU";
+  $pattern = "#\[youtube\-\]http://(www\.)?youtube\.com/watch\?v=([a-zA-Z0-9\-_]+)\[-youtube\]#im";
+  # $pattern ="/\[youtube\-\](.*)\[\-youtube\]/Ui";
+  $replacement = '<object width="425" height="350"><param name="movie" value="http://www.youtube.com/v/'."$2".'"></param><param name="wmode" value="transparent"></param><embed src="http://www.youtube.com/v/'."$2".'" type="application/x-shockwave-flash" wmode="transparent" width="425" height="350"></embed></object>';
+
+  $text = preg_replace($pattern, $replacement, $text);
 
   return $text;  
 }
@@ -432,11 +489,11 @@ function get_breadcrumbs($section)
       $crumb_urls .= '<a href="section.php?section_id=' . $breadcrumbs[$loop_count]["section_id"] . '">';
       if(strlen($breadcrumbs[$loop_count]["section_title"]))
 	{
-	$crumb_urls .= $breadcrumbs[$loop_count]["section_title"] . "</a> -&gt; ";
+	  $crumb_urls .= $breadcrumbs[$loop_count]["section_title"] . "</a> -&gt; ";
 	}
       else
 	{
-	$crumb_urls .= " - " . "</a> -&gt; ";
+	  $crumb_urls .= " - " . "</a> -&gt; ";
 	}
     } 
   return $crumb_urls;
@@ -445,6 +502,8 @@ function get_breadcrumbs($section)
 function get_breadcrumbs_topic($section)
 {
   // update this when newsection is real
+
+
   $breadcrumbs = get_section_parents($section);
   $num_of_crumbs = count($breadcrumbs);
   $crumb_urls = "";
@@ -457,7 +516,7 @@ function get_breadcrumbs_topic($section)
       }
     else
       {
-      $crumb_urls .= " - " . "</a> -&gt; ";
+	$crumb_urls .= " - " . "</a> -&gt; ";
       }
   } 
   return $crumb_urls;
@@ -477,5 +536,54 @@ function get_bbsroot()
       
     }  
   return $dirname;
+}
+
+function send_welcome_email($invalid_user)
+{
+  // open file
+  $welcome_message = file_get_contents("welcome_email.txt");
+
+  // replace vars
+  $welcome_message = str_replace("REALNAME",$invalid_user['user_realname'], $welcome_message);
+  $welcome_message = str_replace("USERNAME",$invalid_user['user_name'], $welcome_message);
+  $welcome_message = str_replace("PASSWORD",$invalid_user['user_password'], $welcome_message);
+
+  mail( $invalid_user['user_email'], BBS_NAME." Account Request",
+        $welcome_message, 'From: '.SYSOP_MAIL);
+  
+
+  // send email
+}
+
+function send_banned_email($banned_user_name)
+{
+  $email_to = "sysop@nexus5.org.uk";
+  $email_from = "From: nexus@nexus5.org.uk";
+  $error_txt = " $banned_user_name  attempt from $_SERVER[REMOTE_ADDR]\n";
+  $str = "[" . date("Y/m/d h:i:s", mktime()) . "] " . $error_txt;
+
+  mail($email_to, "nexus alert", $str, $email_from);
+}
+
+function quote_smart($value)
+{
+  // Quote variable to make safe
+  // use this to prepair strings to be in a query
+  // will work regardless of magic quote setting
+   
+  // see http://uk2.php.net/manual/en/function.mysql-real-escape-string.php
+   
+  // Stripslashes
+  if (get_magic_quotes_gpc()) {
+    $value = stripslashes($value);
+  }
+  // Quote if not integer
+  if (!is_numeric($value)) {
+    $value = "'" . mysql_real_escape_string($value) . "'";
+  }
+  return $value;
+}
+
+function init_session(){
 }
 ?>

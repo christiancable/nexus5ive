@@ -73,6 +73,22 @@ display_header($t,
 	       $unread_comments,
 	       get_count_unread_messages($_SESSION['current_id']));
 
+display_navigationBar(
+		      $topicleap=true,
+		      $whosonline=true,
+		      $mainmenu=false,
+		      $examineuser=true,
+		      $returntosection=false,
+		      
+		      $createtopic=false,
+		      $createmenu=false,
+		      $postcomment=false,
+		      
+		      $section_id=false,
+		      $parent_id=false,
+		      $topic_id=false
+		      );
+
 #get array of all user_ids and names
 $userlist_array = array();
 $userlist_array = get_userlist_array();
@@ -113,7 +129,6 @@ $t->set_var("examine_user_id", $user_index+1);
 $next_id = $user_index+1;
 $pre_id = $user_index-1;
 
-echo "<!-- index is $user_index, prev is $pre_id and next is $next_id -->\n";
 $t->set_var("previous_user_id", $userlist_array[$pre_id]['user_id']);
 $t->set_var("next_user_id", $userlist_array[$next_id]['user_id']);
 
@@ -145,10 +160,10 @@ $t->set_var("user_realname",$examine_user_array['user_realname']);
 
 if($examine_user_array['user_id']==$user_array['user_id'])
 {
-	#mark comments as read
+  // mark comments as read
   mark_comments_read($user_array['user_id']);
 
-#alter user_info
+  // alter user_info
   
   $t->set_var("user_email",$examine_user_array['user_email']);
   // $t->set_var("user_comment",ereg_replace("<br />","",($examine_user_array['user_comment'])));
@@ -156,6 +171,15 @@ if($examine_user_array['user_id']==$user_array['user_id'])
   $t->set_var("user_motto",htmlspecialchars($examine_user_array['user_popname'],ENT_QUOTES));
 	
   
+  // keep email address private
+  if($examine_user_array['user_hideemail'] == 'yes')
+    {
+      $t->set_var("hideemail_checked","checked");
+    }
+  else
+    {
+      $t->set_var("hideemail_checked","");
+    }
   // backwards
   if($examine_user_array['user_backwards'] == 'y')
     {
@@ -256,9 +280,19 @@ if($examine_user_array['user_id']==$user_array['user_id'])
 else 
 {
 # view user info
-  $t->set_var("user_motto",$examine_user_array['user_popname']); 
+  $t->set_var("user_motto",htmlentities($examine_user_array['user_popname'])); 
   $t->set_var("user_comment",nx_code($examine_user_array['user_comment']));
-  $t->set_var("user_email",'<a href="mailto:'.$examine_user_array['user_email'].'">'.$examine_user_array['user_email'].'</a>');
+ 
+  if($examine_user_array['hideemail']='yes')
+    {
+      $t->set_var("user_email","<i>Hidden</i>");
+    }
+  else
+    {
+      $t->set_var("user_email",'<a href="mailto:'.
+		  $examine_user_array['user_email'].'">'.
+		  $examine_user_array['user_email'].'</a>');
+    }
   $examine_user_array['user_sysop']='n';
   
   if($sectionlist_array=get_sectionlist_array($examine_user_array))
@@ -341,5 +375,23 @@ if($comments_array =  get_user_comment($examine_user_array['user_id']))
 
 $t->pparse("MyFinalOutput","userinfo");
 
+display_navigationBar(
+		      $topicleap=true,
+		      $whosonline=true,
+		      $mainmenu=false,
+		      $examineuser=true,
+		      $returntosection=false,
+		      
+		      $createtopic=false,
+		      $createmenu=false,
+		      $postcomment=false,
+		      
+		      $section_id=false,
+		      $parent_id=false,
+		      $topic_id=false
+		      );
+
+
 page_end($breadcrumbs,$t);
+
 ?>
