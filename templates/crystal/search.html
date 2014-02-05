@@ -1,0 +1,26 @@
+<br>
+<DIV class="navigation">
+<FORM action="process_search.php" method="POST" enctype="multipart/form-data">
+<IMG src="images/crystal/search.gif" border="0" align="left">
+<INPUT type="text" name="search" size="50" maxlength="100" value="{INITIAL_SEARCH}">
+<BR>
+Search for a phrase
+<INPUT type="checkbox" name="phrase">
+<INPUT type="submit" value="Search">
+</FORM>
+</div>
+<br>
+<div class="navigation">{RESULTS_FOUND}</div>
+<br>
+<!-- BEGIN ChunkBlock -->
+<div class="SearchResultBox">
+<div class="SearchResultTitle"><a href="readtopic.php?topic_id={TOPIC_ID}&start_message={START_MESSAGE}">{TOPIC_TITLE}</a></div>
+<ul>
+<div class="navigation">{POST_USER}  {POST_DATE}{POST_SUBJECT}</div>
+<div class="sectionIntro">{POST_SUMMARY}</div>
+<div class="navigation">{POST_BREADCRUMBS}</div>
+</ul>
+</div>
+<br>
+<!-- END ChunkBlock -->
+

@@ -36,9 +36,6 @@
 <img  src="images/crystal/stock_text-monospaced.png" title="Monospace [ASCII-]text[-ASCII]"
  onclick="wrapSelection(postForm.comment,'[ASCII-]','[-ASCII]');"> 
 
-<img src="images/crystal/spoiler.png"  title="Spoiler [SPOILER-]text[-SPOILER]"
- onclick="wrapSelection(postForm.comment,'[SPOILER-]','[-SPOILER]');"
-
 <img src="images/crystal/stock_draw-callouts.png"  title="Quote [QUOTE-]text[-QUOTE]"
  onclick="wrapSelection(postForm.comment,'[QUOTE-]','[-QUOTE]');"> 
  

@@ -1,0 +1,39 @@
+  <TABLE width="100%" border=0 cellspacing=1 cellpadding="0">
+  <TBODY>
+    <form method="post" action="process_validate_accounts.php">
+
+    <!-- BEGIN UserBlock -->
+    <TR>
+      <TD width="6%"> 
+      <input type="checkbox" name="ValidChk[]" value="{user_id}" checked>
+      </TD>
+      <TD>
+      {user_name}
+      </TD>
+      <TD>
+      {user_email}
+      </TD>
+      <TD>
+      {user_ipaddress}
+      </TD>
+
+    </TR>
+    <!-- END UserBlock -->
+
+    <TR>
+      <TD class="navigation" colspan="4" height="30">
+      <img src="images/crystal/button_ok.gif" border="0">
+	      	&nbsp;
+      <input type="submit" name="Accept" value="Accept">	
+	      	&nbsp;
+	      	&nbsp;
+	      	&nbsp;
+      <img src="images/crystal/delete_msg.gif" border="0">
+	      	&nbsp;
+      <input type="submit" name="Reject" value="Reject">
+      </TD>
+    </form>
+    </TR>
+  </TBODY>
+</TABLE>
+

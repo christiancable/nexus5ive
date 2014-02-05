@@ -1,11 +1,6 @@
   <form name="user_details" method="post" action="process_update_userinfo.php">
   <table width="100%" height="4" border="0" cellspacing="0">
     <tr> 
-      <td colspan="6" class="navigationBar" ><a href="leap.php">[ Topic Leap ]</a> 
-        -- <a href="userson.php">[ Who's Online ]</a> -- <a href="myinfo.php">[ 
-        Examine User ]</a> </td>
-    </tr>
-    <tr> 
       <td colspan="6"> <div align="center" class="navigation"><a href="show_userinfo.php?user_id={previous_user_id}">{previous_user_name}</a> 
           User {examine_user_id} of {total_users} <a href="show_userinfo.php?user_id={next_user_id}">{next_user_name}</a> 
         </div></td>
@@ -81,6 +76,8 @@
         </div></td>
       <td colspan="3" > <p align="left"><b>Options</b></p>
         <p align="left"> <strong> 
+	  <input type="checkbox" name="hideemail" value="true" {hideemail_checked}>
+          </strong> Keep my e-mail address private<strong><br>
           <input type="checkbox" name="pictures" value="true" {pictures_checked}>
           </strong> Turn off pictures<strong><br>
           </strong> 
@@ -98,11 +95,11 @@
             <option value="50" {show_50} >50</option>
             <option value="100" {show_100} >100</option>
             <option value="150" {show_150} >150</option>
-            <option {value="255" show_all} >All</option>
+            <option value="255" {show_all} >All</option>
           </select>
           posts per page<br>
           <a href="catchup.php">[ Mark all topics as read ]</a><br>
-          <a href="change_password.php">[ Change Password</a><a href="xcz"> ]</a></p>
+          <a href="change_password.php">[ Change Password ]</a></p>
         <p align="left">&nbsp;</p></td>
     </tr>
     <tr valign="top" > 
@@ -135,11 +132,5 @@
   <tr> 
     <td colspan="6" valign="bottom" nowrap><div align="right"><a href="delete_user_comments.php"><img src="images/crystal/delete_msg.gif" border="0"> 
         Delete Comments</a> </div></td>
-  </tr>
-  
-  <tr> 
-    <td colspan="6" valign="bottom" nowrap class="navigationBar" > <a href="leap.php">[ 
-      Topic Leap ]</a> -- <a href="userson.php">[ Who's Online ]</a> -- <a href="myinfo.php">[ 
-      Examine User ]</a> </td>
   </tr>
 </table>

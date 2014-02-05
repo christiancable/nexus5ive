@@ -1,28 +1,33 @@
 <!-- BEGIN CommentBlock -->
- 
- 
-<table align="center"   border="0" width="100%" cellpadding="4" cellspacing="0">
-  <tr class="navigationBar"> 
-    <td width="2%"> <a href="alterpost.php?message_id={message_id}&&topic_id={topic_id}"> 
-      <img src="images/crystal/prop.gif" border="0" alt="edit message"><br>
+<table align="center" border="0" cellpadding="4" cellspacing="0"
+ width="100%">
+  <tbody>
+    <tr class="navigationBar">
+      <td width="2%"> <a
+ href="alterpost.php?message_id={message_id}&topic_id={topic_id}">
+      <img src="images/crystal/prop.gif" alt="edit message" border="0"><br>
       </a></td>
-      
-    <td width="81%"> <b>From: </b>({user_moto}) <a href="show_userinfo.php?user_id={user_id}">{username}</a> 
-      <br> <b>Date: </b>{date} <br> <strong>{subject}</strong> </td>
-      
-    <td width="17%"> 
-      <div align="right">Select 
-        <input type="checkbox" name="MessChk[]" value="{message_id}">
-      </div>
-      
-    </td>
+      <td width="81%"> <b>From: </b>({user_moto}) <a
+ href="show_userinfo.php?user_id={user_id}">{username}</a> <br>
+      <b>Date: </b>{date} <br>
+      <strong>{subject}</strong> </td>
+      <td align="right">{html_mode}<br>
+      </td>
+      <td width="17%">
+      <div align="right">Select <input name="MessChk[]"
+ value="{message_id}" type="checkbox"> </div>
+      </td>
     </tr>
-  </table>
-  <table  align="center"  border="0" width="100%"
-         cellpadding="4" cellspacing="0">
-    <tr class="post"> 
-      
-    <td width="100%"> {edit}<br> <br></td>
+  </tbody>
+</table>
+<table align="center" border="0" cellpadding="4" cellspacing="0"
+ width="100%">
+  <tbody>
+    <tr class="post">
+      <td width="100%"> {edit}<br>
+      <br>
+      </td>
     </tr>
-  </table>
-  <!-- END CommentBlock --> 
+  </tbody>
+</table>
+<!-- END CommentBlock -->

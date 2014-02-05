@@ -1,57 +1,56 @@
-<table width="100%">
-  <tr> 
-    <td  bgcolor="#d6dff5"> 
-      <a href="leap.php">[ Topic Leap ]</a> -- <a href="section.php?section_id=1">[ 
-      Main Menu ]</a> -- <a href="myinfo.php">[ Examine User ]</a> </td>
-  </tr>
-</table>
-
-<form name="form1" method="post" action="process_adduser.php">
-  <table width="10%" border="0"  cellpadding="5" cellspacing="0">
-    <tr> 
-      <th valign="top" nowrap>Username</th>
-      <td valign="top">  
-        <input name="username" type="text" id="username" size="50" maxlength="50">
+<div class="navigationBar" width="100%">&nbsp;</div>
+<div class="navigation">
+{info_text}</div>
+<br>
+<form method="post" action="process_adduser.php">
+  <table class ="navigationBar" border="0"  cellpadding="2" cellspacing="2">
+    <tbody>
+      <tr>
+        <td >Username:<br>
         </td>
-    </tr>
-    <tr> 
-      <th valign="top" nowrap>Real 
-        name</th>
-      <td valign="top"> 
-        <input name="realname" type="text" id="realname2" size="50" maxlength="50">
+        <td class="navigationBar" ><input maxlength="50" size="30"
+ name="username"><br>
         </td>
-    </tr>
-    <tr> 
-      <th valign="top" nowrap>Password</th>
-      <td valign="top"> 
-        <input name="password" type="text" id="password2" size="50" maxlength="50">
-        <input name="random" type="checkbox" id="random2" value="yes">
-        generate random password</td>
-    </tr>
-    <tr> 
-      <th valign="top" nowrap>Email</th>
-      <td valign="top"> 
-        <input name="email" type="text" id="email2" size="50" maxlength="50">
-        <input name="welcome" type="checkbox" id="welcome2" value="yes" checked>
-        send welcome email</td>
-    </tr>
-    <tr> 
-      <th valign="top" nowrap>&nbsp;</th>
-      <td valign="top">&nbsp;</td>
-    </tr>
-    <tr> 
-      <th valign="top" nowrap> 
-        <input name="Submit" type="submit" id="Submit2" value="Add User">
-        </th>
-      <td valign="top"><div align="left"> 
-          [ cancel ]</div></td>
-    </tr>
+      </tr>
+      <tr>
+        <td >Real name:<br>
+        </td>
+        <td class="navigationBar" ><input maxlength="50" size="30"
+ name="realname"><br>
+        </td>
+      </tr>
+      <tr>
+        <td >E-Mail address:<br>
+        </td>
+        <td  class="navigationBar"><input maxlength="50" size="30"
+ name="email"> </td>
+      </tr>
+      <tr>
+        <td >Hide my e-mail address from
+other users:</td>
+        <td  class="navigationBar"><input checked="checked"
+ name="hideemail" value="1" type="radio">Yes &nbsp; <input
+ name="hideemail" value="0" type="radio">No</td>
+      </tr>
+      <tr>
+        <td >Password:<br>
+        </td>
+        <td class="navigationBar" ><input maxlength="50" size="30"
+ name="password" type="password"> </td>
+      </tr>
+      <tr>
+        <td >Confirm password:<br>
+        </td>
+        <td class="navigationBar" ><input maxlength="50" size="30"
+ name="password_confirm" type="password"> </td>
+      </tr>
+    </tbody>
   </table>
-</form>
-<table width="100%">
-  <tr> 
-    <td  bgcolor="#d6dff5">  
-      <a href="leap.php">[ Topic Leap ]</a> -- <a href="section.php?section_id=1">[ 
-      Main Menu ]</a> -- <a href="myinfo.php">[ Examine User ]</a> </td>
-  </tr>
-</table>
+<div class="navigation">{BBS_NAME} is only open to users of {BBS_AGE} years and over.<br>
+I confirm that I am at least {BBS_AGE} years old.&nbsp<input
+ name="age_confirm" value="1" type="checkbox"></div><br>
+  <input name="Submit" value="Submit" type="submit">&nbsp;&nbsp;
+<a href="index.html">[
+Cancel ]</a></form>
+<div class="navigationBar" width="100%">&nbsp;</div>
+
