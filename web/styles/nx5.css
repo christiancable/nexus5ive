@@ -1,0 +1,185 @@
+
+/*
+nexus five
+colours and layout for basic theme
+- October 2010
+*/
+
+/* colours and fonts */
+body {
+	font-family: Verdana,Arial,Helvetica,sans-serif;
+	font-size: 80%;
+	background: #ffffff url(http://www.nexus5.org.uk/images/nx5/background.jpg);
+}
+
+p {
+	line-height: 1.5em;
+}
+
+hr {
+	background-color:#336699;
+	height: 0.1em;
+	border: none;
+}
+
+h1 {
+	color:#336699;
+	font-family: Georgia, Times, serif;
+	font-weight: 550;
+	letter-spacing:0.1em;
+	margin-top:0em;
+	margin-bottom:0em;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+blockquote {
+	font-style:italic;
+}
+
+
+.navlinks {
+	font-size: 80%;
+	
+	
+}
+
+.navlinks ul {
+	padding-left:0;	
+
+}
+
+.navlinks li {
+	display: inline;
+	list-style-type: none;
+	padding-right: 5px;
+	
+	
+}
+
+
+
+/* layout */
+#content {
+	overflow:auto;
+	margin-left: 2em;
+	margin-right: 2em;
+}
+#login {
+	float:left;
+	padding-right: 1em;
+
+}
+
+#login form dd {
+	margin: 0;
+	margin-bottom: 0.5em;
+}
+
+#login form input {
+	width:10em;
+}
+
+#login form label {
+	font-size:80%;
+}
+
+
+#header {
+	overflow:auto;
+	padding-bottom: 0;
+}
+
+#header h1 {
+	float: left;
+
+}
+
+#search {
+	float: right;
+}
+
+#hud {
+	overflow:auto;
+	font-size: 80%;
+}
+
+#hud ul {
+	padding-left:0;
+}
+#hud li {
+	display: inline;
+	list-style-type: none;
+	padding-right: 5px;
+
+}
+
+#hud .user {
+	float:left;
+}
+
+#hud .logout {
+	float:right;
+}
+
+
+#location {
+	overflow:auto;
+	font-size: 80%;
+
+
+}
+
+#location .breadcrumbs li {
+	display: inline;
+	list-style-type: none;
+	padding-right: 5px;
+	float:left;
+}
+
+#location ul {
+	padding-left:0;
+
+}
+
+#location span {
+	float: right;
+	display:inline;
+}
+
+#location .breadcrumbs a:after {
+	content: ' -> ';
+}
+
+#topics ul {
+	font-size: 80%;
+	padding-left:0.5em;
+	list-style-type:none;
+	padding: 0;
+	margin: 0;
+
+}
+#topics li {
+	display:inline;
+	
+}
+
+#topics dd {
+	padding-left:0em;
+
+}
+
+#topics a.active {
+	background: url(http://www.nexus5.org.uk/images/crystal/star.gif) no-repeat;
+	z-index: 10;
+	background-postition: 0 50%;
+	padding-left:34px;
+}
+
+

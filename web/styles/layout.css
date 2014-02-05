@@ -1,0 +1,14 @@
+
+/* section columns */
+
+.LeftSubSection {
+	float: left;
+	width:50%;
+}
+
+.RightSubSection {
+	float: right;
+	width:50%;
+
+}
+/* end section columns */
