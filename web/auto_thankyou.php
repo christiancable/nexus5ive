@@ -46,8 +46,7 @@ include_once('../includes/site.php');
 </font></pre>
 </div>
 <?
-  }
-  else {
+  } else {
 ?>
 <div align="left">
   <h1><font color="#000099" face="Verdana, Arial, Helvetica, sans-serif">Sorry!</font></h1>
