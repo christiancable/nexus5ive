@@ -18,14 +18,10 @@ $db = opendata();
 session_start();
 
 // check login
-if (!validlogin())
-{
-  eject_user();	
+if (!validlogin()) {
+    eject_user();
 }
 
 delete_user_comments($_SESSION['current_id']);
 
-header("Location: http://".$_SERVER['HTTP_HOST'].get_bbsroot().
-       "show_userinfo.php?user_id=".$_SESSION['current_id']);
-
-?>
+header("Location: http://".$_SERVER['HTTP_HOST'].get_bbsroot()."show_userinfo.php?user_id=".$_SESSION['current_id']);

@@ -19,14 +19,11 @@ $db = opendata();
 session_start();
 
 // check login
-if (!validlogin())
-{
-  eject_user();	
+if (!validlogin()) {
+    eject_user();
 }
 
 
 delete_instant_messages($message_id_array);
 
-header("Location: http://".$_SERVER['HTTP_HOST'].
-       get_bbsroot()."messages.php");
-?>
+header("Location: http://".$_SERVER['HTTP_HOST'].get_bbsroot()."messages.php");
