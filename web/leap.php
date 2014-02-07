@@ -14,21 +14,14 @@ $db = opendata();
 session_start();
 
 // check login
-if (!validlogin())
-{
-  eject_user();
+if (!validlogin()) {
+    eject_user();
 }
 
+$target = find_next_unread_topic($_SESSION['current_id']);
 
-if($target = find_next_unread_topic($_SESSION['current_id']))
-{
-  
-} 
-else
-{
-  $target = 1;
+if ($target === false) {
+    $target = 1;
 }
 
 header("Location: http://".$_SERVER['HTTP_HOST'].get_bbsroot()."section.php?section_id=$target");
-
-?>
