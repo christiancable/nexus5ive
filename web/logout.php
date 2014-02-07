@@ -15,10 +15,3 @@ session_destroy();
 
 header("Location: http://".$_SERVER['HTTP_HOST'].get_bbsroot());
 exit;
-?>
-
-
-
-
-
-
