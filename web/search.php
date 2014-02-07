@@ -15,17 +15,14 @@ include_once('../includes/site.php');
 //common stuff
 $db = opendata();
 session_start();
-$template_location =TEMPLATE_HOME.$_SESSION['my_theme']; 
+$template_location =TEMPLATE_HOME.$_SESSION['my_theme'];
 
 // check login
-if (!validlogin())
-{
-  eject_user();	
+if (!validlogin()) {
+    eject_user();
 }
 
 //update user activity
-
-
 
 $user_array = get_user_array($_SESSION['current_id']);
 
@@ -37,63 +34,52 @@ $breadcrumbs = get_dummybreadcrumbs();
 
 $t = new Template($template_location);
 
-display_header($t,
-	       $breadcrumbs,
-	       "Search",
-	       $user_array['user_name'],
-	       $user_array['user_popname'],
-	       $_SESSION['current_id'],
-	       count_instant_messages($_SESSION['current_id']),
-	       SYSOP_ID,
-	       SYSOP_NAME,
-	       get_count_unread_comments($_SESSION['current_id']),
-	       get_count_unread_messages($_SESSION['current_id']));
+display_header(
+    $t,
+    $breadcrumbs,
+    "Search",
+    $user_array['user_name'],
+    $user_array['user_popname'],
+    $_SESSION['current_id'],
+    count_instant_messages($_SESSION['current_id']),
+    SYSOP_ID,
+    SYSOP_NAME,
+    get_count_unread_comments($_SESSION['current_id']),
+    get_count_unread_messages($_SESSION['current_id'])
+);
 
 display_navigationBar(
-                      $topicleap=true,
-                      $whosonline=true,
-                      $mainmenu=false,
-                      $examineuser=true,
-                      $returntosection=false,
-
-                      $createtopic=false,
-                      $createmenu=false,
-                      $postcomment=false,
-
-                      $section_id=false,
-                      $parent_id=false,
-                      $topic_id=false
-                      );
+    $topicleap = true,
+    $whosonline = true,
+    $mainmenu = false,
+    $examineuser = true,
+    $returntosection = false,
+    $createtopic = false,
+    $createmenu = false,
+    $postcomment = false,
+    $section_id = false,
+    $parent_id = false,
+    $topic_id = false
+);
 
 $num_of_users = count($users_on_array);
 
   
 $t->set_file("search", "search.html");
-
-  
-$t->pparse("MyFinalOutput","search");
+$t->pparse("MyFinalOutput", "search");
 
 display_navigationBar(
-                      $topicleap=true,
-                      $whosonline=true,
-                      $mainmenu=false,
-                      $examineuser=true,
-                      $returntosection=false,
+    $topicleap = true,
+    $whosonline = true,
+    $mainmenu = false,
+    $examineuser = true,
+    $returntosection = false,
+    $createtopic = false,
+    $createmenu = false,
+    $postcomment = false,
+    $section_id = false,
+    $parent_id = false,
+    $topic_id = false
+);
 
-                      $createtopic=false,
-                      $createmenu=false,
-                      $postcomment=false,
-
-                      $section_id=false,
-                      $parent_id=false,
-                      $topic_id=false
-                      );
-
-page_end($breadcrumbs,$t);
-?>
-
-
-
-
-
-
+page_end($breadcrumbs, $t);

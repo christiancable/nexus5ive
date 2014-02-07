@@ -13,34 +13,30 @@ include_once('../includes/site.php');
 
 // parameters
 
-if(isset($_GET['user_id']))
-{
-  $user_id=$_GET['user_id'];
+if (isset($_GET['user_id'])) {
+    $user_id=$_GET['user_id'];
 }
 
-if(isset($_POST['user_id']))
-{
-  $user_id=$_POST['user_id'];
+if (isset($_POST['user_id'])) {
+    $user_id=$_POST['user_id'];
 }
 
 //common stuff
 $db = opendata();
 session_start();
-$template_location =TEMPLATE_HOME.$_SESSION['my_theme']; 
+$template_location =TEMPLATE_HOME.$_SESSION['my_theme'];
 
 // check login
-if (!validlogin())
-{
-  eject_user();	
+if (!validlogin()) {
+    eject_user();
 }
 
 
 
 // check if user exists if not check them to the main menu
-if (!$examine_user_array = get_user_array($user_id)) 
-{
-  header("Location: http://".$_SERVER['HTTP_HOST'].get_bbsroot()."section.php?section_id=1");
-  exit();
+if (!$examine_user_array = get_user_array($user_id)) {
+    header("Location: http://".$_SERVER['HTTP_HOST'].get_bbsroot()."section.php?section_id=1");
+    exit();
 }
 
 
@@ -50,78 +46,63 @@ $breadcrumbs = get_dummybreadcrumbs();
 
 $t = new Template($template_location);
 
-if($_SESSION['current_id'] == $user_id)
-{ 
-# are we looking at ourselves if so we dont have new comments
-  $unread_comments = 0;
-} 
-else
-{
-  $unread_comments = get_count_unread_comments($_SESSION['current_id']);
-  
+if ($_SESSION['current_id'] == $user_id) {
+    # are we looking at ourselves if so we dont have new comments
+    $unread_comments = 0;
+} else {
+    $unread_comments = get_count_unread_comments($_SESSION['current_id']);
 }
 
-display_header($t,
-	       $breadcrumbs,
-	       "Examining ".$examine_user_array['user_name'],
-	       $user_array['user_name'],
-	       $user_array['user_popname'],
-	       $_SESSION['current_id'],
-	       count_instant_messages($_SESSION['current_id']),
-	       SYSOP_ID,
-	       SYSOP_NAME,
-	       $unread_comments,
-	       get_count_unread_messages($_SESSION['current_id']));
+display_header(
+    $t,
+    $breadcrumbs,
+    "Examining ".$examine_user_array['user_name'],
+    $user_array['user_name'],
+    $user_array['user_popname'],
+    $_SESSION['current_id'],
+    count_instant_messages($_SESSION['current_id']),
+    SYSOP_ID,
+    SYSOP_NAME,
+    $unread_comments,
+    get_count_unread_messages($_SESSION['current_id'])
+);
 
 display_navigationBar(
-		      $topicleap=true,
-		      $whosonline=true,
-		      $mainmenu=false,
-		      $examineuser=true,
-		      $returntosection=false,
-		      
-		      $createtopic=false,
-		      $createmenu=false,
-		      $postcomment=false,
-		      
-		      $section_id=false,
-		      $parent_id=false,
-		      $topic_id=false
-		      );
+    $topicleap = true,
+    $whosonline = true,
+    $mainmenu = false,
+    $examineuser = true,
+    $returntosection = false,
+    $createtopic = false,
+    $createmenu = false,
+    $postcomment = false,
+    $section_id = false,
+    $parent_id = false,
+    $topic_id = false
+);
 
 #get array of all user_ids and names
 $userlist_array = array();
 $userlist_array = get_userlist_array();
 
-
 //update user activity
-update_location('<a href="show_userinfo.php?user_id='
-		.$examine_user_array['user_id'].
-		'">Examining '.$examine_user_array['user_name'].'</a>');
-
-
+update_location('<a href="show_userinfo.php?user_id='.$examine_user_array['user_id'].'">Examining '.$examine_user_array['user_name'].'</a>');
 
 ## main user_info 
-if($examine_user_array['user_id']==$user_array['user_id'])
-{
-  $t->set_file("userinfo", "alter_userinfo.html");
-} 
-else 
-{
-  $t->set_file("userinfo", "show_userinfo.html");
+if ($examine_user_array['user_id'] === $user_array['user_id']) {
+    $t->set_file("userinfo", "alter_userinfo.html");
+} else {
+    $t->set_file("userinfo", "show_userinfo.html");
 }
-
 
 #find examined user in the userlist_array
 $user_index=0;
-foreach($userlist_array as $userlist_entry) 
-{
-#print " ".$userlist_entry[user_name]."-";
-  if($userlist_entry['user_id'] == $examine_user_array['user_id'])
-    {
-      break;
+foreach ($userlist_array as $userlist_entry) {
+    #print " ".$userlist_entry[user_name]."-";
+    if ($userlist_entry['user_id'] === $examine_user_array['user_id']) {
+        break;
     }
-  $user_index++;
+    $user_index++;
 }
 
 
@@ -132,266 +113,225 @@ $pre_id = $user_index-1;
 $t->set_var("previous_user_id", $userlist_array[$pre_id]['user_id']);
 $t->set_var("next_user_id", $userlist_array[$next_id]['user_id']);
 
-if($userlist_array[$next_id]['user_id'])
-{
-  $t->set_var("next_user_name","[ Next &gt;&gt; ]"); 
-}
-else
-{
-  $t->set_var("next_user_name",""); 
+if ($userlist_array[$next_id]['user_id']) {
+    $t->set_var("next_user_name", "[ Next &gt;&gt; ]");
+} else {
+    $t->set_var("next_user_name", "");
 }
 
-if($userlist_array[$pre_id]['user_id'])
-{	
-  $t->set_var("previous_user_name","[ &lt;&lt; Previous ]"); 
-}
-else
-{
-  $t->set_var("previous_user_name",""); 
+if ($userlist_array[$pre_id]['user_id']) {
+    $t->set_var("previous_user_name", "[ &lt;&lt; Previous ]");
+} else {
+    $t->set_var("previous_user_name", "");
 }
 
 $t->set_var("total_users", count($userlist_array));
 
-$t->set_var("user_name",$examine_user_array['user_name']);
-$t->set_var("user_realname",$examine_user_array['user_realname']);
+$t->set_var("user_name", $examine_user_array['user_name']);
+$t->set_var("user_realname", $examine_user_array['user_realname']);
 
 
 #SOMETHINGS LOOK DIFFERENT WHEN EXAMINING YOURSELF
 
-if($examine_user_array['user_id']==$user_array['user_id'])
-{
-  // mark comments as read
-  mark_comments_read($user_array['user_id']);
+if ($examine_user_array['user_id'] ==+ $user_array['user_id']) {
+    // mark comments as read
+    mark_comments_read($user_array['user_id']);
 
-  // alter user_info
+    // alter user_info
+
+    $t->set_var("user_email", $examine_user_array['user_email']);
+    // $t->set_var("user_comment",ereg_replace("<br />","",($examine_user_array['user_comment'])));
+    $t->set_var("user_comment", $examine_user_array['user_comment']);
+    $t->set_var("user_motto", htmlspecialchars($examine_user_array['user_popname'], ENT_QUOTES));
   
-  $t->set_var("user_email",$examine_user_array['user_email']);
-  // $t->set_var("user_comment",ereg_replace("<br />","",($examine_user_array['user_comment'])));
-  $t->set_var("user_comment",$examine_user_array['user_comment']);
-  $t->set_var("user_motto",htmlspecialchars($examine_user_array['user_popname'],ENT_QUOTES));
-	
+    // keep email address private
+    if ($examine_user_array['user_hideemail'] == 'yes') {
+        $t->set_var("hideemail_checked", "checked");
+    } else {
+        $t->set_var("hideemail_checked", "");
+    }
+
+    // backwards
+    if ($examine_user_array['user_backwards'] == 'y') {
+        $t->set_var("backwards_checked", "checked");
+    } else {
+        $t->set_var("backwards_checked", "");
+    }
+
+    // pictures
+    if ($examine_user_array['user_no_pictures'] == 'y') {
+        $t->set_var("pictures_checked", "checked");
+    } else {
+        $t->set_var("pictures_checked", "");
+    }
+
+    // topic depth
   
-  // keep email address private
-  if($examine_user_array['user_hideemail'] == 'yes')
-    {
-      $t->set_var("hideemail_checked","checked");
+    switch ($examine_user_array['user_display']) {
+          
+        case 5:
+            $t->set_var("show_5", "selected");
+            break;
+        
+        case 10:
+            $t->set_var("show_10", "selected");
+            break;
+
+        case 15:
+            $t->set_var("show_15", "selected");
+            break;
+        
+        case 20:
+            $t->set_var("show_20", "selected");
+            break;
+        
+        case 25:
+            $t->set_var("show_25", "selected");
+            break;
+        
+        case 30:
+            $t->set_var("show_30", "selected");
+            break;
+        
+        case 40:
+            $t->set_var("show_40", "selected");
+            break;
+        
+        case 50:
+            $t->set_var("show_50", "selected");
+            break;
+        
+        case 100:
+            $t->set_var("show_100", "selected");
+            break;
+        
+        case 150:
+            $t->set_var("show_150", "selected");
+            break;
+        
+        case 255:
+            $t->set_var("show_all", "selected");
+            break;
+          
+        default:
+            $t->set_var("show_10", "selected");
+
     }
-  else
-    {
-      $t->set_var("hideemail_checked","");
+
+    // sex
+    switch ($examine_user_array['user_sex']) {
+
+        case "male":
+            $t->set_var("sex_boy", "selected");
+            $t->set_var("sex_girl", "");
+            $t->set_var("sex_unknown", "");
+            break;
+
+        case "female":
+            $t->set_var("sex_boy", "");
+            $t->set_var("sex_girl", "selected");
+            $t->set_var("sex_unknown", "");
+            break;
+
+        default:
+            $t->set_var("sex_boy", "");
+            $t->set_var("sex_girl", "");
+            $t->set_var("sex_unknown", "selected");
     }
-  // backwards
-  if($examine_user_array['user_backwards'] == 'y')
-    {
-      $t->set_var("backwards_checked","checked");
-    } 
-  else 
-    {
-      $t->set_var("backwards_checked","");
+
+} else {
+
+    # view user info
+    $t->set_var("user_motto", htmlentities($examine_user_array['user_popname']));
+    $t->set_var("user_comment", nx_code($examine_user_array['user_comment']));
+
+    if ($examine_user_array['hideemail']='yes') {
+        $t->set_var("user_email", "<i>Hidden</i>");
+    } else {
+        $t->set_var("user_email", '<a href="mailto:'.$examine_user_array['user_email'].'">'.$examine_user_array['user_email'].'</a>');
     }
-  // pictures
-  if($examine_user_array['user_no_pictures'] == 'y')
-    {
-      $t->set_var("pictures_checked","checked");
-    } 
-  else 
-    {
-      $t->set_var("pictures_checked","");
-    }
-  // topic depth
+
+    $examine_user_array['user_sysop']='n';
   
-  switch ($examine_user_array['user_display']) 
-    {
-      
-      
-    case 5:
-      $t->set_var("show_5","selected");
-      break;
-    
-    case 10:
-      $t->set_var("show_10","selected");
-      break;
-    
-    case 15:
-      $t->set_var("show_15","selected");
-      break;
-    
-    case 20:
-      $t->set_var("show_20","selected");
-      break;
-    
-    case 25:
-      $t->set_var("show_25","selected");
-      break;
-    
-    case 30:
-      $t->set_var("show_30","selected");
-      break;
-    
-    case 40:
-      $t->set_var("show_40","selected");
-      break;
-    
-    case 50:
-      $t->set_var("show_50","selected");
-      break;
-    
-    case 100:
-      $t->set_var("show_100","selected");
-      break;
-    
-    case 150:
-      $t->set_var("show_150","selected");
-      break;
-    
-    case 255:
-      $t->set_var("show_all","selected");
-      break;
-      
-    default:
-      $t->set_var("show_10","selected");
+    if ($sectionlist_array=get_sectionlist_array($examine_user_array)) {
+        
+        foreach ($sectionlist_array as $current_element) {
+            if (!strlen($current_element['section_title'])) {
+                $current_element['section_title']="--";
+            }
+            $moderation_list = $moderation_list.'<a href="section.php?section_id='.$current_element['section_id']."\">$current_element[section_title]</a><br>";
+        }
+
+        $t->set_var("moderated_links", $moderation_list."<br>");
+        $t->set_var("moderated_title", "Moderator of<br>");
+    } else {
+        $t->set_var("moderated_title", "");
     }
-	
-  // sex
-  switch ($examine_user_array['user_sex'])
-    {
-      
-    case "male":
-      $t->set_var("sex_boy","selected");
-      $t->set_var("sex_girl","");
-      $t->set_var("sex_unknown","");
-      break;
-    
-    case "female":
-      $t->set_var("sex_boy","");
-      $t->set_var("sex_girl","selected");
-      $t->set_var("sex_unknown","");
-      break;
-      
-    default:
-      $t->set_var("sex_boy","");
-      $t->set_var("sex_girl","");
-      $t->set_var("sex_unknown","selected");
-    }
-	
-  
-  
-} 
-else 
-{
-# view user info
-  $t->set_var("user_motto",htmlentities($examine_user_array['user_popname'])); 
-  $t->set_var("user_comment",nx_code($examine_user_array['user_comment']));
- 
-  if($examine_user_array['hideemail']='yes')
-    {
-      $t->set_var("user_email","<i>Hidden</i>");
-    }
-  else
-    {
-      $t->set_var("user_email",'<a href="mailto:'.
-		  $examine_user_array['user_email'].'">'.
-		  $examine_user_array['user_email'].'</a>');
-    }
-  $examine_user_array['user_sysop']='n';
-  
-  if($sectionlist_array=get_sectionlist_array($examine_user_array))
-    {
-      foreach ($sectionlist_array  as $current_element)
-	{
-	  if(!strlen($current_element['section_title']))
-	    {
-	    $current_element['section_title']="--";
-	    }
-	  $moderation_list = $moderation_list.'<a href="section.php?section_id='.$current_element['section_id']."\">$current_element[section_title]</a><br>";
-	}
-      $t->set_var("moderated_links",$moderation_list."<br>");
-      $t->set_var("moderated_title","Moderator of<br>");
-    } 
-  else
-    {
-      $t->set_var("moderated_title","");
-    }
-  
-  if($last_edit_array = get_last_edited_topic($examine_user_array['user_id']))
-    {
-      $t->set_var("Most_Recent_Post_in","Most Recent Post In<br>");
-      if(!strlen($last_edit_array['topic_title']))
-	{
-	  $last_edit_array['topic_title']="--";
-	}
-      $t->set_var("topic_link",'<a href="readtopic.php?topic_id='.$last_edit_array['topic_id'].'">'.$last_edit_array['topic_title'].'</a>');
-    }
-  else 
-    {
-      $t->set_var("Most_Recent_Post_in","");
-      $t->set_var("topic_link","");
-      
+
+    if ($last_edit_array = get_last_edited_topic($examine_user_array['user_id'])) {
+        $t->set_var("Most_Recent_Post_in", "Most Recent Post In<br>");
+       
+        if (!strlen($last_edit_array['topic_title'])) {
+            $last_edit_array['topic_title'] = "--";
+        }
+
+        $t->set_var("topic_link", '<a href="readtopic.php?topic_id='.$last_edit_array['topic_id'].'">'.$last_edit_array['topic_title'].'</a>');
+
+    } else {
+        $t->set_var("Most_Recent_Post_in", "");
+        $t->set_var("topic_link", "");
     }
 }
 
 
+$t->set_var("number_of_posts", $examine_user_array['user_totaledits']);
 
-$t->set_var("number_of_posts",$examine_user_array['user_totaledits']);
-
-
-if($last_time_on = get_last_time_on($examine_user_array['user_id']))
-{
-  $t->set_var("last_visit",$last_time_on);
-} 
-else
-{
-  $t->set_var("last_visit","Unknown");
+if ($last_time_on = get_last_time_on($examine_user_array['user_id'])) {
+    $t->set_var("last_visit", $last_time_on);
+} else {
+    $t->set_var("last_visit", "Unknown");
 }
 
-$t->set_var("user_totalvisits",$examine_user_array['user_totalvisits']);
-$t->set_var("user_film",$examine_user_array['user_film']);
-$t->set_var("user_band",$examine_user_array['user_band']);
-$t->set_var("user_sex",$examine_user_array['user_sex']);
-$t->set_var("user_town",$examine_user_array['user_town']);
-$t->set_var("user_age",$examine_user_array['user_age']);
-$t->set_var("shown_user_id",$examine_user_array['user_id']);
+$t->set_var("user_totalvisits", $examine_user_array['user_totalvisits']);
+$t->set_var("user_film", $examine_user_array['user_film']);
+$t->set_var("user_band", $examine_user_array['user_band']);
+$t->set_var("user_sex", $examine_user_array['user_sex']);
+$t->set_var("user_town", $examine_user_array['user_town']);
+$t->set_var("user_age", $examine_user_array['user_age']);
+$t->set_var("shown_user_id", $examine_user_array['user_id']);
 
 
 #set sysop flag to no before calling get_sectionlist_array
 
 #show user comments
+if ($comments_array = get_user_comment($examine_user_array['user_id'])) {
+    $t->set_block('userinfo', 'CommentBlock', 'tablerow');
+    
+    foreach ($comments_array as $current_message_array) {
+        $t->set_var("comment_from_id", $current_message_array['from_id']);
+        $t->set_var("comment_text", $current_message_array['text']);
 
-
-
-if($comments_array =  get_user_comment($examine_user_array['user_id']))
-{
-  $t->set_block('userinfo', 'CommentBlock', 'tablerow'); 
-  foreach ($comments_array as $current_message_array)
-    {
-      $t->set_var("comment_from_id",$current_message_array['from_id']);
-      $t->set_var("comment_text",$current_message_array['text']); 
-# strip this?
-      $t->set_var("comment_user",$current_message_array['user_name']);		  
-      $t->parse('tablerow', 'CommentBlock', true); 	
-      
+        # strip this?
+        $t->set_var("comment_user", $current_message_array['user_name']);
+        $t->parse('tablerow', 'CommentBlock', true);
     }
 }
 
-$t->pparse("MyFinalOutput","userinfo");
+$t->pparse("MyFinalOutput", "userinfo");
 
 display_navigationBar(
-		      $topicleap=true,
-		      $whosonline=true,
-		      $mainmenu=false,
-		      $examineuser=true,
-		      $returntosection=false,
-		      
-		      $createtopic=false,
-		      $createmenu=false,
-		      $postcomment=false,
-		      
-		      $section_id=false,
-		      $parent_id=false,
-		      $topic_id=false
-		      );
+    $topicleap = true,
+    $whosonline = true,
+    $mainmenu = false,
+    $examineuser = true,
+    $returntosection = false,
+    $createtopic = false,
+    $createmenu = false,
+    $postcomment = false,
+    $section_id = false,
+    $parent_id = false,
+    $topic_id = false
+);
 
 
-page_end($breadcrumbs,$t);
-
-?>
+page_end($breadcrumbs, $t);

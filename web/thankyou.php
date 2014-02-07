@@ -1,12 +1,12 @@
 <?php
+# DELETE ME? - cfc - 07/02/2014
+# 
 # send sysop some email
 # updated the colour to the housestyle - feb 15 2003
 # christian 
 
 
-mail( "sysop@nexus5.org.uk", "Nexus Account Request",
-	"Cut and Paste\n insert into usertable (user_name, user_realname, user_password, user_email ) values ('$username', '$realname', '$password', '$email');\n from $_SERVER[REMOTE_ADDR] ", "From: $email" );
-
+mail("sysop@nexus5.org.uk", "Nexus Account Request", "Cut and Paste\n insert into usertable (user_name, user_realname, user_password, user_email ) values ('$username', '$realname', '$password', '$email');\n from $_SERVER[REMOTE_ADDR] ", "From: $email");
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -43,4 +43,3 @@ mail( "sysop@nexus5.org.uk", "Nexus Account Request",
 </div>
 </body>
 </html>
-

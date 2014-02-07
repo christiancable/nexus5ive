@@ -16,18 +16,9 @@ $db = opendata();
 session_start();
 
 // check login
-if (!validlogin())
-{
-  eject_user();	
+if (!validlogin()) {
+    eject_user();
 }
 
 unsubscribe_from_topic($topic_id, $_SESSION['current_id']);
-
 header('Location: http://'.$_SERVER['HTTP_HOST'].get_bbsroot().'section.php?section_id='.$section_id);
-?>
-
-
-
-
-
-
