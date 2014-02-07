@@ -1,0 +1,25 @@
+<?php
+# this is for custom site defines
+
+putenv("TZ=GB");
+
+define('DEFAULT_TEMPLATE', 'crystal');
+define('TEMPLATE_HOME', '../templates/');
+define('SYSOP_NAME', '');
+define('SYSOP_MAIL', '');
+define('SYSOP_ID', '');
+define('MYSQL_USER', '');
+define('MYSQL_PASSWORD', '');
+define('MYSQL_SERVER', '');
+define('MYSQL_DATABASE', '');
+define('BBS_NAME', '');
+define('ERROR_MAIL', ''); # same error email?
+define('MAX_MSG_SIZE', '600000');
+// min age for BBS signups
+define('BBS_AGE', '16');
+// do we require sysop to validate new accounts
+define('AUTO_VALIDATE_USERS', false);
+// site capped limit for search results
+define('SEARCH_LIMIT', 100);
+// max time in which a user has the ability to alter their post in seconds
+define('MAX_EDIT_TIME', 300);
