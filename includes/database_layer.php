@@ -375,47 +375,6 @@ function get_message_with_time($message_id)
     }
 }
 
-function get_page_of_topic_messages(
-    $topic_id,
-    $num_of_messages_to_show,
-    $start_message,
-    $total_messages,
-    $new_msg_total
-) {
-
-    // $new_msg_total, $total_messages
-    $sql = 'SELECT *, DATE_FORMAT(message_time,"%a %b %D - %H:%i %Y") AS format_time FROM messagetable
-    WHERE topic_id=' . $topic_id . '  ORDER BY  message_id  ';
-
-    if (!isset($start_message)) {
-        $start_message = $total_messages - $num_of_messages_to_show;
-
-        if ($new_msg_total > $num_of_messages_to_show) {
-            $start_message = $total_messages - $new_msg_total;
-            $num_of_messages_to_show = $new_msg_total + 1;
-        }
-
-    } else {
-        if ($start_message > ($total_messages - $num_of_messages_to_show)) {
-            $start_message = $total_messages - $num_of_messages_to_show;
-        }
-    }
-
-    if ($start_message < 0) {
-        $start_message = 0;
-    }
-
-    $limit_sql = "LIMIT $start_message, $num_of_messages_to_show";
-
-    $sql = $sql . $limit_sql;
-
-    if (!$messages_to_show = mysql_query($sql)) {
-        return false;
-    } else {
-        return $messages_to_show;
-    }
-}
-
 /*
  * nexusmessagetable functions
 */
@@ -1622,4 +1581,56 @@ function message_search($token_array)
         return $search_results;
     }
 
+}
+
+/*
+
+THE GREAT 2014 REFACTOR - get all the ugly SQL in one place for later destruction 
+
+ */
+
+function fetchPostArray($topicID, $numberOfPosts, $startPost, $userID)
+{
+    // SUCCCESS: returns an array of posts from a topic
+    // FAILURE: returns false
+    
+
+    $returnValue = false;
+
+    $totalPosts = get_count_topic_messages($topicID);
+    $newPosts = new_messages_in_topic($topicID, $userID);
+
+
+    $sql = 'SELECT message_id FROM messagetable WHERE topic_id=' . $topicID . '  ORDER BY  message_id  ';
+
+
+    if (!isset($startPost)) {
+        $startPost = $totalPosts - $numberOfPosts;
+
+        if ($newPosts > $numberOfPosts) {
+            $startPost = $totalPosts - $newPosts;
+            $numberOfPosts = $newPosts + 1;
+        }
+
+    } else {
+        if ($startPost > ($totalPosts - $numberOfPosts)) {
+            $startPost = $totalPosts - $numberOfPosts;
+        }
+    }
+
+    if ($startPost < 0) {
+        $startPost = 0;
+    }
+
+    $limit_sql = "LIMIT $start_message, $numberOfPosts";
+
+    $sql = $sql . $limit_sql;
+
+    if (!$sqlResult = mysql_query($sql)) {
+        $returnValue = false;
+    } else {
+        $returnValue = $sqlResult;
+    }
+
+    return $sqlResult;
 }

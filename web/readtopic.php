@@ -60,6 +60,9 @@ update_location($location_str);
 # start_message is the row index of the message to start at
 # this allows links to point to a given message for search results etc
 
+
+// begin refactor
+
 $total_messages = get_count_topic_messages($topic_array['topic_id']);
 
 $sql = 'SELECT message_id FROM messagetable WHERE topic_id=' . $topic_id . '  ORDER BY  message_id  ';
@@ -98,7 +101,30 @@ if (!$messages_to_show = mysql_query($sql, $db)) {
     #nexus_error();
 }
 
+// pop function here
+
 $messages_shown_count = mysql_num_rows($messages_to_show);
+
+// put all messages into an array so I can reverse it
+
+$messages_to_show_array = array();
+if (mysql_num_rows($messages_to_show)) {
+    if ($current_message = mysql_fetch_array($messages_to_show)) {
+        do {
+            array_push($messages_to_show_array, $current_message);
+        } while ($current_message = mysql_fetch_array($messages_to_show));
+    }
+}
+
+// TODO: by this point ensure that the messages_to_show is an array of posts
+
+if ($user_array['user_backwards'] === "y") {
+    $messages_to_show_array = array_reverse($messages_to_show_array);
+}
+
+mysql_free_result($messages_to_show);
+unset($current_message);
+
 
 // choose what template
 $t = new Template($template_location);
@@ -227,23 +253,6 @@ $browse_html = browse_links($total_messages, $num_of_messages_to_show, $start_me
 echo $browse_html;
 
 
-// put all messages into an array so I can reverse it
-
-$messages_to_show_array = array();
-if (mysql_num_rows($messages_to_show)) {
-    if ($current_message = mysql_fetch_array($messages_to_show)) {
-        do {
-            array_push($messages_to_show_array, $current_message);
-        } while ($current_message = mysql_fetch_array($messages_to_show));
-    }
-}
-
-if ($user_array['user_backwards'] === "y") {
-    $messages_to_show_array = array_reverse($messages_to_show_array);
-}
-
-mysql_free_result($messages_to_show);
-unset($current_message);
 
 // echo "showing ".count($messages_to_show_array)." messages";
 if (count($messages_to_show_array)) {
