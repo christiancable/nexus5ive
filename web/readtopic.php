@@ -61,69 +61,12 @@ update_location($location_str);
 # this allows links to point to a given message for search results etc
 
 
-// begin refactor
-
-$total_messages = get_count_topic_messages($topic_array['topic_id']);
-
-$sql = 'SELECT message_id FROM messagetable WHERE topic_id=' . $topic_id . '  ORDER BY  message_id  ';
-
-$num_of_messages_to_show = $user_array['user_display'];
-
-if (!isset($start_message)) {
-    $start_message = $total_messages - $user_array['user_display'];
-
-    if ($new_msg_total > $user_array['user_display']) {
-        $start_message = $total_messages - $new_msg_total;
-        $num_of_messages_to_show = $new_msg_total + 1;
-    }
-
-} else {
-    if ($start_message > ($total_messages - $user_array['user_display'])) {
-        $start_message = $total_messages - $user_array['user_display'];
-    }
-}
-
-if ($start_message < 0) {
-    $start_message = 0;
-}
-
-$limit_sql = "LIMIT $start_message, $num_of_messages_to_show";
-
-$sql = $sql . $limit_sql;
-
-## end logic to see how many messages to display
-
-// select messages to display
-if (!$messages_to_show = mysql_query($sql, $db)) {
-    echo $sql;
-    echo "<br\>$limit_sql";
-    exit();
-    #nexus_error();
-}
-
-// pop function here
-
-$messages_shown_count = mysql_num_rows($messages_to_show);
-
-// put all messages into an array so I can reverse it
-
-$messages_to_show_array = array();
-if (mysql_num_rows($messages_to_show)) {
-    if ($current_message = mysql_fetch_array($messages_to_show)) {
-        do {
-            array_push($messages_to_show_array, $current_message);
-        } while ($current_message = mysql_fetch_array($messages_to_show));
-    }
-}
-
-// TODO: by this point ensure that the messages_to_show is an array of posts
+$messages_to_show_array = fetchPostArray($topicID, $numberOfPosts, $startPost, $userID);
 
 if ($user_array['user_backwards'] === "y") {
     $messages_to_show_array = array_reverse($messages_to_show_array);
 }
 
-mysql_free_result($messages_to_show);
-unset($current_message);
 
 
 // choose what template

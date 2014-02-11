@@ -1627,10 +1627,23 @@ function fetchPostArray($topicID, $numberOfPosts, $startPost, $userID)
     $sql = $sql . $limit_sql;
 
     if (!$sqlResult = mysql_query($sql)) {
+
         $returnValue = false;
+
     } else {
-        $returnValue = $sqlResult;
+            // gather the topic's posts into an array of posts
+            
+        $postArray = array();
+        if (mysql_num_rows($sql)) {
+            if ($currentPost = mysql_fetch_array($sql)) {
+                do {
+                    array_push($postArray, $currentPost);
+                } while ($currentPost = mysql_fetch_array($sql));
+            }
+        }
+
+        $returnValue = $postArray;
     }
 
-    return $sqlResult;
+    return $returnValue;
 }
