@@ -118,9 +118,7 @@ $new_user_array['user_ipaddress'] = $_SERVER['REMOTE_ADDR'];
 
 
 if (!$new_invalid_user_id = add_invalid_user($new_user_array)) {
-    // redirect to the sign up page I think
-    // FIX ME
-    echo mysql_errno($db) . ": " . mysql_error($db). "\n";
+    // error
 } else {
     if (AUTO_VALIDATE_USERS) {
         // validate account

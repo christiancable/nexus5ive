@@ -56,7 +56,6 @@ if (!$parent_section_array = get_section($parent_id)) {
     // blank array to hold the section info
     $section_array = array();
 
-    // sql update
     $temp_title = htmlspecialchars($title, ENT_QUOTES);
     // $section_array[section_title] = nl2br($temp_title);
     $section_array['section_title'] = $temp_title;
