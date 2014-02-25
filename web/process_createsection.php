@@ -33,7 +33,7 @@ if (!$user_array = get_user_array($_SESSION['current_id'])) {
 // can_user_edit the parent section
 
 // section id of parent comes from form var
-$parent_id = $HTTP_POST_VARS['section_id'];
+$parent_id = $_POST['section_id'];
 
 
 if (!$parent_section_array = get_section($parent_id)) {

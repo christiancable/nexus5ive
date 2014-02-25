@@ -29,4 +29,4 @@ $instant_message['user_id'] = $_POST['user_id']; // should I check this guy exis
 
 add_user_comment($instant_message);
 
-header("Location: http://".$_SERVER['HTTP_HOST'].get_bbsroot()."show_userinfo.php?user_id=".$HTTP_POST_VARS['user_id']);
+header("Location: http://".$_SERVER['HTTP_HOST'].get_bbsroot()."show_userinfo.php?user_id=".$_POST['user_id']);

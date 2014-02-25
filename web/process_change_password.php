@@ -24,9 +24,9 @@ if (!validlogin()) {
 
 $user_array = get_user_array($_SESSION['current_id']);
 
-$current_password = $HTTP_POST_VARS['current_password'];
-$new_password = $HTTP_POST_VARS['new_password'];
-$new_password2 = $HTTP_POST_VARS['new_password2'];
+$current_password = $_POST['current_password'];
+$new_password = $_POST['new_password'];
+$new_password2 = $_POST['new_password2'];
 
 
 if (($current_password === $user_array['user_password']) and ($new_password === $new_password2)) {

@@ -13,7 +13,7 @@ include_once('../includes/site.php');
 
 // parameters
 
-$message_id_array = $HTTP_POST_VARS['MessChk'];
+$message_id_array = $_POST['MessChk'];
 
 $db = opendata();
 session_start();
