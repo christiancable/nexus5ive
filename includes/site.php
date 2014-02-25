@@ -8,8 +8,14 @@ define('TEMPLATE_HOME', '../templates/');
 define('SYSOP_NAME', "Fraggle");
 define('SYSOP_MAIL', 'sysop@nexus5.org.uk');
 define('SYSOP_ID', '1');
-define('MYSQL_USER', 'nexus');
-define('MYSQL_PASSWORD', 'mWZdQ9pZ');
+
+define('MYSQL_USER', 'root');
+define('MYSQL_PASSWORD', '');
+
+#define('MYSQL_USER', 'nexus');
+#define('MYSQL_PASSWORD', 'mWZdQ9pZ');
+
+
 #define('MYSQL_SERVER','localhost:/tmp/mysql.cable109');
 define('MYSQL_SERVER', 'localhost');
 define('MYSQL_DATABASE', 'nexus');

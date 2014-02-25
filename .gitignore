@@ -1,7 +1,11 @@
 composer.*
+vendor
 vendor/composer*
 vendor/twig*
 vendor/autoload.php
+phplib
+logs
+
 
 
 

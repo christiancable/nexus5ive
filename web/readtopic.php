@@ -17,6 +17,9 @@ include_once('../includes/site.php');
 $topic_id=$_GET['topic_id'];
 @$start_message=$_GET['start_message'];
 
+if (!isset($start_message)) {
+    $start_message = false;
+}
 
 // common stuff
 $db = opendata();
@@ -60,14 +63,17 @@ update_location($location_str);
 # start_message is the row index of the message to start at
 # this allows links to point to a given message for search results etc
 
+$num_of_messages_to_show = $user_array['user_display'];
+// echo $num_of_messages_to_show;
 
-$messages_to_show_array = fetchPostArray($topicID, $numberOfPosts, $startPost, $userID);
+$messages_to_show_array = fetchPostArray($topicID = $topic_id, $numberOfPosts = $num_of_messages_to_show, $startPost = $start_message, $userID = $user_array['user_id']);
+
+// var_dump($messages_to_show_array);
+// die();
 
 if ($user_array['user_backwards'] === "y") {
     $messages_to_show_array = array_reverse($messages_to_show_array);
 }
-
-
 
 // choose what template
 $t = new Template($template_location);
@@ -145,7 +151,7 @@ if (($owner_array['owner_id'] == $_SESSION['current_id']) or (is_sysop($_SESSION
     }
 
     $t->set_var("SELECT_CODE", $select_code);
-    $t->set_var("messages_shown", $messages_shown_count);
+    $t->set_var("messages_shown", count($messages_to_show_array));
     $t->set_var("section_id", $topic_array['section_id']);
     $t->set_var("topic_id", $topic_id);
     
@@ -191,6 +197,19 @@ if (($owner_array['owner_id'] == $_SESSION['current_id']) or (is_sysop($_SESSION
 // Create Next / Prev Links and $Result_Set Value
 
 # quick and dirty hack - FIXME
+
+$total_messages = get_count_topic_messages($topic_array['topic_id']);
+$new_msg_total = new_messages_in_topic($topic_array['topic_id'], $user_array['user_id']);
+
+if ($start_message === false) {
+     $start_message = $total_messages - $user_array['user_display'];
+
+    if ($new_msg_total > $user_array['user_display']) {
+        $start_message = $total_messages - $new_msg_total;
+        $num_of_messages_to_show = $new_msg_total + 1;
+    }
+}
+
 echo '<div align="right" class="navigation"><a href="unsub.php?section_id='.$topic_array['section_id'].'&topic_id='.$topic_id.'">[ unsubscribe ]</a></div>';
 $browse_html = browse_links($total_messages, $num_of_messages_to_show, $start_message, "readtopic.php", $topic_array['topic_id']);
 echo $browse_html;
@@ -200,7 +219,7 @@ echo $browse_html;
 // echo "showing ".count($messages_to_show_array)." messages";
 if (count($messages_to_show_array)) {
     foreach ($messages_to_show_array as $current_message_id) {
-        $current_message_array = get_message_with_time($current_message_id[message_id]);
+        $current_message_array = get_message_with_time($current_message_id['message_id']);
 
         if (can_user_edit_post(
             $user_array['user_id'],

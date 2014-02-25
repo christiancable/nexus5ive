@@ -38,12 +38,20 @@ if ($user_array = get_user_array_from_name($username)) {
     }
 
     $current_id = $user_array['user_id'];
+    /* session_register is gone! */
+    
+    /*
     session_register("current_id");
     session_register("my_theme");
     session_register("no_pictures");
-    $current_id = $user_array['user_id'];
-    $my_theme = $user_array['user_theme'];
-    $no_pictures = $user_array['user_no_pictures'];
+    */
+   
+    session_start();
+
+    $_SESSION['current_id'] = $user_array['user_id'];
+    $_SESSION['my_theme'] = $user_array['user_theme'];
+    $_SESSION['no_pictures'] = $user_array['user_no_pictures'];
+   
     // increase number of times on nexus here
     $num_of_visits = $user_array['user_totalvisits']+1;
     setuser_logon($user_array['user_id'], $_SERVER['REMOTE_ADDR'], $num_of_visits);

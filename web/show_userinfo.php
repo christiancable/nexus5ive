@@ -96,12 +96,16 @@ if ($examine_user_array['user_id'] === $user_array['user_id']) {
 }
 
 #find examined user in the userlist_array
-$user_index=0;
+#
+// var_dump($userlist_array);
+
+$user_index = 0;
 foreach ($userlist_array as $userlist_entry) {
-    #print " ".$userlist_entry[user_name]."-";
+    
     if ($userlist_entry['user_id'] === $examine_user_array['user_id']) {
         break;
     }
+
     $user_index++;
 }
 
@@ -110,7 +114,21 @@ $t->set_var("examine_user_id", $user_index+1);
 $next_id = $user_index+1;
 $pre_id = $user_index-1;
 
-$t->set_var("previous_user_id", $userlist_array[$pre_id]['user_id']);
+if ($pre_id >= 0) {
+    $t->set_var("previous_user_id", $userlist_array[$pre_id]['user_id']);
+
+    if ($userlist_array[$pre_id]['user_id']) {
+        $t->set_var("previous_user_name", "[ &lt;&lt; Previous ]");
+    } else {
+        $t->set_var("previous_user_name", "");
+    }
+} else {
+    $t->set_var("previous_user_name", "");
+}
+
+
+
+    
 $t->set_var("next_user_id", $userlist_array[$next_id]['user_id']);
 
 if ($userlist_array[$next_id]['user_id']) {
@@ -119,11 +137,6 @@ if ($userlist_array[$next_id]['user_id']) {
     $t->set_var("next_user_name", "");
 }
 
-if ($userlist_array[$pre_id]['user_id']) {
-    $t->set_var("previous_user_name", "[ &lt;&lt; Previous ]");
-} else {
-    $t->set_var("previous_user_name", "");
-}
 
 $t->set_var("total_users", count($userlist_array));
 

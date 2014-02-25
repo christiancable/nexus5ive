@@ -1,4 +1,5 @@
 <?php
+/* add functions checked for usage - 25/02/2014 */
 
 #high level interface functions, things that deal with templates and output to the screen
 
