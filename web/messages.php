@@ -84,10 +84,11 @@ if ($users_on_array) {
 
     $t->set_file("sendmessages", "send_message.html");
 
+    $select_code = '';
     foreach ($users_on_array as $current_user_array) {
         $select_code = $select_code."\n".'<option value="'.$current_user_array['user_id'].'"';
 
-        if ($sendtoid) {
+        if (isset($sendtoid)) {
           // if we are following a reply to link
 
             if ($sendtoid == $current_user_array['user_id']) {

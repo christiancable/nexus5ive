@@ -63,12 +63,12 @@ if (!$message_array = get_message($message_id)) {
 
     # can user edit post end
 
-    $comment = $HTTP_POST_VARS['comment'];
-    $subject = $HTTP_POST_VARS['subject'];
+    $comment = $_POST['comment'];
+    $subject = $_POST['subject'];
     $tempsubject = htmlspecialchars($subject, ENT_QUOTES);
     $subject = $tempsubject;
 
-    if ($HTTP_POST_VARS['allowhtml']) {
+    if ($_POST['allowhtml']) {
         $comment = $comment;
     } else {
         $tempmessage = htmlspecialchars($comment, ENT_QUOTES);

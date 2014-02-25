@@ -1182,30 +1182,23 @@ function can_user_edit_post($user_id, $user_sysop, $section_user_id, $message_us
 
     */
 
-    if ($user_sysop == 'y') {
-        return true;
+    $return = false;
+
+    if (($user_sysop === 'y') or ($section_user_id === $user_id)) {
+        $return = true;
+    } else {
+
+        $now = time();
+        $then = strtotime($message_time);
+
+        if (( ($now - $then) < MAX_EDIT_TIME) and ($message_user_id === $user_id)) {
+            $return = true;
+        }
+
     }
 
-    if ($section_user_id == $user_id) {
-        return true;
-    }
+    return $return;
 
-    $now = time();
-
-    $year = substr($message_time, 0, 4);
-    $month = substr($message_time, 4, 2);
-    $day = substr($message_time, 6, 2);
-    $hour = substr($message_time, 8, 2);
-    $minute = substr($message_time, 10, 2);
-    $second = substr($message_time, 12, 2);
-
-    $then = mktime($hour, $minute, $second, $month, $day, $year);
-
-    if (( ($now - $then) < MAX_EDIT_TIME) and ($message_user_id == $user_id)) {
-        return true;
-    }
-
-    return false;
 }
 
 function inc_total_edits($user_array)
@@ -1651,18 +1644,27 @@ function find_next_unread_topic($user_id)
     $return = '';
 
     if (!$sql_result = mysql_query($sql)) {
+        
         $return = false;
+
     } else {
+
         if ($current_section = mysql_fetch_array($sql_result)) {
+
             while ($current_section = mysql_fetch_array($sql_result)) {
                 
                 if (new_messages_in_section($user_id, $current_section['section_id'])) {
                     $return = $current_section['section_id'];
+                    break;
+
                 } else {
+
                     $return = false;
+
                 }
             }
         } else {
+
             $return = false;
         }
     }

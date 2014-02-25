@@ -19,6 +19,7 @@ if (!validlogin()) {
 }
 
 $target = find_next_unread_topic($_SESSION['current_id']);
+
 if ($target === false) {
     $target = 1;
 }
