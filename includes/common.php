@@ -8,7 +8,8 @@ require_once '../phplib/php/template.inc';
 
 // error reporting settings - 20091008
 
-error_reporting(E_ALL | E_STRICT);
+// error_reporting(E_ALL | E_STRICT);
+error_reporting(-1);
 ini_set("display_errors", "off");
 ini_set("log_errors", "on");
 # ini_set("error_log", "/home/fraggle/nexus/logs/nexus-php-error.txt");
