@@ -1830,7 +1830,7 @@ function fetchPostArray($topicID, $numberOfPosts, $startPost, $userID)
 
     $sql = 'SELECT message_id FROM messagetable WHERE topic_id=' . $topicID . '  ORDER BY  message_id  ';
 
-    if ($startPost == false) {
+    if ($startPost === false) {
         unset($startPost);
     }
 
