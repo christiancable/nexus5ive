@@ -1,0 +1,38 @@
+# nexus updates
+
+nxdata for all interactions with the database
+nxinterface for anything which deals with the ui
+nxconfig for all the config
+
+things not do to
+
+* call up one class from another
+
+
+## validlogin
+
+replace validlogin calls 
+
+// check login
+if (!validlogin()) {
+     eject_user();
+}
+
+with the following
+
+if (isset($_SESSION['current_id'])) {
+    $datastore->updateLastActiveTime($_SESSION['current_id']);
+} else {
+    eject_user();
+}
+
+
+
+## get_user_array
+
+get_user_array($_SESSION['current_id']) 
+
+is replaced by
+
+
+$datastore->readUserInfo($_SESSION['current_id'])

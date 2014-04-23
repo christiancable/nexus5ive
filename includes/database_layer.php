@@ -1,4 +1,6 @@
 <?php
+
+
 // this should have every bit of sql in it.
 /* add functions checked for usage - 25/02/2014 */
 
@@ -1310,7 +1312,7 @@ function get_topiclist_array($user_array)
     }
 }
 
-function get_users_online($self_id, $include_self)
+function get_instant_messages($self_id, $include_self)
 {
     // returns list of users currently online
     $users_online_array = array();
@@ -1358,31 +1360,6 @@ function update_last_time_on($user_id)
         }
     }
 }
-
-function get_instant_messages($user_id)
-{
-    // returns an array of instant message arrays
-    $instant_message_array = array();
-
-    $sql = "SELECT nexusmessage_id, text, from_id, user_name FROM nexusmessagetable, usertable
-    WHERE nexusmessagetable.user_id=$user_id AND usertable.user_id = from_id
-    ORDER BY nexusmessage_id DESC";
-
-    if (!$sql_result = mysql_query($sql)) {
-        return false;
-    } else {
-        if ($current_array = mysql_fetch_array($sql_result)) {
-            do {
-                array_push($instant_message_array, $current_array);
-            } while ($current_array = mysql_fetch_array($sql_result));
-
-            return $instant_message_array;
-        } else {
-            return false;
-        }
-    }
-}
-
 function mark_messages_read($user_id)
 {
     $sql = "UPDATE nexusmessagetable SET readstatus='y' WHERE user_id = $user_id";
@@ -1898,3 +1875,36 @@ function quote_smart($value)
 
     return $value;
 }
+
+/*================================*/
+/* removed during refactor to PDO */
+/*================================*/
+
+/* Replaced by NxData->readInstantMessages - 23/04/2014
+
+function get_instant_messages($user_id)
+{
+    // returns an array of instant message arrays
+    $instant_message_array = array();
+
+    $sql = "SELECT nexusmessage_id, text, from_id, user_name FROM nexusmessagetable, usertable
+    WHERE nexusmessagetable.user_id=$user_id AND usertable.user_id = from_id
+    ORDER BY nexusmessage_id DESC";
+
+    if (!$sql_result = mysql_query($sql)) {
+        return false;
+    } else {
+        if ($current_array = mysql_fetch_array($sql_result)) {
+            do {
+                array_push($instant_message_array, $current_array);
+            } while ($current_array = mysql_fetch_array($sql_result));
+
+            return $instant_message_array;
+        } else {
+            return false;
+        }
+    }
+}
+
+
+*/
