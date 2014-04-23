@@ -1,5 +1,7 @@
 <?php
 
+namespace nexusfive;
+
 // includes
 
 include_once('../includes/common.php');
@@ -7,36 +9,54 @@ include_once('../includes/database_layer.php');
 include_once('../includes/interface_layer.php');
 include_once('../includes/site.php');
 
-// parameters
+use Template;
 
+include_once('../includes/nxdata.php');
+include_once('../includes/nxinterface.php');
+include_once('../includes/nxconfig.php');
+
+// parameters
 if (isset($_GET['sendtoid'])) {
     $sendtoid = $_GET['sendtoid'];
 }
 
-$db = opendata();
+
+$configuration = new NxConfig();
+$userinterface = new NxInterface();
+$datastore = new NxData($configuration->getConfig());
+
+
 session_start();
+
 $template_location =TEMPLATE_HOME.$_SESSION['my_theme'];
 $t = new Template($template_location);
 
-
-
-// check login
-if (!validlogin()) {
+if (isset($_SESSION['current_id'])) {
+    $datastore->updateLastActiveTime($_SESSION['current_id']);
+} else {
     eject_user();
 }
 
-if (!$user_array = get_user_array($_SESSION['current_id'])) {
+if (!$user_array = $datastore->readUserInfo($_SESSION['current_id'])) {
     nexus_error();
 }
 
 
-$breadcrumbs = get_dummybreadcrumbs();
+$top_section_info = $datastore->readSectionInfo(1);
 
-if ($num_msg = count_instant_messages($_SESSION['current_id'])) {
-    if (!$instant_message_array = get_instant_messages($_SESSION['current_id'])) {
-        echo "danger";
-    }
+$breadcrumbs = $userinterface->getBreadcrumbs($top_section_info);
+
+
+$instant_message_array = $datastore->readInstantMessages($_SESSION['current_id']);
+
+if ($instant_message_array === false) {
+    nexus_error();
+} else {
+    $num_msg = count($instant_message_array);
 }
+
+
+$db = opendata();
 
 display_header(
     $t,
@@ -58,6 +78,7 @@ update_location('Instant Messages');
 $user_on_array = array();
 
 // CFC - 07/02/2014 - wtf is happening here!
+/* this function returns an array of other users online to populate the send to box */
 if (!$users_on_array = get_users_online($_SESSION['current_id'], false)) {
   
 } else {
