@@ -36,3 +36,9 @@ is replaced by
 
 
 $datastore->readUserInfo($_SESSION['current_id'])
+
+
+# Update Database
+
+move the tables to a more modern format...
+ALTER TABLE messagetable ENGINE=InnoDB

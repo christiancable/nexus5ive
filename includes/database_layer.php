@@ -1312,7 +1312,7 @@ function get_topiclist_array($user_array)
     }
 }
 
-function get_instant_messages($self_id, $include_self)
+function get_users_online($self_id, $include_self)
 {
     // returns list of users currently online
     $users_online_array = array();
