@@ -2,10 +2,47 @@
 
 namespace nexusfive;
 
+use Twig_Environment;
+use Twig_Loader_Filesystem;
+
 /* one day this will all be TWIG */
 
 class NxInterface
 {
+
+    private $cfg;
+
+    public function __construct($cfg=false)
+    {
+        $this->cfg = $cfg;
+    }
+
+
+    public function renderMessages($templateData)
+    {
+        /*
+        $templateData = array(
+            'messages'      => $messages,
+            'recipient'     => $recipent,
+            'currentUser'   => $user_array,
+            'users'         => $users,
+            'page'          => $page
+            );
+        */
+
+        $templateData['page'] =  array (
+            'title'     => 'Messages',
+            'root'      => $this->cfg['webRoot']
+            );
+
+        $loader = new Twig_Loader_Filesystem($this->cfg['viewsLocation']);
+        $twig = new Twig_Environment($loader);
+
+        return $twig->render('messages.twig', $templateData);
+    }
+   
+
+
     public function getBreadcrumbs($section_info)
     {
         // accepts an array of section info and returns HTML for breadcrumbs

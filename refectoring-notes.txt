@@ -4,6 +4,21 @@ nxdata for all interactions with the database
 nxinterface for anything which deals with the ui
 nxconfig for all the config
 
+
+naming of methods
+
+
+CRUD
+
+createXXXXX
+readXXXX
+updateXXXXX
+deleteXXXXX
+
+for counts
+
+countXXXX
+
 things not do to
 
 * call up one class from another
@@ -37,8 +52,30 @@ is replaced by
 
 $datastore->readUserInfo($_SESSION['current_id'])
 
+## get_count_unread_comments
+
+$datastore->countComments($_SESSION['current_id']),
+replaces
+
+get_count_unread_comments($_SESSION['current_id']),
+
+## update_location('Instant Messages');
+
+replaced by
+$datastore->updateUserLocation($_SESSION['current_id'], 'Instant Messages');
 
 # Update Database
 
 move the tables to a more modern format...
 ALTER TABLE messagetable ENGINE=InnoDB
+
+
+
+
+# using twig
+
+
+$loader = new Twig_Loader_Filesystem($nxconfig['views_location']);
+$twig = new Twig_Environment($loader);
+
+$twig->render('template.twig', array());

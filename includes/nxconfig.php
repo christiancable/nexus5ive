@@ -20,12 +20,17 @@ class NxConfig
         'BBS_AGE'               => '16',
         'AUTO_VALIDATE_USERS'   => false,
         'SEARCH_LIMIT'          => 100,
-        'MAX_EDIT_TIME'         => 300
+        'MAX_EDIT_TIME'         => 300,
+        'viewsLocation'         => 'views',
+        'webRoot'               => '/nexus'
     );
+
 
     public function __construct()
     {
         putenv("TZ=GB");
+        $this->configuration['viewsLocation'] = __DIR__ . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . $this->configuration['viewsLocation'];
+
     }
 
     public function getConfig()

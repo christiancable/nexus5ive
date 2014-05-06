@@ -117,53 +117,123 @@ class NxData
 
         return $return;
     }
+
+    public function countComments($user_id, $include_read = false)
+    {
+        if ($include_read === false) {
+            $query = $this->db->prepare("SELECT count(comment_id) FROM commenttable WHERE readstatus IS NULL AND user_id=:user_id");
+        } else {
+            $query = $this->db->prepare("SELECT count(comment_id) FROM commenttable WHERE AND user_id=:user_id");
+        }
+        $query->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+        $query->execute();
+
+        $results = $query->fetchColumn();
+
+        $return = $results;
+
+        return $return;
+
+    }
+
+    public function updateUserLocation($user_id, $location)
+    {
+
+        // takes a user_id and location string
+        // returns true or false
+
+        $query = $this->db->prepare("UPDATE usertable SET user_location=:location WHERE user_id=:user_id");
+        $query->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+        $query->bindValue(':location', $location, PDO::PARAM_STR);
+        $query->execute();
+
+        $rowsAffected = $query->rowCount();
+
+        if ($rowsAffected !== 1) {
+            $return = false;
+        } else {
+            $return = true;
+        }
+
+        return $return;
+    }
+
+    public function readOnlineUsers($user_id, $include_self = false)
+    {
+        
+        if ($include_self === true) {
+            $sql = "SELECT whoison.user_id as user_id, 
+                    usertable.user_popname as user_popname, 
+                    usertable.user_location as user_location, 
+                    user_name, 
+                    whoison.timeon as last_active 
+                    from whoison, usertable
+                    WHERE (whoison.timeon > date_sub(now(), INTERVAL 5 minute)) and
+                    whoison.user_id = usertable.user_id and
+                    usertable.user_status='Online' ORDER BY timeon DESC";
+        } else {
+            $sql = "SELECT whoison.user_id as user_id, 
+                    usertable.user_popname as user_popname, 
+                    usertable.user_location as user_location, 
+                    user_name, 
+                    whoison.timeon as last_active 
+                    from whoison, usertable
+                    WHERE (whoison.timeon > date_sub(now(), INTERVAL 5 minute)) and
+                    whoison.user_id = usertable.user_id and
+                    whoison.user_id <> :user_id 
+                    and usertable.user_status='Online' ORDER BY timeon DESC";
+        }
+
+        $query = $this->db->prepare($sql);
+
+        $query->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+        $query->execute();
+
+        $results = $query->fetchAll(PDO::FETCH_ASSOC);
+
+        $return = $results;
+
+        return $return;
+    }
+
+    public function createMessage($userID, $fromID, $message)
+    {
+        $sql = "INSERT INTO nexusmessagetable (user_id, from_id, text) values (:user_id, :from_id, :text)";
+        $query = $this->db->prepare($sql);
+
+        $query->bindValue(':user_id', $userID, PDO::PARAM_INT);
+        $query->bindValue(':from_id', $fromID, PDO::PARAM_INT);
+        $query->bindValue(':text', $message, PDO::PARAM_STR);
+
+         $query->execute();
+
+        $rowsAffected = $query->rowCount();
+
+        if ($rowsAffected !== 1) {
+            $return = false;
+        } else {
+            $return = true;
+        }
+
+        return $return;
+
+    }
 }
 
 
 /*
 
-function get_instant_messages($user_id)
+function add_nexusmessage($nexusmessage_array)
 {
-    // returns an array of instant message arrays
-    $instant_message_array = array();
+    $sql = "INSERT INTO nexusmessagetable (user_id, from_id,text) values (
+    '".$nexusmessage_array['user_id']."',
+    '".$nexusmessage_array['from_id']."',
+    '".$nexusmessage_array['text']."')";
 
-    $sql = "SELECT nexusmessage_id, text, from_id, user_name FROM nexusmessagetable, usertable
-    WHERE nexusmessagetable.user_id=$user_id AND usertable.user_id = from_id
-    ORDER BY nexusmessage_id DESC";
-
-    if (!$sql_result = mysql_query($sql)) {
-        return false;
+    if (mysql_query($sql)) {
+        return true;
     } else {
-        if ($current_array = mysql_fetch_array($sql_result)) {
-            do {
-                array_push($instant_message_array, $current_array);
-            } while ($current_array = mysql_fetch_array($sql_result));
-
-            return $instant_message_array;
-        } else {
-            return false;
-        }
+        return false;
     }
 }
-
-
-
-<?php
-// collection of user information to import into the database
-$users = ...
- 
-// specify the query "template"
-$query = $db->prepare("INSERT INTO users (first_name, last_name, email) VALUES (:fname, :lname, :email)");
- 
-// bind the placeholder names to specific script variables
-$query->bindParam(":fname", $firstName);
-$query->bindParam(":lname", $lastName);
-$query->bindParam(":email", $email);
- 
-// assign values to the specific variables and execute the query
-foreach ($users as $u) {
-    $firstName = $u["first_name"];
-    $lastName = $u["last_name"];
-    $email = $u["email"];
-    $que
 */

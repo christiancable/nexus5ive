@@ -56,7 +56,7 @@ if ($instant_message_array === false) {
 }
 
 
-$db = opendata();
+
 
 display_header(
     $t,
@@ -68,22 +68,38 @@ display_header(
     $num_msg,
     SYSOP_ID,
     SYSOP_NAME,
-    get_count_unread_comments($_SESSION['current_id']),
+    $datastore->countComments($_SESSION['current_id']),
+    // get_count_unread_comments($_SESSION['current_id']),
     false
 );
 
-update_location('Instant Messages');
 
+$datastore->updateUserLocation($_SESSION['current_id'], 'Instant Messages');
+
+
+$other_users_array = $datastore->readOnlineUsers($_SESSION['current_id'], true);
+
+
+$db = opendata();
 //if other users on give them the send template
-$user_on_array = array();
+$users_on_array = array();
 
-// CFC - 07/02/2014 - wtf is happening here!
+
+
+
+
 /* this function returns an array of other users online to populate the send to box */
-if (!$users_on_array = get_users_online($_SESSION['current_id'], false)) {
+if (!$users_on_array = get_users_online($_SESSION['current_id'], true)) {
   
 } else {
   
 }
+
+// var_dump($users_on_array);
+// var_dump($other_users_array);
+
+
+// echo "<pre>".print_r($users_on_array,true)."</pre>";
 
 
 if ($users_on_array) {

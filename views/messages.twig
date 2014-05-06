@@ -1,0 +1,79 @@
+{# messages template - 05/05/2014 #}
+
+{# inherit from base here?? #}
+{% extends 'base.twig' %}
+
+{% block content %}
+
+{# if there's users on then show the send #}
+
+{% if users is not empty %}
+<form role="form" method="post">
+    <div class="row">
+
+        <div class="col-md-2">
+            <div class="form-group">
+                <label class="sr-only" for="recepient">Message</label>
+                <select  class="form-control" name="recepient" id="recepient">
+
+{% for user in users %}
+                    <option value = "{{ user.user_id }}"  {% if user.user_id == recipient.user_id %}       selected {% endif %}>{{ user.user_name }}</option>
+{% endfor %}
+{% if currentUser.user_sysop == 'y' %}
+                    <option value = "ALL" >* Everyone *</option>
+{% endif %}
+
+                </select>
+            </div>
+        </div>
+
+
+        <div class="col-md-10">
+            <div class="input-group">
+                <input type="text" class="form-control" name="message" autofocus>
+                <span class="input-group-btn">
+                    <button type="submit" value="send" class="btn btn-primary"><span class="glyphicon glyphicon-send"></span> Send
+                    </button>
+                </span>
+            </div>
+        </div>
+    </div>            
+
+</form>
+
+{% endif %}
+
+{# if we have messages then populate some rows #}
+{% if messages is not empty %}
+
+<form role="form" method="post">
+
+{% for message in messages %}
+
+
+<div class="row">
+   <div class="col-md-12">
+    <div class="checkbox">
+        <label>
+            <input type="checkbox" name="MessChk[]" value="{{ message.nexusmessage_id }}">
+            <a href="{{ page.root }}/messages/{{ message.from_id }}"><span class="glyphicon glyphicon-arrow-right"></span></a>
+            <span><a href="{{ page.root }}/user/{{ message.from_id }}">{{ message.user_name }}</a></span>
+            <span>{{ message.text }}</span>
+        </label>
+    </div>
+</div>
+</div>
+{% endfor %}
+
+
+<button type="submit" class="btn  btn-danger"  value="delete">Delete Selected Messages</button>
+
+</form>
+{% endif %}
+
+{% if messages is empty %}
+<p>You have no messages. Have you considered talking to people more?</p>
+{% endif %}
+
+
+{% endblock %}
