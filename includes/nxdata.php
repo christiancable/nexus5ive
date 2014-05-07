@@ -161,6 +161,8 @@ class NxData
     public function readOnlineUsers($user_id, $include_self = false)
     {
         
+        /* checking for Offline here rather than Online because people can be instantly Offline and
+        so should just vanish from the list right away */
         if ($include_self === true) {
             $sql = "SELECT whoison.user_id as user_id, 
                     usertable.user_popname as user_popname, 
@@ -170,7 +172,7 @@ class NxData
                     from whoison, usertable
                     WHERE (whoison.timeon > date_sub(now(), INTERVAL 5 minute)) and
                     whoison.user_id = usertable.user_id and
-                    usertable.user_status='Online' ORDER BY timeon DESC";
+                    usertable.user_status <> 'Offline' ORDER BY timeon DESC";
         } else {
             $sql = "SELECT whoison.user_id as user_id, 
                     usertable.user_popname as user_popname, 
@@ -181,7 +183,7 @@ class NxData
                     WHERE (whoison.timeon > date_sub(now(), INTERVAL 5 minute)) and
                     whoison.user_id = usertable.user_id and
                     whoison.user_id <> :user_id 
-                    and usertable.user_status='Online' ORDER BY timeon DESC";
+                    and usertable.user_status <> 'Offline' ORDER BY timeon DESC";
         }
 
         $query = $this->db->prepare($sql);

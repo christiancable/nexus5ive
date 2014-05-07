@@ -24,3 +24,28 @@ Toro::serve(
     '/messages/' => 'nexusfive\nxMessageHandler'
     )
 );
+
+
+/*
+
+who's online
+
+/users
+
+examine user
+
+/user
+/user/<user id>
+/user/<user id>/edit
+
+
+topics
+------
+
+/topic/<topic id>
+/topic/<topic id>/edit
+/topic/<topic id>/delete
+
+/topic/new/<parent id>
+
+*/

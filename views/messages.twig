@@ -43,6 +43,16 @@
 
 {% endif %}
 
+
+{% if users is empty %}
+<div class="panel panel-default">
+    <div class="panel-body">
+        Looks like there's no one else here. That kinda sucks. <em>*sadface*</em>
+    </div>
+</div>
+
+{% endif %}
+
 {# if we have messages then populate some rows #}
 {% if messages is not empty %}
 

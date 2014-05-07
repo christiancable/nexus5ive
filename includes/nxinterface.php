@@ -7,16 +7,24 @@ use Twig_Loader_Filesystem;
 
 /* one day this will all be TWIG */
 
+/* I've decided that redirecion is a user interface function */
+
 class NxInterface
 {
 
     private $cfg;
 
-    public function __construct($cfg=false)
+    public function __construct($cfg = false)
     {
         $this->cfg = $cfg;
     }
 
+    public function ejectUser()
+    {
+        $webRoot = $this->cfg['webRoot'];
+        Header("Location: " . $webRoot . "/");
+        die();
+    }
 
     public function renderMessages($templateData)
     {
@@ -30,6 +38,18 @@ class NxInterface
             );
         */
 
+        $templateData['breadcrumbs'] = array();
+        $templateData['breadcrumbs'][] = array(
+            'title'         => 'Home' ,
+            'location'      => $this->cfg['webRoot']
+            );
+        $templateData['breadcrumbs'][] = array(
+            'title'         => 'Messages' ,
+            'location'      => ''
+            );
+    
+        // $templateData['navigation'] goes here?
+        
         $templateData['page'] =  array (
             'title'     => 'Messages',
             'root'      => $this->cfg['webRoot']
@@ -41,6 +61,12 @@ class NxInterface
         return $twig->render('messages.twig', $templateData);
     }
    
+    public function redirectToMessages()
+    {
+        $webRoot = $this->cfg['webRoot'];
+        Header("Location: " . $webRoot . "/messages/");
+        die();
+    }
 
 
     public function getBreadcrumbs($section_info)

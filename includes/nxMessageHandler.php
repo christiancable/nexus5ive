@@ -43,13 +43,15 @@ class nxMessageHandler
         if (isset($_SESSION['current_id'])) {
             $this->data->updateLastActiveTime($_SESSION['current_id']);
         } else {
-            //eject_user();
+            $this->ui->ejectUser();
         }
 
         // get info about the current user
         if (!$user = $this->data->readUserInfo($_SESSION['current_id'])) {
             // nexus_error();
         }
+
+        $this->data->updateUserLocation($user['user_id'], 'Messages');
 
         $messages = $this->data->readInstantMessages($user['user_id']);
 
@@ -96,7 +98,7 @@ class nxMessageHandler
         // delete messages
 
         // return to messages screen
-
+        $this->ui->redirectToMessages();
     }
 
     function get_xhr() {

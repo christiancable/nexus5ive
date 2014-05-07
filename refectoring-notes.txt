@@ -24,6 +24,38 @@ things not do to
 * call up one class from another
 
 
+## login
+
+We should only require that people login when nexus doesn't know who they are anymore
+
+### each request
+
+start session
+if user_id does not exist in session
+    set request url in session
+    redirect to login page
+    
+
+### login
+
+start session
+accept username and password via POST
+auth user
+if auth okay
+    if request uri in session 
+        then redirect to request uri
+    else
+        redirect to main section
+        
+        
+### logout
+
+start session
+unset user
+redirect to login
+
+_____
+
 ## validlogin
 
 replace validlogin calls 
