@@ -1,4 +1,4 @@
-composer.*
+composer.lock
 vendor
 vendor/composer*
 vendor/twig*
