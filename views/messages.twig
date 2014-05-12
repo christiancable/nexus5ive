@@ -32,7 +32,7 @@
             <div class="input-group">
                 <input type="text" class="form-control" name="message" autofocus>
                 <span class="input-group-btn">
-                    <button type="submit" value="send" class="btn btn-primary"><span class="glyphicon glyphicon-send"></span> Send
+                    <button type="submit" value="send" name="send" class="btn btn-primary"><span class="glyphicon glyphicon-send"></span> Send
                     </button>
                 </span>
             </div>
@@ -66,7 +66,7 @@
     <div class="checkbox">
         <label>
             <input type="checkbox" name="MessChk[]" value="{{ message.nexusmessage_id }}">
-            <a href="{{ page.root }}/messages/{{ message.from_id }}"><span class="glyphicon glyphicon-arrow-right"></span></a>
+            <a href="{{ page.root }}/messages/{{ message.from_id }}" title="{{ message.time|date('d/m/Y H:i:s')}}"><span class="glyphicon glyphicon-arrow-right"></span></a>
             <span><a href="{{ page.root }}/user/{{ message.from_id }}">{{ message.user_name }}</a></span>
             <span>{{ message.text }}</span>
         </label>
@@ -76,7 +76,7 @@
 {% endfor %}
 
 
-<button type="submit" class="btn  btn-danger"  value="delete">Delete Selected Messages</button>
+<button type="submit" class="btn btn-danger" name="delete" value="delete">Delete Selected Messages</button>
 
 </form>
 {% endif %}

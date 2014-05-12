@@ -107,7 +107,7 @@ class NxData
 
         // fetchAll returns an array with results OR an empty array or false if there's na error
 
-        $query = $this->db->prepare("SELECT nexusmessage_id, text, from_id, user_name FROM nexusmessagetable, usertable WHERE nexusmessagetable.user_id=:user_id AND usertable.user_id = from_id ORDER BY nexusmessage_id DESC");
+        $query = $this->db->prepare("SELECT nexusmessage_id, text, from_id, user_name, time FROM nexusmessagetable, usertable WHERE nexusmessagetable.user_id=:user_id AND usertable.user_id = from_id ORDER BY nexusmessage_id DESC");
         $query->bindValue(':user_id', $user_id, PDO::PARAM_INT);
         $query->execute();
 
@@ -158,6 +158,7 @@ class NxData
         return $return;
     }
 
+
     public function readOnlineUsers($user_id, $include_self = false)
     {
         
@@ -207,7 +208,7 @@ class NxData
         $query->bindValue(':from_id', $fromID, PDO::PARAM_INT);
         $query->bindValue(':text', $message, PDO::PARAM_STR);
 
-         $query->execute();
+        $query->execute();
 
         $rowsAffected = $query->rowCount();
 
@@ -220,22 +221,94 @@ class NxData
         return $return;
 
     }
+
+    public function deleteMessages($userID, $messageIDs)
+    {
+        /* accepts user and an array of message IDs and deletes them */
+
+        /* returns
+         success    - true
+         fail       - false
+        */
+
+        $messages = array();
+        $placeholders = array();
+
+        foreach ($messageIDs as $messageID) {
+            $placeholder = ":$messageID";
+            $messages[] = array(
+                'messageID'     =>  $messageID,
+                'placeholder'   =>  $placeholder
+                );
+            $placeholders[] = $placeholder;
+
+        }
+
+        $placeholderSQL = implode(", ", $placeholders);
+
+        $sql = "DELETE FROM nexusmessagetable WHERE nexusmessage_id IN (". $placeholderSQL . ") AND user_id=:user_id";
+
+        $query = $this->db->prepare($sql);
+
+        $query->bindValue(':user_id', $userID, PDO::PARAM_INT);
+        foreach ($messages as $message) {
+            $query->bindValue($message['placeholder'], $message['messageID'], PDO::PARAM_INT);
+        }
+
+        $query->execute();
+        $rowsAffected = $query->rowCount();
+
+        echo $rowsAffected;
+
+        if ($rowsAffected !== count($messageIDs)) {
+            $return = false;
+        } else {
+            $return = true;
+        }
+
+        return $return;
+
+    }
+
+    public function setUserOnline($userID)
+    {
+        /* remove any existing online record for this user and add a new one */
+
+        $sql = "DELETE FROM whoison WHERE user_id=:user_id";
+        $query = $this->db->prepare($sql);
+        $query->bindValue(':user_id', $userID, PDO::PARAM_INT);
+        $query->execute();
+
+
+        $sql = "INSERT INTO whoison (user_id) VALUES (:user_id)";
+        $query = $this->db->prepare($sql);
+        $query->bindValue(':user_id', $userID, PDO::PARAM_INT);
+        $query->execute();
+
+        $rowsAffected = $query->rowCount();
+
+        if ($rowsAffected !== 1) {
+            $return = false;
+        } else {
+            $return = true;
+        }
+
+        return $return;
+    }
 }
 
 
 /*
 
-function add_nexusmessage($nexusmessage_array)
-{
-    $sql = "INSERT INTO nexusmessagetable (user_id, from_id,text) values (
-    '".$nexusmessage_array['user_id']."',
-    '".$nexusmessage_array['from_id']."',
-    '".$nexusmessage_array['text']."')";
+    if (isset($_SESSION['current_id'])) {
 
-    if (mysql_query($sql)) {
+        $db = opendata();
+        $current_id = $_SESSION['current_id'];
+
+        $sql = "DELETE FROM whoison WHERE user_id=$current_id";
+        mysql_query($sql, $db);
+        $sql = "INSERT INTO whoison (user_id) VALUES ($current_id)";
+        mysql_query($sql, $db);
+
         return true;
-    } else {
-        return false;
-    }
-}
 */
