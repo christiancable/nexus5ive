@@ -5,6 +5,7 @@ nxinterface for anything which deals with the ui
 nxconfig for all the config
 
 
+
 naming of methods
 
 
@@ -19,6 +20,13 @@ for counts
 
 countXXXX
 
+
+## ajax calls
+
+/messages/count
+nxAPIHandlers
+
+##
 things not do to
 
 * call up one class from another

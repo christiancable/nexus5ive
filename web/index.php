@@ -20,8 +20,10 @@ ToroHook::add("404", function() {
 
 Toro::serve(
     array(
-    '/messages/:number' => 'nexusfive\nxMessageHandler',
-    '/messages/' => 'nexusfive\nxMessageHandler'
+    '/messages/:number'     => 'nexusfive\nxMessageHandler',
+    '/messages/'            => 'nexusfive\nxMessageHandler',
+    '/messages/count'       => 'nexusfive\nxMessageCountHandler',
+    '/users/'               => 'nexusfive\nxUsersHandler'
     )
 );
 
@@ -48,4 +50,10 @@ topics
 
 /topic/new/<parent id>
 
+
+messages
+--------
+
+/messages/ - show user to user messages
+/messages/count - show the number of messages only to use in ajax calls
 */

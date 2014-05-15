@@ -1,6 +1,15 @@
 <?
 namespace nexusfive;
 
+/* 
+
+TODO
+
+navigation 
+
+
+*/
+
 class nxMessageHandler 
 {
     private $cfg;

@@ -65,10 +65,16 @@
    <div class="col-md-12">
     <div class="checkbox">
         <label>
+            {% if message.readstatus != 'y' %}
+            <strong>
+            {% endif %}
             <input type="checkbox" name="MessChk[]" value="{{ message.nexusmessage_id }}">
             <a href="{{ page.root }}/messages/{{ message.from_id }}" title="{{ message.time|date('d/m/Y H:i:s')}}"><span class="glyphicon glyphicon-arrow-right"></span></a>
             <span><a href="{{ page.root }}/user/{{ message.from_id }}">{{ message.user_name }}</a></span>
             <span>{{ message.text }}</span>
+            {% if message.readstatus != 'y' %}
+            </strong>
+            {% endif %}
         </label>
     </div>
 </div>

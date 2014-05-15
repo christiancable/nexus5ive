@@ -82,4 +82,30 @@ HTML;
 
         return $HTML;
     }
+
+    public function renderUsersOnline($templateData)
+    {
+        $templateData['breadcrumbs'] = array();
+        $templateData['breadcrumbs'][] = array(
+            'title'         => 'Home' ,
+            'location'      => $this->cfg['webRoot']
+            );
+        $templateData['breadcrumbs'][] = array(
+            'title'         => 'Users Online' ,
+            'location'      => ''
+            );
+    
+        // $templateData['navigation'] goes here?
+        
+        $templateData['page'] =  array (
+            'title'     => 'Users on Nexus',
+            'root'      => $this->cfg['webRoot']
+            );
+
+        $loader = new Twig_Loader_Filesystem($this->cfg['viewsLocation']);
+        $twig = new Twig_Environment($loader);
+
+        return $twig->render('users.twig', $templateData);
+
+    }
 }

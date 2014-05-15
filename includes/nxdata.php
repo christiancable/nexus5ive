@@ -107,7 +107,7 @@ class NxData
 
         // fetchAll returns an array with results OR an empty array or false if there's na error
 
-        $query = $this->db->prepare("SELECT nexusmessage_id, text, from_id, user_name, time FROM nexusmessagetable, usertable WHERE nexusmessagetable.user_id=:user_id AND usertable.user_id = from_id ORDER BY nexusmessage_id DESC");
+        $query = $this->db->prepare("SELECT nexusmessage_id, text, from_id, user_name, time, readstatus FROM nexusmessagetable, usertable WHERE nexusmessagetable.user_id=:user_id AND usertable.user_id = from_id ORDER BY nexusmessage_id DESC");
         $query->bindValue(':user_id', $user_id, PDO::PARAM_INT);
         $query->execute();
 
@@ -117,6 +117,40 @@ class NxData
 
         return $return;
     }
+
+
+    public function countInstantMessages($user_id, $include_read = false)
+    {
+       // $sql = "SELECT count(nexusmessage_id) AS total_msg FROM nexusmessagetable WHERE readstatus IS NULL AND user_id=$user_id";
+        if ($include_read === false) {
+            $query = $this->db->prepare("SELECT count(nexusmessage_id) AS total_msg FROM nexusmessagetable WHERE readstatus IS NULL AND user_id=:user_id");
+        } else {
+            $query = $this->db->prepare("SELECT count(nexusmessage_id) AS total_msg FROM nexusmessagetable WHERE user_id=:user_id");
+        }
+        $query->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+        $query->execute();
+
+        $results = $query->fetchColumn();
+
+        $return = $results;
+
+        return $return;
+        
+    }
+
+    public function setInstantMessagesRead($user_id)
+    {
+        // set any instant messgaes as read
+        // return true or false
+
+        $sql = "UPDATE nexusmessagetable SET readstatus='y' WHERE user_id = :user_id";
+        $query = $this->db->prepare($sql);
+        $query->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+        $query->execute();
+
+        return $query;
+    }
+
 
     public function countComments($user_id, $include_read = false)
     {
