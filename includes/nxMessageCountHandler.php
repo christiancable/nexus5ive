@@ -21,7 +21,7 @@ class nxMessageCountHandler
             $this->cfg = $cfg;
         }
 
-         if ($nexus === false) {
+        if ($nexus === false) {
             $this->nexus = new nexus;
         } else {
             $this->ui = $nexus;
@@ -41,6 +41,11 @@ class nxMessageCountHandler
             }
         } else {
                 $this->ui->ejectUser();    
+                /*
+                when not logged in this complained of 
+                Notice: Undefined property: nexusfive\nxMessageCountHandler::$ui in /Users/fraggle/Dropbox/Code/nexus5/nexus5bbs/includes/nxMessageCountHandler.php on line 43
+                Fatal error: Call to a member function ejectUser() on a non-object in /Users/fraggle/Dropbox/Code/nexus5/nexus5bbs/includes/nxMessageCountHandler.php on line 43
+                */
         }
         // user logged in 
 
