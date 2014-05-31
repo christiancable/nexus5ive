@@ -36,18 +36,19 @@ class NxData
      * @param array $numbers a named array of int parameters to match the placeholders in the SQL (optional)
      * @return assoc array|false the results of the query or false on error
      */
-    public function getData($query, $strings = array(), $numbers = array())
+    public function getData($query, $parameters = null)
     {
+
         $statement = $this->db->prepare($query);
 
-        if (count($strings) > 0) {
-            foreach ($strings as $string => $value) {
+        if (isset($parameters['string'])) {
+            foreach ($parameters['string'] as $string => $value) {
                 $statement->bindValue(':'.$string, $value, PDO::PARAM_STR);
             }
         }
 
-        if (count($numbers) > 0) {
-            foreach ($numbers as $number => $value) {
+        if (isset($parameters['int'])) {
+            foreach ($parameters['int'] as $number => $value) {
                 $statement->bindValue(':'.$number, $value, PDO::PARAM_INT);
             }
         }
@@ -64,26 +65,26 @@ class NxData
 
 
     /**
-     *  updates who's online with latest time of activity
-     * 
-     * @param $user_id the current user's id
-     * @return bool to show status of update 
-     */
+    *  updates who's online with latest time of activity
+    * 
+    * @param $user_id the current user's id
+    * @return bool to show status of update 
+    */
     public function updateLastActiveTime($user_id)
     {
         $successStatus = true;
 
         $query = "DELETE FROM whoison WHERE user_id=:user_id";
-        $numbers = array(
+        $parameters['int'] = array(
             'user_id' => $user_id
             );
-        $status = $this->getData($query, $numbers = $numbers);
+        $status = $this->getData($query, $parameters);
         if ($status === false) {
             $successStatus = false;
         }
 
         $query = "INSERT INTO whoison (user_id) VALUES (:user_id)";
-        $status = $this->getData($query, $numbers = $numbers);
+        $status = $this->getData($query, $parameters);
         if ($status === false) {
             $successStatus = false;
         }
@@ -102,11 +103,11 @@ class NxData
     {
         $query = "SELECT * FROM usertable WHERE user_id=:user_id";
         
-        $numbers = array(
+        $parameters['int'] = array(
             'user_id' => $user_id
             );
 
-        $results = $this->getData($query, $numbers = $numbers);
+        $results = $this->getData($query, $parameters);
 
         // we should only have one result
         if (count($results) === 1) {
@@ -129,11 +130,11 @@ class NxData
     public function readSectionInfo($section_id)
     {
         $query = "SELECT * FROM sectiontable WHERE section_id=:section_id";
-        $numbers = array(
+        $parameters['int'] = array(
                 'section_id' => $section_id,
             );
 
-        $results = $this->getData($query, $numbers = $numbers);
+        $results = $this->getData($query, $parameters);
 
         // we should only have one result
         if (count($results) === 1) {
@@ -142,7 +143,7 @@ class NxData
         } else {
             $return = false;
         }
-        
+
         return $return;
     }
 
@@ -156,11 +157,11 @@ class NxData
     public function readInstantMessages($user_id)
     {
         $query = "SELECT nexusmessage_id, text, from_id, user_name, time, readstatus FROM nexusmessagetable, usertable WHERE nexusmessagetable.user_id=:user_id AND usertable.user_id = from_id ORDER BY nexusmessage_id DESC";
-        $numbers = array(
+        $parameters['int'] = array(
                 'user_id' => $user_id,
             );
 
-        $results = $this->getData($query, $numbers = $numbers);
+        $results = $this->getData($query, $parameters);
 
         return $results;
     }
@@ -181,11 +182,11 @@ class NxData
             $query = "SELECT count(nexusmessage_id) AS total_msg FROM nexusmessagetable WHERE user_id=:user_id";
         }
 
-        $numbers = array(
+        $parameters['int'] = array(
                 'user_id' => $user_id,
             );
 
-        $results = $this->getData($query, $numbers = $numbers);
+        $results = $this->getData($query, $parameters);
 
         if ($results) {
             $return = $results[0]['total_msg'];
@@ -205,11 +206,11 @@ class NxData
     */
     public function setInstantMessagesRead($user_id)
     {
-        $numbers = array(
+        $parameters['int'] = array(
                 'user_id' => $user_id,
             );
         $query = "UPDATE nexusmessagetable SET readstatus='y' WHERE user_id = :user_id";
-        $results = $this->getData($query, $numbers = $numbers);
+        $results = $this->getData($query, $parameters);
 
         return $results;
     }
@@ -231,11 +232,11 @@ class NxData
             $query = "SELECT count(comment_id) as total_msg FROM commenttable WHERE AND user_id=:user_id";
         }
 
-        $numbers = array(
+        $parameters['int'] = array(
                 'user_id' => $user_id,
             );
 
-        $results = $this->getData($query, $numbers = $numbers);
+        $results = $this->getData($query, $parameters);
 
         if ($results) {
             $return = $results[0]['total_msg'];
@@ -258,15 +259,15 @@ class NxData
     {
         $query = "UPDATE usertable SET user_location=:location WHERE user_id=:user_id";
 
-        $numbers = array (
+        $parameters['int'] = array (
             'user_id' => $user_id
             );
 
-        $strings = array(
+        $parameters['string'] = array(
             'location' => $location
             );
 
-        $results = $this->getData($query, $strings = $strings, $numbers = $numbers);
+        $results = $this->getData($query, $parameters);
 
         return $results;
     }
@@ -308,11 +309,11 @@ class NxData
             and usertable.user_status <> 'Offline' ORDER BY timeon DESC";
         }
 
-        $numbers = array (
+        $parameters['int'] = array (
             'user_id' => $user_id
             );
 
-        $results = $this->getData($query, $numbers = $numbers);
+        $results = $this->getData($query, $parameters);
 
         return $results;
     }
@@ -331,15 +332,16 @@ class NxData
         $query = "INSERT INTO nexusmessagetable (user_id, from_id, text) values (:user_id, :from_id, :text)";
 
 
-        $numbers = array(
+        $parameters['int'] = array(
             'user_id' => $userID,
             'from_id' => $fromID
             );
-        $strings = array(
+
+        $parameters['string'] = array(
             'text' => $message
             );
 
-        $results = $this->getData($query, $strings = $strings, $numbers = $numbers);
+        $results = $this->getData($query, $parameters);
 
         return $results;
     }
@@ -353,19 +355,126 @@ class NxData
     */
     public function deleteMessages($userID, $messageIDs)
     {
-        $numbers = array();
-        $numbers['user_id'] = $userID;
+        $parameters['int']['user_id'] = $userID;
 
         foreach ($messageIDs as $messageID) {
-            $numbers["$messageID"] = $messageID;
+            $parameters['int']["$messageID"] = $messageID;
             $placeholders[] = ":$messageID";
         }
 
         $placeholderSQL = implode(", ", $placeholders);
         $query = "DELETE FROM nexusmessagetable WHERE nexusmessage_id IN (". $placeholderSQL . ") AND user_id=:user_id";
 
-        $results = $this->getData($query, $numbers = $numbers);
+        $results = $this->getData($query, $parameters);
 
         return $results;
     }
+
+
+
+    /**
+    *  looks up information about a topic
+    * 
+    * @param $topic_id the section
+    * @return array|false the topics's information or false if section not found
+    */
+    public function readTopicInfo($topic_id)
+    {
+        $query = "SELECT * FROM topictable WHERE topic_id=:topic_id";
+        $parameters['int'] = array(
+                'topic_id' => $topic_id,
+            );
+
+        $results = $this->getData($query, $parameters);
+
+        if (count($results)) {
+            $return = $results[0];
+        } else {
+            $return = false;
+        }
+        
+        return $return;
+    }
+
+    public function getPostsInTopic($topic_id, $startPost, $numberOfPosts)
+    {
+         $query = 'SELECT messagetable.*, usertable.user_name FROM messagetable, usertable WHERE topic_id=:topic_id AND usertable.user_id = messagetable.user_id ORDER BY  message_id  LIMIT :startPost, :numberOfPosts';
+
+         $parameters['int'] = array(
+            'topic_id' => $topic_id,
+            'startPost' => $startPost,
+            'numberOfPosts' => $numberOfPosts
+            );
+
+
+         $results = $this->getData($query, $parameters);
+         return $results;
+
+    }
 }
+
+/*
+
+unction fetchPostArray($topicID, $numberOfPosts, $startPost, $userID)
+{
+    // SUCCCESS: returns an array of posts from a topic
+    // FAILURE: returns false
+    
+
+    $returnValue = false;
+
+    $totalPosts = get_count_topic_messages($topicID);
+    $newPosts = new_messages_in_topic($topicID, $userID);
+
+
+    $sql = 'SELECT message_id FROM messagetable WHERE topic_id=' . $topicID . '  ORDER BY  message_id  ';
+
+    if ($startPost === false) {
+        unset($startPost);
+    }
+
+    if (!isset($startPost)) {
+        $startPost = $totalPosts - $numberOfPosts;
+
+        if ($newPosts > $numberOfPosts) {
+            $startPost = $totalPosts - $newPosts;
+            $numberOfPosts = $newPosts + 1;
+        }
+
+    } else {
+        if ($startPost > ($totalPosts - $numberOfPosts)) {
+            $startPost = $totalPosts - $numberOfPosts;
+        }
+    }
+
+    if ($startPost < 0) {
+        $startPost = 0;
+    }
+
+    $limit_sql = "LIMIT $startPost, $numberOfPosts";
+
+    $sql = $sql . $limit_sql;
+
+
+    if (!$sqlResult = mysql_query($sql)) {
+
+        $returnValue = false;
+
+    } else {
+            // gather the topic's posts into an array of posts
+            
+        $postArray = array();
+        if (mysql_num_rows($sqlResult)) {
+            if ($currentPost = mysql_fetch_array($sqlResult)) {
+                do {
+                    array_push($postArray, $currentPost);
+                } while ($currentPost = mysql_fetch_array($sqlResult));
+            }
+        }
+
+        $returnValue = $postArray;
+    }
+
+    return $returnValue;
+}
+*/

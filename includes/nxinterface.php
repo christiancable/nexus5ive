@@ -108,4 +108,27 @@ HTML;
         return $twig->render('users.twig', $templateData);
 
     }
+
+    public function renderTopic($templateData)
+    {
+        $templateData['breadcrumbs'] = array();
+        $templateData['breadcrumbs'][] = array(
+            'title'         => 'Home' ,
+            'location'      => $this->cfg['webRoot']
+            );
+        $templateData['breadcrumbs'][] = array(
+            'title'         => $templateData['topic']->topic_title,
+            'location'      => ''
+            );
+        
+        $templateData['page'] =  array (
+            'title'     => $templateData['topic']->topic_title,
+            'root'      => $this->cfg['webRoot']
+            );
+
+        $loader = new Twig_Loader_Filesystem($this->cfg['viewsLocation']);
+        $twig = new Twig_Environment($loader);
+
+        return $twig->render('topic.twig', $templateData);
+    }
 }

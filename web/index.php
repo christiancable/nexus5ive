@@ -23,7 +23,8 @@ Toro::serve(
     '/messages/:number'     => 'nexusfive\nxMessageHandler',
     '/messages/'            => 'nexusfive\nxMessageHandler',
     '/messages/count'       => 'nexusfive\nxMessageCountHandler',
-    '/users/'               => 'nexusfive\nxUsersHandler'
+    '/users/'               => 'nexusfive\nxUsersHandler',
+    '/topic/:number'        => 'nexusfive\nxTopicHandler'
     )
 );
 
@@ -45,6 +46,7 @@ topics
 ------
 
 /topic/<topic id>
+/topic/<topic id>/<start message> - start at a given message
 /topic/<topic id>/edit
 /topic/<topic id>/delete
 
@@ -56,4 +58,13 @@ messages
 
 /messages/ - show user to user messages
 /messages/count - show the number of messages only to use in ajax calls
+
+
+sections
+---------
+
+/section/<section_id>
+/section/<section_id>/edit
+/section/<section_id/delete
+/section/<section_id>/new - add a subsection
 */

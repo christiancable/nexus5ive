@@ -46,7 +46,6 @@ $top_section_info = $datastore->readSectionInfo(1);
 
 $breadcrumbs = $userinterface->getBreadcrumbs($top_section_info);
 
-
 $instant_message_array = $datastore->readInstantMessages($_SESSION['current_id']);
 
 if ($instant_message_array === false) {
@@ -69,10 +68,8 @@ display_header(
     SYSOP_ID,
     SYSOP_NAME,
     $datastore->countComments($_SESSION['current_id']),
-    // get_count_unread_comments($_SESSION['current_id']),
     false
 );
-
 
 $datastore->updateUserLocation($_SESSION['current_id'], 'Instant Messages');
 
