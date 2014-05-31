@@ -369,29 +369,3 @@ class NxData
         return $results;
     }
 }
-
-/*
-
-public function updateLastActiveTime($user_id)
-    {
-        $successStatus = true;
-
-        $query = "DELETE FROM whoison WHERE user_id=:user_id";
-        $numbers = array(
-            'user_id' => $user_id
-            );
-        $status = $this->getData($query, $numbers = $numbers);
-        if ($status === false) {
-            $successStatus = false;
-        }
-
-        $query = "INSERT INTO whoison (user_id) VALUES (:user_id)";
-        $status = $this->getData($query, $numbers = $numbers);
-        if ($status === false) {
-            $successStatus = false;
-        }
-
-        return $successStatus;
-    }
-*/
-
