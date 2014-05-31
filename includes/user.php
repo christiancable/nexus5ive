@@ -109,6 +109,6 @@ class user
     {
 
         $this->data->updateUserLocation($this->user_id, $location);
-        $this->data->setUserOnline($this->user_id);
+        $this->data->updateLastActiveTime($this->user_id);
     }
 }

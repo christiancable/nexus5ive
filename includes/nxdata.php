@@ -19,330 +19,379 @@ class NxData
         }
     }
 
+
     private function connect($server, $database, $user, $password)
     {
         // returns a connection to the database
         $db = new PDO("mysql:host=".$server.";dbname=".$database, $user, $password);
-        
         $this->db = $db;
     }
 
 
-    public function updateLastActiveTime($current_id)
+    /**
+     *  queries the database using the supplied sql and an array of parameters
+     * 
+     * @param string $query the query in SQL with placeholder
+     * @param array $strings a named array of string parameters to match the placeholders in the SQL (optional)
+     * @param array $numbers a named array of int parameters to match the placeholders in the SQL (optional)
+     * @return assoc array|false the results of the query or false on error
+     */
+    public function getData($query, $strings = array(), $numbers = array())
     {
+        $statement = $this->db->prepare($query);
 
-        // updates the whoison table with current time
+        if (count($strings) > 0) {
+            foreach ($strings as $string => $value) {
+                $statement->bindValue(':'.$string, $value, PDO::PARAM_STR);
+            }
+        }
 
-        $query = $this->db->prepare("DELETE FROM whoison WHERE user_id=:current_id");
-        $query->bindValue(':current_id', $current_id, PDO::PARAM_INT);
-        $query->execute();
+        if (count($numbers) > 0) {
+            foreach ($numbers as $number => $value) {
+                $statement->bindValue(':'.$number, $value, PDO::PARAM_INT);
+            }
+        }
 
-        $query = $this->db->prepare("INSERT INTO whoison (user_id) VALUES (:current_id)");
-        $query->bindValue(':current_id', $current_id, PDO::PARAM_INT);
-        $query->execute();
+        if ($statement->execute()) {
+            $return = $statement->fetchAll(PDO::FETCH_ASSOC);
+        } else {
+            $return = false;
+        }
 
-        // return $return;
+        return $return;
     }
 
 
+
+    /**
+     *  updates who's online with latest time of activity
+     * 
+     * @param $user_id the current user's id
+     * @return bool to show status of update 
+     */
+    public function updateLastActiveTime($user_id)
+    {
+        $successStatus = true;
+
+        $query = "DELETE FROM whoison WHERE user_id=:user_id";
+        $numbers = array(
+            'user_id' => $user_id
+            );
+        $status = $this->getData($query, $numbers = $numbers);
+        if ($status === false) {
+            $successStatus = false;
+        }
+
+        $query = "INSERT INTO whoison (user_id) VALUES (:user_id)";
+        $status = $this->getData($query, $numbers = $numbers);
+        if ($status === false) {
+            $successStatus = false;
+        }
+
+        return $successStatus;
+    }
+
+
+    /**
+     *  looks up a user's information 
+     * 
+     * @param $user_id the user's id
+     * @return array|false user's information or false if user not found
+     */
     public function readUserInfo($user_id)
     {
-        /**
-        * takes user_id and returns an array of their userinfo
-        * INPUT user_id
-        * OUTPUT assoc array of user_info or false if user is not found
-        */
+        $query = "SELECT * FROM usertable WHERE user_id=:user_id";
+        
+        $numbers = array(
+            'user_id' => $user_id
+            );
 
-        $query = $this->db->prepare("SELECT * FROM usertable WHERE user_id=:user_id");
-        $query->bindValue(':user_id', $user_id, PDO::PARAM_INT);
-        $query->execute();
-
-        $results = $query->fetchAll(PDO::FETCH_ASSOC);
+        $results = $this->getData($query, $numbers = $numbers);
 
         // we should only have one result
         if (count($results) === 1) {
             $user_array = $results[0];
-
             $return = $user_array;
         } else {
             $return = false;
         }
         
         return $return;
-
     }
 
+
+    /**
+    *  looks up information about a section
+    * 
+    * @param $section_id the section
+    * @return array|false sections's information or false if section not found
+    */
     public function readSectionInfo($section_id)
     {
-        /**
-        * takes section_id and returns an array of section info
-        * INPUT section_id
-        * OUTPUT assoc array of section_info or false if section is not found
-        */
+        $query = "SELECT * FROM sectiontable WHERE section_id=:section_id";
+        $numbers = array(
+                'section_id' => $section_id,
+            );
 
-        $query = $this->db->prepare("SELECT * FROM sectiontable WHERE section_id=:section_id");
-        $query->bindValue(':section_id', $section_id, PDO::PARAM_INT);
-        $query->execute();
-
-        $results = $query->fetchAll(PDO::FETCH_ASSOC);
+        $results = $this->getData($query, $numbers = $numbers);
 
         // we should only have one result
         if (count($results) === 1) {
             $section_array = $results[0];
-
             $return = $section_array;
         } else {
             $return = false;
         }
         
         return $return;
-
     }
 
+
+   /**
+    *  gets a given user's instant messages
+    * 
+    * @param $user_id the user
+    * @return array|false the users instant messages or false on failure
+    */
     public function readInstantMessages($user_id)
     {
-        /* returns an array of a user's instant messages
-        or false if there's no messages
-        */
+        $query = "SELECT nexusmessage_id, text, from_id, user_name, time, readstatus FROM nexusmessagetable, usertable WHERE nexusmessagetable.user_id=:user_id AND usertable.user_id = from_id ORDER BY nexusmessage_id DESC";
+        $numbers = array(
+                'user_id' => $user_id,
+            );
 
-        // fetchAll returns an array with results OR an empty array or false if there's na error
+        $results = $this->getData($query, $numbers = $numbers);
 
-        $query = $this->db->prepare("SELECT nexusmessage_id, text, from_id, user_name, time, readstatus FROM nexusmessagetable, usertable WHERE nexusmessagetable.user_id=:user_id AND usertable.user_id = from_id ORDER BY nexusmessage_id DESC");
-        $query->bindValue(':user_id', $user_id, PDO::PARAM_INT);
-        $query->execute();
-
-        $results = $query->fetchAll(PDO::FETCH_ASSOC);
-
-        $return = $results;
-
-        return $return;
+        return $results;
     }
 
 
+    /**
+    *  counts the number of instant message a user has
+    * 
+    * @param int $user_id the user
+    * @param bool $include_read should the count include previously read mesages
+    * @return int|false the number of message or false on error
+    */
     public function countInstantMessages($user_id, $include_read = false)
     {
-       // $sql = "SELECT count(nexusmessage_id) AS total_msg FROM nexusmessagetable WHERE readstatus IS NULL AND user_id=$user_id";
         if ($include_read === false) {
-            $query = $this->db->prepare("SELECT count(nexusmessage_id) AS total_msg FROM nexusmessagetable WHERE readstatus IS NULL AND user_id=:user_id");
+            $query = "SELECT count(nexusmessage_id) AS total_msg FROM nexusmessagetable WHERE readstatus IS NULL AND user_id=:user_id";
         } else {
-            $query = $this->db->prepare("SELECT count(nexusmessage_id) AS total_msg FROM nexusmessagetable WHERE user_id=:user_id");
+            $query = "SELECT count(nexusmessage_id) AS total_msg FROM nexusmessagetable WHERE user_id=:user_id";
         }
-        $query->bindValue(':user_id', $user_id, PDO::PARAM_INT);
-        $query->execute();
 
-        $results = $query->fetchColumn();
+        $numbers = array(
+                'user_id' => $user_id,
+            );
 
-        $return = $results;
+        $results = $this->getData($query, $numbers = $numbers);
+
+        if ($results) {
+            $return = $results[0]['total_msg'];
+        } else {
+            $return = false;
+        }
 
         return $return;
-        
     }
 
+
+    /**
+    *  sets a user's instant messages as read
+    * 
+    * @param int $user_id the user
+    * @return int|false the number of message or false on error
+    */
     public function setInstantMessagesRead($user_id)
     {
-        // set any instant messgaes as read
-        // return true or false
+        $numbers = array(
+                'user_id' => $user_id,
+            );
+        $query = "UPDATE nexusmessagetable SET readstatus='y' WHERE user_id = :user_id";
+        $results = $this->getData($query, $numbers = $numbers);
 
-        $sql = "UPDATE nexusmessagetable SET readstatus='y' WHERE user_id = :user_id";
-        $query = $this->db->prepare($sql);
-        $query->bindValue(':user_id', $user_id, PDO::PARAM_INT);
-        $query->execute();
-
-        return $query;
+        return $results;
     }
 
 
+   /**
+    *  counts the number of comments on a users info screen
+    * 
+    * @param int $user_id the user
+    * @param bool $include_read should the count include previously read mesages
+    * @return int|false the number of message or false on error
+    */
     public function countComments($user_id, $include_read = false)
     {
+        
         if ($include_read === false) {
-            $query = $this->db->prepare("SELECT count(comment_id) FROM commenttable WHERE readstatus IS NULL AND user_id=:user_id");
+            $query = "SELECT count(comment_id) as total_msg FROM commenttable WHERE readstatus IS NULL AND user_id=:user_id";
         } else {
-            $query = $this->db->prepare("SELECT count(comment_id) FROM commenttable WHERE AND user_id=:user_id");
+            $query = "SELECT count(comment_id) as total_msg FROM commenttable WHERE AND user_id=:user_id";
         }
-        $query->bindValue(':user_id', $user_id, PDO::PARAM_INT);
-        $query->execute();
 
-        $results = $query->fetchColumn();
+        $numbers = array(
+                'user_id' => $user_id,
+            );
 
-        $return = $results;
+        $results = $this->getData($query, $numbers = $numbers);
+
+        if ($results) {
+            $return = $results[0]['total_msg'];
+        } else {
+            $return = false;
+        }
 
         return $return;
-
     }
 
+
+    /**
+    *  updates a user's bbs location 
+    * 
+    * @param int $user_id the user
+    * @param string $location the location on the bbs
+    * @return int|false the number of message or false on error
+    */
     public function updateUserLocation($user_id, $location)
     {
+        $query = "UPDATE usertable SET user_location=:location WHERE user_id=:user_id";
 
-        // takes a user_id and location string
-        // returns true or false
+        $numbers = array (
+            'user_id' => $user_id
+            );
 
-        $query = $this->db->prepare("UPDATE usertable SET user_location=:location WHERE user_id=:user_id");
-        $query->bindValue(':user_id', $user_id, PDO::PARAM_INT);
-        $query->bindValue(':location', $location, PDO::PARAM_STR);
-        $query->execute();
+        $strings = array(
+            'location' => $location
+            );
 
-        $rowsAffected = $query->rowCount();
+        $results = $this->getData($query, $strings = $strings, $numbers = $numbers);
 
-        if ($rowsAffected !== 1) {
-            $return = false;
-        } else {
-            $return = true;
-        }
-
-        return $return;
+        return $results;
     }
 
 
+    /**
+    *  retrieves a list of users online
+    * 
+    * @param int $user_id the user
+    * @param bool $include_self include user_id in the list or not
+    * @return array|false information about the currently online users or false on failure
+    */
     public function readOnlineUsers($user_id, $include_self = false)
     {
-        
+
         /* checking for Offline here rather than Online because people can be instantly Offline and
         so should just vanish from the list right away */
+
         if ($include_self === true) {
-            $sql = "SELECT whoison.user_id as user_id, 
-                    usertable.user_popname as user_popname, 
-                    usertable.user_location as user_location, 
-                    user_name, 
-                    whoison.timeon as last_active 
-                    from whoison, usertable
-                    WHERE (whoison.timeon > date_sub(now(), INTERVAL 5 minute)) and
-                    whoison.user_id = usertable.user_id and
-                    usertable.user_status <> 'Offline' ORDER BY timeon DESC";
+            $query = "SELECT whoison.user_id as user_id, 
+            usertable.user_popname as user_popname, 
+            usertable.user_location as user_location, 
+            user_name, 
+            whoison.timeon as last_active 
+            from whoison, usertable
+            WHERE (whoison.timeon > date_sub(now(), INTERVAL 5 minute)) and
+            whoison.user_id = usertable.user_id and
+            usertable.user_status <> 'Offline' ORDER BY timeon DESC";
         } else {
-            $sql = "SELECT whoison.user_id as user_id, 
-                    usertable.user_popname as user_popname, 
-                    usertable.user_location as user_location, 
-                    user_name, 
-                    whoison.timeon as last_active 
-                    from whoison, usertable
-                    WHERE (whoison.timeon > date_sub(now(), INTERVAL 5 minute)) and
-                    whoison.user_id = usertable.user_id and
-                    whoison.user_id <> :user_id 
-                    and usertable.user_status <> 'Offline' ORDER BY timeon DESC";
+            $query = "SELECT whoison.user_id as user_id, 
+            usertable.user_popname as user_popname, 
+            usertable.user_location as user_location, 
+            user_name, 
+            whoison.timeon as last_active 
+            from whoison, usertable
+            WHERE (whoison.timeon > date_sub(now(), INTERVAL 5 minute)) and
+            whoison.user_id = usertable.user_id and
+            whoison.user_id <> :user_id 
+            and usertable.user_status <> 'Offline' ORDER BY timeon DESC";
         }
 
-        $query = $this->db->prepare($sql);
+        $numbers = array (
+            'user_id' => $user_id
+            );
 
-        $query->bindValue(':user_id', $user_id, PDO::PARAM_INT);
-        $query->execute();
+        $results = $this->getData($query, $numbers = $numbers);
 
-        $results = $query->fetchAll(PDO::FETCH_ASSOC);
-
-        $return = $results;
-
-        return $return;
+        return $results;
     }
 
+
+   /**
+    *  send an instant message
+    * 
+    * @param int $userID the user receiving the message
+    * @param int $fromID the user sending the message
+    * @param string $message the text of the message
+    * @return bool true on success or false on error
+    */
     public function createMessage($userID, $fromID, $message)
     {
-        $sql = "INSERT INTO nexusmessagetable (user_id, from_id, text) values (:user_id, :from_id, :text)";
-        $query = $this->db->prepare($sql);
+        $query = "INSERT INTO nexusmessagetable (user_id, from_id, text) values (:user_id, :from_id, :text)";
 
-        $query->bindValue(':user_id', $userID, PDO::PARAM_INT);
-        $query->bindValue(':from_id', $fromID, PDO::PARAM_INT);
-        $query->bindValue(':text', $message, PDO::PARAM_STR);
 
-        $query->execute();
+        $numbers = array(
+            'user_id' => $userID,
+            'from_id' => $fromID
+            );
+        $strings = array(
+            'text' => $message
+            );
 
-        $rowsAffected = $query->rowCount();
+        $results = $this->getData($query, $strings = $strings, $numbers = $numbers);
 
-        if ($rowsAffected !== 1) {
-            $return = false;
-        } else {
-            $return = true;
-        }
-
-        return $return;
-
+        return $results;
     }
 
+    /**
+    *  send an instant message
+    * 
+    * @param int $userID the user who owns the messages
+    * @param array $messageIDs the IDs of the messages to delete
+    * @return bool true on success or false on error
+    */
     public function deleteMessages($userID, $messageIDs)
     {
-        /* accepts user and an array of message IDs and deletes them */
-
-        /* returns
-         success    - true
-         fail       - false
-        */
-
-        $messages = array();
-        $placeholders = array();
+        $numbers = array();
+        $numbers['user_id'] = $userID;
 
         foreach ($messageIDs as $messageID) {
-            $placeholder = ":$messageID";
-            $messages[] = array(
-                'messageID'     =>  $messageID,
-                'placeholder'   =>  $placeholder
-                );
-            $placeholders[] = $placeholder;
-
+            $numbers["$messageID"] = $messageID;
+            $placeholders[] = ":$messageID";
         }
 
         $placeholderSQL = implode(", ", $placeholders);
+        $query = "DELETE FROM nexusmessagetable WHERE nexusmessage_id IN (". $placeholderSQL . ") AND user_id=:user_id";
 
-        $sql = "DELETE FROM nexusmessagetable WHERE nexusmessage_id IN (". $placeholderSQL . ") AND user_id=:user_id";
+        $results = $this->getData($query, $numbers = $numbers);
 
-        $query = $this->db->prepare($sql);
-
-        $query->bindValue(':user_id', $userID, PDO::PARAM_INT);
-        foreach ($messages as $message) {
-            $query->bindValue($message['placeholder'], $message['messageID'], PDO::PARAM_INT);
-        }
-
-        $query->execute();
-        $rowsAffected = $query->rowCount();
-
-        echo $rowsAffected;
-
-        if ($rowsAffected !== count($messageIDs)) {
-            $return = false;
-        } else {
-            $return = true;
-        }
-
-        return $return;
-
-    }
-
-    public function setUserOnline($userID)
-    {
-        /* remove any existing online record for this user and add a new one */
-
-        $sql = "DELETE FROM whoison WHERE user_id=:user_id";
-        $query = $this->db->prepare($sql);
-        $query->bindValue(':user_id', $userID, PDO::PARAM_INT);
-        $query->execute();
-
-
-        $sql = "INSERT INTO whoison (user_id) VALUES (:user_id)";
-        $query = $this->db->prepare($sql);
-        $query->bindValue(':user_id', $userID, PDO::PARAM_INT);
-        $query->execute();
-
-        $rowsAffected = $query->rowCount();
-
-        if ($rowsAffected !== 1) {
-            $return = false;
-        } else {
-            $return = true;
-        }
-
-        return $return;
+        return $results;
     }
 }
 
-
 /*
 
-    if (isset($_SESSION['current_id'])) {
+public function updateLastActiveTime($user_id)
+    {
+        $successStatus = true;
 
-        $db = opendata();
-        $current_id = $_SESSION['current_id'];
+        $query = "DELETE FROM whoison WHERE user_id=:user_id";
+        $numbers = array(
+            'user_id' => $user_id
+            );
+        $status = $this->getData($query, $numbers = $numbers);
+        if ($status === false) {
+            $successStatus = false;
+        }
 
-        $sql = "DELETE FROM whoison WHERE user_id=$current_id";
-        mysql_query($sql, $db);
-        $sql = "INSERT INTO whoison (user_id) VALUES ($current_id)";
-        mysql_query($sql, $db);
+        $query = "INSERT INTO whoison (user_id) VALUES (:user_id)";
+        $status = $this->getData($query, $numbers = $numbers);
+        if ($status === false) {
+            $successStatus = false;
+        }
 
-        return true;
+        return $successStatus;
+    }
 */
+
