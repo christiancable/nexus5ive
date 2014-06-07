@@ -11,7 +11,7 @@ function display_message($message_array, $user_id, $template, $mode, $db)
     /* vars used in this function
 
     here it might be easier to get the message array in the caller
-
+ 
     */
 
     // need to make the template handle unique in this page
@@ -340,7 +340,7 @@ do we need the return to section???
     }
 
     if ($whosonline) {
-        echo '<li><a href="userson.php">[ Who\'s Online ]</a>';
+        echo '<li><a href="users/">[ Who\'s Online ]</a>';
     }
 
     if ($mainmenu) {

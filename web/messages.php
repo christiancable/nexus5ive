@@ -2,6 +2,8 @@
 
 namespace nexusfive;
 
+require '../vendor/autoload.php';
+
 // includes
 
 include_once('../includes/common.php');
@@ -11,9 +13,9 @@ include_once('../includes/site.php');
 
 use Template;
 
-include_once('../includes/nxdata.php');
-include_once('../includes/nxinterface.php');
-include_once('../includes/nxconfig.php');
+// include_once('../includes/nxdata.php');
+// include_once('../includes/nxinterface.php');
+// include_once('../includes/nxconfig.php');
 
 // parameters
 if (isset($_GET['sendtoid'])) {
