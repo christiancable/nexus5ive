@@ -74,32 +74,13 @@ display_header(
 $datastore->updateUserLocation($_SESSION['current_id'], 'Instant Messages');
 
 
-$other_users_array = $datastore->readOnlineUsers($_SESSION['current_id'], true);
+$other_users_array = $datastore->readOnlineUsers($_SESSION['current_id'], false);
 
 
-$db = opendata();
-//if other users on give them the send template
-$users_on_array = array();
+//$db = opendata();
 
-
-
-
-
-/* this function returns an array of other users online to populate the send to box */
-if (!$users_on_array = get_users_online($_SESSION['current_id'], true)) {
-  
-} else {
-  
-}
-
-// var_dump($users_on_array);
-// var_dump($other_users_array);
-
-
-// echo "<pre>".print_r($users_on_array,true)."</pre>";
-
-
-if ($users_on_array) {
+// if we have other users online then we can send them messages 
+if ($other_users_array) {
 
     // display navigationmenu
     display_navigationBar(
@@ -119,7 +100,7 @@ if ($users_on_array) {
     $t->set_file("sendmessages", "send_message.html");
 
     $select_code = '';
-    foreach ($users_on_array as $current_user_array) {
+    foreach ($other_users_array as $current_user_array) {
         $select_code = $select_code."\n".'<option value="'.$current_user_array['user_id'].'"';
 
         if (isset($sendtoid)) {
