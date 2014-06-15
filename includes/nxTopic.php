@@ -15,6 +15,7 @@ class NxTopic
     public $topic_weight;
     public $topic_title_hidden;
 
+    public $postCount;
 
     public $section;
 
@@ -24,6 +25,8 @@ class NxTopic
     private $ui;
 
     // we need section info too for determining who owns the topic
+
+    // give the amount of time we're referencing the user here it might be an idea to pass it in the constructor
 
     public function __construct($topic_id, $cfg = false, $data = false, $ui = false)
     {
@@ -61,10 +64,23 @@ class NxTopic
         }
 
         $this->section = $sectionData;
+        $this->postCount = $this->data->countPostsInTopic($topic_id);
+
+        // count new posts in the topic here
+      
     }
 
-    public function readTopic($startPost, $numberOfPosts)
+    public function readTopic($startPost, $numberOfPosts, $user_id)
     {
+        // update the last time read for the topic
+        $this->data->updateTopicLatestReadTime($this->topic_id, $user_id);
+
+        // return the posts
         return $this->data->getPostsInTopic($this->topic_id, $startPost, $numberOfPosts);
+    }
+
+    public function countNewPosts($user_id)
+    {
+        return $this->data->countNewPostsInTopic($this->topic_id, $user_id);
     }
 }

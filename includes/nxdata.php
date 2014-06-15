@@ -375,7 +375,7 @@ class NxData
     /**
     *  looks up information about a topic
     * 
-    * @param $topic_id the section
+    * @param $topic_id the topic
     * @return array|false the topics's information or false if section not found
     */
     public function readTopicInfo($topic_id)
@@ -411,70 +411,132 @@ class NxData
          return $results;
 
     }
+
+    /**
+    * counts the number of posts in a topic
+    * @param $topic_id the topic
+    * @return int|false the number of posts within the topic or false on failure
+    */
+
+    public function countPostsInTopic($topic_id)
+    {
+        $query = "SELECT count(message_id) as postCount FROM messagetable WHERE topic_id=:topic_id";
+
+        $parameters['int'] = array(
+                'topic_id' => $topic_id,
+            );
+
+        $results = $this->getData($query, $parameters);
+
+        if ($results) {
+            $return = (int)$results[0]['postCount'];
+        } else {
+            $return = false;
+        }
+
+        return $return;
+    }
+
+    /**
+    * counts the number of messages in a given topic since the user last read it
+    * @param $topic_id the topic ID
+    * @param $user_id the user ID
+    * @return int the number of posts since the user last read the topic or 0 if the topic was never read before
+    *
+    */
+    public function countNewPostsInTopic($topic_id, $user_id)
+    {
+        // get the last message time
+        $query = "SELECT msg_date FROM topicview WHERE user_id=:user_id AND topic_id=:topic_id";
+
+        $parameters['int'] = array(
+                'topic_id' => $topic_id,
+                'user_id'  => $user_id
+            );
+
+        $results = $this->getData($query, $parameters);
+
+        if ($results) {
+            $lastReadDate = $results[0]['msg_date'];
+        } else {
+            $lastReadDate = 0;
+        }
+        
+        if ($lastReadDate) {
+            // count how many messages since the last time read
+            $query = "SELECT COUNT(messagetable.message_id) AS newMessages FROM messagetable WHERE topic_id=:topic_id AND message_time > :message_time";
+
+            $parameters['int'] = array(
+                'topic_id' => $topic_id,
+            );
+            $parameters['string'] = array(
+                'message_time' => $lastReadDate,
+            );
+
+            $results = $this->getData($query, $parameters);
+
+            if ($results) {
+                $return = (int)$results[0]['newMessages'];
+            } else {
+                $return = 0;
+            }
+        } else {
+            $return = 0;
+        }
+    }
+
+    /**
+    * updates the latest message a user has read in a particular topic
+    * @param $topic_id the topic
+    * @param $user_id the reader
+    * @return the PDO success 
+    */
+    public function updateTopicLatestReadTime($topic_id, $user_id)
+    {
+        // remove any existing record for this user and topic
+        $query = "DELETE FROM topicview WHERE topic_id=:topic_id AND user_id=:user_id";
+        $parameters['int'] = array(
+                'topic_id' => $topic_id,
+                'user_id'  => $user_id
+            );
+        $results = $this->getData($query, $parameters);
+
+        // get the time of the latest post
+        $query = "SELECT max(message_time) as latest_date FROM messagetable WHERE topic_id=:topic_id";
+        $parameters['int'] = array(
+            'topic_id' => $topic_id,
+        );
+
+        $results = $this->getData($query, $parameters);
+
+        if ($results) {
+            $latestPostDate = $results[0]['latest_date'];
+        } else {
+            $latestPostDate = false;
+        }
+
+        // record the date of the most recent post
+        if ($latestPostDate !== false) {
+            $query = "INSERT INTO topicview (user_id, topic_id, msg_date) VALUES (:user_id, :topic_id, :message_time)";
+
+            $parameters['int'] = array(
+                'topic_id' => $topic_id,
+                'user_id' => $user_id,
+            );
+
+            $parameters['string'] = array(
+                'message_time' => $latestPostDate,
+
+            );
+
+            $results = $this->getData($query, $parameters);
+        }
+
+        return $results;
+    }
 }
 
 /*
 
-unction fetchPostArray($topicID, $numberOfPosts, $startPost, $userID)
-{
-    // SUCCCESS: returns an array of posts from a topic
-    // FAILURE: returns false
-    
 
-    $returnValue = false;
-
-    $totalPosts = get_count_topic_messages($topicID);
-    $newPosts = new_messages_in_topic($topicID, $userID);
-
-
-    $sql = 'SELECT message_id FROM messagetable WHERE topic_id=' . $topicID . '  ORDER BY  message_id  ';
-
-    if ($startPost === false) {
-        unset($startPost);
-    }
-
-    if (!isset($startPost)) {
-        $startPost = $totalPosts - $numberOfPosts;
-
-        if ($newPosts > $numberOfPosts) {
-            $startPost = $totalPosts - $newPosts;
-            $numberOfPosts = $newPosts + 1;
-        }
-
-    } else {
-        if ($startPost > ($totalPosts - $numberOfPosts)) {
-            $startPost = $totalPosts - $numberOfPosts;
-        }
-    }
-
-    if ($startPost < 0) {
-        $startPost = 0;
-    }
-
-    $limit_sql = "LIMIT $startPost, $numberOfPosts";
-
-    $sql = $sql . $limit_sql;
-
-
-    if (!$sqlResult = mysql_query($sql)) {
-
-        $returnValue = false;
-
-    } else {
-            // gather the topic's posts into an array of posts
-            
-        $postArray = array();
-        if (mysql_num_rows($sqlResult)) {
-            if ($currentPost = mysql_fetch_array($sqlResult)) {
-                do {
-                    array_push($postArray, $currentPost);
-                } while ($currentPost = mysql_fetch_array($sqlResult));
-            }
-        }
-
-        $returnValue = $postArray;
-    }
-
-    return $returnValue;
-}
 */

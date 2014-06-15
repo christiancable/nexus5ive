@@ -20,11 +20,12 @@ ToroHook::add("404", function() {
 
 Toro::serve(
     array(
-    '/messages/:number'     => 'nexusfive\nxMessageHandler',
-    '/messages/'            => 'nexusfive\nxMessageHandler',
-    '/messages/count'       => 'nexusfive\nxMessageCountHandler',
-    '/users/'               => 'nexusfive\nxUsersHandler',
-    '/topic/:number'        => 'nexusfive\nxTopicHandler'
+    '/messages/:number'          => 'nexusfive\nxMessageHandler',
+    '/messages/'                 => 'nexusfive\nxMessageHandler',
+    '/messages/count'            => 'nexusfive\nxMessageCountHandler',
+    '/users/'                    => 'nexusfive\nxUsersHandler',
+    '/topic/:number/:number'     => 'nexusfive\nxTopicHandler',
+    '/topic/:number'             => 'nexusfive\nxTopicHandler'
     )
 );
 
