@@ -1,4 +1,4 @@
-<?
+<?php
 namespace nexusfive;
 
 class nxTopicHandler 
@@ -54,29 +54,10 @@ class nxTopicHandler
         
         $currentUser->updateCurrentActivity('Reading: '. $topic->topic_title);
 
-        /*
-
-        options:
-
-        * we are viewing the topic for the first time
-            - show the latest $currentUser->user_display posts
-
-                start_message is total messages - user_display
-                posts to view is user_display
-
-        * we are viewing the topic again
-            - show all the posts since the user last viewed the topic
-        */
-        
-        // user_display is stored as a string so we need to cast as an int here
-
-        $postsToDisplay = (int)$currentUser->user_display;
         $startPost = (int)$startPost;
-        // if startPost is 0 then see when we last viewed this topic and use that instead
 
-        $topic->countNewPosts($currentUser->user_id);
 
-        $posts = $topic->readTopic($startPost, $postsToDisplay, $currentUser->user_id);
+        $posts = $topic->readTopic($startPost, $currentUser->user_id);
     
         $templateData = array(
             'topic'         => $topic,

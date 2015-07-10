@@ -11,26 +11,38 @@ class NxData
 
     public function __construct($cfg)
     {
-        try {
-            $this->connect($cfg['dbServer'], $cfg['dbDatabase'], $cfg['dbUser'], $cfg['dbPassword']);
-        } catch (PDOException $exception) {
-            echo "error".$exception->getMessage();
-            die(); // TODO - is this what we want to do??
+        // if dbServer is false then we are using the tests and setting the db connection from the test suite
+        if ($cfg['dbServer'] !== false) {
+            try {
+                $this->connect($cfg['dbServer'], $cfg['dbDatabase'], $cfg['dbUser'], $cfg['dbPassword']);
+            } catch (PDOException $exception) {
+                echo "error".$exception->getMessage();
+                die(); // TODO - is this what we want to do??
+            }
         }
     }
 
 
     private function connect($server, $database, $user, $password)
     {
-        // returns a connection to the database
+        // returns a connection to the database       
         $db = new PDO("mysql:host=".$server.";dbname=".$database, $user, $password);
         $this->db = $db;
     }
 
+     /**
+     * Set the database connection (used for testing)
+     *
+     * @param PDO $connection
+     */
+    public function setConnection(PDO $connection)
+    {
+        $this->db = $connection;
+    }
 
     /**
      *  queries the database using the supplied sql and an array of parameters
-     * 
+     *
      * @param string $query the query in SQL with placeholder
      * @param array $strings a named array of string parameters to match the placeholders in the SQL (optional)
      * @param array $numbers a named array of int parameters to match the placeholders in the SQL (optional)
@@ -66,9 +78,9 @@ class NxData
 
     /**
     *  updates who's online with latest time of activity
-    * 
+    *
     * @param $user_id the current user's id
-    * @return bool to show status of update 
+    * @return bool to show status of update
     */
     public function updateLastActiveTime($user_id)
     {
@@ -94,15 +106,15 @@ class NxData
 
 
     /**
-     *  looks up a user's information 
-     * 
+     *  looks up a user's information
+     *
      * @param $user_id the user's id
      * @return array|false user's information or false if user not found
      */
     public function readUserInfo($user_id)
     {
         $query = "SELECT * FROM usertable WHERE user_id=:user_id";
-        
+
         $parameters['int'] = array(
             'user_id' => $user_id
             );
@@ -116,14 +128,14 @@ class NxData
         } else {
             $return = false;
         }
-        
+
         return $return;
     }
 
 
     /**
     *  looks up information about a section
-    * 
+    *
     * @param $section_id the section
     * @return array|false sections's information or false if section not found
     */
@@ -150,7 +162,7 @@ class NxData
 
    /**
     *  gets a given user's instant messages
-    * 
+    *
     * @param $user_id the user
     * @return array|false the users instant messages or false on failure
     */
@@ -169,7 +181,7 @@ class NxData
 
     /**
     *  counts the number of instant message a user has
-    * 
+    *
     * @param int $user_id the user
     * @param bool $include_read should the count include previously read mesages
     * @return int|false the number of message or false on error
@@ -200,7 +212,7 @@ class NxData
 
     /**
     *  sets a user's instant messages as read
-    * 
+    *
     * @param int $user_id the user
     * @return int|false the number of message or false on error
     */
@@ -218,14 +230,14 @@ class NxData
 
    /**
     *  counts the number of comments on a users info screen
-    * 
+    *
     * @param int $user_id the user
     * @param bool $include_read should the count include previously read mesages
     * @return int|false the number of message or false on error
     */
     public function countComments($user_id, $include_read = false)
     {
-        
+
         if ($include_read === false) {
             $query = "SELECT count(comment_id) as total_msg FROM commenttable WHERE readstatus IS NULL AND user_id=:user_id";
         } else {
@@ -249,8 +261,8 @@ class NxData
 
 
     /**
-    *  updates a user's bbs location 
-    * 
+    *  updates a user's bbs location
+    *
     * @param int $user_id the user
     * @param string $location the location on the bbs
     * @return int|false the number of message or false on error
@@ -275,7 +287,7 @@ class NxData
 
     /**
     *  retrieves a list of users online
-    * 
+    *
     * @param int $user_id the user
     * @param bool $include_self include user_id in the list or not
     * @return array|false information about the currently online users or false on failure
@@ -287,25 +299,25 @@ class NxData
         so should just vanish from the list right away */
 
         if ($include_self === true) {
-            $query = "SELECT whoison.user_id as user_id, 
-            usertable.user_popname as user_popname, 
-            usertable.user_location as user_location, 
-            user_name, 
-            whoison.timeon as last_active 
+            $query = "SELECT whoison.user_id as user_id,
+            usertable.user_popname as user_popname,
+            usertable.user_location as user_location,
+            user_name,
+            whoison.timeon as last_active
             from whoison, usertable
             WHERE (whoison.timeon > date_sub(now(), INTERVAL 5 minute)) and
             whoison.user_id = usertable.user_id and
             usertable.user_status <> 'Offline' ORDER BY timeon DESC";
         } else {
-            $query = "SELECT whoison.user_id as user_id, 
-            usertable.user_popname as user_popname, 
-            usertable.user_location as user_location, 
-            user_name, 
-            whoison.timeon as last_active 
+            $query = "SELECT whoison.user_id as user_id,
+            usertable.user_popname as user_popname,
+            usertable.user_location as user_location,
+            user_name,
+            whoison.timeon as last_active
             from whoison, usertable
             WHERE (whoison.timeon > date_sub(now(), INTERVAL 5 minute)) and
             whoison.user_id = usertable.user_id and
-            whoison.user_id <> :user_id 
+            whoison.user_id <> :user_id
             and usertable.user_status <> 'Offline' ORDER BY timeon DESC";
         }
 
@@ -321,7 +333,7 @@ class NxData
 
    /**
     *  send an instant message
-    * 
+    *
     * @param int $userID the user receiving the message
     * @param int $fromID the user sending the message
     * @param string $message the text of the message
@@ -348,7 +360,7 @@ class NxData
 
     /**
     *  send an instant message
-    * 
+    *
     * @param int $userID the user who owns the messages
     * @param array $messageIDs the IDs of the messages to delete
     * @return bool true on success or false on error
@@ -374,7 +386,7 @@ class NxData
 
     /**
     *  looks up information about a topic
-    * 
+    *
     * @param $topic_id the topic
     * @return array|false the topics's information or false if section not found
     */
@@ -392,7 +404,7 @@ class NxData
         } else {
             $return = false;
         }
-        
+
         return $return;
     }
 
@@ -437,6 +449,26 @@ class NxData
         return $return;
     }
 
+
+    /**
+    * returns posts that match the search query
+    * @param $search_query a text query
+    * @return array the posts 
+    */
+
+    public function searchPosts($search_query)
+    {
+        $query = "SELECT * FROM messagetable WHERE message_text LIKE '%:search_query%'";
+
+        $parameters['string'] = array(
+            'search_query' => $search_query
+            );
+
+        $results = $this->getData($query, $parameters);
+
+        return $results;
+    }
+
     /**
     * counts the number of messages in a given topic since the user last read it
     * @param $topic_id the topic ID
@@ -461,7 +493,7 @@ class NxData
         } else {
             $lastReadDate = 0;
         }
-        
+
         if ($lastReadDate) {
             // count how many messages since the last time read
             $query = "SELECT COUNT(messagetable.message_id) AS newMessages FROM messagetable WHERE topic_id=:topic_id AND message_time > :message_time";
@@ -489,7 +521,7 @@ class NxData
     * updates the latest message a user has read in a particular topic
     * @param $topic_id the topic
     * @param $user_id the reader
-    * @return the PDO success 
+    * @return the PDO success
     */
     public function updateTopicLatestReadTime($topic_id, $user_id)
     {

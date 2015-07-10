@@ -70,10 +70,25 @@ class NxTopic
       
     }
 
-    public function readTopic($startPost, $numberOfPosts, $user_id)
+    public function readTopic($startPost, $user_id)
     {
         // update the last time read for the topic
         $this->data->updateTopicLatestReadTime($this->topic_id, $user_id);
+
+        $countPostsSinceLastRead = '';
+        $countPostsPerPage = '';
+
+
+        $countTotalPostsInTopic = $this->postCount;
+
+
+        // 
+
+        // if no start post specified
+
+        // if start post specified
+
+
 
         // return the posts
         return $this->data->getPostsInTopic($this->topic_id, $startPost, $numberOfPosts);

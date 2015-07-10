@@ -1,4 +1,4 @@
-<?
+<?php
 /*
 url dispatch for nexusfive
 
@@ -25,7 +25,8 @@ Toro::serve(
     '/messages/count'            => 'nexusfive\nxMessageCountHandler',
     '/users/'                    => 'nexusfive\nxUsersHandler',
     '/topic/:number/:number'     => 'nexusfive\nxTopicHandler',
-    '/topic/:number'             => 'nexusfive\nxTopicHandler'
+    '/topic/:number'             => 'nexusfive\nxTopicHandler',
+    '/search/pictures/'          => 'nexusfive\nxSearchHandler'
     )
 );
 
