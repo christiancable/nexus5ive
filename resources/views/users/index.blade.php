@@ -41,7 +41,7 @@
                 <div class="title">Users</div>
                 <ul>
                 @foreach ($users as $user)
-                    <li>{{ link_to("/users/{$user->user_name}", $user->user_name) }}</li>               
+                    <li><a href="{{ url("/users/{$user->user_name}") }}">{{$user->user_name}}</a></li>               
                 @endforeach
                 </ul>
             </div>

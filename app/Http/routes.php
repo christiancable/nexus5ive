@@ -18,7 +18,7 @@ Route::get('/', function () {
 
 Route::get('users', function () {
     $users =  \App\NexusUser::orderBy('user_name', 'asc')->get();
-    return view('users')->with('users', $users);
+    return view('users.index')->with('users', $users);
 });
 
 

@@ -38,10 +38,8 @@
     <body>
         <div class="container">
             <div class="content">
-                <div class="title">Users</div>
-                <ul>
+                <div class="title">{{$user->user_name}}</div>
                 {{ dd($user)}}
-                </ul>
             </div>
         </div>
     </body>
