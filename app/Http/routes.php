@@ -17,6 +17,9 @@ Route::get('/', function () {
 
 
 Route::get('users', function () {
-    $users = DB::table('users')->get();
-    return $users;
+    // $users = DB::table('usertable')->where('user_id','=',1)->get();
+
+    $users = \App\NexusUser::where('user_id', '=', 1)->get();
+    // $users = DB::table('usertable')->find(1);
+    dd($users);
 });
