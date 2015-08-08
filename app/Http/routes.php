@@ -17,9 +17,12 @@ Route::get('/', function () {
 
 
 Route::get('users', function () {
-    // $users = DB::table('usertable')->where('user_id','=',1)->get();
+    $users =  \App\NexusUser::orderBy('user_name', 'asc')->get();
+    return view('users')->with('users', $users);
+});
 
-    $users = \App\NexusUser::where('user_id', '=', 1)->get();
-    // $users = DB::table('usertable')->find(1);
-    dd($users);
+
+Route::get('users/{user_name}', function($user_name){
+    $user = \App\NexusUser::where('user_name', $user_name)->first();
+    return view('users.show')->with('user', $user);
 });

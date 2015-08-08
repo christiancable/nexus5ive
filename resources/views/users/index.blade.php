@@ -39,6 +39,11 @@
         <div class="container">
             <div class="content">
                 <div class="title">Users</div>
+                <ul>
+                @foreach ($users as $user)
+                    <li>{{ link_to("/users/{$user->user_name}", $user->user_name) }}</li>               
+                @endforeach
+                </ul>
             </div>
         </div>
     </body>
