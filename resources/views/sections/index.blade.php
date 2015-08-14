@@ -38,17 +38,13 @@
     <body>
         <div class="container">
             <div class="content">
-                <div class="title">Sections</div>
+                <div class="title">{{$sections[1]->parent->section_title}}</div>
                 <ul>
                 @foreach ($sections as $section)
                     <li>
-                    <h2>{{$section->section_title}}</h2>
+                    <h2><a href="{{ url("/$section->section_title")}}">{{$section->section_title}}</a></h2>
                     <p>{{$section->section_intro}}</p>
-                    <p>Moderated by {{$section->moderator->user_name}}<p>
-
-                    @if ($section->parent_id != 0)
-                       <p>Parent Section is {{$section->parent->section_title}}</p>
-                    @endif
+                    <p>Moderated by <a href="{{ url("/users/{$section->moderator->user_name}") }}">{{$section->moderator->user_name}}</a><p>
                     </li>
                 @endforeach
                 </ul>

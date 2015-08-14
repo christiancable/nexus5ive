@@ -18,6 +18,11 @@ class Section extends Model
     {
         return $this->hasOne('App\Nexus\Section', 'section_id', 'parent_id');
     }
+
+    public function slug()
+    {
+        return str_slug($this->section_title, '-');
+    }
 }
 
 /*
