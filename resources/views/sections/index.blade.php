@@ -41,7 +41,16 @@
                 <div class="title">Sections</div>
                 <ul>
                 @foreach ($sections as $section)
-                    <li><a href="{{ url("/{$section->sectionname}") }}">{{$section->sectionname}}</a></li>               
+                    <li>
+                    <h2>{{$section->section_title}}</h2>
+                    <p>{{$section->section_intro}}</p>
+                    </li>
+
+           {{--          <li>
+                    <a href="{{ url("/{$section->section_title}") }}">{{$section->section_title}}</a>
+                    <p>{{$section->section_intro}}</p>
+                    <!-- <p>Parent Section is : {{$section->parent->section_title}}</p> -->
+                    </li>                --}}
                 @endforeach
                 </ul>
             </div>

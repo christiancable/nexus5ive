@@ -16,8 +16,9 @@
 // });
 
 Route::get('/', function () {
-    $sections = \App\Nexus\Section::orderBy('sectionname', 'asc')->get();
+    $sections = \App\Nexus\Section::orderBy('section_title', 'asc')->get();
     return view('sections.index')->with('sections', $sections);
+    // dd($sections);
 });
 
 
