@@ -44,7 +44,7 @@
                     <li>
                     <h2>{{$section->section_title}}</h2>
                     <p>{{$section->section_intro}}</p>
-                  {{--   <p>{{$section->parent->section_title}}<p> --}}
+                    <p>Moderated by {{$section->moderator->user_name}}<p>
                     </li>
 
            {{--          <li>
