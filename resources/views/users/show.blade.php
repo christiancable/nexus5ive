@@ -40,23 +40,7 @@
             <div class="content">
                 <div class="title">{{$user->user_name}}</div>
                 <h2>User Information</h2>
-                <dl>
-                    {{-- <dt>user_id</dt><dd>{{$user->user_id}}</dd> --}}
-                {{--     <dt>user_name</dt><dd>{{$user->user_name}}</dd> --}}
-                  {{--   <dt>Activity</dt><dd>{{$user->user_location}}</dd> --}}
-               {{--      <dt>user_password</dt><dd>{{$user->user_password}}</dd> --}}
-                    {{-- <dt>user_priv</dt><dd>{{$user->user_priv}}</dd>
-                    <dt>user_display</dt><dd>{{$user->user_display}}</dd>
-                    <dt>user_backwards</dt><dd>{{$user->user_backwards}}</dd>
-                    <dt>user_sysop</dt><dd>{{$user->user_sysop}}</dd>
-                    <dt>user_theme</dt><dd>{{$user->user_theme}}</dd> --}}
-                    {{-- <dt>user_status</dt><dd>{{$user->user_status}}</dd> --}}
-                    {{-- <dt>user_banned</dt><dd>{{$user->user_banned}}</dd> --}}
-                    {{-- <dt>user_ipaddress</dt><dd>{{$user->user_ipaddress}}</dd> --}}
-                    {{-- <dt>user_no_pictures</dt><dd>{{$user->user_no_pictures}}</dd> --}}
-                    {{-- <dt>mojo</dt><dd>{{$user->mojo}}</dd> --}}
-                    {{-- <dt>user_hideemail</dt><dd>{{$user->user_hideemail}}</dd> --}}
-                    
+                <dl>        
 
                     <dt>Name</dt><dd>{{$user->user_realname}}</dd>
 
@@ -81,6 +65,7 @@
 
                 </dl>
                 <h2>Comments</h2>
+                {{-- {{ dd($user->comments->groupBy('comment_id'))}} --}}
                 <ul>
                 @foreach ($user->comments as $comment)
                     <li><strong>{{$comment->author->user_name}}</strong> - {{$comment->text}}</li>
