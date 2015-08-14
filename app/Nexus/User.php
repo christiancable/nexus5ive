@@ -1,10 +1,10 @@
 <?php
 
-namespace App;
+namespace App\Nexus;
 
 use Illuminate\Database\Eloquent\Model;
 
-class NexusUser extends Model
+class User extends Model
 {
      protected $table = 'usertable';
      protected $primaryKey = 'user_id';
