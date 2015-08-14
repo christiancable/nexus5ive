@@ -14,13 +14,24 @@ class Section extends Model
     //     return $this->hasOne('App\Nexus\User', 'user_id', 'user_id');
     // }
 
-    // public function parent()
-    // {
-    //     return $this->hasOne('App\Nexus\Section', 'section_id', 'parent_id');
-    // }
+    public function parent()
+    {
+        return $this->hasOne('App\Nexus\Section', 'section_id', 'parent_id');
+    }
 }
 
 /*
 
-
+DROP TABLE IF EXISTS `sectiontable`;
+CREATE TABLE `sectiontable` (  
+`section_id` int(11) NOT NULL AUTO_INCREMENT,
+`section_title` varchar(50) DEFAULT NULL,
+`user_id` int(11) DEFAULT NULL,
+`parent_id` int(11) DEFAULT NULL, 
+`section_weight` int(11) NOT NULL DEFAULT '0',
+`section_intro` varchar(100) DEFAULT '',
+PRIMARY KEY (`section_id`),
+KEY `index_parent_id` (`parent_id`),  
+KEY `id_weight` (`section_id`,`section_weight`)) 
+)
  */
