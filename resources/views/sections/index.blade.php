@@ -45,13 +45,11 @@
                     <h2>{{$section->section_title}}</h2>
                     <p>{{$section->section_intro}}</p>
                     <p>Moderated by {{$section->moderator->user_name}}<p>
-                    </li>
 
-           {{--          <li>
-                    <a href="{{ url("/{$section->section_title}") }}">{{$section->section_title}}</a>
-                    <p>{{$section->section_intro}}</p>
-                    <!-- <p>Parent Section is : {{$section->parent->section_title}}</p> -->
-                    </li>                --}}
+                    @if ($section->parent_id != 0)
+                       <p>Parent Section is {{$section->parent->section_title}}</p>
+                    @endif
+                    </li>
                 @endforeach
                 </ul>
             </div>
