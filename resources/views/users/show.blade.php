@@ -39,7 +39,40 @@
         <div class="container">
             <div class="content">
                 <div class="title">{{$user->user_name}}</div>
-                {{ dd($user)}}
+                <dl>
+                    {{-- <dt>user_id</dt><dd>{{$user->user_id}}</dd> --}}
+                {{--     <dt>user_name</dt><dd>{{$user->user_name}}</dd> --}}
+                  {{--   <dt>Activity</dt><dd>{{$user->user_location}}</dd> --}}
+                    
+
+                    <dt>Name</dt><dd>{{$user->user_realname}}</dd>
+                    <dt>Email</dt><dd>{{$user->user_email}}</dd>
+                    <dt>Popname</dt><dd>{{$user->user_popname}}</dd>
+                    <dt>Age</dt><dd>{{$user->user_age}}</dd>
+                    <dt>Sex</dt><dd>{{$user->user_sex}}</dd>
+                    <dt>Location</dt><dd>{{$user->user_town}}</dd>
+                    
+                    <dt>Further Information</dt><dd>{{$user->user_comment}}</dd>
+
+                    <dt>Total Post</dt><dd>{{$user->user_totaledits}}</dd>
+                    <dt>Total Visits</dt><dd>{{$user->user_totalvisits}}</dd>
+
+                    <dt>Favourite Film</dt><dd>{{$user->user_film}}</dd>
+                    <dt>Favourite Band</dt><dd>{{$user->user_band}}</dd>
+
+               {{--      <dt>user_password</dt><dd>{{$user->user_password}}</dd> --}}
+                    {{-- <dt>user_priv</dt><dd>{{$user->user_priv}}</dd>
+                    <dt>user_display</dt><dd>{{$user->user_display}}</dd>
+                    <dt>user_backwards</dt><dd>{{$user->user_backwards}}</dd>
+                    <dt>user_sysop</dt><dd>{{$user->user_sysop}}</dd>
+                    <dt>user_theme</dt><dd>{{$user->user_theme}}</dd> --}}
+                    {{-- <dt>user_status</dt><dd>{{$user->user_status}}</dd> --}}
+                    {{-- <dt>user_banned</dt><dd>{{$user->user_banned}}</dd> --}}
+                    {{-- <dt>user_ipaddress</dt><dd>{{$user->user_ipaddress}}</dd> --}}
+                    {{-- <dt>user_no_pictures</dt><dd>{{$user->user_no_pictures}}</dd> --}}
+                    {{-- <dt>mojo</dt><dd>{{$user->mojo}}</dd> --}}
+                    <dt>user_hideemail</dt><dd>{{$user->user_hideemail}}</dd>
+                </dl>
             </div>
         </div>
     </body>
