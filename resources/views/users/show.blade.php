@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Laravel</title>
+        <title>{{$user->user_name}}</title>
 
         <link href="//fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
 
@@ -41,7 +41,6 @@
                 <div class="title">{{$user->user_name}}</div>
                 <h2>User Information</h2>
                 <dl>        
-
                     <dt>Name</dt><dd>{{$user->user_realname}}</dd>
 
                     @if ($user->user_hideemail === 'no')
@@ -65,13 +64,11 @@
 
                 </dl>
                 <h2>Comments</h2>
-                {{-- {{ dd($user->comments->groupBy('comment_id'))}} --}}
                 <ul>
                 @foreach ($user->comments as $comment)
-                    <li><strong>{{$comment->author->user_name}}</strong> - {{$comment->text}}</li>
+                    <li><strong><li><a href="{{ url("/users/{$comment->author->user_name}") }}">{{$comment->author->user_name}}</a></strong> - {{$comment->text}}</li>
                 @endforeach
                 </ul>
-                {{-- {{ dd($user->comments)}} --}}
             </div>
         </div>
     </body>
