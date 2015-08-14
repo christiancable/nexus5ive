@@ -39,6 +39,7 @@
         <div class="container">
             <div class="content">
                 <div class="title">{{$user->user_name}}</div>
+                <h2>User Information</h2>
                 <dl>
                     {{-- <dt>user_id</dt><dd>{{$user->user_id}}</dd> --}}
                 {{--     <dt>user_name</dt><dd>{{$user->user_name}}</dd> --}}
@@ -79,6 +80,13 @@
                     <dt>Favourite Band</dt><dd>{{$user->user_band}}</dd>
 
                 </dl>
+                <h2>Comments</h2>
+                <ul>
+                @foreach ($user->comments as $comment)
+                    <li><strong>{{$comment->author->user_name}}</strong> - {{$comment->text}}</li>
+                @endforeach
+                </ul>
+                {{-- {{ dd($user->comments)}} --}}
             </div>
         </div>
     </body>
