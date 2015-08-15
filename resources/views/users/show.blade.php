@@ -73,11 +73,13 @@
                     </ul>
                 @endif
 
-                <h2>Comments</h2>
-                <ul>
-                @foreach ($user->comments as $comment)
-                    <li><strong><li><a href="{{ url("/users/{$comment->author->user_name}") }}">{{$comment->author->user_name}}</a></strong> - {{$comment->text}}</li>
-                @endforeach
+                @if (count($user->comments))
+                    <h2>Comments</h2>
+                    <ul>
+                    @foreach ($user->comments as $comment)
+                        <li><strong><li><a href="{{ url("/users/{$comment->author->user_name}") }}">{{$comment->author->user_name}}</a></strong> - {{$comment->text}}</li>
+                    @endforeach
+                @endif
                 </ul>
             </div>
         </div>
