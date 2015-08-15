@@ -23,7 +23,7 @@ class Section extends Model
 
     public function childen()
     {
-        return $this->hasMany('App\Nexus\Section', 'section_id', 'parent_id');
+        return $this->hasMany('App\Nexus\Section', 'section_id', 'parent_id')->orderBy('section_weight', 'asc');
     }
 
     public function slug()

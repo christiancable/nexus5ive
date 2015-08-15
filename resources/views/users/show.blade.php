@@ -63,6 +63,16 @@
                     <dt>Favourite Band</dt><dd>{{$user->user_band}}</dd>
 
                 </dl>
+
+                @if (count($user->sections))
+                    <h2>Moderates</h2>
+                    <ul>
+                    @foreach ($user->sections as $section)
+                        <li>{{$section->section_title}}</li>
+                    @endforeach
+                    </ul>
+                @endif
+
                 <h2>Comments</h2>
                 <ul>
                 @foreach ($user->comments as $comment)

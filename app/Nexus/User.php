@@ -14,4 +14,9 @@ class User extends Model
     {
         return $this->hasMany('App\Nexus\UserComment', 'user_id', 'user_id')->orderBy('comment_id');
     }
+
+    public function sections()
+    {
+        return $this->hasMany('App\Nexus\Section');
+    }
 }

@@ -17,33 +17,16 @@
 
 Route::get('/', function () {
     $sections = \App\Nexus\Section::where('parent_id', '=', 1)->orderBy('section_weight', 'asc')->get();
+    // $sections = \App\Nexus\Section::find(1)->children()->get();
     return view('sections.index')->with('sections', $sections);
 });
 
 Route::get('/{section_title}', function ($section_title) {
-
-    // $currentSection = \App\Nexus\Section::where('section_title', '=', $section_title)->take(1)->get();
     
+    $result = \App\Nexus\Section::find(1)->take(1)->moderator()->get();     
 
-    $section = \App\Nexus\Section::where('section_title', '=', $section_title)->take(1)->get();
-    // dd($section);
+    dd($result);
     
-    $childSections = $section->children;
-
-    dd($childSections);
-
-    dd($currentSection->moderator->user_name);
-    $parentSeection = $currentSection->children()->get();
-
-    dd($parentSeection);
-    // $sections = $currentSection->children;
-
-    // dd($currentSection);
-    // $sections = \App\Nexus\Section::where('parent', '=', $currentSection)->orderBy('section_weight', 'asc')->get();
-    
-    // $sections = \App\Nexus\Section::where()
-    dd($sections);
-    // return view('sections.index')->with('sections', $sections);
 });
 
 Route::get('users', function () {
