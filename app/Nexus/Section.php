@@ -6,9 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Section extends Model
 {
-     protected $table = 'sectiontable';
-     protected $primaryKey = 'section_id';
-    
+    protected $table = 'sectiontable';
+    protected $primaryKey = 'section_id';
+
+    public $timestamps = false;
+
     public function moderator()
     {
         return $this->hasOne('App\Nexus\User', 'user_id', 'user_id');
@@ -16,7 +18,12 @@ class Section extends Model
 
     public function parent()
     {
-        return $this->hasOne('App\Nexus\Section', 'section_id', 'parent_id');
+        return $this->belongsTo('App\Nexus\Section', 'parent_id', 'section_id');
+    }
+
+    public function childen()
+    {
+        return $this->hasMany('App\Nexus\Section', 'section_id', 'parent_id');
     }
 
     public function slug()

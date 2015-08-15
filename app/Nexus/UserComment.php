@@ -8,6 +8,7 @@ class UserComment extends Model
 {
     protected $table = 'commenttable';
     protected $primaryKey = 'comment_id';
+    public $timestamps = false;
 
     public function author()
     {
