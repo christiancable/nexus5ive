@@ -16,17 +16,13 @@
 // });
 
 Route::get('/', function () {
-    $sections = \App\Nexus\Section::where('parent_id', '=', 1)->orderBy('section_weight', 'asc')->get();
-    // $sections = \App\Nexus\Section::find(1)->children()->get();
-    return view('sections.index')->with('sections', $sections);
+    $section = \App\Nexus\Section::find(1)->first();
+    return view('sections.index')->with('section', $section);
 });
 
-Route::get('/{section_title}', function ($section_title) {
-    
-    $result = \App\Nexus\Section::find(1)->take(1)->moderator()->get();     
-
-    dd($result);
-    
+Route::get('/{section_id}', function ($section_id) {
+    $section = \App\Nexus\Section::where('section_id', $section_id)->first();
+    return view('sections.index')->with('section', $section);
 });
 
 Route::get('users', function () {
@@ -45,8 +41,8 @@ Route::get('users/{user_name}', function($user_name) {
 Future Routes
 
 GET / - main menu
-GET /{section_name}/ - a section
-GET /{section_name}/{topic_name}/ - a topic
+GET /{section_id}/ - a section
+GET /{section_id}/{topic_id}/ - a topic
 GET /who/ - list of users online
 GET /users/ - list of users
 GET /users/{user_name}/ - info about {user_name}

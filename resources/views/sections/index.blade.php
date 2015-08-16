@@ -38,16 +38,26 @@
     <body>
         <div class="container">
             <div class="content">
-                <div class="title">{{$sections[1]->parent->section_title}}</div>
-                <ul>
-                @foreach ($sections as $section)
-                    <li>
-                    <h2><a href="{{ url("/$section->section_title")}}">{{$section->section_title}}</a></h2>
-                    <p>{{$section->section_intro}}</p>
-                    <p>Moderated by <a href="{{ url("/users/{$section->moderator->user_name}") }}">{{$section->moderator->user_name}}</a><p>
-                    </li>
-                @endforeach
-                </ul>
+
+                @if($section->parent)
+                    <p>Return to <a href="{{ url("/{$section->parent->section_id}") }}">{{$section->parent->section_title}}</a><p>
+                @endif 
+
+                <div class="title">{{$section->section_title}}</div>
+                
+
+                @if (count($section->sections))
+                    <h2>Sections</h2>
+                    <ul>
+                    @foreach ($section->sections as $subSection)
+                        <li>
+                        <h3><a href="{{ url("/{$subSection->section_id}") }}">{{$subSection->section_title}}</a></h3>
+                        <p>{{$subSection->section_intro}}</p>
+                        </li>
+                    @endforeach
+                    </ul>
+                @endif
+
             </div>
         </div>
     </body>

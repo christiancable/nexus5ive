@@ -21,9 +21,9 @@ class Section extends Model
         return $this->belongsTo('App\Nexus\Section', 'parent_id', 'section_id');
     }
 
-    public function childen()
+    public function sections()
     {
-        return $this->hasMany('App\Nexus\Section', 'section_id', 'parent_id')->orderBy('section_weight', 'asc');
+        return $this->hasMany('App\Nexus\Section', 'parent_id', 'section_id')->orderBy('section_weight', 'asc');
     }
 
     public function slug()
