@@ -11,10 +11,15 @@ class Section extends Model
 
     public $timestamps = false;
 
+
+    // users
+    
     public function moderator()
     {
         return $this->hasOne('App\Nexus\User', 'user_id', 'user_id');
     }
+
+    // sections
 
     public function parent()
     {
@@ -24,6 +29,13 @@ class Section extends Model
     public function sections()
     {
         return $this->hasMany('App\Nexus\Section', 'parent_id', 'section_id')->orderBy('section_weight', 'asc');
+    }
+
+    // topics
+    
+    public function topics()
+    {
+        return $this->hasMany('App\Nexus\Topic', 'section_id', 'section_id')->orderBy('topic_weight', 'asc');
     }
 
     public function slug()

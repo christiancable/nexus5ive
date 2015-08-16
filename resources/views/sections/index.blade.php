@@ -15,8 +15,20 @@
                 <h1 class="title">{{$section->section_title}}</h1>
                 <p>Moderated by: {{$section->moderator->user_name}}</p>
 
+                 @if (count($section->topics))
+                    <h2>Topics</h2>
+                    <ul>
+                    @foreach ($section->topics as $topic)
+                        <li>
+                        <h3><a href="{{ url("/{$section->section_id}/$topic->topic_id") }}">{{$topic->topic_title}}</a></h3>
+                        <p>{{$topic->topic_description}}</p>
+                        </li>
+                    @endforeach
+                    </ul>
+                @endif
+
                 @if (count($section->sections))
-                    <h2>Sections</h2>
+                    <h2>Sub Sections</h2>
                     <ul>
                     @foreach ($section->sections as $subSection)
                         <li>
@@ -26,6 +38,7 @@
                     @endforeach
                     </ul>
                 @endif
+
 
             </div>
         </div>
