@@ -24,7 +24,7 @@ class Topic extends Model
     public function posts()
     {
         return $this->hasMany('App\Nexus\Post', 'topic_id', 'topic_id')->orderBy('message_id', 'asc');
-    } 
+    }
     
 }
 

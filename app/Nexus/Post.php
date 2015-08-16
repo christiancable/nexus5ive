@@ -22,8 +22,7 @@ class Post extends Model
     public function author()
     {
         return $this->belongsTo('App\Nexus\User', 'user_id', 'user_id');
-    } 
-    
+    }
 }
 
 /*
