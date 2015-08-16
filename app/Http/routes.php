@@ -15,15 +15,6 @@
 //     return view('welcome');
 // });
 
-Route::get('/', function () {
-    $section = \App\Nexus\Section::find(1)->first();
-    return view('sections.index')->with('section', $section);
-});
-
-Route::get('/{section_id}', function ($section_id) {
-    $section = \App\Nexus\Section::where('section_id', $section_id)->first();
-    return view('sections.index')->with('section', $section);
-});
 
 Route::get('users', function () {
     $users =  \App\Nexus\User::orderBy('user_name', 'asc')->get();
@@ -36,6 +27,15 @@ Route::get('users/{user_name}', function($user_name) {
     return view('users.show')->with('user', $user);
 });
 
+Route::get('/', function () {
+    $section = \App\Nexus\Section::find(1)->first();
+    return view('sections.index')->with('section', $section);
+});
+
+Route::get('/{section_id}', function ($section_id) {
+    $section = \App\Nexus\Section::where('section_id', $section_id)->first();
+    return view('sections.index')->with('section', $section);
+});
 /*
 
 Future Routes
