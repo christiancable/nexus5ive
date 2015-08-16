@@ -17,6 +17,15 @@ class Topic extends Model
     {
         return $this->belongsTo('App\Nexus\Section', 'section_id', 'section_id');
     }
+
+
+    // posts
+    
+    public function posts()
+    {
+        return $this->hasMany('App\Nexus\Post', 'topic_id', 'topic_id')->orderBy('message_id', 'asc');
+    } 
+    
 }
 
 /*
