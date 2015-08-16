@@ -13,7 +13,6 @@
 
                 <h1 class="title">{{$topic->topic_title}}</h1>
 
-                {{-- {{dd ($topic->posts)}} --}}
                 @forelse($topic->posts as $post)
                     @include('topics.post', $post)
                 @empty
