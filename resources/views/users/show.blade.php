@@ -1,44 +1,13 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>{{$user->user_name}}</title>
+@extends('layouts.master')
 
-        <link href="//fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
+@section('meta')
+<title>{{$user->user_name}}</title>
+@endsection
 
-        <style>
-            html, body {
-                height: 100%;
-            }
-
-            body {
-                margin: 0;
-                padding: 0;
-                width: 100%;
-                display: table;
-                font-weight: 100;
-                font-family: 'Lato';
-            }
-
-            .container {
-                text-align: center;
-                display: table-cell;
-                vertical-align: middle;
-            }
-
-            .content {
-                text-align: center;
-                display: inline-block;
-            }
-
-            .title {
-                font-size: 96px;
-            }
-        </style>
-    </head>
-    <body>
+@section('content')
         <div class="container">
             <div class="content">
-                <div class="title">{{$user->user_name}}</div>
+                <h1>{{$user->user_name}}</h1>
                 <h2>User Information</h2>
                 <dl>        
                     <dt>Name</dt><dd>{{$user->user_realname}}</dd>
@@ -77,11 +46,10 @@
                     <h2>Comments</h2>
                     <ul>
                     @foreach ($user->comments as $comment)
-                        <li><strong><li><a href="{{ url("/users/{$comment->author->user_name}") }}">{{$comment->author->user_name}}</a></strong> - {{$comment->text}}</li>
+                        <li><strong><a href="{{ url("/users/{$comment->author->user_name}") }}">{{$comment->author->user_name}}</a></strong> - {{$comment->text}}</li>
                     @endforeach
                 @endif
                 </ul>
             </div>
         </div>
-    </body>
-</html>
+@endsection
