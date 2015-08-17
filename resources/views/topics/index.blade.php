@@ -5,13 +5,16 @@
 @endsection
 
 @section('content')
-        <div class="container">
-            <div class="content">
+
+       <div class="page-header">
+        <h1>{{$topic->topic_title}}</h1>
+      </div>
+
+      {{--   <div class="container">
+            <div class="content"> --}}
                
                 <p>Return to <a href="{{ url("/{$topic->section_id}") }}">{{$topic->section->section_title}}</a><p>
             
-
-                <h1 class="title">{{$topic->topic_title}}</h1>
 
                 @forelse($topic->posts as $post)
                     @include('topics.post', $post)
@@ -19,6 +22,6 @@
                     <p>No Posts.</p>
                 @endforelse
 
-            </div>
-        </div> 
+     {{--        </div>
+        </div>  --}}
 @endsection
