@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-<div class="jumbotron">
+<div class="page-header">
     <div class="container">
         <h1>{{$section->section_title}}</h1>
         <p>{{$section->section_intro}}</p>
@@ -25,7 +25,7 @@
     @if (count($section->topics))
         @foreach ($section->topics as $topic)
         <div class="well">
-            <h2><a href="{{ url("/{$section->section_id}/$topic->topic_id") }}">{{$topic->topic_title}}</a></h2>
+            <h2><span class="glyphicon glyphicon-comment" aria-hidden="true"></span><a href="{{ url("/{$section->section_id}/$topic->topic_id") }}">  {{$topic->topic_title}}</a></h2>
             <p>{{$topic->topic_description}}</p>
         </div>
         @endforeach
