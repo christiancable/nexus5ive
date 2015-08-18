@@ -6,7 +6,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/css/app.css" rel="stylesheet">
-    <link rel="stylesheet" href="http://bootswatch.com/simplex/bootstrap.css">
+    <link rel="stylesheet" href="http://bootswatch.com/slate/bootstrap.css">
 </head>
 <body>
 

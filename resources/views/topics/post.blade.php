@@ -1,6 +1,6 @@
 @if (!str_is($post->message_title, ""))
 <div class="alert alert-info" role="alert">
-    <p>{{$post->author->user_name}} switch subject to <strong>{{$post->message_title}}</strong></p>
+    <p>{{$post->author->user_name}} switched subject to <strong>{{$post->message_title}}</strong></p>
 </div>
 @endif
 

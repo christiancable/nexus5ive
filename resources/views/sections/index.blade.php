@@ -26,7 +26,7 @@
         @foreach ($section->topics as $topic)
         <div class="well">
             <h2><span class="glyphicon glyphicon-comment" aria-hidden="true"></span><a href="{{ url("/{$section->section_id}/$topic->topic_id") }}">  {{$topic->topic_title}}</a></h2>
-            <p>{{$topic->topic_description}}</p>
+            <p>{!!nl2br($topic->topic_description)!!}</p>
         </div>
         @endforeach
     @endif

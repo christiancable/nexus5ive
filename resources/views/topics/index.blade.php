@@ -6,22 +6,35 @@
 
 @section('content')
 
-       <div class="page-header">
+
+<div class="page-header">
+    <div class="container">
         <h1>{{$topic->topic_title}}</h1>
-      </div>
+        
+    </div>
+</div>
+
+
+{{--                 @if($section->parent)
+<p>Return to <a href="{{ url("/{$section->parent->section_id}") }}">{{$section->parent->section_title}}</a><p>
+@endif  --}}
+
+<div class="container">
+    <div class="content">
 
       {{--   <div class="container">
             <div class="content"> --}}
                
                 <p>Return to <a href="{{ url("/{$topic->section_id}") }}">{{$topic->section->section_title}}</a><p>
             
-
                 @forelse($topic->posts as $post)
                     @include('topics.post', $post)
                 @empty
-                    <p>No Posts.</p>
+                    <p class="alert alert-warning">No Posts.</p>
                 @endforelse
 
      {{--        </div>
         </div>  --}}
+      </div>
+      </div>
 @endsection
