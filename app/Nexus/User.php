@@ -19,4 +19,9 @@ class User extends Model
     {
         return $this->hasMany('App\Nexus\Section');
     }
+
+    public function user()
+    {
+        return $this->belongsTo('App\User', 'user_id', 'id');
+    }
 }

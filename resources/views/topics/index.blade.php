@@ -26,13 +26,16 @@
             <div class="content"> --}}
                
                 <p>Return to <a href="{{ url("/{$topic->section_id}") }}">{{$topic->section->section_title}}</a><p>
-            
-                @forelse($topic->posts as $post)
+                
+                <?php $postsChunk = $posts->paginate(10) ?>
+                @forelse($postsChunk as $post)
                     @include('topics.post', $post)
                 @empty
                     <p class="alert alert-warning">No Posts.</p>
                 @endforelse
 
+
+                {!! $postsChunk->render() !!}
      {{--        </div>
         </div>  --}}
       </div>

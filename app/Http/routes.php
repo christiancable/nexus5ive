@@ -57,11 +57,12 @@ Route::get('/{section_id}', function ($section_id) {
     return view('sections.index')->with('section', $section);
 });
 
-Route::get('/{section_id}/{topic_id}', function ($section_id, $topic_id) {
-    $topic = \App\Nexus\Topic::where('topic_id', $topic_id)->where('section_id', $section_id)->first();
-    return view('topics.index')->with('topic', $topic);
-});
+// Route::get('/{section_id}/{topic_id}', function ($section_id, $topic_id) {
+//     $topic = \App\Nexus\Topic::where('topic_id', $topic_id)->where('section_id', $section_id)->first();
+//     return view('topics.index')->with('topic', $topic);
+// });
 
+Route::get('/{section_id}/{topic_id}', 'Nexus\TopicController@show');
 
 /*
 
