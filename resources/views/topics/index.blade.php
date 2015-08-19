@@ -27,8 +27,16 @@
                
                 <p>Return to <a href="{{ url("/{$topic->section_id}") }}">{{$topic->section->section_title}}</a><p>
                 
-                <?php $postsChunk = $posts->paginate(10) ?>
-                @forelse($postsChunk as $post)
+                <?php
+                  $postsChunk = $posts->paginate(10);
+                  $reverseArray = [];
+                  foreach ($postsChunk as $post) {
+                      $reverseArray[] = $post;
+                  }
+                  $reverseArray = array_reverse($reverseArray);
+                ?>
+
+                @forelse($reverseArray as $post)
                     @include('topics.post', $post)
                 @empty
                     <p class="alert alert-warning">No Posts.</p>
