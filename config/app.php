@@ -137,6 +137,8 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
 
+        Collective\Html\HtmlServiceProvider::class,
+
         /*
          * Application Service Providers...
          */
@@ -148,6 +150,11 @@ return [
 
     ],
 
+/* added form class using 
+http://bonyweb.com/en/notes/how-to-install-html-form-helper-in-laravel-5-1/
+/*
+
+ */
     /*
     |--------------------------------------------------------------------------
     | Class Aliases
@@ -194,6 +201,8 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View'      => Illuminate\Support\Facades\View::class,
         'Debugbar' => 'Barryvdh\Debugbar\Facade',
+        'Html' => Collective\Html\HtmlFacade::class,
+        'Form'      => Collective\Html\FormFacade::class,
     ],
 
 ];

@@ -39,8 +39,14 @@
 
 
         <ol class="breadcrumb">
-
-        <li><a href="#">Username</a> popname</li>
+        @if (Auth::check())
+          @if ($username = Auth::user()->email)
+            <li><a href="#">{{$username}}</a> (popname)</li>
+            <li><a href="/auth/logout">logout</a></li>
+          @endif
+        @else 
+          <li><a href="/auth/login">login</a></li>
+        @endif
   {{--        {% for crumb in breadcrumbs %}
 
          {% if crumb.location is not empty %}

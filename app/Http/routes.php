@@ -16,6 +16,21 @@
 // });
 
 
+// users
+
+Route::get('auth/register', 'Auth\AuthController@getRegister');
+Route::post('auth/register', 'Auth\AuthController@postRegister');
+
+
+Route::get('auth/login', 'Auth\AuthController@getLogin');
+Route::post('auth/login', 'Auth\AuthController@postLogin');
+
+
+Route::get('auth/logout', 'Auth\AuthController@getLogout');
+
+
+// menus
+// 
 Route::get('users', function () {
     $users =  \App\Nexus\User::orderBy('user_name', 'asc')->get();
     return view('users.index')->with('users', $users);
@@ -28,6 +43,11 @@ Route::get('users/{user_name}', function($user_name) {
 });
 
 Route::get('/', function () {
+    $section = \App\Nexus\Section::find(1)->first();
+    return view('sections.index')->with('section', $section);
+});
+
+Route::get('/home', function () {
     $section = \App\Nexus\Section::find(1)->first();
     return view('sections.index')->with('section', $section);
 });
