@@ -37,6 +37,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     
     public function nexusUser()
     {
-        return $this->hasOne('App\Nexus\User', 'id', 'user_id');
+        return $this->hasOne('App\Nexus\User', 'user_id', 'nexus_id');
     }
 }

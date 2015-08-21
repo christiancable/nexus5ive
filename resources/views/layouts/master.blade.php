@@ -40,8 +40,9 @@
 
         <ol class="breadcrumb">
         @if (Auth::check())
-          @if ($username = Auth::user()->email)
-            <li><a href="#">{{$username}}</a> (popname)</li>
+          @if ($authUser = Auth::user())
+            <li><a href="#">{{$authUser->nexusUser->user_name}}</a> ({{$authUser->nexusUser->user_popname}})</li>
+            {{-- @endif --}}
             <li><a href="/auth/logout">logout</a></li>
           @endif
         @else 
