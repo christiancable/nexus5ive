@@ -6,7 +6,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/css/app.css" rel="stylesheet">
-    <link rel="stylesheet" href="http://bootswatch.com/slate/bootstrap.css">
+    <link rel="stylesheet" href="http://bootswatch.com/cerulean/bootstrap.css">
 </head>
 <body>
 
@@ -25,7 +25,7 @@
           <ul class="nav navbar-nav">
         <li><a href="#">Topic Leap</a></li>
         <li><a href="#">Who's Online</a></li>
-        <li><a href="#/myinfo.php">Examine User</a></li>      
+        <li><a href="/users/">Examine User</a></li>      
           </ul>
 
         </div>
@@ -41,7 +41,7 @@
         <ol class="breadcrumb">
         @if (Auth::check())
           @if ($authUser = Auth::user())
-            <li><a href="#">{{$authUser->nexusUser->user_name}}</a> ({{$authUser->nexusUser->user_popname}})</li>
+            <li><a href="{{ url("/users/{$authUser->nexusUser->user_name}") }}">{{$authUser->nexusUser->user_name}}</a> ({{$authUser->nexusUser->user_popname}})</li>
             {{-- @endif --}}
             <li><a href="/auth/logout">logout</a></li>
           @endif

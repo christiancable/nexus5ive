@@ -8,8 +8,11 @@
         <div class="container">
             <div class="content">
                 <h1>{{$user->user_name}}</h1>
+
+                
                 <h2>User Information</h2>
-                <dl>        
+
+                <dl class="dl-horizontal">        
                     <dt>Name</dt><dd>{{$user->user_realname}}</dd>
 
                     @if ($user->user_hideemail === 'no')
@@ -23,7 +26,6 @@
                     <dt>Sex</dt><dd>{{$user->user_sex}}</dd>
                     <dt>Location</dt><dd>{{$user->user_town}}</dd>
                     
-                    <dt>Further Information</dt><dd>{{$user->user_comment}}</dd>
 
                     <dt>Total Post</dt><dd>{{$user->user_totaledits}}</dd>
                     <dt>Total Visits</dt><dd>{{$user->user_totalvisits}}</dd>
@@ -33,6 +35,7 @@
 
                 </dl>
 
+                <div class="well">{!! nl2br($user->user_comment) !!}</div>
                 @if (count($user->sections))
                     <h2>Moderates</h2>
                     <ul>
