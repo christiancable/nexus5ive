@@ -19,6 +19,9 @@ Route::post('auth/login', 'Auth\AuthController@postLogin');
 Route::get('auth/logout', 'Auth\AuthController@getLogout');
 
 
+// users
+Route::get('users', 'Nexus\UserController@index');
+Route::get('users/{user_name}', 'Nexus\UserController@show');
 
 
 // sections
@@ -26,9 +29,6 @@ Route::get('/', 'Nexus\SectionController@show');
 Route::get('/home', 'Nexus\SectionController@show');
 Route::get('/{section_id}', 'Nexus\SectionController@show');
 
-// users
-Route::get('users', 'Nexus\UserController@index');
-Route::get('users/{user_name}', 'Nexus\UserController@show');
 
 // topics
 Route::get('/{section_id}/{topic_id}', 'Nexus\TopicController@show');
