@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Nexus;
 
-// use Illuminate\Http\Request;
+use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use Request;
+// use Request;
 
 class CommentController extends Controller
 {
@@ -33,13 +33,14 @@ class CommentController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Request  $request
+     * @param  CreateCommentRequest  $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(Requests\CreateCommentRequest $request)
     {
-        $input = Request::all();
+        $input = $request->all();
 
+        // dd($input);
         // @todo - this is the best way to get the current logged in user?
         $input['from_id'] = \Auth::user()->nexusUser->user_id;
         
