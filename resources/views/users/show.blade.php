@@ -37,6 +37,7 @@
 
                     <dt>Favourite Film</dt><dd>{{$user->user_film}}</dd>
                     <dt>Favourite Band</dt><dd>{{$user->user_band}}</dd>
+                    <dt>Last Seen</dt><dd>{{$user->lastSeen}}</dd>
 
                 </dl>
                 </div>

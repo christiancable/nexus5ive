@@ -24,4 +24,24 @@ class User extends Model
     {
         return $this->belongsTo('App\User', 'nexus_id', 'user_id');
     }
+
+    
+    /* non-database attributes */
+
+    public function getLastSeenAttribute()
+    {
+        if ($time = $this->latestLogin) {
+            return $time->timeon->diffForHumans();
+        } else {
+            return 'Never';
+        }
+    }
+
+    
+    /* relationsips to other models */
+
+    public function latestLogin()
+    {
+        return $this->hasOne('App\Nexus\LatestLogin', 'user_id', 'user_id');
+    }
 }
