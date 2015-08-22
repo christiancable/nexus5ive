@@ -41,7 +41,7 @@
     </div>
 
 
-<nav class="navbar">
+
 <div class="container">
     <ol class="breadcrumb">
         @if (Auth::check())
@@ -57,7 +57,7 @@
       </ol>
 
 </div>
-</nav>
+
 
 
 

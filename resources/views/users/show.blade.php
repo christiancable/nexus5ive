@@ -20,7 +20,7 @@
                     @if ($user->user_hideemail === 'no')
                         <dt>Email</dt><dd><a href="mailto:{{$user->user_email}}">{{$user->user_email}}</a></dd>
                     @else
-                        <dt>Email</dt><dd>Hidden</dd>
+                        <dt>Email</dt><dd><em>Hidden</em></dd>
                     @endif
 
                     <dt>Popname</dt><dd>{{$user->user_popname}}</dd>
