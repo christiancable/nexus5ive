@@ -14,7 +14,7 @@
 <div class="navbar navbar-default">
       <div class="container">
         <div class="navbar-header">
-          <a href="/" class="navbar-brand">Nexus</a>
+          <a href="/" class="navbar-brand">Home</a>
           <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
@@ -28,37 +28,41 @@
         <li><a href="/users/">Examine User</a></li>      
           </ul>
 
+          <ul>
+             <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+            <span class="icon-bar">1</span>
+            <span class="icon-bar">2</span>
+            <span class="icon-bar">3</span>
+          </button>
+          </ul>
+
         </div>
       </div>
     </div>
 
 
-<ol class="nav pull-right">
-          <li><a href="#">Messages <span class="badge" id="unread_message_count">3</span></a></li>
-        </ol>
-
-
-        <ol class="breadcrumb">
+<nav class="navbar">
+<div class="container">
+    <ol class="breadcrumb">
         @if (Auth::check())
           @if ($authUser = Auth::user())
             <li><a href="{{ url("/users/{$authUser->nexusUser->user_name}") }}">{{$authUser->nexusUser->user_name}}</a> ({{$authUser->nexusUser->user_popname}})</li>
             {{-- @endif --}}
             <li><a href="/auth/logout">logout</a></li>
+          <li class="navbar-right"><a href="#">Messages <span class="badge" id="unread_message_count">3</span></a></li>
           @endif
         @else 
           <li><a href="/auth/login">login</a></li>
         @endif
-  {{--        {% for crumb in breadcrumbs %}
+      </ol>
 
-         {% if crumb.location is not empty %}
-         <li><a href="{{ crumb.location }}">{{ crumb.title }}</a></li>
-         {% endif %}
+</div>
+</nav>
 
-         {% if crumb.location is empty %}
-         <li>{{ crumb.title }}</li>
-         {% endif %}
-         {% endfor %} --}}
-       </ol>
+
+
+
+
 
   @yield('content')
 
