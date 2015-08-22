@@ -12,7 +12,7 @@ class User extends Model
     
     public function comments()
     {
-        return $this->hasMany('App\Nexus\UserComment', 'user_id', 'user_id')->orderBy('comment_id');
+        return $this->hasMany('App\Nexus\Comment', 'user_id', 'user_id')->orderBy('comment_id', 'dec');
     }
 
     public function sections()
