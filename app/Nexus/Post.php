@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Nexus;
 
 use Illuminate\Database\Eloquent\Model;
@@ -8,6 +7,8 @@ class Post extends Model
 {
     protected $table = 'messagetable';
     protected $primaryKey = 'message_id';
+    protected $dates = ['message_time'];
+
     public $timestamps = false;
 
     // topic
