@@ -1,0 +1,67 @@
+Missing Functionality: 
+
+Topics:
+  ☐ Edit Topic
+    ☐ make read only
+    ☐ make secret
+
+  ☐ Create Topic
+ 
+  ☐ Remove Topic
+
+  ☐ Read Topic
+    ☐ Update last read status
+    ☐ unsubscribe from topic
+    ☐ highlight topics with unread posts (starts!)
+
+Posts:
+  ☐ Editing Existing Posts
+    ☐ moderator
+    ☐ author if the comment is the latest one in the file and less than xxxx minutes old
+
+  ☐ Delete existing post
+    ☐ moderator
+    ☐ autor if the comment is the latest one int he file and less and xxxx minutes old
+
+  ☐ Delete many posts
+    ☐ moderator
+    ☐ sysop
+
+  ☐ Formatting of posts
+    ☐ honour existing nxcode formatted posts
+    ☐ should we use a rich editor?
+    ☐ should we use markdown?
+
+Sections:
+  ☐ Edit Section
+  ☐ Create Section
+  ☐ Remove Section
+  ☐ Move Section
+
+Users:
+  ☐ Edit User Profile 
+    ☐ password reset
+
+ ☐ Update latest time on
+
+ ☐ create users models from all existing nexus users
+ ☐ when creating a new user create a new nexus user (merge the two models?)
+    
+Messages:
+  ☐ User to User Messaging 
+  ☐ User is alerted to new message
+
+Misc:
+  ☐ Topic Leap
+  ☐ View other online users
+
+
+
+
+
+
+
+
+
+
+
