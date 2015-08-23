@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-class TopicController extends Controller
+class PostController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -35,9 +35,19 @@ class TopicController extends Controller
      * @param  Request  $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(Requests\CreatePostRequest $request)
     {
-        //
+        $input = $request->all();
+
+        $input['user_id'] = \Auth::user()->nexusUser->user_id;
+        $input['message_popname'] = \Auth::user()->nexusUser->user_popname;
+
+        // dd($input);
+
+
+        \App\Nexus\Post::create($input);
+
+        return redirect("/");
     }
 
     /**
@@ -46,19 +56,8 @@ class TopicController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function show($topic_id)
+    public function show($id)
     {
-
-        $posts = \App\Nexus\Post::where('topic_id', $topic_id)->orderBy('message_id', 'dsc');
-        $topic = \App\Nexus\Topic::where('topic_id', $topic_id)->first();
-
-
-        // {
-        //     return $this->hasMany('App\Nexus\Post', 'topic_id', 'topic_id')->orderBy('message_id', 'asc');
-        // }
-        // $posts = $topic->posts->paginate(10);
-        return view('topics.index')->with('topic', $topic)->with('posts', $posts);
-
         //
     }
 

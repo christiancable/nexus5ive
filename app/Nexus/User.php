@@ -37,6 +37,16 @@ class User extends Model
         }
     }
 
+
+    public function getSysopAttribute()
+    {
+        if ($this->user_sysop === 'y') {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     
     /* relationsips to other models */
 

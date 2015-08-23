@@ -27,14 +27,18 @@ Route::get('users/{user_name}', 'Nexus\UserController@show');
 // sections
 Route::get('/', 'Nexus\SectionController@show');
 Route::get('/home', 'Nexus\SectionController@show');
-Route::get('/{section_id}', 'Nexus\SectionController@show');
+Route::get('/section/{section_id}', 'Nexus\SectionController@show');
 
 
 // topics
-Route::get('/{section_id}/{topic_id}', 'Nexus\TopicController@show');
+Route::get('/topic/{topic_id}', 'Nexus\TopicController@show');
 
 // comments
 Route::post('comments', 'Nexus\CommentController@store');
+
+
+// posts
+Route::post('posts', 'Nexus\PostController@store');
 
 /*
 

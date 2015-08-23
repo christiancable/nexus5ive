@@ -4,14 +4,10 @@
 </div>
 @endif
 
-
-
 <div class="panel panel-default">
     <div class="panel-heading">
-        <p><a href="{{ url("/users/{$post->author->user_name}") }}">{{$post->author->user_name}}</a> ({{$post->message_popname}})
+        <p><a href="{{ action('Nexus\UserController@show', ['user_name' => $post->author->user_name]) }}">{{$post->author->user_name}}</a> ({{$post->message_popname}})
         <span class="pull-right">{{ date('D, F jS Y - H:i', strtotime($post->message_time)) }}</span></p>
-    
-    
     </div>        
 
     <div class="panel-body">

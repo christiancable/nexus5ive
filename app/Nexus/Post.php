@@ -11,6 +11,8 @@ class Post extends Model
 
     public $timestamps = false;
 
+    protected $fillable = ['topic_id','user_id','message_title','message_text', 'message_popname'];
+
     // topic
     
     public function topic()

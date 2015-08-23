@@ -9,8 +9,7 @@
     <div class="container">
         <h1>{{$section->section_title}}</h1>
         <p>{{$section->section_intro}}</p>
-        <p>Moderated by: {{$section->moderator->user_name}}</p>
-        {{-- <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more &raquo;</a></p> --}}
+        <p>Moderated by: <a href="{{ action('Nexus\UserController@show', ['user_name' => $section->moderator->user_name])}}">{{$section->moderator->user_name}}</a></p>
     </div>
 </div>
 
@@ -25,7 +24,7 @@
     @if (count($section->topics))
         @foreach ($section->topics as $topic)
         <div class="well">
-            <h2><span class="glyphicon glyphicon-comment" aria-hidden="true"></span><a href="{{ url("/{$section->section_id}/$topic->topic_id") }}">  {{$topic->topic_title}}</a></h2>
+            <h2><span class="glyphicon glyphicon-comment" aria-hidden="true"></span><a href="{{ action('Nexus\TopicController@show', ['topic_id' => $topic->topic_id])}}"> {{$topic->topic_title}}</a></h2>
             <p>{!!nl2br($topic->topic_description)!!}</p>
         </div>
         @endforeach
@@ -38,12 +37,12 @@
                 <div class="col-md-4">
                     <div class="panel panel-primary">
                         <div class="panel-heading">
-                            <h2 class="panel-title"><a href="{{ url("/{$subSection->section_id}") }}">{{$subSection->section_title}}</a></h2>
+                            <h2 class="panel-title"><a href="{{ action('Nexus\SectionController@show', ['section_id' => $subSection->section_id])}}">{{$subSection->section_title}}</a></h2>
                         </div>
 
                         <div class="panel-body">
                             <p><em>{{$subSection->section_intro}}</em></p>
-                            <p><a class="btn btn-default" href="{{ url("/{$subSection->section_id}") }}" role="button">View details &raquo;</a></p>
+                            <p><a class="btn btn-default" href="{{ action('Nexus\SectionController@show', ['section_id' => $subSection->section_id])}}" role="button">View details &raquo;</a></p>
                         </div>
                     </div>
                 </div>

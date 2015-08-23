@@ -23,8 +23,7 @@
                         $currentLetter = strtoupper($user->user_name)[0];
 
                         if ($currentLetter != $previousLetter) {
-                            
-                            if($previousLetter !="") {
+                            if ($previousLetter !="") {
                                 $listItems .= '</ul></div>';
                                 $listItems .= '</div>';
                             }
@@ -34,7 +33,6 @@
 
                            // start a new row of panels
                             if (!((count($allLetters)-1) % 3)) {
-
                                  $listItems .= "</div>";
                                  $listItems .= "<div class='row'>";
                             }
@@ -45,7 +43,7 @@
                             $listItems .= '<ul class="list-group">';
                         } else {
                         }
-                        $url = url("/users/{$user->user_name}");
+                        $url =  action('Nexus\UserController@show', ['user_name' => $user->user_name]);
                         $listItems .= '<li class="list-group-item"><a href="'. $url . '">' . $user->user_name . '</a></li>';
                         ?>
                 @endforeach

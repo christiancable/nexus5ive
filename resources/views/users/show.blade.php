@@ -53,7 +53,7 @@
                       </button>
                       <ul class="dropdown-menu">
                         @foreach ($user->sections as $section)
-                            <li><a href="{{ url("/{$section->section_id}") }}">{{$section->section_title}}</a></li>
+                            <li><a href="{{ action('Nexus\SectionController@show', ['section_id' => $section->section_id]) }}">{{$section->section_title}}</a></li>
                         @endforeach
                       </ul>
                     </div>
@@ -66,7 +66,7 @@
                 @if (count($user->comments))
                     <ul>
                     @foreach ($user->comments as $comment)
-                        <li><strong><a href="{{ url("/users/{$comment->author->user_name}") }}">{{$comment->author->user_name}}</a></strong> - {{$comment->text}}</li>
+                        @include('comments.show', $comment)
                     @endforeach
                 @endif
                 </ul>

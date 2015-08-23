@@ -15,17 +15,11 @@
 </div>
 
 
-{{--                 @if($section->parent)
-<p>Return to <a href="{{ url("/{$section->parent->section_id}") }}">{{$section->parent->section_title}}</a><p>
-@endif  --}}
-
 <div class="container">
     <div class="content">
 
-      {{--   <div class="container">
-            <div class="content"> --}}
-               
-                <p>Return to <a href="{{ url("/{$topic->section_id}") }}">{{$topic->section->section_title}}</a><p>
+
+                <p>Return to <a href="{{ action('Nexus\SectionController@show', ['section_id' => $topic->section_id]) }}">{{$topic->section->section_title}}</a><p>
                 
                 <?php
                 $postsChunk = $posts->paginate(10);
@@ -42,10 +36,10 @@
                     <p class="alert alert-warning">No Posts.</p>
                 @endforelse
 
+                {{-- check to see if we should show this --}}
+                @include('posts.create', $topic)
 
                 {!! $postsChunk->render() !!}
-     {{--        </div>
-        </div>  --}}
       </div>
-      </div>
+</div>
 @endsection
