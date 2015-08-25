@@ -11,7 +11,7 @@
     </div>        
 
     <div class="panel-body">
-    <p>{!! nl2br($post->message_text) !!}</p>
+    <p>{{ $post->message_text }}</p>
        
     </div>
     {{-- <li>{{$post->update_user_id}}</li> --}}

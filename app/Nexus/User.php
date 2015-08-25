@@ -2,6 +2,8 @@
 
 namespace App\Nexus;
 
+use Carbon\Carbon;
+
 use Illuminate\Database\Eloquent\Model;
 
 class User extends Model
@@ -47,7 +49,23 @@ class User extends Model
         }
     }
 
+    // public function getLatestLoginAttribute()
+    // {
+    //     return $this->latestLogin;
+    // }
     
+    /* query scopes */
+
+    // public function scopeRecent($query)
+    // {
+    //     return $query->where('$this->latestLogin->timeon', '>=', Carbon::now()->subWeek());
+    // }
+
+    public function getOnlineAttribute()
+    {
+        return false;
+    }
+
     /* relationsips to other models */
 
     public function latestLogin()
