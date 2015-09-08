@@ -9,7 +9,7 @@
     <div class="container">
         <h1>{{$section->section_title}}</h1>
         <p>{{$section->section_intro}}</p>
-        <p>Moderated by: <a href="{{ action('Nexus\UserController@show', ['user_name' => $section->moderator->user_name])}}">{{$section->moderator->user_name}}</a></p>
+        <p>Moderated by: <a href="{{ action('Nexus\UserController@show', ['username' => $section->moderator->username])}}">{{$section->moderator->username}}</a></p>
     </div>
 </div>
 
