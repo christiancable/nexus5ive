@@ -40,6 +40,9 @@ Route::post('comments', 'Nexus\CommentController@store');
 // posts
 Route::post('posts', 'Nexus\PostController@store');
 
+// upgrade users from old nexus
+Route::get('upgrade', 'Nexus\UpgradeController@index');
+
 /*
 
 Future Routes
