@@ -55,14 +55,10 @@ Misc:
   ☐ Topic Leap
   ☐ View other online users
   ☐ Actual migrations for all the tables
-
-
-
-
-
-
-
-
-
-
-
+  ☐ pull in all the fields from nexus\user into user
+		(people can use the password reset to deal with the encrypted password)
+  ☐ pull in whoison table into user (maybe)
+  ☐ Search
+		☐ posts by user:username
+		☐ phrase and words
+		☐ usernames in examine user
