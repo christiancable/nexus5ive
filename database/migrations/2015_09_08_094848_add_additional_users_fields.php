@@ -13,8 +13,11 @@ class AddAdditionalUsersFields extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-			$table->string('username');
+			$table->string('username')->unique();
 			$table->string('popname')->nullable()->default('New User');
+			$table->mediumText('about')->nullable();
+			$table->string('location')->nullable()->default('Someplace');
+			$table->boolean('administrator')->default(false);
             //
         });
     }
@@ -29,6 +32,9 @@ class AddAdditionalUsersFields extends Migration
         Schema::table('users', function (Blueprint $table) {
 			$table->dropColumn('username');
 			$table->dropColumn('popname');
+			$table->dropColumn('about');
+			$table->dropColumn('location');
+			$table->dropColumn('administrator');
             //
         });
     }
