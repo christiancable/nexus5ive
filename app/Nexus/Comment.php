@@ -14,7 +14,7 @@ class Comment extends Model
 
     public function author()
     {
-        return $this->hasOne('App\Nexus\User', 'user_id', 'from_id');
+        return $this->hasOne('App\User', 'id', 'from_id');
     }
 }
 

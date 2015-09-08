@@ -16,7 +16,7 @@ class Section extends Model
     
     public function moderator()
     {
-        return $this->hasOne('App\Nexus\User', 'user_id', 'user_id');
+        return $this->hasOne('App\User', 'id', 'user_id');
     }
 
     // sections
