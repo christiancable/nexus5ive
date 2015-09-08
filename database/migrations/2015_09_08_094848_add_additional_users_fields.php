@@ -14,7 +14,7 @@ class AddAdditionalUsersFields extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
 			$table->string('username');
-			$table->string('popname')->nullable();
+			$table->string('popname')->nullable()->default('New User');
             //
         });
     }
