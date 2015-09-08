@@ -34,9 +34,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     protected $hidden = ['password', 'remember_token'];
     
     // relationship with the Nexus/User model
-    
+ /*    
     public function nexusUser()
     {
         return $this->hasOne('App\Nexus\User', 'user_id', 'nexus_id');
-    }
+    } */
 }
