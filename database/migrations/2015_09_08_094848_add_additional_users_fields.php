@@ -14,6 +14,7 @@ class AddAdditionalUsersFields extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
 			$table->string('username');
+			$table->string('popname')->nullable();
             //
         });
     }
@@ -27,6 +28,7 @@ class AddAdditionalUsersFields extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
 			$table->dropColumn('username');
+			$table->dropColumn('popname');
             //
         });
     }
