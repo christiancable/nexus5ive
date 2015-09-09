@@ -70,6 +70,13 @@ class UpgradeController extends Controller
 			$table->boolean('banned')->default(false);
 		
 			*/
+			
+			if($classicUser->user_realname != "") {
+				$newUser->name = $classicUser->user_realname;
+			} else {
+				$newUser->name = "Unknown";
+			}
+			
 			$newUser->save();
         }
         
