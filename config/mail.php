@@ -15,7 +15,8 @@ return [
     |
     */
 
-    'driver' => env('MAIL_DRIVER', 'smtp'),
+    /* 'driver' => env('MAIL_DRIVER', 'smtp'), */
+    'driver' => env('MAIL_DRIVER', 'log'),
 
     /*
     |--------------------------------------------------------------------------
@@ -54,7 +55,8 @@ return [
     |
     */
 
-    'from' => ['address' => null, 'name' => null],
+/*     'from' => ['address' => null, 'name' => null], */
+    'from' => ['address' => 'nexus@nexus5.org.uk', 'name' => 'The Nexus Five Robot'],
 
     /*
     |--------------------------------------------------------------------------
@@ -119,6 +121,6 @@ return [
     |
     */
 
-    'pretend' => false,
+    'pretend' => true,
 
 ];
