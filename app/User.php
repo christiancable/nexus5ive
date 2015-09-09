@@ -33,6 +33,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      */
     protected $hidden = ['password', 'remember_token'];
     
+    /* dates */
+    
+    protected $dates = ['latestLogin'];
+    
 	/* related models */
     
     public function comments()

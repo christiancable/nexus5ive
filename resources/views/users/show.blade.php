@@ -10,9 +10,6 @@
                 <h1>{{$user->username}}</h1>
                 <hr>
 
-                
-             {{--    <h2>User Information</h2> --}}
-
                 <div class="row">
                 <dl class="dl-horizontal col-md-6">        
                     <dt>Name</dt><dd>{{$user->name}}</dd>
@@ -24,20 +21,18 @@
                     @endif
 
                     <dt>Popname</dt><dd>{{$user->popname}}</dd>
-                    
+                    <dt>Last Seen</dt><dd>{{$user->latestLogin->diffForHumans()}}</dd>
                     
                 </dl>
 
                 <dl class="dl-horizontal col-md-6">        
                     <dt>Location</dt><dd>{{$user->location}}</dd>
-                    
+                    <dt>Favourite Film</dt><dd>{{$user->favouriteMovie}}</dd>
+                    <dt>Favourite Band</dt><dd>{{$user->favouriteMusic}}</dd>
 
                     <dt>Total Post</dt><dd>{{$user->totalPosts}}</dd>
                     <dt>Total Visits</dt><dd>{{$user->totalVisits}}</dd>
 
-                    <dt>Favourite Film</dt><dd>{{$user->favouriteMovie}}</dd>
-                    <dt>Favourite Band</dt><dd>{{$user->favouriteMusic}}</dd>
-                    <dt>Last Seen</dt><dd>{{$user->lastSeen}}</dd>
 
                 </dl>
                 </div>
