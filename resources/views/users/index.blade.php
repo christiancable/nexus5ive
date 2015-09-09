@@ -20,7 +20,7 @@
     
                 @foreach ($users as $user) 
                         <?php
-                        $currentLetter = strtoupper($user->user_name)[0];
+                        $currentLetter = strtoupper($user->username)[0];
 
                         if ($currentLetter != $previousLetter) {
                             if ($previousLetter !="") {
@@ -43,8 +43,8 @@
                             $listItems .= '<ul class="list-group">';
                         } else {
                         }
-                        $url =  action('Nexus\UserController@show', ['user_name' => $user->user_name]);
-                        $listItems .= '<li class="list-group-item"><a href="'. $url . '">' . $user->user_name . '</a></li>';
+                        $url =  action('Nexus\UserController@show', ['user_name' => $user->username]);
+                        $listItems .= '<li class="list-group-item"><a href="'. $url . '">' . $user->username . '</a></li>';
                         ?>
                 @endforeach
 
