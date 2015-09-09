@@ -1,13 +1,13 @@
 @extends('layouts.master')
 
 @section('meta')
-<title>{{$user->user_name}}</title>
+<title>{{$user->username}}</title>
 @endsection
 
 @section('content')
         <div class="container">
             <div class="content">
-                <h1>{{$user->user_name}}</h1>
+                <h1>{{$user->username}}</h1>
                 <hr>
 
                 
@@ -15,37 +15,37 @@
 
                 <div class="row">
                 <dl class="dl-horizontal col-md-6">        
-                    <dt>Name</dt><dd>{{$user->user_realname}}</dd>
+                    <dt>Name</dt><dd>{{$user->name}}</dd>
 
-                    @if ($user->user_hideemail === 'no')
-                        <dt>Email</dt><dd><a href="mailto:{{$user->user_email}}">{{$user->user_email}}</a></dd>
+                    @if ($user->private != true)
+                        <dt>Email</dt><dd><a href="mailto:{{$user->email}}">{{$user->email}}</a></dd>
                     @else
                         <dt>Email</dt><dd><em>Hidden</em></dd>
                     @endif
 
-                    <dt>Popname</dt><dd>{{$user->user_popname}}</dd>
-                    <dt>Age</dt><dd>{{$user->user_age}}</dd>
-                    <dt>Sex</dt><dd>{{$user->user_sex}}</dd>
+                    <dt>Popname</dt><dd>{{$user->popname}}</dd>
+                    
+                    
                 </dl>
 
                 <dl class="dl-horizontal col-md-6">        
-                    <dt>Location</dt><dd>{{$user->user_town}}</dd>
+                    <dt>Location</dt><dd>{{$user->location}}</dd>
                     
 
-                    <dt>Total Post</dt><dd>{{$user->user_totaledits}}</dd>
-                    <dt>Total Visits</dt><dd>{{$user->user_totalvisits}}</dd>
+                    <dt>Total Post</dt><dd>{{$user->totalPosts}}</dd>
+                    <dt>Total Visits</dt><dd>{{$user->totalVisits}}</dd>
 
-                    <dt>Favourite Film</dt><dd>{{$user->user_film}}</dd>
-                    <dt>Favourite Band</dt><dd>{{$user->user_band}}</dd>
+                    <dt>Favourite Film</dt><dd>{{$user->favouriteMovie}}</dd>
+                    <dt>Favourite Band</dt><dd>{{$user->favouriteMusic}}</dd>
                     <dt>Last Seen</dt><dd>{{$user->lastSeen}}</dd>
 
                 </dl>
                 </div>
 
-                <div class="well">{!! nl2br($user->user_comment) !!}</div>
+                <div class="well">{!! nl2br($user->about) !!}</div>
                 @if (count($user->sections))
      {{--                <h2>Sections</h2> --}}
-                    <span>If you like <strong>{{$user->user_name}}</strong> then check out these sections they moderate </span>
+                    <span>If you like <strong>{{$user->username}}</strong> then check out these sections they moderate </span>
                     <!-- Single button -->
                     <div class="btn-group">
                       <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
