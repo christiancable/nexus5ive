@@ -39,8 +39,8 @@ class PostController extends Controller
     {
         $input = $request->all();
 
-        $input['user_id'] = \Auth::user()->nexusUser->user_id;
-        $input['message_popname'] = \Auth::user()->nexusUser->user_popname;
+        $input['user_id'] = \Auth::user()->id;
+        $input['message_popname'] = \Auth::user()->popname;
         $post = \App\Nexus\Post::create($input);
 
         $redirect = action('Nexus\TopicController@show', ['topic_id' => $post->topic_id]) . '#'  . $post->message_id;

@@ -16,7 +16,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users =  \App\Nexus\User::orderBy('user_name', 'asc')->get();
+        $users =  \App\User::orderBy('user_name', 'asc')->get();
         return view('users.index')->with('users', $users);
     }
 
@@ -49,7 +49,7 @@ class UserController extends Controller
      */
     public function show($user_name)
     {
-        $user = \App\Nexus\User::where('user_name', $user_name)->first();
+        $user = \App\User::where('username', $user_name)->first();
         return view('users.show')->with('user', $user);
     }
 

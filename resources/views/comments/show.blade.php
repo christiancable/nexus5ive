@@ -1,1 +1,1 @@
-<li><strong><a href="{{ action('Nexus\UserController@show', ['user_name' => $comment->author->user_name]) }}">{{$comment->author->user_name}}</a></strong> - {{$comment->text}}</li>
+<li><strong><a href="{{ action('Nexus\UserController@show', ['user_name' => $comment->author->username]) }}">{{$comment->author->username}}</a></strong> - {{$comment->text}}</li>
