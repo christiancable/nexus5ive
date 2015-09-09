@@ -21,7 +21,11 @@
                     @endif
 
                     <dt>Popname</dt><dd>{{$user->popname}}</dd>
-                    <dt>Last Seen</dt><dd>{{$user->latestLogin->diffForHumans()}}</dd>
+                    @if ($user->latestLogin)
+                    	<dt>Last Seen</dt><dd>{{$user->latestLogin->diffForHumans()}}</dd>
+                    @else
+                    	<dt>Last Seen</dt><dd>Never</dd>
+                    @endif
                     
                 </dl>
 
