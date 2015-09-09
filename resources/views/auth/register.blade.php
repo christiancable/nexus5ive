@@ -19,9 +19,10 @@
 @endif
 
 <div class="form-group">
- {!! Form::label('name', 'Your Name') !!}
- {!! Form::text('name', null, array('class'=>'form-control', 'placeholder'=>'Name')) !!}
+ {!! Form::label('Username') !!}
+ {!! Form::text('username', null, array('class'=>'form-control', 'placeholder'=>'Username')) !!}
 </div>
+
 <div class="form-group">
  {!! Form::label('Your E-mail Address') !!}
  {!! Form::text('email', null, 
