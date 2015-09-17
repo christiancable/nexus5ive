@@ -1,8 +1,8 @@
 <?php
 
-namespace nexus\Http\Controllers\Auth;
+namespace Nexus\Http\Controllers\Auth;
 
-use nexus\Http\Controllers\Controller;
+use Nexus\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 
 class PasswordController extends Controller

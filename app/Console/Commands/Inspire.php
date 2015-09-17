@@ -1,6 +1,6 @@
 <?php
 
-namespace nexus\Console\Commands;
+namespace Nexus\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Foundation\Inspiring;

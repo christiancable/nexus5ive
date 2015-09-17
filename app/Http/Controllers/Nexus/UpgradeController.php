@@ -1,11 +1,11 @@
 <?php
 
-namespace nexus\Http\Controllers\Nexus;
+namespace Nexus\Http\Controllers\Nexus;
 
 use Illuminate\Http\Request;
 
-use nexus\Http\Requests;
-use nexus\Http\Controllers\Controller;
+use Nexus\Http\Requests;
+use Nexus\Http\Controllers\Controller;
 
 class UpgradeController extends Controller
 {
@@ -22,7 +22,7 @@ class UpgradeController extends Controller
         $classicUsers = \DB::table('usertable')->get();
         
         foreach ($classicUsers as $classicUser) {
-        	$newUser = new \nexus\User;
+        	$newUser = new \Nexus\User;
         	
         	$newUser->id = $classicUser->user_id;
 			$newUser->username = $classicUser->user_name;

@@ -1,5 +1,5 @@
 suites:
     main:
-        namespace: nexus
-        psr4_prefix: nexus
+        namespace: Nexus
+        psr4_prefix: Nexus
         src_path: app

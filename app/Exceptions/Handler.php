@@ -1,6 +1,6 @@
 <?php
 
-namespace nexus\Exceptions;
+namespace Nexus\Exceptions;
 
 use Exception;
 use Symfony\Component\HttpKernel\Exception\HttpException;

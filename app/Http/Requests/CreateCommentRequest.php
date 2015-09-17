@@ -1,8 +1,8 @@
 <?php
 
-namespace nexus\Http\Requests;
+namespace Nexus\Http\Requests;
 
-use nexus\Http\Requests\Request;
+use Nexus\Http\Requests\Request;
 
 class CreateCommentRequest extends Request
 {

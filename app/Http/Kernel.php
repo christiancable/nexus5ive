@@ -1,6 +1,6 @@
 <?php
 
-namespace nexus\Http;
+namespace Nexus\Http;
 
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
@@ -13,11 +13,11 @@ class Kernel extends HttpKernel
      */
     protected $middleware = [
         \Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode::class,
-        \nexus\Http\Middleware\EncryptCookies::class,
+        \Nexus\Http\Middleware\EncryptCookies::class,
         \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
         \Illuminate\Session\Middleware\StartSession::class,
         \Illuminate\View\Middleware\ShareErrorsFromSession::class,
-        \nexus\Http\Middleware\VerifyCsrfToken::class,
+        \Nexus\Http\Middleware\VerifyCsrfToken::class,
     ];
 
     /**
@@ -26,8 +26,8 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $routeMiddleware = [
-        'auth' => \nexus\Http\Middleware\Authenticate::class,
+        'auth' => \Nexus\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
-        'guest' => \nexus\Http\Middleware\RedirectIfAuthenticated::class,
+        'guest' => \Nexus\Http\Middleware\RedirectIfAuthenticated::class,
     ];
 }

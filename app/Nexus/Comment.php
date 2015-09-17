@@ -1,6 +1,6 @@
 <?php
 
-namespace nexus\Nexus;
+namespace Nexus\Nexus;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,7 +14,7 @@ class Comment extends Model
 
     public function author()
     {
-        return $this->hasOne('nexus\User', 'id', 'from_id');
+        return $this->hasOne('Nexus\User', 'id', 'from_id');
     }
 }
 

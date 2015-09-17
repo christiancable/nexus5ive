@@ -1,6 +1,6 @@
 <?php
 
-namespace nexus\Console;
+namespace Nexus\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -13,7 +13,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        \nexus\Console\Commands\Inspire::class,
+        \Nexus\Console\Commands\Inspire::class,
     ];
 
     /**

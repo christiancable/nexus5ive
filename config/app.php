@@ -142,9 +142,9 @@ return [
         /*
          * Application Service Providers...
          */
-        nexus\Providers\AppServiceProvider::class,
-        nexus\Providers\EventServiceProvider::class,
-        nexus\Providers\RouteServiceProvider::class,
+        Nexus\Providers\AppServiceProvider::class,
+        Nexus\Providers\EventServiceProvider::class,
+        Nexus\Providers\RouteServiceProvider::class,
 
         'Barryvdh\Debugbar\ServiceProvider',
 

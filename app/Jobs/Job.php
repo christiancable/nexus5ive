@@ -1,6 +1,6 @@
 <?php
 
-namespace nexus\Jobs;
+namespace Nexus\Jobs;
 
 use Illuminate\Bus\Queueable;
 

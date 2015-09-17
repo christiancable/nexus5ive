@@ -1,6 +1,6 @@
 <?php
 
-namespace nexus\Http\Middleware;
+namespace Nexus\Http\Middleware;
 
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken as BaseVerifier;
 

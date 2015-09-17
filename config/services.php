@@ -30,7 +30,7 @@ return [
     ],
 
     'stripe' => [
-        'model'  => nexus\User::class,
+        'model'  => Nexus\User::class,
         'key'    => '',
         'secret' => '',
     ],

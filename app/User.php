@@ -1,6 +1,6 @@
 <?php
 
-namespace nexus;
+namespace Nexus;
 
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
@@ -41,12 +41,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     
     public function comments()
     {
-        return $this->hasMany('nexus\Nexus\Comment', 'user_id', 'id')->orderBy('comment_id', 'dec');
+        return $this->hasMany('Nexus\Nexus\Comment', 'user_id', 'id')->orderBy('comment_id', 'dec');
     }
 
     public function sections()
     {
-        return $this->hasMany('nexus\Nexus\Section');
+        return $this->hasMany('Nexus\Nexus\Section');
     }
     
 }

@@ -1,10 +1,10 @@
 <?php
 
-namespace nexus\Http\Controllers\Auth;
+namespace Nexus\Http\Controllers\Auth;
 
-use nexus\User;
+use Nexus\User;
 use Validator;
-use nexus\Http\Controllers\Controller;
+use Nexus\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 

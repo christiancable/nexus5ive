@@ -11,7 +11,7 @@
 |
 */
 
-$factory->define(nexus\User::class, function ($faker) {
+$factory->define(Nexus\User::class, function ($faker) {
     return [
         'name' => $faker->name,
         'email' => $faker->email,

@@ -1,6 +1,6 @@
 <?php
 
-namespace nexus\Providers;
+namespace Nexus\Providers;
 
 use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -13,8 +13,8 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        'nexus\Events\SomeEvent' => [
-            'nexus\Listeners\EventListener',
+        'Nexus\Events\SomeEvent' => [
+            'Nexus\Listeners\EventListener',
         ],
     ];
 
