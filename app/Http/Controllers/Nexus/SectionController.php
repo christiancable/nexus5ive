@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Nexus;
+namespace nexus\Http\Controllers\Nexus;
 
 use Illuminate\Http\Request;
 
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
+use nexus\Http\Requests;
+use nexus\Http\Controllers\Controller;
 
 class SectionController extends Controller
 {
@@ -54,7 +54,7 @@ class SectionController extends Controller
     public function show($section_id = 1)
     {
 
-        $section = \App\Nexus\Section::where('section_id', $section_id)->first();
+        $section = \nexus\Nexus\Section::where('section_id', $section_id)->first();
         return view('sections.index')->with('section', $section);
     }
 

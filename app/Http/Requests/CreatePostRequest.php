@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Requests;
+namespace nexus\Http\Requests;
 
-use App\Http\Requests\Request;
+use nexus\Http\Requests\Request;
 
 class CreatePostRequest extends Request
 {

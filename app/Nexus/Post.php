@@ -1,5 +1,5 @@
 <?php
-namespace App\Nexus;
+namespace nexus\Nexus;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -17,14 +17,14 @@ class Post extends Model
     
     public function topic()
     {
-        return $this->belongsTo('App\Nexus\Topic', 'topic_id', 'topic_id');
+        return $this->belongsTo('nexus\Nexus\Topic', 'topic_id', 'topic_id');
     }
 
     // users
     
     public function author()
     {
-        return $this->belongsTo('App\User', 'user_id', 'id');
+        return $this->belongsTo('nexus\User', 'user_id', 'id');
     }
 }
 

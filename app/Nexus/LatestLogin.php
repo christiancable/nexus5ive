@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Nexus;
+namespace nexus\Nexus;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,7 +14,7 @@ class LatestLogin extends Model
 
     public function user()
     {
-        return $this->belongsTo('App\User', 'user_id', 'user_id');
+        return $this->belongsTo('nexus\User', 'user_id', 'user_id');
     }
 }
 

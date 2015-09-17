@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Nexus;
+namespace nexus\Http\Controllers\Nexus;
 
 use Illuminate\Http\Request;
 
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
+use nexus\Http\Requests;
+use nexus\Http\Controllers\Controller;
 
 class TopicController extends Controller
 {
@@ -54,12 +54,12 @@ class TopicController extends Controller
     public function show($topic_id)
     {
 
-        $posts = \App\Nexus\Post::where('topic_id', $topic_id)->orderBy('message_id', 'dsc');
-        $topic = \App\Nexus\Topic::where('topic_id', $topic_id)->first();
+        $posts = \nexus\Nexus\Post::where('topic_id', $topic_id)->orderBy('message_id', 'dsc');
+        $topic = \nexus\Nexus\Topic::where('topic_id', $topic_id)->first();
 
 
         // {
-        //     return $this->hasMany('App\Nexus\Post', 'topic_id', 'topic_id')->orderBy('message_id', 'asc');
+        //     return $this->hasMany('nexus\Nexus\Post', 'topic_id', 'topic_id')->orderBy('message_id', 'asc');
         // }
         // $posts = $topic->posts->paginate(10);
         return view('topics.index')->with('topic', $topic)->with('posts', $posts);

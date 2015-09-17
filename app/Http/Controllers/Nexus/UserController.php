@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Nexus;
+namespace nexus\Http\Controllers\Nexus;
 
 use Illuminate\Http\Request;
 
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
+use nexus\Http\Requests;
+use nexus\Http\Controllers\Controller;
 
 class UserController extends Controller
 {
@@ -21,7 +21,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users =  \App\User::select('username')->orderBy('username', 'asc')->get();
+        $users =  \nexus\User::select('username')->orderBy('username', 'asc')->get();
         return view('users.index')->with('users', $users);
     }
 
@@ -54,7 +54,7 @@ class UserController extends Controller
      */
     public function show($user_name)
     {
-        $user = \App\User::where('username', $user_name)->first();
+        $user = \nexus\User::where('username', $user_name)->first();
         return view('users.show')->with('user', $user);
     }
 

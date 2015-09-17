@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Nexus;
+namespace nexus\Http\Controllers\Nexus;
 
 use Illuminate\Http\Request;
 
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
+use nexus\Http\Requests;
+use nexus\Http\Controllers\Controller;
 // use Request;
 
 class CommentController extends Controller
@@ -56,7 +56,7 @@ class CommentController extends Controller
             $input['readstatus'] = 'n';
         }
    
-        \App\Nexus\Comment::create($input);
+        \nexus\Nexus\Comment::create($input);
 
         return redirect("/users/" . $input['redirect_user']);
     }

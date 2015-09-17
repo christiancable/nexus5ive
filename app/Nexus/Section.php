@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Nexus;
+namespace nexus\Nexus;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -16,26 +16,26 @@ class Section extends Model
     
     public function moderator()
     {
-        return $this->hasOne('App\User', 'id', 'user_id');
+        return $this->hasOne('nexus\User', 'id', 'user_id');
     }
 
     // sections
 
     public function parent()
     {
-        return $this->belongsTo('App\Nexus\Section', 'parent_id', 'section_id');
+        return $this->belongsTo('nexus\Nexus\Section', 'parent_id', 'section_id');
     }
 
     public function sections()
     {
-        return $this->hasMany('App\Nexus\Section', 'parent_id', 'section_id')->orderBy('section_weight', 'asc');
+        return $this->hasMany('nexus\Nexus\Section', 'parent_id', 'section_id')->orderBy('section_weight', 'asc');
     }
 
     // topics
     
     public function topics()
     {
-        return $this->hasMany('App\Nexus\Topic', 'section_id', 'section_id')->orderBy('topic_weight', 'asc');
+        return $this->hasMany('nexus\Nexus\Topic', 'section_id', 'section_id')->orderBy('topic_weight', 'asc');
     }
 
     public function slug()
