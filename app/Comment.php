@@ -1,6 +1,6 @@
 <?php
 
-namespace Nexus\Nexus;
+namespace Nexus;
 
 use Illuminate\Database\Eloquent\Model;
 

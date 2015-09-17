@@ -37,16 +37,16 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     
     protected $dates = ['latestLogin'];
     
-	/* related models */
+    /* related models */
     
     public function comments()
     {
-        return $this->hasMany('Nexus\Nexus\Comment', 'user_id', 'id')->orderBy('comment_id', 'dec');
+        return $this->hasMany('Nexus\Comment', 'user_id', 'id')->orderBy('comment_id', 'dec');
     }
 
     public function sections()
     {
-        return $this->hasMany('Nexus\Nexus\Section');
+        return $this->hasMany('Nexus\Section');
     }
     
 }

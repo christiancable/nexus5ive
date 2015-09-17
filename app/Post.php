@@ -1,5 +1,5 @@
 <?php
-namespace Nexus\Nexus;
+namespace Nexus;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -17,7 +17,7 @@ class Post extends Model
     
     public function topic()
     {
-        return $this->belongsTo('Nexus\Nexus\Topic', 'topic_id', 'topic_id');
+        return $this->belongsTo('Nexus\Topic', 'topic_id', 'topic_id');
     }
 
     // users

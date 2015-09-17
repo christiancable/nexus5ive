@@ -9,11 +9,11 @@ use Nexus\Http\Controllers\Controller;
 
 class SectionController extends Controller
 {
-	public function __construct()
-	{
-    	$this->middleware('auth');
-	}
-	
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     /**
      * Display a listing of the resource.
      *
@@ -54,7 +54,7 @@ class SectionController extends Controller
     public function show($section_id = 1)
     {
 
-        $section = \Nexus\Nexus\Section::where('section_id', $section_id)->first();
+        $section = \Nexus\Section::where('section_id', $section_id)->first();
         return view('sections.index')->with('section', $section);
     }
 

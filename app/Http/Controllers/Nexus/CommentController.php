@@ -56,7 +56,7 @@ class CommentController extends Controller
             $input['readstatus'] = 'n';
         }
    
-        \Nexus\Nexus\Comment::create($input);
+        \Nexus\Comment::create($input);
 
         return redirect("/users/" . $input['redirect_user']);
     }

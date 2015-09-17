@@ -1,6 +1,6 @@
 <?php
 
-namespace Nexus\Nexus;
+namespace Nexus;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -15,7 +15,7 @@ class Topic extends Model
 
     public function section()
     {
-        return $this->belongsTo('Nexus\Nexus\Section', 'section_id', 'section_id');
+        return $this->belongsTo('Nexus\Section', 'section_id', 'section_id');
     }
 
 
@@ -23,7 +23,7 @@ class Topic extends Model
     
     public function posts()
     {
-        return $this->hasMany('Nexus\Nexus\Post', 'topic_id', 'topic_id')->orderBy('message_id', 'asc');
+        return $this->hasMany('Nexus\Post', 'topic_id', 'topic_id')->orderBy('message_id', 'asc');
     }
     
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Nexus\Nexus;
+namespace Nexus;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -23,19 +23,19 @@ class Section extends Model
 
     public function parent()
     {
-        return $this->belongsTo('Nexus\Nexus\Section', 'parent_id', 'section_id');
+        return $this->belongsTo('Nexus\Section', 'parent_id', 'section_id');
     }
 
     public function sections()
     {
-        return $this->hasMany('Nexus\Nexus\Section', 'parent_id', 'section_id')->orderBy('section_weight', 'asc');
+        return $this->hasMany('Nexus\Section', 'parent_id', 'section_id')->orderBy('section_weight', 'asc');
     }
 
     // topics
     
     public function topics()
     {
-        return $this->hasMany('Nexus\Nexus\Topic', 'section_id', 'section_id')->orderBy('topic_weight', 'asc');
+        return $this->hasMany('Nexus\Topic', 'section_id', 'section_id')->orderBy('topic_weight', 'asc');
     }
 
     public function slug()

@@ -9,10 +9,10 @@ use Nexus\Http\Controllers\Controller;
 
 class TopicController extends Controller
 {
-	public function __construct()
-	{
-    	$this->middleware('auth');
-	}
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
 
     /**
      * Display a listing of the resource.
@@ -54,17 +54,10 @@ class TopicController extends Controller
     public function show($topic_id)
     {
 
-        $posts = \Nexus\Nexus\Post::where('topic_id', $topic_id)->orderBy('message_id', 'dsc');
-        $topic = \Nexus\Nexus\Topic::where('topic_id', $topic_id)->first();
+        $posts = \Nexus\Post::where('topic_id', $topic_id)->orderBy('message_id', 'dsc');
+        $topic = \Nexus\Topic::where('topic_id', $topic_id)->first();
 
-
-        // {
-        //     return $this->hasMany('Nexus\Nexus\Post', 'topic_id', 'topic_id')->orderBy('message_id', 'asc');
-        // }
-        // $posts = $topic->posts->paginate(10);
         return view('topics.index')->with('topic', $topic)->with('posts', $posts);
-
-        //
     }
 
     /**
