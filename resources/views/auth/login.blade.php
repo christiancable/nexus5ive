@@ -1,6 +1,10 @@
 @extends('layouts.master')
  
  @section('content')
+
+ <div class="container">
+
+
  <div class="col-md-6">
  
  {!! Form::open(array('url' => '/auth/login', 'class' => 'form')) !!}
@@ -21,13 +25,13 @@
    @endif
  
    <div class="form-group">
-     {!! Form::label('email', 'Your E-mail Address') !!}
-     {!! Form::text('email', null, 
-       array('class'=>'form-control', 'placeholder'=>'E-mail')) !!}
+     {!! Form::label('username', 'Username') !!}
+     {!! Form::text('username', null, 
+       array('class'=>'form-control', 'placeholder'=>'username')) !!}
    </div>
  
    <div class="form-group">
-     {!! Form::label('Your Password') !!}
+     {!! Form::label('Password') !!}
      {!! Form::password('password', 
        array('class'=>'form-control', 'placeholder'=>'Password')) !!}
     </div>
@@ -47,5 +51,7 @@
    </div>
  {!! Form::close() !!}
  
+ </div>
+
  </div>
  @endsection
