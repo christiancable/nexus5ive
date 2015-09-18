@@ -48,5 +48,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     {
         return $this->hasMany('Nexus\Section');
     }
-    
+
+    public function views()
+    {
+        return $this->hasMany('Nexus\View', 'user_id', 'id')->orderBy('msg_date', 'dec');
+    }
 }

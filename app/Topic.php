@@ -59,6 +59,13 @@ class Topic extends Model
     {
         return $this->hasMany('Nexus\Post', 'topic_id', 'topic_id')->orderBy('message_id', 'asc');
     }
+
+    // views
+
+    public function views()
+    {
+        return $this->hasMany('Nexus\View', 'topic_id', 'topic_id')->orderBy('msg_date', 'dec');
+    }
 }
 
 /*
