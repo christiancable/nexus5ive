@@ -83,6 +83,21 @@ class TopicController extends Controller
             $userCanSeeSecrets = true;
         }
 
+        // store the user's read progress of the current topic
+    
+        $latestPost = $posts->first();
+        $lastestView = \Nexus\View::where('topic_id', $topic_id)->where('user_id', \Auth::user()->id)->first();
+
+        if ($lastestView) {
+            $lastestView->msg_date = $latestPost->message_time;
+            $lastestView->update();
+        } else {
+            $view = new \Nexus\View;
+            $view->user_id = \Auth::user()->id;
+            $view->topic_id = $topic->topic_id;
+            $view->msg_date = $latestPost->message_time;
+            $view->save();
+        }
 
         return view('topics.index', compact('topic', 'posts', 'readonly', 'userCanSeeSecrets'));
     }
