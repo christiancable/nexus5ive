@@ -51,7 +51,7 @@
             <li><a href="{{ action('Nexus\UserController@show', ['user_name' => $authUser->username])}}">{{$authUser->username}}</a> ({{$authUser->popname}})</li>
             {{-- @endif --}}
             <li><a href="/auth/logout">logout</a></li>
-          <li class="navbar-right"><a href="#">Messages <span class="badge" id="unread_message_count">3</span></a></li>
+          {{-- <li class="navbar-right"><a href="#">Messages <span class="badge" id="unread_message_count">3</span></a></li> --}}
           @endif
         @else 
           <li><a href="/auth/login">login</a></li>
