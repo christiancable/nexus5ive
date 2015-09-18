@@ -1,13 +1,13 @@
 @if (!str_is($post->message_title, ""))
 <div class="alert alert-info" role="alert">
-    <p>{{$post->author->username}} switched subject to <strong>{{$post->message_title}}</strong></p>
+    <p>Someone switched subject to <strong>{{$post->message_title}}</strong></p>
 </div>
 @endif
 
 <div class="panel panel-default" id="{{$post->message_id}}">
     <div class="panel-heading">
-        <p><a href="{{ action('Nexus\UserController@show', ['username' => $post->author->username]) }}">{{$post->author->username}}</a> ({{$post->message_popname}})
-        <span class="pull-right">{{ date('D, F jS Y - H:i', strtotime($post->message_time)) }}</span></p>
+        <p><strong>Anonymous</strong> (Hidden User)
+        <span class="pull-right text-muted">{{$post->message_time->diffForHumans()}}</span></p>
     </div>        
 
     <div class="panel-body">

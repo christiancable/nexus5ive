@@ -57,6 +57,7 @@ class TopicController extends Controller
         $posts = \Nexus\Post::where('topic_id', $topic_id)->orderBy('message_id', 'dsc');
         $topic = \Nexus\Topic::where('topic_id', $topic_id)->first();
 
+        // is this topic readonly to the authenticated user?
         $readonly = true;
 
         if ($topic->read_only = false) {
@@ -71,9 +72,19 @@ class TopicController extends Controller
             $readonly = false;
         }
 
-        $secret = false;
+        // is this topic secret to the authenticated user?
+        $userCanSeeSecrets = false;
 
-        return view('topics.index', compact('topic', 'posts', 'readonly'));
+        if ($topic->section->moderator->id === \Auth::user()->id) {
+            $userCanSeeSecrets = true;
+        }
+
+        if (\Auth::user()->administrator) {
+            $userCanSeeSecrets = true;
+        }
+
+
+        return view('topics.index', compact('topic', 'posts', 'readonly', 'userCanSeeSecrets'));
     }
 
     /**

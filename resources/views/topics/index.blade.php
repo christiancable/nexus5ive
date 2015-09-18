@@ -30,8 +30,27 @@
                 $reverseArray = array_reverse($reverseArray);
                 ?>
 
+                @if($topic->secret) 
+
+
+                    @if($userCanSeeSecrets) 
+                       <div class="alert alert-danger" role="alert">
+                            <p><strong>This topic is anonymous</strong>. You can see who wrote each post because you are privileged. <strong>Please respect people's anonymity</strong>.</p>
+                        </div>
+                    @else
+                        <div class="alert alert-danger" role="alert">
+                            <p><strong>This topic is anonymous</strong>. However, the Moderator <strong>{{$topic->section->moderator->username}}</strong> and the BBS administrator are able to see who wrote each post.</p>
+                        </div>
+                    @endif 
+
+                @endif
+
                 @forelse($reverseArray as $post)
-                    @include('topics.post', $post)
+                    @if($topic->secret && $userCanSeeSecrets == false) 
+                        @include('posts.showhidden', $post)
+                    @else
+                        @include('posts.show', $post)
+                    @endif 
                 @empty
                     <p class="alert alert-warning">No Posts.</p>
                 @endforelse

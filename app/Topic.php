@@ -31,6 +31,20 @@ class Topic extends Model
         return $return;
     }
 
+
+    public function getSecretAttribute()
+    {
+        $return = false;
+
+        if ($this->topic_annon === 'n') {
+            $return = false;
+        } else {
+            $return = true;
+        }
+
+        return $return;
+    }
+
      // sections
 
     public function section()
