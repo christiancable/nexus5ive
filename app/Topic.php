@@ -10,6 +10,26 @@ class Topic extends Model
     protected $primaryKey = 'topic_id';
     public $timestamps = false;
 
+    /*
+    accessors 
+    =========
+
+    covering up only database design stupids where I forgot about booleans
+     */
+    
+    
+    public function getReadOnlyAttribute()
+    {
+        $return = false;
+
+        if ($this->topic_readonly === 'n') {
+            $return = false;
+        } else {
+            $return = true;
+        }
+
+        return $return;
+    }
 
      // sections
 
@@ -25,7 +45,6 @@ class Topic extends Model
     {
         return $this->hasMany('Nexus\Post', 'topic_id', 'topic_id')->orderBy('message_id', 'asc');
     }
-    
 }
 
 /*

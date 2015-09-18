@@ -57,7 +57,23 @@ class TopicController extends Controller
         $posts = \Nexus\Post::where('topic_id', $topic_id)->orderBy('message_id', 'dsc');
         $topic = \Nexus\Topic::where('topic_id', $topic_id)->first();
 
-        return view('topics.index')->with('topic', $topic)->with('posts', $posts);
+        $readonly = true;
+
+        if ($topic->read_only = false) {
+            $readonly = false;
+        }
+
+        if ($topic->section->moderator->id === \Auth::user()->id) {
+            $readonly = false;
+        }
+
+        if (\Auth::user()->administrator) {
+            $readonly = false;
+        }
+
+        $secret = false;
+
+        return view('topics.index', compact('topic', 'posts', 'readonly'));
     }
 
     /**

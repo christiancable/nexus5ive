@@ -37,7 +37,13 @@
                 @endforelse
 
                 {{-- check to see if we should show this --}}
-                @include('posts.create', $topic)
+                @if($readonly === true) 
+                    <div class="alert alert-danger" role="alert">
+                        <p><strong>This topic is closed</strong>. You cannot add a new post.</p>
+                    </div>
+                @else 
+                    @include('posts.create', $topic)
+                @endif 
 
                 {!! $postsChunk->render() !!}
       </div>
