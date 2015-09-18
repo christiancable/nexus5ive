@@ -85,7 +85,8 @@ class TopicController extends Controller
 
         // store the user's read progress of the current topic
     
-        $latestPost = $posts->first();
+        $latestPost = $posts->orderBy('message_time', 'dsc')->first();
+
         $lastestView = \Nexus\View::where('topic_id', $topic_id)->where('user_id', \Auth::user()->id)->first();
 
         if ($lastestView) {
