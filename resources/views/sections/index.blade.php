@@ -14,9 +14,6 @@
 </div>
 
 
-{{--                 @if($section->parent)
-<p>Return to <a href="{{ url("/{$section->parent->section_id}") }}">{{$section->parent->section_title}}</a><p>
-@endif  --}}
 
 <div class="container">
     <div class="content">
