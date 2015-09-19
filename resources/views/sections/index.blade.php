@@ -49,7 +49,7 @@
 
                         <div class="panel-body">
                             <p><em>{{$subSection->section_intro}}</em></p>
-                            <p><a class="btn btn-default" href="{{ action('Nexus\SectionController@show', ['section_id' => $subSection->section_id])}}" role="button">View details &raquo;</a></p>
+                           {{--  <p><a class="btn btn-default" href="{{ action('Nexus\SectionController@show', ['section_id' => $subSection->section_id])}}" role="button">View details &raquo;</a></p> --}}
                         </div>
                     </div>
                 </div>
