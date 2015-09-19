@@ -6,57 +6,57 @@
 
 @section('content')
 <div class="container">
+
     <div class="content">
         <h1>{{$section->section_title}}</h1>
         <p class="lead">{{$section->section_intro}}</p>
         <p>Moderated by: <a href="{{ action('Nexus\UserController@show', ['username' => $section->moderator->username])}}">{{$section->moderator->username}}</a></p>
     </div>
-</div>
-<hr>
 
-<div class="container">
+    <hr>
+
     <div class="content">
 
-    @if (count($section->topics))
+        @if (count($section->topics))
         @foreach ($section->topics as $topic)
         <div class="well">
             <h2>
-            @if ($topic->unreadPosts(Auth::user()->id))
+                @if ($topic->unreadPosts(Auth::user()->id))
                 <span class="glyphicon glyphicon-fire text-danger" aria-hidden="true"></span>
-            @else
+                @else
                 <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
-            @endif
+                @endif
 
-            <a href="{{ action('Nexus\TopicController@show', ['topic_id' => $topic->topic_id])}}"> {{$topic->topic_title}}</a>
+                <a href="{{ action('Nexus\TopicController@show', ['topic_id' => $topic->topic_id])}}"> {{$topic->topic_title}}</a>
             </h2>
             <p>{!!nl2br($topic->topic_description)!!}</p>
             @if ($topic->most_recent_post_time)
-                <p class="small text-muted">Latest Post {{$topic->most_recent_post_time->diffForHumans()}}</p>
+            <p class="small text-muted">Latest Post {{$topic->most_recent_post_time->diffForHumans()}}</p>
             @endif
         </div>
         @endforeach
-    @endif
+        @endif
 
-    @if (count($section->sections))
+        @if (count($section->sections))
         <hr>
         <div class="row">
             @foreach ($section->sections as $subSection)
-                <div class="col-md-4">
-                    <div class="panel panel-primary">
-                        <div class="panel-heading">
-                            <h2 class="panel-title"><a href="{{ action('Nexus\SectionController@show', ['section_id' => $subSection->section_id])}}">{{$subSection->section_title}}</a></h2>
-                        </div>
+            <div class="col-md-4">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h2 class="panel-title"><a href="{{ action('Nexus\SectionController@show', ['section_id' => $subSection->section_id])}}">{{$subSection->section_title}}</a></h2>
+                    </div>
 
-                        <div class="panel-body">
-                            <p><em>{{$subSection->section_intro}}</em></p>
-                           {{--  <p><a class="btn btn-default" href="{{ action('Nexus\SectionController@show', ['section_id' => $subSection->section_id])}}" role="button">View details &raquo;</a></p> --}}
-                        </div>
+                    <div class="panel-body">
+                        <p><em>{{$subSection->section_intro}}</em></p>
+                        {{--  <p><a class="btn btn-default" href="{{ action('Nexus\SectionController@show', ['section_id' => $subSection->section_id])}}" role="button">View details &raquo;</a></p> --}}
                     </div>
                 </div>
+            </div>
             @endforeach
         </div>
-    @endif
-    
+        @endif
     </div>
+
 </div>
 @endsection
