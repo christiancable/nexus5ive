@@ -45,8 +45,40 @@ class Topic extends Model
         return $return;
     }
 
-     // sections
+    public function getMostRecentPostTimeAttribute()
+    {
+        return  Post::select('message_time')->where('topic_id', $this->topic_id)->orderBy('message_time', 'dec')->first()->message_time;
+    }
 
+
+    /**
+     * reports if a topic has been updated since the a user last read
+     *
+     * this might actually live in the topicController
+     * @param  int $user_id id of a user
+     * @return boolean has the topic being updated or not
+     */
+    public function unreadPosts($user_id)
+    {
+        $return = true;
+
+        $latestView = \Nexus\View::select('msg_date')->where('topic_id', $this->topic_id)->where('user_id', $user_id)->first();
+
+        if ($latestView) {
+            if ($latestView->msg_date <> $this->most_recent_post_time) {
+                $return = true;
+            } else {
+                $return = false;
+            }
+        } else {
+            $return = false;
+        }
+        
+        return $return;
+    }
+
+    // sections
+     
     public function section()
     {
         return $this->belongsTo('Nexus\Section', 'section_id', 'section_id');
