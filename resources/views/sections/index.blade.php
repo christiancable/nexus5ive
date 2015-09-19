@@ -5,14 +5,13 @@
 @endsection
 
 @section('content')
-<div class="page-header">
-    <div class="container">
+<div class="container">
+    <div class="page-header">
         <h1>{{$section->section_title}}</h1>
-        <p>{{$section->section_intro}}</p>
+        <p class="lead">{{$section->section_intro}}</p>
         <p>Moderated by: <a href="{{ action('Nexus\UserController@show', ['username' => $section->moderator->username])}}">{{$section->moderator->username}}</a></p>
     </div>
 </div>
-
 
 
 <div class="container">

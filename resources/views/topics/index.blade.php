@@ -7,8 +7,8 @@
 @section('content')
 
 
-<div class="page-header">
-    <div class="container">
+<div class="container">
+    <div class="page-header">
         <h1>{{$topic->topic_title}}</h1>
         
     </div>

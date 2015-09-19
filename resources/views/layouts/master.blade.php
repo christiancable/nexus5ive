@@ -11,7 +11,7 @@
 <body>
 
 
-  <nav class="navbar navbar-default navbar-fixed-top">
+  <nav class="navbar navbar-default ">
     <div class="container">
       <div class="navbar-header">
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -48,19 +48,15 @@
     </div>
   </nav>
 
-{{-- <div class="container">
+  <div class="container">
     <ol class="breadcrumb">
-        
-      </ol>
-
-</div> --}}
-
-<hr>
-
-
-
-
-
+      <li><a href="#">These</a></li>
+      <li><a href="#">Are</a></li>
+      <li><a href="#">Not</a></li>
+      <li><a href="#">Real</a></li>
+      <li class="active">Breadcrumbs</li>
+    </ol>
+  </div>
 
 
   @yield('content')
