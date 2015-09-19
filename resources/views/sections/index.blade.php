@@ -6,13 +6,13 @@
 
 @section('content')
 <div class="container">
-    <div class="page-header">
+    <div class="content">
         <h1>{{$section->section_title}}</h1>
         <p class="lead">{{$section->section_intro}}</p>
         <p>Moderated by: <a href="{{ action('Nexus\UserController@show', ['username' => $section->moderator->username])}}">{{$section->moderator->username}}</a></p>
     </div>
 </div>
-
+<hr>
 
 <div class="container">
     <div class="content">
