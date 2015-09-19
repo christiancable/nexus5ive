@@ -59,9 +59,23 @@ class Topic extends Model
         }
 
         return $result;
-         
     }
 
+    public function mostRecentlyReadPostDate($user_id)
+    {
+        $result = false;
+
+        $latestView = \Nexus\View::select('msg_date')
+            ->where('topic_id', $this->topic_id)
+            ->where('user_id', $user_id)
+            ->first();
+
+        if ($latestView) {
+            $result = $latestView->msg_date;
+        }
+
+        return $result;
+    }
 
     /**
      * reports if a topic has been updated since the a user last read
@@ -74,10 +88,10 @@ class Topic extends Model
     {
         $return = true;
 
-        $latestView = \Nexus\View::select('msg_date')->where('topic_id', $this->topic_id)->where('user_id', $user_id)->first();
+        $mostRecentlyReadPostDate = $this->mostRecentlyReadPostDate($user_id);
 
-        if ($latestView) {
-            if ($latestView->msg_date <> $this->most_recent_post_time) {
+        if ($mostRecentlyReadPostDate) {
+            if ($mostRecentlyReadPostDate <> $this->most_recent_post_time) {
                 $return = true;
             } else {
                 $return = false;

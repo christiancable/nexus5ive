@@ -47,9 +47,9 @@
 
                 @forelse($reverseArray as $post)
                     @if($topic->secret && $userCanSeeSecrets == false) 
-                        @include('posts.showhidden', $post)
+                        @include('posts.showhidden', compact('post', 'readProgress'))
                     @else
-                        @include('posts.show', $post)
+                        @include('posts.show', compact('post', 'readProgress'))
                     @endif 
                 @empty
                     <p class="alert alert-warning">No Posts.</p>
