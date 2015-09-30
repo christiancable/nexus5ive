@@ -17,7 +17,7 @@
         <span><a href="{{ action('Nexus\UserController@show', ['username' => $post->author->username]) }}">{{$post->author->username}}</a> ({{$post->message_popname}})</span>
         <hr>
 
-        <p>{{ $post->message_text }}</p>
+        <p>{!! nl2br(strip_tags($post->message_text)) !!}</p>
 
     </div>
     {{-- <li>{{$post->update_user_id}}</li> --}}
