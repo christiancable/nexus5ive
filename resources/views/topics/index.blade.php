@@ -61,7 +61,11 @@
                         <p><strong>This topic is closed</strong>. You cannot add a new post.</p>
                     </div>
                 @else 
-                    @include('posts.create', $topic)
+		      {{-- only show the post box if we are on the first page --}}
+		      @if ($postsChunk->currentPage() === 1)
+                      	  @include('posts.create', $topic)
+		      @endif
+
                 @endif 
 
                 {!! $postsChunk->render() !!}
