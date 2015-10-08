@@ -23,7 +23,8 @@ class AuthLoginEventHandler
     /**
      * Handle the event.
      *
-     * @param  Events  $event
+     * @param  The logged in User  $user
+     * @param  $remember
      * @return void
      */
     public function handle(User $user, $remember)
