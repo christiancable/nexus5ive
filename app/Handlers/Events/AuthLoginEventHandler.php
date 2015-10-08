@@ -31,8 +31,10 @@ class AuthLoginEventHandler
 
         // update the lastLogin
         $user->latestLogin = Carbon::now();
-        $user->save();
-        
+
         // incrememt the total number of visits
+        $user->totalVisits = $user->totalVisits + 1;
+
+        $user->save();
     }
 }
