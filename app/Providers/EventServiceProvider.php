@@ -16,6 +16,10 @@ class EventServiceProvider extends ServiceProvider
         'Nexus\Events\SomeEvent' => [
             'Nexus\Listeners\EventListener',
         ],
+        'auth.login' => [
+            'Nexus\Handlers\Events\AuthLoginEventHandler',
+        ],
+
     ];
 
     /**
