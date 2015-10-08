@@ -53,4 +53,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     {
         return $this->hasMany('Nexus\View', 'user_id', 'id')->orderBy('msg_date', 'dec');
     }
+
+    /* helper methods */
+
+    public function incrementTotalPosts()
+    {
+        $this->totalPosts = $this->totalPosts + 1;
+        $this->save();
+    }
 }

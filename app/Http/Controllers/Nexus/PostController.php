@@ -10,9 +10,9 @@ use Nexus\Http\Controllers\Controller;
 class PostController extends Controller
 {
     public function __construct()
-	{
-    	$this->middleware('auth');
-	}
+    {
+        $this->middleware('auth');
+    }
     
     /**
      * Display a listing of the resource.
@@ -48,6 +48,8 @@ class PostController extends Controller
         $input['message_popname'] = \Auth::user()->popname;
         $post = \Nexus\Post::create($input);
 
+        \Auth::user()->incrementTotalPosts();
+        
         $redirect = action('Nexus\TopicController@show', ['topic_id' => $post->topic_id]) . '#'  . $post->message_id;
         return redirect($redirect);
     }
