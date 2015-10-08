@@ -22,9 +22,9 @@
 
                     <dt>Popname</dt><dd>{{$user->popname}}</dd>
                     @if ($user->latestLogin)
-                    	<dt>Last Seen</dt><dd>{{$user->latestLogin->diffForHumans()}}</dd>
+                    	<dt>Latest Visit</dt><dd>{{$user->latestLogin->diffForHumans()}}</dd>
                     @else
-                    	<dt>Last Seen</dt><dd>Never</dd>
+                    	<dt>Latest Visit</dt><dd>Never</dd>
                     @endif
                     
                 </dl>
@@ -34,7 +34,7 @@
                     <dt>Favourite Film</dt><dd>{{$user->favouriteMovie}}</dd>
                     <dt>Favourite Band</dt><dd>{{$user->favouriteMusic}}</dd>
 
-                    <dt>Total Post</dt><dd>{{$user->totalPosts}}</dd>
+                    <dt>Total Posts</dt><dd>{{$user->totalPosts}}</dd>
                     <dt>Total Visits</dt><dd>{{$user->totalVisits}}</dd>
 
 
