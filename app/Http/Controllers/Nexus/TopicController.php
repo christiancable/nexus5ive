@@ -118,6 +118,28 @@ class TopicController extends Controller
     }
 
     /**
+     *
+     * show a list of unread topics
+     */
+    public function unread()
+    {
+        $topics = array();
+
+
+
+        $views = \Auth::user()->views;
+
+        foreach ($views as $view) {
+            if ($view->msg_date != $view->topic->most_recent_post_time) {
+                $topics[] =  $view->topic;
+            }
+            
+        }
+
+        // dd($topics);
+        return view('topics.unread', compact('topics'));
+    }
+    /**
      * Update the specified resource in storage.
      *
      * @param  Request  $request

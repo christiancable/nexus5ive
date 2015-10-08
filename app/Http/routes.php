@@ -29,7 +29,7 @@ Route::post('password/email', 'Auth\PasswordController@postEmail');
 
 // Password reset routes...
 Route::get('password/reset/{token}', 'Auth\PasswordController@getReset');
-Route::post('password/reset', 'Auth\PasswordController@postReset'); 
+Route::post('password/reset', 'Auth\PasswordController@postReset');
 
 
 
@@ -43,6 +43,8 @@ Route::get('/', 'Nexus\SectionController@show');
 Route::get('/home', 'Nexus\SectionController@show');
 Route::get('/section/{section_id}', 'Nexus\SectionController@show');
 
+// DEBUG
+Route::get('topic/unread', 'Nexus\TopicController@unread');
 
 // topics
 Route::get('/topic/{topic_id}', 'Nexus\TopicController@show');
