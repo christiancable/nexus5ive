@@ -58,9 +58,10 @@ class TopicController extends Controller
         $topic = \Nexus\Topic::where('topic_id', $topic_id)->first();
 
         // is this topic readonly to the authenticated user?
-        $readonly = true;
 
-        if ($topic->read_only = false) {
+	$readonly = true;        
+
+        if ($topic->read_only === false) {
             $readonly = false;
         }
 
@@ -129,9 +130,16 @@ class TopicController extends Controller
 
         $views = \Auth::user()->views;
 
+        $breakoutCount = 0;
+
         foreach ($views as $view) {
             if ($view->msg_date != $view->topic->most_recent_post_time) {
                 $topics[] =  $view->topic;
+            }
+            // terrible code
+            $breakoutCount++;
+            if ($breakoutCount > 10) {
+                break;
             }
             
         }
