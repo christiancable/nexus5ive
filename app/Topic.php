@@ -11,8 +11,8 @@ class Topic extends Model
     public $timestamps = false;
 
     /*
-    accessors 
-    =========
+    accessors and mutators
+    =======================
 
     covering up only database design stupids where I forgot about booleans
      */
@@ -29,6 +29,16 @@ class Topic extends Model
         }
 
         return $return;
+    }
+
+    
+    public function setReadOnlyAttribute($value)
+    {
+        if ($value === true) {
+	   $this->topic_readonly = 'y';
+	} else {
+	   $this->topic_readonly = 'n';
+	}
     }
 
 
