@@ -59,7 +59,7 @@ class TopicController extends Controller
 
         // is this topic readonly to the authenticated user?
 
-	$readonly = true;        
+        $readonly = true;
 
         if ($topic->read_only === false) {
             $readonly = false;
@@ -124,15 +124,17 @@ class TopicController extends Controller
      */
     public function unread()
     {
-        $topics = array();
-
-
-
-        $views = \Auth::user()->views;
+ 
+        $views = \Nexus\View::with('topic')->where('user_id', \Auth::user()->id)->where('unsubscribe', 0)->get();
+	// @todo - this query fetches in views where we might not have an existant topic - we skip these in the loop
+	// can we just update this to prevent fetching them at all?
 
         $breakoutCount = 0;
 
+        // N+1 problem
+        
         foreach ($views as $view) {
+	  if ($view->topic) { 
             if ($view->msg_date != $view->topic->most_recent_post_time) {
                 $topics[] =  $view->topic;
             }
@@ -141,12 +143,15 @@ class TopicController extends Controller
             if ($breakoutCount > 10) {
                 break;
             }
-            
+	  }
         }
 
         // dd($topics);
         return view('topics.unread', compact('topics'));
     }
+
+
+
     /**
      * Update the specified resource in storage.
      *
