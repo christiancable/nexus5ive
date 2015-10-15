@@ -30,8 +30,8 @@
                 <a href="{{ action('Nexus\TopicController@show', ['topic_id' => $topic->topic_id])}}"> {{$topic->topic_title}}</a>
             </h2>
             <p>{!!nl2br($topic->topic_description)!!}</p>
-            @if ($topic->most_recent_post_time)
-            <p class="small text-muted">Latest Post {{$topic->most_recent_post_time->diffForHumans()}}</p>
+            @if ($mostRecentPostTime = $topic->most_recent_post_time)
+                <p class="small text-muted">Latest Post {{$mostRecentPostTime->diffForHumans()}}</p>
             @endif
         </div>
         @endforeach
