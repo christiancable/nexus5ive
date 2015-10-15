@@ -53,8 +53,7 @@ class SectionController extends Controller
      */
     public function show($section_id = 1)
     {
-
-        $section = \Nexus\Section::where('section_id', $section_id)->first();
+        $section = \Nexus\Section::with('sections', 'topics')->where('section_id', $section_id)->first();
         return view('sections.index')->with('section', $section);
     }
 
