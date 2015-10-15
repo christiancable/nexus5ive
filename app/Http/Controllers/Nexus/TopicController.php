@@ -54,7 +54,7 @@ class TopicController extends Controller
     public function show($topic_id)
     {
 
-        $posts = \Nexus\Post::where('topic_id', $topic_id)->orderBy('message_id', 'dsc');
+        $posts = \Nexus\Post::with('author')->where('topic_id', $topic_id)->orderBy('message_id', 'dsc');
         $topic = \Nexus\Topic::where('topic_id', $topic_id)->first();
 
         // is this topic readonly to the authenticated user?
@@ -134,7 +134,7 @@ class TopicController extends Controller
         // N+1 problem
 
         foreach ($views as $view) {
-            if (!is_null($view->topic)) { 
+            if (!is_null($view->topic)) {
                 if ($view->msg_date != $view->topic->most_recent_post_time) {
                     $topics[] =  $view->topic;
                     
