@@ -58,7 +58,6 @@ class TopicController extends Controller
         $topic = \Nexus\Topic::where('topic_id', $topic_id)->first();
 
         // is this topic readonly to the authenticated user?
-
         $readonly = true;
 
         if ($topic->read_only === false) {
@@ -84,23 +83,18 @@ class TopicController extends Controller
             $userCanSeeSecrets = true;
         }
 
-    
         // get the previously read progress so we can indicate this in the view
         $readProgress = $topic->mostRecentlyReadPostDate(\Auth::user()->id);
-
-        // now update the user's read progress of the current topic
-        $latestPost = $posts->orderBy('message_time', 'dsc')->first();
-
         $lastestView = \Nexus\View::where('topic_id', $topic_id)->where('user_id', \Auth::user()->id)->first();
 
         if ($lastestView) {
-            $lastestView->msg_date = $latestPost->message_time;
+            $lastestView->msg_date = $topic->most_recent_post_time;
             $lastestView->update();
         } else {
             $view = new \Nexus\View;
             $view->user_id = \Auth::user()->id;
             $view->topic_id = $topic->topic_id;
-            $view->msg_date = $latestPost->message_time;
+            $lastestView->msg_date = $topic->most_recent_post_time;
             $view->save();
         }
 
@@ -130,9 +124,9 @@ class TopicController extends Controller
         // can we just update this to prevent fetching them at all?
 
         $breakoutCount = 0;
+        $topics = array();
 
         // N+1 problem
-
         foreach ($views as $view) {
             if (!is_null($view->topic)) {
                 if ($view->msg_date != $view->topic->most_recent_post_time) {
