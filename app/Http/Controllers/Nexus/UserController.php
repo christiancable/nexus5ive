@@ -54,7 +54,7 @@ class UserController extends Controller
      */
     public function show($user_name)
     {
-        $user = \Nexus\User::with('comments','comments.author')->where('username', $user_name)->first();
+        $user = \Nexus\User::with('comments', 'comments.author')->where('username', $user_name)->first();
         return view('users.show')->with('user', $user);
     }
 
