@@ -13,9 +13,22 @@
         <p>Moderated by: <a href="{{ action('Nexus\UserController@show', ['username' => $section->moderator->username])}}">{{$section->moderator->username}}</a></p>
     </div>
 
+    @if (session('alert'))
+    <div class="content">
+        <div class="alert alert-warning" role="alert">No updated topics found. Why not start a new conversation or read more sections?</div>
+    </div>
+    @endif 
+
+    @if (session('topic'))
+    <div class="content">
+        <div class="alert alert-success" role="alert">People have been talking! New posts found in <strong><a href="{{ action('Nexus\TopicController@show', ['topic_id' => session('topic')->topic_id])}}"> {{session('topic')->topic_title}}</a></strong></div>
+    </div>
+    @endif 
+
     <hr>
 
     <div class="content">
+
 
         @if (count($section->topics))
         @foreach ($section->topics as $topic)

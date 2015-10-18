@@ -37,14 +37,15 @@ Route::post('password/reset', 'Auth\PasswordController@postReset');
 Route::get('users', 'Nexus\UserController@index');
 Route::get('users/{user_name}', 'Nexus\UserController@show');
 
+// DEBUG
+Route::get('/section/unread', 'Nexus\SectionController@unread');
+Route::get('leap', 'Nexus\SectionController@leap');
 
 // sections
 Route::get('/', 'Nexus\SectionController@show');
 Route::get('/home', 'Nexus\SectionController@show');
 Route::get('/section/{section_id}', 'Nexus\SectionController@show');
 
-// DEBUG
-Route::get('topic/unread', 'Nexus\TopicController@unread');
 
 // topics
 Route::get('/topic/{topic_id}', 'Nexus\TopicController@show');

@@ -94,7 +94,7 @@ class TopicController extends Controller
             $view = new \Nexus\View;
             $view->user_id = \Auth::user()->id;
             $view->topic_id = $topic->topic_id;
-            $lastestView->msg_date = $topic->most_recent_post_time;
+            $view->msg_date = $topic->most_recent_post_time;
             $view->save();
         }
 
@@ -111,40 +111,6 @@ class TopicController extends Controller
     {
         //
     }
-
-    /**
-     *
-     * show a list of unread topics
-     */
-    public function unread()
-    {
-
-        $views = \Nexus\View::with('topic')->where('user_id', \Auth::user()->id)->where('unsubscribe', 0)->get();
-        // @todo - this query fetches in views where we might not have an existant topic - we skip these in the loop
-        // can we just update this to prevent fetching them at all?
-
-        $breakoutCount = 0;
-        $topics = array();
-
-        // N+1 problem
-        foreach ($views as $view) {
-            if (!is_null($view->topic)) {
-                if ($view->msg_date != $view->topic->most_recent_post_time) {
-                    $topics[] =  $view->topic;
-                    
-                    // terrible code
-                    $breakoutCount++;
-                    if ($breakoutCount > 10) {
-                        break;
-                    }
-                }
-            }
-        }
-
-        // dd($topics);
-        return view('topics.unread', compact('topics'));
-    }
-
 
 
     /**

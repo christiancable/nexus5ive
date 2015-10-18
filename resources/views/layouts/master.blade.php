@@ -29,6 +29,7 @@
 
             <ul class="nav navbar-nav">
               <li><a href="/users/">Examine User</a></li>
+               <li><a href="/leap">Topic Leap</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
               <li class="dropdown">
