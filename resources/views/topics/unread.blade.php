@@ -8,8 +8,10 @@
 <div class="container">
 
     <div class="content">
-        <h1>Continue the Conversation</h1>
-        <p class="lead">Here's what you've missed&hellip;</p>
+        {{-- <h1>Continue the Conversation</h1>
+        <p class="lead">Here's what you've missed&hellip;</p> --}}
+        <h1>{{$heading}}</h1>
+        <p class="lead">{{$lead}}</p>
         
     </div>
 

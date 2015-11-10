@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/css/app.css" rel="stylesheet">
     <link rel="stylesheet" href="http://bootswatch.com/cerulean/bootstrap.css">
+    {{-- <link rel="stylesheet" href="http://code.steadman.io/telestrap/telestrap/css/bootstrap-theme.css"> --}}
 </head>
 <body>
 
@@ -30,6 +31,7 @@
             <ul class="nav navbar-nav">
               <li><a href="/users/">Examine User</a></li>
                <li><a href="/leap">Topic Leap</a></li>
+               <li><a href="{{ action('Nexus\SectionController@latest')}}">Latest Posts</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
               <li class="dropdown">

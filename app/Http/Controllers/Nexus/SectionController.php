@@ -100,6 +100,7 @@ class SectionController extends Controller
     public function updatedTopics($maxResults = 10)
     {
 
+        // should we be passing the user_id into this method?
         $views = \Nexus\View::with('topic')->where('user_id', \Auth::user()->id)->where('unsubscribe', 0)->get();
         // @todo - this query fetches in views where we might not have an existant topic - we skip these in the loop
         // can we just update this to prevent fetching them at all?
@@ -125,6 +126,19 @@ class SectionController extends Controller
         return $topics;
     }
 
+    public function recentTopics($maxresults = 10)
+    {
+       
+        $latestPosts = \Nexus\Post::orderBy('message_id', 'desc')->take($maxresults)->get(['topic_id'])->groupBy('topic_id');
+
+        $topics = array();
+        foreach ($latestPosts as $topic) {
+            $topics[] = $topic[0]->topic;
+        }
+
+        return $topics;
+    }
+
     /**
      *
      * show a list of unread topics
@@ -134,6 +148,14 @@ class SectionController extends Controller
 
         $topics = $this::updatedTopics();
         return view('topics.unread', compact('topics'));
+    }
+
+    public function latest()
+    {
+        $heading = 'Latest Posts';
+        $lead = "The most recent posts from across Nexus";
+        $topics = $this::recentTopics();
+        return view('topics.unread', compact('topics', 'heading', 'lead'));
     }
 
     /**

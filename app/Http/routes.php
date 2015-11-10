@@ -40,6 +40,7 @@ Route::get('users/{user_name}', 'Nexus\UserController@show');
 // DEBUG
 Route::get('/section/unread', 'Nexus\SectionController@unread');
 Route::get('leap', 'Nexus\SectionController@leap');
+Route::get('/section/latest', 'Nexus\SectionController@latest');
 
 // sections
 Route::get('/', 'Nexus\SectionController@show');
