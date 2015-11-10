@@ -16,6 +16,26 @@ class Comment extends Model
     {
         return $this->hasOne('Nexus\User', 'id', 'from_id');
     }
+
+    /*
+    accessors and mutators
+    =======================
+
+    covering up only database design stupids where I forgot about booleans
+     */
+    
+    public function getReadAttribute()
+    {
+        $return = false;
+
+        if ($this->readstatus === 'n') {
+            $return = false;
+        } else {
+            $return = true;
+        }
+
+        return $return;
+    }
 }
 
 /*
