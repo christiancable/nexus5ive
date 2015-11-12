@@ -51,9 +51,9 @@ class CommentController extends Controller
         
         // if a user is posting on their own profile then assume that they have read the comment
         if ($input['from_id'] == $input['user_id']) {
-            $input['readstatus'] = 'y';
+            $input['readstatus'] = true;
         } else {
-            $input['readstatus'] = 'n';
+            $input['readstatus'] = false;
         }
    
         \Nexus\Comment::create($input);

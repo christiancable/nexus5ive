@@ -24,11 +24,11 @@ class Comment extends Model
     covering up only database design stupids where I forgot about booleans
      */
     
-    public function getReadAttribute()
+    public function getReadstatusAttribute($value)
     {
         $return = false;
 
-        if ($this->readstatus === 'n') {
+        if ($value === 'n') {
             $return = false;
         } else {
             $return = true;

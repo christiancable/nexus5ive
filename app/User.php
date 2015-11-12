@@ -66,7 +66,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public function hasNewComments()
     {
         $return = false;
-        if (count($this->comments->where('readstatus', 'n')->take(1))) {
+        if (count($this->comments->where('readstatus', true)->take(1))) {
             $return = true;
         } else {
             $return = false;
