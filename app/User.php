@@ -66,12 +66,18 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public function hasNewComments()
     {
         $return = false;
-        if (count($this->comments->where('readstatus', true)->take(1))) {
+
+        if (count($this->comments->where('readstatus', false)->take(1))) {
             $return = true;
         } else {
             $return = false;
         }
 
         return $return;
+    }
+
+    public function markCommentsAsRead()
+    {
+        Comment::where('user_id', $this->id)->update(['readstatus' => false]);
     }
 }

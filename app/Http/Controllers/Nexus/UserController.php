@@ -3,17 +3,17 @@
 namespace Nexus\Http\Controllers\Nexus;
 
 use Illuminate\Http\Request;
-
+use Log;
 use Nexus\Http\Requests;
 use Nexus\Http\Controllers\Controller;
 
 class UserController extends Controller
 {
-	public function __construct()
-	{
-    	$this->middleware('auth');
-	}
-	
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     /**
      * Display a listing of the resource.
      *
@@ -55,6 +55,11 @@ class UserController extends Controller
     public function show($user_name)
     {
         $user = \Nexus\User::with('comments', 'comments.author')->where('username', $user_name)->first();
+
+        if ($user->id === \Auth::user()->id) {
+            \Auth::user()->markCommentsAsRead();
+            \Auth::user()->save();
+        }
         return view('users.show')->with('user', $user);
     }
 
@@ -68,7 +73,7 @@ class UserController extends Controller
     {
         //
     }
-    
+
     /**
      * Update the specified resource in storage.
      *
