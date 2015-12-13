@@ -18,9 +18,10 @@ Route::get('auth/login', 'Auth\AuthController@getLogin');
 Route::post('auth/login', 'Auth\AuthController@postLogin');
 Route::get('auth/logout', 'Auth\AuthController@getLogout');
 
-/* Route::post('password/email', function() {
-	dd("hello");
-}); */
+// API 
+Route::get('api/comments/count', ['middleware' => 'auth',  function() {
+    return Auth::user()->newComments();
+}]);
 
 
 // Password reset link request routes...
@@ -36,6 +37,8 @@ Route::post('password/reset', 'Auth\PasswordController@postReset');
 // users
 Route::get('users', 'Nexus\UserController@index');
 Route::get('users/{user_name}', 'Nexus\UserController@show');
+Route::put('users/{user_name}', ['Nexus\UserController@update', 'as' => 'user.update']);
+Route::get('users/{user_name}/edit', 'Nexus\UserController@edit');
 
 // DEBUG
 Route::get('/section/unread', 'Nexus\SectionController@unread');
@@ -53,6 +56,7 @@ Route::get('/topic/{topic_id}', 'Nexus\TopicController@show');
 
 // comments
 Route::post('comments', 'Nexus\CommentController@store');
+
 
 
 // posts

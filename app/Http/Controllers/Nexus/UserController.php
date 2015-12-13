@@ -54,7 +54,7 @@ class UserController extends Controller
      */
     public function show($user_name)
     {
-        $user = \Nexus\User::with('comments', 'comments.author')->where('username', $user_name)->first();
+        $user = \Nexus\User::with('comments', 'comments.author')->where('username', $user_name)->firstOrFail();
 
         if ($user->id === \Auth::user()->id) {
             \Auth::user()->markCommentsAsRead();
@@ -69,9 +69,10 @@ class UserController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function edit($id)
+    public function edit($user_name)
     {
-        //
+        $user = \Nexus\User::with('comments', 'comments.author')->where('username', $user_name)->firstOrFail();
+        return view('users.edit')->with('user', $user);
     }
 
     /**
