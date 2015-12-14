@@ -38,7 +38,7 @@ Form::model($user, array(
             <dt>{!! Form::label('popname','Popname') !!}</dt>
             <dd>{!! Form::text('popname', null, ['class'=> 'form-control'])!!}</dd>      
 
-	    <dt>{!! Form::label('private','Hide Email AddressXSXC') !!}</dt>
+	    <dt>{!! Form::label('private','Hide Email Address') !!}</dt>
             <dd>{!! Form::checkbox('private', null, ['class'=> 'form-control'])!!}</dd>
 
         </dl>
