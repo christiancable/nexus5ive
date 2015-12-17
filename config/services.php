@@ -15,8 +15,8 @@ return [
     */
 
     'mailgun' => [
-        'domain' => 'mg.nexus5.org.uk',
-        'secret' => 'key-790e2e05c3edac21b2619336b1ae9880',
+        'domain' => env('MAILGUN_DOMAIN', ''),
+        'secret' => env('MAILGUN_SECRET', ''),
     ],
 
     'mandrill' => [
