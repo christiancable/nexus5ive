@@ -72,7 +72,7 @@ class UserController extends Controller
     public function edit($user_name)
     {
         $user = \Nexus\User::with('comments', 'comments.author')->where('username', $user_name)->firstOrFail();
-        return view('users.edit')->with('user', $user);
+        return view('users.show')->with('user', $user);
     }
 
     /**
