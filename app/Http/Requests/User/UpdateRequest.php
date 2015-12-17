@@ -34,7 +34,7 @@ class UpdateRequest extends Request
     public function rules()
     {
         return [
-            //
+            'email' => 'required|unique:users,email,'.\Auth::id(),
         ];
     }
 }
