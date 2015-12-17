@@ -13,7 +13,17 @@ class UpdateRequest extends Request
      */
     public function authorize()
     {
-        return true;
+      $return = false;
+
+      if(!\Auth::check()) {
+	$return = false;
+      }
+
+      if ($this::input('id') == \Auth::id()){
+	$return = true;
+      } 
+
+      return $return;
     }
 
     /**
