@@ -82,9 +82,11 @@ class UserController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update($user_name, Request $request)
     {
-        //
+        $user = \Nexus\User::where('username', $user_name)->firstOrFail();
+        $user->update($request->all());
+        return redirect('/users/'. $user_name);
     }
 
     /**

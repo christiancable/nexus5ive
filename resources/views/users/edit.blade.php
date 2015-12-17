@@ -21,9 +21,13 @@
 
 {!! 
 Form::model($user, array(
-    'route' => ['user.update', $user->name],
-    'class' => 'form')) 
+    'route' => ['users.update', $user->username],
+    'class' => 'form',
+    'method' => 'PATCH'
+    )) 
 !!}
+
+{!! Form::hidden('id', $user->id) !!}
 
 <div class="row form-group">
 
@@ -39,7 +43,7 @@ Form::model($user, array(
             <dd>{!! Form::text('popname', null, ['class'=> 'form-control'])!!}</dd>      
 
 	    <dt>{!! Form::label('private','Hide Email Address') !!}</dt>
-            <dd>{!! Form::checkbox('private', null, ['class'=> 'form-control'])!!}</dd>
+            <dd>{!! Form::checkbox('private', $user->private, ['class'=> 'form-control'])!!}</dd>
 
         </dl>
 

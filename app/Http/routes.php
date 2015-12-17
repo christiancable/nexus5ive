@@ -35,10 +35,7 @@ Route::post('password/reset', 'Auth\PasswordController@postReset');
 
 
 // users
-Route::get('users', 'Nexus\UserController@index');
-Route::get('users/{user_name}', 'Nexus\UserController@show');
-Route::put('users/{user_name}', ['Nexus\UserController@update', 'as' => 'user.update']);
-Route::get('users/{user_name}/edit', 'Nexus\UserController@edit');
+Route::resource('users', 'Nexus\UserController');
 
 // DEBUG
 Route::get('/section/unread', 'Nexus\SectionController@unread');
