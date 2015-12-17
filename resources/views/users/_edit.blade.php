@@ -1,12 +1,12 @@
-                @if ($errors->all())
-                <div class="row">
-                <ul>
-                    @foreach($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                     @endforeach
-                 </ul>
-                </div>
-                @endif
+@if ($errors->all())
+    <div class="alert alert-warning" role="alert">
+    <ul>
+        @foreach($errors->all() as $error)
+            <li>{{ $error }}</li>
+         @endforeach
+     </ul>
+    </div>
+@endif
 
 {!! 
 Form::model($user, array(
@@ -32,7 +32,7 @@ Form::model($user, array(
             <dd>{!! Form::text('popname', null, ['class'=> 'form-control'])!!}</dd>      
 
 	    <dt>{!! Form::label('private','Hide Email Address') !!}</dt>
-            <dd>{!! Form::checkbox('private', $user->private, ['class'=> 'form-control'])!!}</dd>
+            <dd>{!! Form::checkbox('private', null, ['class'=> 'form-control'])!!}</dd>
 
         </dl>
 
