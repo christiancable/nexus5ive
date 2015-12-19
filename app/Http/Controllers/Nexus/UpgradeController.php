@@ -22,72 +22,74 @@ class UpgradeController extends Controller
         $classicUsers = \DB::table('usertable')->get();
         
         foreach ($classicUsers as $classicUser) {
-        	$newUser = new \Nexus\User;
-        	
-        	$newUser->id = $classicUser->user_id;
-			$newUser->username = $classicUser->user_name;
-			$newUser->popname = $classicUser->user_popname;
-			$newUser->about = $classicUser->user_comment;
-			$newUser->location = $classicUser->user_town;
-			
-			if($classicUser->user_sysop === 'y'){
-				$newUser->administrator = true;	
-			} else {
-				$newUser->administrator = false;
-			}
-			
-			$newUser->totalVisits = $classicUser->user_totalvisits;
-			$newUser->totalPosts = $classicUser->user_totaledits;
-			$newUser->favouriteMovie = $classicUser->user_film;
-			$newUser->favouriteMusic = $classicUser->user_band;
-			
-			if($classicUser->user_hideemail === 'no'){
-				$newUser->private = false;
-			} else {
-				$newUser->private = true;
-			}
-			
-			$newUser->ipaddress = $classicUser->user_ipaddress;
-			$lastLogin = \DB::table('whoison')->select('timeon')->where('user_id', $classicUser->user_id)->first();
-			if($lastLogin){
-				$newUser->latestLogin = $lastLogin->timeon;
-			} 
-			
-			if($classicUser->user_status === 'Invalid'){
-				$newUser->banned = true;
-			}
-			
-			// avoid reusing email addresses
-			$emailUses = \DB::table('usertable')->select('user_id')->where('user_email',$classicUser->user_email)->get();
-			$count = count($emailUses);
-			if($count > 1) {
-				$newUser->email = $classicUser->user_name . '@fakeemail.com';
-			} else {
-				$newUser->email = $classicUser->user_email;
-			}
-			/* 			
-			note sure about these....		
-			$table->boolean('banned')->default(false);
-		
-			*/
-			
-			if($classicUser->user_realname != "") {
-				$newUser->name = $classicUser->user_realname;
-			} else {
-				$newUser->name = "Unknown";
-			}
-			
-			$newUser->save();
+            $newUser = new \Nexus\User;
+            
+            $newUser->id = $classicUser->user_id;
+            $newUser->username = $classicUser->user_name;
+            $newUser->popname = $classicUser->user_popname;
+            $newUser->about = $classicUser->user_comment;
+            $newUser->location = $classicUser->user_town;
+            
+            if ($classicUser->user_sysop === 'y') {
+                $newUser->administrator = true;
+            } else {
+                $newUser->administrator = false;
+            }
+            
+            $newUser->totalVisits = $classicUser->user_totalvisits;
+            $newUser->totalPosts = $classicUser->user_totaledits;
+            $newUser->favouriteMovie = $classicUser->user_film;
+            $newUser->favouriteMusic = $classicUser->user_band;
+            
+            if ($classicUser->user_hideemail === 'no') {
+                $newUser->private = false;
+            } else {
+                $newUser->private = true;
+            }
+            
+            $newUser->ipaddress = $classicUser->user_ipaddress;
+            $lastLogin = \DB::table('whoison')->select('timeon')->where('user_id', $classicUser->user_id)->first();
+            if ($lastLogin) {
+                $newUser->latestLogin = $lastLogin->timeon;
+            }
+            
+            if ($classicUser->user_status === 'Invalid') {
+                $newUser->banned = true;
+            }
+            
+            // avoid reusing email addresses
+            $emailUses = \DB::table('usertable')->select('user_id')->where('user_email', $classicUser->user_email)->get();
+            $count = count($emailUses);
+            if ($count > 1) {
+                $newUser->email = $classicUser->user_name . '@fakeemail.com';
+            } else {
+                $newUser->email = $classicUser->user_email;
+            }
+
+            $newUser->password = \Hash::make($classicUser->user_password);
+            /*
+            note sure about these....       
+            $table->boolean('banned')->default(false);
+        
+            */
+            
+            if ($classicUser->user_realname != "") {
+                $newUser->name = $classicUser->user_realname;
+            } else {
+                $newUser->name = "Unknown";
+            }
+            
+            $newUser->save();
         }
         
         return view('upgrade.index', ['classicUsers' => $classicUsers]);
         /*
         foreach classicUser in usertable 
-        	$user = new User;
-        	$user.id = classicUser.user_id;
-        	get whoison result and populate field
-        	etc
-        	
+            $user = new User;
+            $user.id = classicUser.user_id;
+            get whoison result and populate field
+            etc
+            
         */
     }
 
