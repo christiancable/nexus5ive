@@ -82,6 +82,34 @@ class UpgradeController extends Controller
             $newUser->save();
         }
         
+        /* comments */
+
+        $classicComments = \DB::table('commenttable')->get();
+        
+        foreach ($classicComments as $classicComment) {
+            if (property_exists($classicComment, 'comment_id')) {
+                try {
+                    $newComment = new \Nexus\Comment;
+                    \Log::info(get_object_vars($classicComment));
+                    \Log::info('Comments: transferring ' . $classicComment->comment_id);
+                    $newComment->id = $classicComment->comment_id;
+                    $newComment->text = $classicComment->text;
+                    $newComment->user_id = $classicComment->user_id;
+                    $newComment->author_id = $classicComment->from_id;
+                    
+                    if ($classicComment->readstatus === 'n') {
+                        $newComment->read = false;
+                    } else {
+                        $newComment->read = true;
+                    }
+                
+                    $newComment->save();
+                } catch (\Exception $e) {
+                    \Log::error('Comments: failed on ' . $classicComment->comment_id);
+                }
+            }
+        }
+
         return view('upgrade.index', ['classicUsers' => $classicUsers]);
         /*
         foreach classicUser in usertable 

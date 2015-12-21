@@ -6,48 +6,20 @@ use Illuminate\Database\Eloquent\Model;
 
 class Comment extends Model
 {
-    protected $table = 'commenttable';
-    protected $primaryKey = 'comment_id';
-    public $timestamps = false;
-    protected $fillable = ['user_id','from_id','text','readstatus'];
+    protected $fillable = ['user_id','author_id','text','read'];
+
+    protected $casts = [
+        'read' => 'boolean',
+    ];
 
     public function author()
     {
-        return $this->hasOne('Nexus\User', 'id', 'from_id');
+        return $this->hasOne('Nexus\User', 'id', 'author_id');
     }
 
     public function user()
     {
         return $this->hasOne('Nexus\User', 'id', 'user_id');
-    }
-
-    /*
-    accessors and mutators
-    =======================
-
-    covering up only database design stupids where I forgot about booleans
-     */
-    
-    public function setReadstatusAttribute($value)
-    {
-        if ($value == true) {
-            $this->attributes['readstatus'] = 'y';
-        } else {
-            $this->attributes['readstatus'] = "n";
-        }
-    }
-
-    public function getReadstatusAttribute($value)
-    {
-        $return = false;
-
-        if ($value === 'n') {
-            $return = false;
-        } else {
-            $return = true;
-        }
-
-        return $return;
     }
 }
 

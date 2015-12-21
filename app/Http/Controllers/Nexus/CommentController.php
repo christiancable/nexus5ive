@@ -47,13 +47,13 @@ class CommentController extends Controller
 
         // dd($input);
         // @todo - this is the best way to get the current logged in user?
-        $input['from_id'] = \Auth::user()->id;
+        $input['author_id'] = \Auth::user()->id;
         
         // if a user is posting on their own profile then assume that they have read the comment
-        if ($input['from_id'] == $input['user_id']) {
-            $input['readstatus'] = true;
+        if ($input['author_id'] == $input['user_id']) {
+            $input['read'] = true;
         } else {
-            $input['readstatus'] = false;
+            $input['read'] = false;
         }
    
         \Nexus\Comment::create($input);
