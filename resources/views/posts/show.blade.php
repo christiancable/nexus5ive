@@ -14,7 +14,11 @@
             <span class="pull-right text-muted">{{ date('D, F jS Y - H:i', strtotime($post->message_time)) }}</span>   
         @endif 
 
-        <span><a href="{{ action('Nexus\UserController@show', ['username' => $post->author->username]) }}">{{$post->author->username}}</a> ({{$post->message_popname}})</span>
+        @if (isset($post->author))
+            <span><a href="{{ action('Nexus\UserController@show', ['username' => $post->author->username]) }}">{{$post->author->username}}</a> ({{$post->message_popname}})</span>
+        @else
+            <span>Unknown User (Unknown User)</span>
+        @endif
         <hr>
 
         <p>{!! nl2br(strip_tags($post->message_text)) !!}</p>
