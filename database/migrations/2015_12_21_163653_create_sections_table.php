@@ -19,7 +19,7 @@ class CreateSectionsTable extends Migration
 
             // relationships
             $table->integer('user_id')->unsigned();
-            $table->integer('parent_id')->unsigned();
+            $table->integer('parent_id')->unsigned()->nullable();
 
             $table->foreign('user_id')
                 ->references('id')
@@ -30,7 +30,7 @@ class CreateSectionsTable extends Migration
                 ->on('sections')->onDelete('cascade');
             // delete child sections when the parent is removed
 
-            $table->integer('section_weight')->default(0);
+            $table->integer('weight')->default(0);
             $table->timestamps();
         });
     }

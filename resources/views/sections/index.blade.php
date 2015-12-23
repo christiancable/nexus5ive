@@ -1,15 +1,15 @@
 @extends('layouts.master')
 
 @section('meta')
-<title>{{$section->section_title}}</title>
+<title>{{$section->title}}</title>
 @endsection
 
 @section('content')
 <div class="container">
 
     <div class="content">
-        <h1>{{$section->section_title}}</h1>
-        <p class="lead">{{$section->section_intro}}</p>
+        <h1>{{$section->title}}</h1>
+        <p class="lead">{{$section->intro}}</p>
         <p>Moderated by: <a href="{{ action('Nexus\UserController@show', ['username' => $section->moderator->username])}}">{{$section->moderator->username}}</a></p>
     </div>
 
@@ -57,12 +57,12 @@
             <div class="col-md-4">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h2 class="panel-title"><a href="{{ action('Nexus\SectionController@show', ['section_id' => $subSection->section_id])}}">{{$subSection->section_title}}</a></h2>
+                        <h2 class="panel-title"><a href="{{ action('Nexus\SectionController@show', ['id' => $subSection->id])}}">{{$subSection->title}}</a></h2>
                     </div>
 
                     <div class="panel-body">
-                        <p><em>{{$subSection->section_intro}}</em></p>
-                        {{--  <p><a class="btn btn-default" href="{{ action('Nexus\SectionController@show', ['section_id' => $subSection->section_id])}}" role="button">View details &raquo;</a></p> --}}
+                        <p><em>{{$subSection->intro}}</em></p>
+                        {{--  <p><a class="btn btn-default" href="{{ action('Nexus\SectionController@show', ['id' => $subSection->id])}}" role="button">View details &raquo;</a></p> --}}
                     </div>
                 </div>
             </div>

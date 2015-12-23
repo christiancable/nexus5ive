@@ -19,7 +19,7 @@
     <div class="content">
 
 
-                <p>Return to <a href="{{ action('Nexus\SectionController@show', ['section_id' => $topic->section_id]) }}">{{$topic->section->section_title}}</a><p>
+                <p>Return to <a href="{{ action('Nexus\SectionController@show', ['section_id' => $topic->section_id]) }}">{{$topic->section->title}}</a><p>
                 
                 <?php
                 $postsChunk = $posts->paginate(10);

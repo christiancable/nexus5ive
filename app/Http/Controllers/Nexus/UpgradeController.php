@@ -110,15 +110,45 @@ class UpgradeController extends Controller
             }
         }
 
-        return view('upgrade.index', ['classicUsers' => $classicUsers]);
-        /*
-        foreach classicUser in usertable 
-            $user = new User;
-            $user.id = classicUser.user_id;
-            get whoison result and populate field
-            etc
+        /* sections */
+
+        $classicSections = \DB::table('sectiontable')->get();
+    
+        foreach ($classicSections as $classicSection) {
+            try {
+                $newSection = new \Nexus\Section;
+                \Log::info('Section: transferring ' . $classicSection->section_id);
+
+                $newSection->id = $classicSection->section_id;
+                $newSection->title = $classicSection->section_title;
+                $newSection->intro = $classicSection->section_intro;
+                $newSection->user_id = $classicSection->user_id;
+                $newSection->weight = $classicSection->section_weight;
+                
+                $newSection->save();
+
+            } catch (\Exception $e) {
+                \Log::error('Sections: failed on ' . $classicSection->section_id . $e);
+            }
             
-        */
+        }
+
+        // then loop through the sections again and add in the parent relationships
+        foreach ($classicSections as $classicSection) {
+            try {
+                $newSection = \Nexus\Section::findOrFail($classicSection->section_id);
+                \Log::info('Section: adding parent to  ' . $classicSection->section_id);
+                $newSection->parent_id = $classicSection->parent_id;
+                $newSection->save();
+
+            } catch (\Exception $e) {
+                \Log::error('Sections: failed on ' . $classicSection->section_id . $e);
+            }
+            
+        }
+
+
+        return view('upgrade.index', ['classicUsers' => $classicUsers]);
     }
 
     /**

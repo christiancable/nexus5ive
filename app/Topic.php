@@ -35,10 +35,10 @@ class Topic extends Model
     public function setReadOnlyAttribute($value)
     {
         if ($value === true) {
-	   $this->topic_readonly = 'y';
-	} else {
-	   $this->topic_readonly = 'n';
-	}
+            $this->topic_readonly = 'y';
+        } else {
+            $this->topic_readonly = 'n';
+        }
     }
 
 
@@ -117,7 +117,7 @@ class Topic extends Model
      
     public function section()
     {
-        return $this->belongsTo('Nexus\Section', 'section_id', 'section_id');
+        return $this->belongsTo('Nexus\Section');
     }
 
 
