@@ -55,12 +55,13 @@ class TopicController extends Controller
     {
 
         $posts = \Nexus\Post::with('author')->where('topic_id', $topic_id)->orderBy('message_id', 'dsc');
-        $topic = \Nexus\Topic::where('topic_id', $topic_id)->first();
+        // $topic = \Nexus\Topic::where('topic_id', $topic_id)->first();
+        $topic = \Nexus\Topic::findOrFail($topic_id);
 
         // is this topic readonly to the authenticated user?
         $readonly = true;
 
-        if ($topic->read_only === false) {
+        if ($topic->readonly === false) {
             $readonly = false;
         }
 
@@ -93,7 +94,7 @@ class TopicController extends Controller
         } else {
             $view = new \Nexus\View;
             $view->user_id = \Auth::user()->id;
-            $view->topic_id = $topic->topic_id;
+            $view->topic_id = $topic->id;
             $view->msg_date = $topic->most_recent_post_time;
             $view->save();
         }

@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('meta')
-<title>{{$topic->topic_title}}</title>
+<title>{{$topic->title}}</title>
 @endsection
 
 @section('content')
@@ -9,7 +9,7 @@
 
 <div class="container">
     <div class="page-header">
-        <h1>{{$topic->topic_title}}</h1>
+        <h1>{{$topic->title}}</h1>
         
     </div>
 </div>

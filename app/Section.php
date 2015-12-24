@@ -32,7 +32,7 @@ class Section extends Model
     public function topics()
     {
         // return $this->hasMany('Nexus\Topic', 'topic_id', 'id')->orderBy('topic_weight', 'asc');
-        return $this->hasMany('Nexus\Topic')->orderBy('topic_weight', 'asc');
+        return $this->hasMany('Nexus\Topic')->orderBy('weight', 'asc');
     }
 
     public function slug()

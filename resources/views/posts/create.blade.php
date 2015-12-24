@@ -1,4 +1,4 @@
-@if($topic->read_only === true) 
+@if($topic->readonly) 
 <div class="alert alert-warning" role="alert">
     <p><strong>This topic is closed</strong> but you are allowed to post because you can moderate this section.</p>
 </div>
@@ -8,7 +8,7 @@
 {!! Form::open(['url' => 'posts']) !!}
 
 
-{!! Form::hidden('topic_id', $topic->topic_id) !!}
+{!! Form::hidden('topic_id', $topic->id) !!}
 
     <div class="form-group">
         {!! Form::label('message_title', 'Subject') !!}

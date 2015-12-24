@@ -40,9 +40,9 @@
                 <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
                 @endif
 
-                <a href="{{ action('Nexus\TopicController@show', ['topic_id' => $topic->topic_id])}}"> {{$topic->topic_title}}</a>
+                <a href="{{ action('Nexus\TopicController@show', ['topic_id' => $topic->id])}}"> {{$topic->title}}</a>
             </h2>
-            <p>{!!nl2br($topic->topic_description)!!}</p>
+            <p>{!!nl2br($topic->intro)!!}</p>
             @if ($mostRecentPostTime = $topic->most_recent_post_time)
                 <p class="small text-muted">Latest Post {{$mostRecentPostTime->diffForHumans()}}</p>
             @endif

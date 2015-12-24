@@ -104,6 +104,7 @@ class UpgradeController extends Controller
                     }
                 
                     $newComment->save();
+                    
                 } catch (\Exception $e) {
                     \Log::error('Comments: failed on ' . $classicComment->comment_id);
                 }
@@ -145,6 +146,39 @@ class UpgradeController extends Controller
                 \Log::error('Sections: failed on ' . $classicSection->section_id . $e);
             }
             
+        }
+
+        $classicTopics = \DB::table('topictable')->get();
+
+        foreach ($classicTopics as $classicTopic) {
+            try {
+                $newTopic = new \Nexus\Topic;
+                \Log::info('Topic: transferring  ' . $classicTopic->topic_id);
+
+                $newTopic->id = $classicTopic->topic_id;
+                $newTopic->title = $classicTopic->topic_title;
+                $newTopic->intro = $classicTopic->topic_description;
+                $newTopic->section_id = $classicTopic->section_id;
+                $newTopic->weight = $classicTopic->topic_weight;
+
+                if ($classicTopic->topic_readonly === 'n') {
+                    $newTopic->readonly = false;
+                } else {
+                    $newTopic->readonly = true;
+                }
+
+                if ($classicTopic->topic_annon === 'n') {
+                    $newTopic->secret = false;
+                } else {
+                    $newTopic->secret = true;
+                }
+                
+                $newTopic->save();
+
+            } catch (\Exception $e) {
+                \Log::error('Topic: failed on ' . $classicTopic->topic_id . $e);
+            }
+
         }
 
 

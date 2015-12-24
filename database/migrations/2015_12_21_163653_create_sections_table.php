@@ -23,12 +23,16 @@ class CreateSectionsTable extends Migration
 
             $table->foreign('user_id')
                 ->references('id')
-                ->on('users');
+                ->on('users')->onDelete('cascade');
 
              $table->foreign('parent_id')
                 ->references('id')
                 ->on('sections')->onDelete('cascade');
             // delete child sections when the parent is removed
+
+            // $table->foreign('id')
+            //     ->references('section_id')
+            //     ->on('topics')->onDelete('cascade');
 
             $table->integer('weight')->default(0);
             $table->timestamps();
@@ -45,19 +49,3 @@ class CreateSectionsTable extends Migration
         Schema::drop('sections');
     }
 }
-
-/*
-legacy sections table is
-mysql> describe sectiontable;
-+----------------+--------------+------+-----+---------+----------------+
-| Field          | Type         | Null | Key | Default | Extra          |
-+----------------+--------------+------+-----+---------+----------------+
-| section_id     | int(11)      | NO   | PRI | NULL    | auto_increment |
-| section_title  | varchar(50)  | YES  |     | NULL    |                |
-| user_id        | int(11)      | YES  |     | NULL    |                |
-| parent_id      | int(11)      | YES  | MUL | NULL    |                |
-| section_weight | int(11)      | NO   |     | 0       |                |
-| section_intro  | varchar(100) | YES  |     |         |                |
-+----------------+--------------+------+-----+---------+----------------+
-6 rows in set (0.00 sec)
- */
