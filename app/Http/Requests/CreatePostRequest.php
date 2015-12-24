@@ -51,8 +51,8 @@ class CreatePostRequest extends Request
     {
         return [
 
-            'message_text' => 'required',
-            //
+            'text' => 'required',
+            
         ];
     }
 }

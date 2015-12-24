@@ -54,14 +54,13 @@ class TopicController extends Controller
     public function show($topic_id)
     {
 
-        $posts = \Nexus\Post::with('author')->where('topic_id', $topic_id)->orderBy('message_id', 'dsc');
-        // $topic = \Nexus\Topic::where('topic_id', $topic_id)->first();
+        $posts = \Nexus\Post::with('author')->where('topic_id', $topic_id)->orderBy('id', 'dsc');
         $topic = \Nexus\Topic::findOrFail($topic_id);
 
         // is this topic readonly to the authenticated user?
         $readonly = true;
 
-        if ($topic->readonly === false) {
+        if ($topic->readonly == false) {
             $readonly = false;
         }
 

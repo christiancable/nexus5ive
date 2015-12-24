@@ -16,12 +16,12 @@ class View extends Model
 
     public function user()
     {
-        return $this->belongsTo('Nexus\User', 'id', 'user_id');
+        return $this->belongsTo('Nexus\User');
     }
 
     public function topic()
     {
-        return $this->belongsTo('Nexus\Topic', 'topic_id', 'topic_id');
+        return $this->belongsTo('Nexus\Topic');
     }
 }
 /*

@@ -11,13 +11,13 @@
 {!! Form::hidden('topic_id', $topic->id) !!}
 
     <div class="form-group">
-        {!! Form::label('message_title', 'Subject') !!}
-        {!! Form::text('message_title', null, ['class'=> 'form-control']) !!}
+        {!! Form::label('title', 'Subject') !!}
+        {!! Form::text('title', null, ['class'=> 'form-control']) !!}
     </div>
 
     <div class="form-group">
 {{--         {!! Form::label('message_text', 'Subject') !!} --}}
-        {!! Form::textarea('message_text', null, ['class'=> 'form-control']) !!}
+        {!! Form::textarea('text', null, ['class'=> 'form-control']) !!}
     </div>
 
      <div class="form-group">

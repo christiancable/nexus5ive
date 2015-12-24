@@ -11,13 +11,13 @@ class Topic extends Model
     {
         $result = false;
 
-        $latestPost =  Post::select('message_time')
+        $latestPost =  Post::select('time')
             ->where('topic_id', $this->id)
-            ->orderBy('message_time', 'dec')
+            ->orderBy('time', 'dec')
             ->first();
 
         if ($latestPost) {
-            $result = $latestPost->message_time;
+            $result = $latestPost->time;
         }
 
         return $result;
@@ -77,7 +77,7 @@ class Topic extends Model
     
     public function posts()
     {
-        return $this->hasMany('Nexus\Post')->orderBy('message_id', 'asc');
+        return $this->hasMany('Nexus\Post')->orderBy('id', 'asc');
     }
 
     // views

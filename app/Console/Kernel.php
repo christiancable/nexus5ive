@@ -14,6 +14,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         \Nexus\Console\Commands\Inspire::class,
+        \Nexus\Console\Commands\NexusUpgrade::class,
     ];
 
     /**

@@ -3,7 +3,6 @@
 namespace Nexus\Http\Controllers\Nexus;
 
 use Illuminate\Http\Request;
-
 use Nexus\Http\Requests;
 use Nexus\Http\Controllers\Controller;
 
@@ -128,8 +127,7 @@ class SectionController extends Controller
 
     public function recentTopics($maxresults = 10)
     {
-       
-        $latestPosts = \Nexus\Post::orderBy('message_id', 'desc')->take($maxresults)->get(['topic_id'])->groupBy('topic_id');
+        $latestPosts = \Nexus\Post::orderBy('id', 'desc')->take($maxresults)->get(['topic_id'])->groupBy('topic_id');
 
         $topics = array();
         foreach ($latestPosts as $topic) {
@@ -145,7 +143,6 @@ class SectionController extends Controller
      */
     public function unread()
     {
-
         $topics = $this::updatedTopics();
         return view('topics.unread', compact('topics'));
     }

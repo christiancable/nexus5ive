@@ -1,26 +1,53 @@
 <?php
 
-namespace Nexus\Http\Controllers\Nexus;
+namespace Nexus\Console\Commands;
 
-use Illuminate\Http\Request;
+use Illuminate\Console\Command;
 
-use Nexus\Http\Requests;
-use Nexus\Http\Controllers\Controller;
-
-class UpgradeController extends Controller
+class NexusUpgrade extends Command
 {
     /**
-     * Display a listing of the resource.
+     * The name and signature of the console command.
      *
-     * @return Response
+     * @var string
      */
-    public function index()
+    protected $signature = 'nexus:upgrade';
+
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = 'Migrates old Nexus5 data into Laravel Models';
+
+    /**
+     * Create a new command instance.
+     *
+     * @return void
+     */
+    public function __construct()
     {
-        //
+        parent::__construct();
+    }
+
+    /**
+     * Execute the console command.
+     *
+     * @return mixed
+     */
+    public function handle()
+    {
+       //
         // show all users in usertable
         
+        $this->info('Upgrade: Begin');
+
+        $this->info('Upgrade: Users Start');
+
         $classicUsers = \DB::table('usertable')->get();
         
+
+
         foreach ($classicUsers as $classicUser) {
             $newUser = new \Nexus\User;
             
@@ -81,6 +108,12 @@ class UpgradeController extends Controller
             
             $newUser->save();
         }
+
+        unset($classicUsers);
+
+        $this->info('Upgrade: Users Complete');
+
+        $this->info('Upgrade: Comments Start');
         
         /* comments */
 
@@ -90,8 +123,6 @@ class UpgradeController extends Controller
             if (property_exists($classicComment, 'comment_id')) {
                 try {
                     $newComment = new \Nexus\Comment;
-                    \Log::info(get_object_vars($classicComment));
-                    \Log::info('Comments: transferring ' . $classicComment->comment_id);
                     $newComment->id = $classicComment->comment_id;
                     $newComment->text = $classicComment->text;
                     $newComment->user_id = $classicComment->user_id;
@@ -104,12 +135,16 @@ class UpgradeController extends Controller
                     }
                 
                     $newComment->save();
-                    
+
                 } catch (\Exception $e) {
-                    \Log::error('Comments: failed on ' . $classicComment->comment_id);
+                    $this->error('Upgrade failed on comment ' . $classicComment->comment_id . $e);
                 }
             }
         }
+        unset($classicComments);
+        $this->info('Upgrade: Complete Complete');
+
+        $this->info('Upgrade: Sections Start');
 
         /* sections */
 
@@ -118,8 +153,6 @@ class UpgradeController extends Controller
         foreach ($classicSections as $classicSection) {
             try {
                 $newSection = new \Nexus\Section;
-                \Log::info('Section: transferring ' . $classicSection->section_id);
-
                 $newSection->id = $classicSection->section_id;
                 $newSection->title = $classicSection->section_title;
                 $newSection->intro = $classicSection->section_intro;
@@ -129,7 +162,7 @@ class UpgradeController extends Controller
                 $newSection->save();
 
             } catch (\Exception $e) {
-                \Log::error('Sections: failed on ' . $classicSection->section_id . $e);
+                $this->info('Upgrade failed on section ' . $classicSection->section_id . $e);
             }
             
         }
@@ -138,23 +171,24 @@ class UpgradeController extends Controller
         foreach ($classicSections as $classicSection) {
             try {
                 $newSection = \Nexus\Section::findOrFail($classicSection->section_id);
-                \Log::info('Section: adding parent to  ' . $classicSection->section_id);
                 $newSection->parent_id = $classicSection->parent_id;
                 $newSection->save();
 
             } catch (\Exception $e) {
-                \Log::error('Sections: failed on ' . $classicSection->section_id . $e);
+                $this->error('Upgrade failed on adding parent to section ' . $classicSection->section_id . $e);
             }
             
         }
+        unset($classicSections);
+        $this->info('Upgrade: Sections Complete');
+
+        $this->info('Upgrade: Topics Start');
 
         $classicTopics = \DB::table('topictable')->get();
 
         foreach ($classicTopics as $classicTopic) {
             try {
                 $newTopic = new \Nexus\Topic;
-                \Log::info('Topic: transferring  ' . $classicTopic->topic_id);
-
                 $newTopic->id = $classicTopic->topic_id;
                 $newTopic->title = $classicTopic->topic_title;
                 $newTopic->intro = $classicTopic->topic_description;
@@ -176,78 +210,43 @@ class UpgradeController extends Controller
                 $newTopic->save();
 
             } catch (\Exception $e) {
-                \Log::error('Topic: failed on ' . $classicTopic->topic_id . $e);
+                $this->error('Upgrade failed on topic ' . $classicTopic->topic_id . $e);
             }
 
         }
+        unset($classicTopics);
+        $this->info('Upgrade: Topics Complete');
 
+        \DB::table('messagetable')->chunk(1000, function($posts) {
+            foreach ($posts as $classicPost) {
+                $newPost = new \Nexus\Post;
+                // \Log::info('Post: transferring  ' . $classicPost->message_id);
 
-        return view('upgrade.index', ['classicUsers' => $classicUsers]);
-    }
+                $newPost->id                = $classicPost->message_id;
+                $newPost->text              = $classicPost->message_text;
+                $newPost->topic_id          = $classicPost->topic_id;
+                $newPost->user_id           = $classicPost->user_id;
+                $newPost->title             = $classicPost->message_title;
+                $newPost->time              = $classicPost->message_time;
+                $newPost->popname           = $classicPost->message_popname;
+                $newPost->update_user_id    = $classicPost->update_user_id;
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
-    public function create()
-    {
-        //
-    }
+                if ($classicPost->message_html === 'n') {
+                    $newPost->html = false;
+                } else {
+                    $newPost->html = true;
+                }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  Request  $request
-     * @return Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+                try {
+                    $newPost->save();
+                } catch (\Exception $e) {
+                    $this->error('Upgrade: failed on post ' . $classicPost->message_id . $e);
+                }
+            }
+        });
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function show($id)
-    {
-        //
-    }
+        $this->info('Upgrade: Posts Complete');
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  Request  $request
-     * @param  int  $id
-     * @return Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function destroy($id)
-    {
-        //
+        $this->info('Upgrade: Complete');
     }
 }

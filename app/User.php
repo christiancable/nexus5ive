@@ -47,6 +47,20 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     
     protected $dates = ['latestLogin'];
     
+    public static function boot()
+    {
+        parent::boot();
+
+        // Attach event handler, on deleting of the user
+        User::deleting(function($user) {
+            // for each post that the user has modified set the modified by user to null
+            foreach ($user->modifiedPosts as $modifiedPost) {
+                $modifiedPost->update_user_id = null;
+                $modifiedPost->update();
+            }
+        });
+    }
+
     /* related models */
     
     public function comments()
@@ -62,6 +76,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public function views()
     {
         return $this->hasMany('Nexus\View', 'user_id', 'id')->orderBy('msg_date', 'dec');
+    }
+
+    public function modifiedPosts()
+    {
+        return $this->hasMany('Nexus\Post', 'update_user_id', 'id');
     }
 
     /* helper methods */

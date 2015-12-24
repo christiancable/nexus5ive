@@ -43,13 +43,13 @@ class PostController extends Controller
     public function store(Requests\CreatePostRequest $request)
     {
         $input = $request->all();
-
         $input['user_id'] = \Auth::user()->id;
-        $input['message_popname'] = \Auth::user()->popname;
+        $input['popname'] = \Auth::user()->popname;
+        $input['time'] = time();
         $post = \Nexus\Post::create($input);
         \Auth::user()->incrementTotalPosts();
         
-        $redirect = action('Nexus\TopicController@show', ['id' => $post->topic_id]) . '#'  . $post->message_id;
+        $redirect = action('Nexus\TopicController@show', ['id' => $post->topic_id]) . '#'  . $post->id;
         return redirect($redirect);
     }
 
