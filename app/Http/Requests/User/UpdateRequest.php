@@ -35,6 +35,7 @@ class UpdateRequest extends Request
     {
         return [
             'email' => 'required|unique:users,email,'.\Auth::id(),
+            'password' => 'confirmed',
         ];
     }
 }

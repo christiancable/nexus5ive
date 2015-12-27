@@ -27,6 +27,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     protected $fillable = [
         'username',
         'name',
+        'password',
         'email',
         'popname',
         'about',
@@ -93,6 +94,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $this->hasMany('Nexus\Message', 'author_id');
     }
 
+    /* mutators */
+
+    public function setPasswordAttribute($value)
+    {
+        $this->attributes['password'] = \Hash::make($value);
+    }
     /* helper methods */
 
     public function incrementTotalPosts()

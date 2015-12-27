@@ -18,7 +18,7 @@ Form::model($user, array(
 
 {!! Form::hidden('id', $user->id) !!}
 
-<div class="row form-group">
+    <div class="row form-group">
 
         <dl class="dl-horizontal col-md-6">        
             <dt>{!! Form::label('name','Name') !!}</dt>
@@ -51,27 +51,31 @@ Form::model($user, array(
         </dl>
     </div>
 
-    <div class="row text-muted">
-    
-        <dl class="dl-horizontal col-md-6">        
+    <div class="row ">
+
+        <div class="col-md-6">
+            <dl class="well dl-horizontal ">    
+                <dt>{!! Form::label('password','Password') !!}</dt>
+                <dd>{!! Form::password('password', null, ['class'=> 'form-control'])!!}</dd>     
+                <dt>{!! Form::label('password_confirmation','Verfy Password') !!}</dt>
+                <dd>{!! Form::password('password_confirmation', null, ['class'=> 'form-control'])!!}</dd> 
+            </dl>
+        </div>
+        <dl class="dl-horizontal col-md-6 text-muted">        
             @if ($user->latestLogin)
             <dt>Latest Visit</dt><dd>{{$user->latestLogin->diffForHumans()}}</dd>
             @else
             <dt>Latest Visit</dt><dd>Never</dd>
             @endif
-        </dl>
-        
-        <dl class="dl-horizontal col-md-6">        
-            <dt>Total Posts</dt><dd>{{$user->totalPosts}}</dd>
+             <dt>Total Posts</dt><dd>{{$user->totalPosts}}</dd>
             <dt>Total Visits</dt><dd>{{$user->totalVisits}}</dd>
         </dl>
-    
     </div>
 
  {!! Form::textarea('about', null, ['class'=> 'form-control']) !!}
             
                 <div class="form-group">
-        {!! Form::submit('Update', ['class'=> 'btn btn-warning form-control']) !!}
+        {!! Form::submit('Save Changes', ['class'=> 'btn btn-warning form-control']) !!}
     </div>
 {!! Form::close() !!}
 
