@@ -50,9 +50,13 @@ class SectionController extends Controller
      * @param  int  $section_id - default to the first section
      * @return Response
      */
-    public function show($section_id = 1)
+    public function show($section_id = null)
     {
-        $section = \Nexus\Section::with('sections', 'topics')->where('id', $section_id)->first();
+        if (!$section_id) {
+            $section = \Nexus\Section::with('sections', 'topics')->first();
+        } else {
+            $section = \Nexus\Section::with('sections', 'topics')->where('id', $section_id)->first();
+        }
         return view('sections.index')->with('section', $section);
     }
 
