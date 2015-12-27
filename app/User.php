@@ -83,6 +83,16 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $this->hasMany('Nexus\Post', 'update_user_id', 'id');
     }
 
+    public function messages()
+    {
+        return $this->hasMany('Nexus\Message');
+    }
+
+    public function sentMessages()
+    {
+        return $this->hasMany('Nexus\Message', 'author_id');
+    }
+
     /* helper methods */
 
     public function incrementTotalPosts()

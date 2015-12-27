@@ -306,6 +306,39 @@ class NexusUpgrade extends Command
             $this->info('Upgrade: found existing views - skipping Views');
         }
 
+         $this->info('Upgrade: Messages Start');
+
+        $existingMessagesCount = \Nexus\Message::take(1)->get()->count();
+
+        if (!$existingMessagesCount) {
+            \DB::table('nexusmessagetable')->chunk(1000, function($messages) {
+                foreach ($messages as $classicMessage) {
+                    $newMessage = new \Nexus\Message;
+                    $newMessage->id                    = $classicMessage->nexusmessage_id;
+                    $newMessage->user_id               = $classicMessage->user_id;
+                    $newMessage->author_id             = $classicMessage->from_id;
+                    $newMessage->text                  = $classicMessage->text;
+                    $newMessage->time                  = $classicMessage->time;
+
+                    if ($classicMessage->readstatus === 'n') {
+                        $newMessage->read = false;
+                    } else {
+                        $newMessage->read = true;
+                    }
+
+                    try {
+                        $newMessage->save();
+                    } catch (\Exception $e) {
+                        $this->error('Upgrade: failed on message ' . $classicMessage->nexusmessage_id . $e);
+                    }
+                }
+            });
+
+            $this->info('Upgrade: Messages Complete');
+        } else {
+            $this->info('Upgrade: found existing messages - skipping Messages');
+        }
+
         $this->info('Upgrade: Complete');
     }
 }
