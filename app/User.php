@@ -96,7 +96,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     {
         $return = false;
 
-        if (count($this->comments->where('read', false)->take(1))) {
+        if (count($this->comments->where('read', false)->get('id')->take(1))) {
             $return = true;
         } else {
             $return = false;
@@ -108,8 +108,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     /* returns number of unread comments */
     public function newComments()
     {
-        $return = count($this->comments->where('read', false));
-
+        $return = \DB::table('comments')->select('id')->where('user_id', $this->id)->where('read', 0)->count();
         return $return;
     }
 
