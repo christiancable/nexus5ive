@@ -27,13 +27,13 @@ class Topic extends Model
     {
         $result = false;
 
-        $latestView = \Nexus\View::select('msg_date')
+        $latestView = \Nexus\View::select('latest_view_date')
             ->where('topic_id', $this->id)
             ->where('user_id', $user_id)
             ->first();
 
         if ($latestView) {
-            $result = $latestView->msg_date;
+            $result = $latestView->latest_view_date;
         }
 
         return $result;
@@ -84,6 +84,6 @@ class Topic extends Model
 
     public function views()
     {
-        return $this->hasMany('Nexus\View')->orderBy('msg_date', 'dec');
+        return $this->hasMany('Nexus\View')->orderBy('latest_view_date', 'dec');
     }
 }

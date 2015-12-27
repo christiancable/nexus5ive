@@ -88,13 +88,13 @@ class TopicController extends Controller
         $lastestView = \Nexus\View::where('topic_id', $topic_id)->where('user_id', \Auth::user()->id)->first();
 
         if ($lastestView) {
-            $lastestView->msg_date = $topic->most_recent_post_time;
+            $lastestView->latest_view_date = $topic->most_recent_post_time;
             $lastestView->update();
         } else {
             $view = new \Nexus\View;
             $view->user_id = \Auth::user()->id;
             $view->topic_id = $topic->id;
-            $view->msg_date = $topic->most_recent_post_time;
+            $view->latest_view_date = $topic->most_recent_post_time;
             $view->save();
         }
 

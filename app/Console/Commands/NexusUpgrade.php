@@ -274,6 +274,37 @@ class NexusUpgrade extends Command
             $this->info('Upgrade: found existing posts - skipping Posts');
         }
 
+        $this->info('Upgrade: Views Start');
+
+        $existingViewsCount = \Nexus\View::take(1)->get()->count();
+
+        if (!$existingViewsCount) {
+            \DB::table('topicview')->chunk(1000, function($views) {
+                foreach ($views as $classicView) {
+                    $newView = new \Nexus\View;
+                    $newView->id                    = $classicView->topicview_id;
+                    $newView->user_id               = $classicView->user_id;
+                    $newView->topic_id              = $classicView->topic_id;
+                    $newView->latest_view_date      = $classicView->msg_date;
+
+                    if ($classicView->unsubscribe === 0) {
+                        $newView->unsubscribed = false;
+                    } else {
+                        $newView->unsubscribed = true;
+                    }
+
+                    try {
+                        $newView->save();
+                    } catch (\Exception $e) {
+                        $this->error('Upgrade: failed on view ' . $classicView->topicview_id . $e);
+                    }
+                }
+            });
+
+            $this->info('Upgrade: Views Complete');
+        } else {
+            $this->info('Upgrade: found existing views - skipping Views');
+        }
 
         $this->info('Upgrade: Complete');
     }

@@ -75,7 +75,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
     public function views()
     {
-        return $this->hasMany('Nexus\View', 'user_id', 'id')->orderBy('msg_date', 'dec');
+        return $this->hasMany('Nexus\View')->orderBy('latest_view_date', 'dec');
     }
 
     public function modifiedPosts()
