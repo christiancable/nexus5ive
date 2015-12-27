@@ -52,6 +52,7 @@ class NexusInstall extends Command
             $administrator->name = 'Administrator';
             $administrator->email = $email;
             $administrator->password = $password;
+            $administrator->administrator = true;
 
             try {
                 $administrator->save();
