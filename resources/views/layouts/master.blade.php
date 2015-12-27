@@ -39,15 +39,14 @@
               <li class="dropdown">
 
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                {{$authUser->username}} 
+                {{$authUser->username}} ({{$authUser->popname}}) 
                   @if ($commentsCount)
-                    <sup><span class="glyphicon glyphicon-asterisk"  aria-hidden="true"></span></sup> 
+                    <span class="badge">{{$commentsCount}}</span>
                   @endif
-                ({{$authUser->popname}}) <span class="caret"></span>
+                <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu">
                   <li><a href="{{ action('Nexus\UserController@show', ['user_name' => $authUser->username])}}">Profile 
-
                  @if ($commentsCount)
                     <span class="badge">{{$commentsCount}}</span>
                   @endif
