@@ -102,7 +102,7 @@ class NexusUpgrade extends Command
 
             $bar->finish();
             if ($errorCount) {
-                $this->error("\nEncountered $errorCount errors. See log for details\n");
+                $this->error("\nEncountered $errorCount errors. See log for details");
             }
             $this->info("\nUsers Complete\n");
             unset($classicUsers);
@@ -142,7 +142,7 @@ class NexusUpgrade extends Command
             }
             $bar->finish();
             if ($errorCount) {
-                $this->error("\nEncountered $errorCount errors. See log for details\n");
+                $this->error("\nEncountered $errorCount errors. See log for details");
             }
             $this->info("\nComments Complete\n");
             unset($classicComments);
@@ -201,7 +201,7 @@ class NexusUpgrade extends Command
             unset($classicSections);
             $bar->finish();
             if ($errorCount) {
-                $this->error("\nEncountered $errorCount errors. See log for details\n");
+                $this->error("\nEncountered $errorCount errors. See log for details");
             }
             $this->info("\nSections Complete\n");
         } else {
@@ -253,7 +253,7 @@ class NexusUpgrade extends Command
             $bar->finish();
             unset($classicTopics);
             if ($errorCount) {
-                $this->error("\nFailed to import $errorCount posts. See log for details\n");
+                $this->error("\nFailed to import $errorCount posts. See log for details");
             }
             $this->info("\nTopics Complete\n");
         } else {
@@ -272,7 +272,7 @@ class NexusUpgrade extends Command
             $count = \DB::select('select count(message_id) as count from messagetable')[0]->count;
             $this->line("Found $count posts");
             $bar = $this->output->createProgressBar($count);
-            \DB::table('messagetable')->chunk(1000, function($posts) use ($errorCount, $count, $bar) {
+            \DB::table('messagetable')->chunk(1000, function($posts) use (&$errorCount, &$count, &$bar) {
                 foreach ($posts as $classicPost) {
                     $newPost = new \Nexus\Post;
                     $newPost->id                = $classicPost->message_id;
@@ -301,40 +301,27 @@ class NexusUpgrade extends Command
             });
             $bar->finish();
             if ($errorCount) {
-                $this->error("\nFailed to import $errorCount posts. See log for details\n");
+                $this->error("\nFailed to import $errorCount posts. See log for details");
             }
             $this->info("\nPosts Complete\n");
         } else {
             $this->error('Upgrade: found existing posts - skipping Posts');
         }
     }
-    /**
-     * Execute the console command.
-     *
-     * @return mixed
-     */
-    public function handle()
+
+
+
+    private function migrateViews()
     {
-        $this->info('Starting Migration');
-        $this->info('==================');
+        $this->info('Importing Views');
 
-        $this->migrateUsers();
-        $this->migrateComments();
-        $this->migrateSections();
-        $this->migrateTopics();
-        $this->migratePosts();
-        die();
-    
-    
-    
+        if (!\Nexus\View::first()) {
+            $errorCount = 0;
+            $count = \DB::select('select count(topicview_id) as count from topicview')[0]->count;
+            $this->line("Found $count views");
+            $bar = $this->output->createProgressBar($count);
+            \DB::table('topicview')->chunk(1000, function($views) use (&$errorCount, &$count, &$bar) {
 
-        $this->info('Upgrade: Views Start');
-
-        $existingViewsCount = \DB::select('select count(topicview_id) from topicview');
-        $bar = $this->output->createProgressBar($existingViewsCount);
-
-        if (!$existingViewsCount) {
-            \DB::table('topicview')->chunk(1000, function($views) {
                 foreach ($views as $classicView) {
                     $newView = new \Nexus\View;
                     $newView->id                    = $classicView->topicview_id;
@@ -352,17 +339,37 @@ class NexusUpgrade extends Command
                         $newView->save();
                         $bar->advance();
                     } catch (\Exception $e) {
-                        $this->error('Upgrade: failed on view ' . $classicView->topicview_id . $e);
+                         $errorCount++;
+                        \Log::info('Nexus:upgrade - Failed to import view: '. $e);
                     }
                 }
             });
-            $bar->advance();
-            $this->info('Upgrade: Views Complete');
+            $bar->finish();
+            if ($errorCount) {
+                $this->error("\nFailed to import $errorCount views. See log for details");
+            }
+            $this->info("\nViews Complete\n");
         } else {
-            $this->info('Upgrade: found existing views - skipping Views');
+            $this->error('Upgrade: found existing views - skipping Posts');
         }
+    }
+    /**
+     * Execute the console command.
+     *
+     * @return mixed
+     */
+    public function handle()
+    {
+        $this->info('Starting Migration');
+        $this->info('==================');
 
-         $this->info('Upgrade: Messages Start');
+        $this->migrateUsers();
+        $this->migrateComments();
+        $this->migrateSections();
+        $this->migrateTopics();
+        $this->migratePosts();
+        $this->migrateViews();
+        die();
 
         $existingMessagesCount = \DB::select('select count(nexusmessage_id) from nexusmessagetable');
         $bar = $this->output->createProgressBar($existingMessagesCount);
