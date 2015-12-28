@@ -353,29 +353,19 @@ class NexusUpgrade extends Command
             $this->error('Upgrade: found existing views - skipping Posts');
         }
     }
-    /**
-     * Execute the console command.
-     *
-     * @return mixed
-     */
-    public function handle()
+
+
+    private function migrateMessages()
     {
-        $this->info('Starting Migration');
-        $this->info('==================');
+        $this->info('Importing Mesages');
 
-        $this->migrateUsers();
-        $this->migrateComments();
-        $this->migrateSections();
-        $this->migrateTopics();
-        $this->migratePosts();
-        $this->migrateViews();
-        die();
+        if (!\Nexus\Message::first()) {
+            $errorCount = 0;
+            $count = \DB::select('select count(nexusmessage_id) as count from nexusmessagetable')[0]->count;
+            $this->line("Found $count messages");
+            $bar = $this->output->createProgressBar($count);
+            \DB::table('nexusmessagetable')->chunk(1000, function($messages) use (&$errorCount, &$count, &$bar) {
 
-        $existingMessagesCount = \DB::select('select count(nexusmessage_id) from nexusmessagetable');
-        $bar = $this->output->createProgressBar($existingMessagesCount);
-
-        if (!$existingMessagesCount) {
-            \DB::table('nexusmessagetable')->chunk(1000, function($messages) {
                 foreach ($messages as $classicMessage) {
                     $newMessage = new \Nexus\Message;
                     $newMessage->id                    = $classicMessage->nexusmessage_id;
@@ -394,15 +384,39 @@ class NexusUpgrade extends Command
                         $newMessage->save();
                         $bar->advance();
                     } catch (\Exception $e) {
-                        $this->error('Upgrade: failed on message ' . $classicMessage->nexusmessage_id . $e);
+                         $errorCount++;
+                        \Log::info('Nexus:upgrade - Failed to import message: '. $e);
                     }
                 }
             });
             $bar->finish();
-            $this->info('Upgrade: Messages Complete');
+            if ($errorCount) {
+                $this->error("\nFailed to import $errorCount messages. See log for details");
+            }
+            $this->info("\nMessages Complete\n");
         } else {
-            $this->info('Upgrade: found existing messages - skipping Messages');
+            $this->error('Upgrade: found existing messages - skipping Messages');
         }
+    }
+
+    /**
+     * Execute the console command.
+     *
+     * @return mixed
+     */
+    public function handle()
+    {
+        $this->info('Starting Migration');
+        $this->info('==================');
+
+        $this->migrateUsers();
+        $this->migrateComments();
+        $this->migrateSections();
+        $this->migrateTopics();
+        $this->migratePosts();
+        $this->migrateViews();
+        $this->migrateMessages();
+
 
         $this->info('Upgrade: Complete');
     }
