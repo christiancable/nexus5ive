@@ -84,7 +84,7 @@ class NexusUpgrade extends Command
                     $newUser->email = $classicUser->user_email;
                 }
 
-                $newUser->password = \Hash::make($classicUser->user_password);
+                $newUser->password = $classicUser->user_password;
                 
                 if ($classicUser->user_realname != "") {
                     $newUser->name = $classicUser->user_realname;
