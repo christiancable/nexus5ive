@@ -30,22 +30,14 @@ class NexusUpgrade extends Command
         parent::__construct();
     }
 
-    /**
-     * Execute the console command.
-     *
-     * @return mixed
-     */
-    public function handle()
+    private function migrateUsers()
     {
-        // show all users in usertable
+        $this->info('Importing Users');
         
-        $this->info('Upgrade: Begin');
-
-        $this->info('Upgrade: Users Start');
-
-        $existingUserCount = \Nexus\User::all()->count();
-
-        if (!$existingUserCount) {
+        if (!\Nexus\User::first()) {
+            $count = \DB::select('select count(user_id) as count from usertable')[0]->count;
+            $this->line("Found $count users ");
+            $bar = $this->output->createProgressBar($count);
             $classicUsers = \DB::table('usertable')->get();
             
             foreach ($classicUsers as $classicUser) {
@@ -83,7 +75,6 @@ class NexusUpgrade extends Command
                 if ($classicUser->user_status === 'Invalid') {
                     $newUser->banned = true;
                 }
-                
                 // avoid reusing email addresses
                 $emailUses = \DB::table('usertable')->select('user_id')->where('user_email', $classicUser->user_email)->get();
                 $count = count($emailUses);
@@ -94,11 +85,6 @@ class NexusUpgrade extends Command
                 }
 
                 $newUser->password = \Hash::make($classicUser->user_password);
-                /*
-                note sure about these....       
-                $table->boolean('banned')->default(false);
-            
-                */
                 
                 if ($classicUser->user_realname != "") {
                     $newUser->name = $classicUser->user_realname;
@@ -107,58 +93,62 @@ class NexusUpgrade extends Command
                 }
                 
                 $newUser->save();
+                $bar->advance();
             }
 
-            $this->info('Upgrade: Users Complete');
+            $bar->finish();
+            $this->info("\nUsers Complete\n");
             unset($classicUsers);
         } else {
-            $this->info('Upgrade: found existing users - skipping Users');
+            $this->error('Upgrade: found existing users - skipping Users');
         }
+    }
 
-
-        $this->info('Upgrade: Comments Start');
+    private function migrateComments()
+    {
+        $this->info('Importing Comments');
         
-        /* comments */
-
-        $existingCommentsCount = \Nexus\Comment::all()->count();
-
-        if (!$existingCommentsCount) {
+        if (!\Nexus\Comment::first()) {
+            $count = \DB::select('select count(comment_id) as count from commenttable')[0]->count;
+            $this->line("Found $count comments ");
+            $bar = $this->output->createProgressBar($count);
+            $classicComments = \DB::table('commenttable')->get();
             foreach ($classicComments as $classicComment) {
-                if (property_exists($classicComment, 'comment_id')) {
-                    try {
-                        $newComment = new \Nexus\Comment;
-                        $newComment->id = $classicComment->comment_id;
-                        $newComment->text = $classicComment->text;
-                        $newComment->user_id = $classicComment->user_id;
-                        $newComment->author_id = $classicComment->from_id;
-                        
-                        if ($classicComment->readstatus === 'n') {
-                            $newComment->read = false;
-                        } else {
-                            $newComment->read = true;
-                        }
-                    
-                        $newComment->save();
+                $newComment = new \Nexus\Comment;
+                $newComment->id = $classicComment->comment_id;
+                $newComment->text = $classicComment->text;
+                $newComment->user_id = $classicComment->user_id;
+                $newComment->author_id = $classicComment->from_id;
 
-                    } catch (\Exception $e) {
-                        $this->error('Upgrade failed on comment ' . $classicComment->comment_id . $e);
-                    }
+                if ($classicComment->readstatus === 'n') {
+                    $newComment->read = false;
+                } else {
+                    $newComment->read = true;
+                }
+                try {
+                    $newComment->save();
+                    $bar->advance();
+                } catch (\Exception $e) {
+                    $this->error('Failed on comment ' . $classicComment->comment_id);
                 }
             }
+            $bar->finish();
+            $this->info("\nComments Complete\n");
             unset($classicComments);
-            $this->info('Upgrade: Complete Complete');
         } else {
-            $this->info('Upgrade: found existing commments - skipping Comments');
+            $this->error('Upgrade: found existing comments - skipping Comments');
         }
-        $classicComments = \DB::table('commenttable')->get();
+    }
+
+    private function migrateSections()
+    {
+        $this->info('Importing Sections');
         
-        /* sections */
-
-        $this->info('Upgrade: Sections Start');
-
-        $existingCommentsCount = \Nexus\Section::all()->count();
-
-        if (!$existingCommentsCount) {
+        if (!\Nexus\Section::first()) {
+            $count = \DB::select('select count(section_id) as count from sectiontable')[0]->count;
+            $this->line("Found $count sections ");
+            $this->line("Migrating Sections ");
+            $bar = $this->output->createProgressBar($count);
             $classicSections = \DB::table('sectiontable')->get();
         
             foreach ($classicSections as $classicSection) {
@@ -171,30 +161,60 @@ class NexusUpgrade extends Command
                     $newSection->weight = $classicSection->section_weight;
                     
                     $newSection->save();
+                    $bar->advance();
 
                 } catch (\Exception $e) {
-                    $this->info('Upgrade failed on section ' . $classicSection->section_id . $e);
+                    $this->info('Upgrade failed on section ' . $classicSection->section_id);
                 }
                 
             }
 
-            // then loop through the sections again and add in the parent relationships
+            $bar->finish();
+            $this->line("\nMigration Complete");
+            $this->line("Jumbling Sections into Subsections");
+            $bar = $this->output->createProgressBar($count);
+
             foreach ($classicSections as $classicSection) {
                 try {
                     $newSection = \Nexus\Section::findOrFail($classicSection->section_id);
                     $newSection->parent_id = $classicSection->parent_id;
                     $newSection->save();
-
+                    $bar->advance();
                 } catch (\Exception $e) {
-                    $this->error('Upgrade failed on adding parent to section ' . $classicSection->section_id . $e);
+                    $this->error('Upgrade failed on adding parent to section ' . $classicSection->section_id);
                 }
                 
             }
             unset($classicSections);
-            $this->info('Upgrade: Sections Complete');
+            $bar->finish();
+            $this->info("\nSections Complete\n");
         } else {
-            $this->info('Upgrade: found existing sections - skipping Sections');
+            $this->error('Upgrade: found existing sections - skipping Sections');
         }
+    }
+
+    /**
+     * Execute the console command.
+     *
+     * @return mixed
+     */
+    public function handle()
+    {
+        $this->info('Starting Migration');
+        $this->info('==================');
+
+        $this->migrateUsers();
+        $this->migrateComments();
+        $this->migrateSections();
+        die();
+    
+        
+    
+
+     
+
+            // then loop through the sections again and add in the parent relationships
+      
         
 
         $this->info('Upgrade: Topics Start');
@@ -203,6 +223,7 @@ class NexusUpgrade extends Command
 
         if (!$existingTopicsCount) {
             $classicTopics = \DB::table('topictable')->get();
+            $bar = $this->output->createProgressBar($existingTopicsCount);
 
             foreach ($classicTopics as $classicTopic) {
                 try {
@@ -227,11 +248,14 @@ class NexusUpgrade extends Command
                     
                     $newTopic->save();
 
+
                 } catch (\Exception $e) {
                     $this->error('Upgrade failed on topic ' . $classicTopic->topic_id . $e);
                 }
+                $bar->advance();
 
             }
+            $bar->finish();
             unset($classicTopics);
             $this->info('Upgrade: Topics Complete');
         } else {
@@ -241,7 +265,9 @@ class NexusUpgrade extends Command
 
         $this->info('Upgrade: Posts Start');
 
-        $existingPostsCount = \Nexus\Post::take(5)->get()->count();
+        $existingPostsCount = \DB::select('select count(message_id) from messagetable');
+        $bar = $this->output->createProgressBar($existingPostsCount);
+
         if (!$existingPostsCount) {
             \DB::table('messagetable')->chunk(1000, function($posts) {
                 foreach ($posts as $classicPost) {
@@ -263,12 +289,14 @@ class NexusUpgrade extends Command
 
                     try {
                         $newPost->save();
+                         $bar->advance();
                     } catch (\Exception $e) {
                         $this->error('Upgrade: failed on post ' . $classicPost->message_id . $e);
                     }
                 }
             });
 
+            $bar->finish();
             $this->info('Upgrade: Posts Complete');
         } else {
             $this->info('Upgrade: found existing posts - skipping Posts');
@@ -276,7 +304,8 @@ class NexusUpgrade extends Command
 
         $this->info('Upgrade: Views Start');
 
-        $existingViewsCount = \Nexus\View::take(1)->get()->count();
+        $existingViewsCount = \DB::select('select count(topicview_id) from topicview');
+        $bar = $this->output->createProgressBar($existingViewsCount);
 
         if (!$existingViewsCount) {
             \DB::table('topicview')->chunk(1000, function($views) {
@@ -295,12 +324,13 @@ class NexusUpgrade extends Command
 
                     try {
                         $newView->save();
+                        $bar->advance();
                     } catch (\Exception $e) {
                         $this->error('Upgrade: failed on view ' . $classicView->topicview_id . $e);
                     }
                 }
             });
-
+            $bar->advance();
             $this->info('Upgrade: Views Complete');
         } else {
             $this->info('Upgrade: found existing views - skipping Views');
@@ -308,7 +338,8 @@ class NexusUpgrade extends Command
 
          $this->info('Upgrade: Messages Start');
 
-        $existingMessagesCount = \Nexus\Message::take(1)->get()->count();
+        $existingMessagesCount = \DB::select('select count(nexusmessage_id) from nexusmessagetable');
+        $bar = $this->output->createProgressBar($existingMessagesCount);
 
         if (!$existingMessagesCount) {
             \DB::table('nexusmessagetable')->chunk(1000, function($messages) {
@@ -328,12 +359,13 @@ class NexusUpgrade extends Command
 
                     try {
                         $newMessage->save();
+                        $bar->advance();
                     } catch (\Exception $e) {
                         $this->error('Upgrade: failed on message ' . $classicMessage->nexusmessage_id . $e);
                     }
                 }
             });
-
+            $bar->finish();
             $this->info('Upgrade: Messages Complete');
         } else {
             $this->info('Upgrade: found existing messages - skipping Messages');
