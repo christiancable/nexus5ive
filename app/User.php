@@ -96,10 +96,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
     /* mutators */
 
-    public function setPasswordAttribute($value)
-    {
-        $this->attributes['password'] = \Hash::make($value);
-    }
+    // public function setPasswordAttribute($value)
+    // {
+    //     $this->attributes['password'] = \Hash::make($value);
+    // }
     /* helper methods */
 
     public function incrementTotalPosts()

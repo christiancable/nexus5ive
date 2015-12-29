@@ -85,7 +85,9 @@ class UserController extends Controller
     public function update($user_name, Requests\User\UpdateRequest $request)
     {
         $user = \Nexus\User::where('username', $user_name)->firstOrFail();
-        $user->update($request->all());
+        $input = $request->all();
+        $input['password'] = \Hash::make($input['password']);
+        $user->update($input);
         return redirect('/users/'. $user_name);
     }
 
