@@ -49,7 +49,8 @@ Route::get('/section/{section_id}', 'Nexus\SectionController@show');
 
 
 // topics
-Route::get('/topic/{topic_id}', 'Nexus\TopicController@show');
+// Route::get('/topic/{topic_id}', 'Nexus\TopicController@show');
+Route::resource('topic', 'Nexus\TopicController');
 
 // comments
 Route::post('comments', 'Nexus\CommentController@store');
