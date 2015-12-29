@@ -116,7 +116,7 @@ class SectionController extends Controller
     }
 
     /**
-     * redirects a visitor to a section with an updated topic
+     * redirects a visitor to a section  with an updated topic
      */
     public function leap()
     {
@@ -128,7 +128,8 @@ class SectionController extends Controller
         // trying to avoid N+1 problem by breaking out as soon as we have a result
         foreach ($views as $view) {
             if (!is_null($view->topic)) {
-                if ($view->latest_view_date != $view->topic->most_recent_post_time) {
+                if (($view->latest_view_date != $view->topic->most_recent_post_time)
+                    && ($view->topic->most_recent_post_time)) {
                     $topics[] =  $view->topic;
                     break;
                 }
