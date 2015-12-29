@@ -6,8 +6,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/css/app.css" rel="stylesheet">
-    <link rel="stylesheet" href="http://bootswatch.com/cerulean/bootstrap.css">
-    {{-- <link rel="stylesheet" href="http://code.steadman.io/telestrap/telestrap/css/bootstrap-theme.css"> --}}
+    <link rel="stylesheet" href="https://bootswatch.com/cerulean/bootstrap.css">
 </head>
 <body>
 
