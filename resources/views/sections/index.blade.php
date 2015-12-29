@@ -27,11 +27,16 @@
 
     <hr>
 
+    <?php $tabGroups = ''; ?>
     <div class="content">
-
         @if (count($section->topics))
         @foreach ($section->topics as $topic)
-            @include('topics._read', $topic)
+            @if(Auth::user()->id === $section->user_id) 
+                 @include('topics._edit', $topic)
+                <?php $tabGroups[] ='topic'.$topic->id ?>
+            @else
+                @include('topics._read', $topic)
+            @endif
         @endforeach
         @endif
 
@@ -46,4 +51,8 @@
     </div>
 
 </div>
+@endsection
+
+@section('javascript')
+    @include('javascript._jqueryTabs', $tabGroups)
 @endsection
