@@ -62,6 +62,10 @@ class Topic extends Model
             $return = false;
         }
         
+        if (!$this->most_recent_post_time) {
+            $return = false;
+        }
+
         return $return;
     }
 
