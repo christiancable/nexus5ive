@@ -37,25 +37,21 @@ Route::post('password/reset', 'Auth\PasswordController@postReset');
 // users
 Route::resource('users', 'Nexus\UserController');
 
-// DEBUG
-Route::get('/section/unread', 'Nexus\SectionController@unread');
+
+// special sections
+Route::get('/', 'Nexus\SectionController@show');
+Route::get('/home', 'Nexus\SectionController@show');
 Route::get('leap', 'Nexus\SectionController@leap');
 Route::get('/section/latest', 'Nexus\SectionController@latest');
 
 // sections
-Route::get('/', 'Nexus\SectionController@show');
-Route::get('/home', 'Nexus\SectionController@show');
-Route::get('/section/{section_id}', 'Nexus\SectionController@show');
-
+Route::resource('section', 'Nexus\SectionController');
 
 // topics
-// Route::get('/topic/{topic_id}', 'Nexus\TopicController@show');
 Route::resource('topic', 'Nexus\TopicController');
 
 // comments
 Route::post('comments', 'Nexus\CommentController@store');
-
-
 
 // posts
 Route::post('posts', 'Nexus\PostController@store');

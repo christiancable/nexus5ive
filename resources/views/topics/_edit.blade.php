@@ -18,6 +18,7 @@ Form::model($topic, array(
     )) 
 !!}
 
+    {!! Form::hidden('id', $topic->id) !!}
     {!! Form::hidden('secret', false) !!}  
     {!! Form::hidden('readonly', false) !!}
 
@@ -50,6 +51,15 @@ Form::model($topic, array(
 
 {!! Form::close() !!}
 
+@if ($errors->all())
+    <div class="alert alert-warning" role="alert">
+    <ul>
+        @foreach($errors->all() as $error)
+            <li>{{ $error }}</li>
+         @endforeach
+     </ul>
+    </div>
+@endif
             
     </div>
 </div>

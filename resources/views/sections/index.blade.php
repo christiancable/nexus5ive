@@ -27,7 +27,6 @@
 
     <hr>
 
-    <?php $tabGroups = ''; ?>
     <div class="content">
         @if (count($section->topics))
         @foreach ($section->topics as $topic)
@@ -54,5 +53,7 @@
 @endsection
 
 @section('javascript')
-    @include('javascript._jqueryTabs', $tabGroups)
+    @if (isset($tabGroups))
+        @include('javascript._jqueryTabs', $tabGroups)
+    @endif
 @endsection

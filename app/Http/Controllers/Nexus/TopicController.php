@@ -120,9 +120,11 @@ class TopicController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Requests\Topic\UpdateRequest $request, $id)
     {
-        //
+        $topic = \Nexus\Topic::findOrFail($id);
+        $topic->update($request->all());
+        return  redirect()->route('section.show', ['id' => $topic->section_id]);
     }
 
     /**

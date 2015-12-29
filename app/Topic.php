@@ -7,6 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 class Topic extends Model
 {
 
+    protected $fillable = [
+        'title',
+        'intro',
+        'secret',
+        'readonly',
+        'weight'
+    ];
+
     public function getMostRecentPostTimeAttribute()
     {
         $result = false;
