@@ -31,6 +31,10 @@
       array('class'=>'btn btn-primary')) !!}
     </div>
     {!! Form::close() !!}
+    @if (env('NEXUS_ADMIN_EMAIL'))
+    <a href="mailto:{{env('NEXUS_ADMIN_EMAIL')}}?subject=Password Help!">Forgotten your username or using a different email address?</a>
+    @endif
+</div> <!-- .container -->
   </div>
 </div>
 @endsection
