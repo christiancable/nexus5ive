@@ -1,2 +1,10 @@
 @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
 
+/* additional styles */
+
+/* to fix overly large images used in topic intros */
+.content {
+    img {
+            max-width: 100%;
+        } 
+}
