@@ -6,7 +6,9 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/css/app.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://bootswatch.com/cerulean/bootstrap.css">
+    @if (env('NEXUS_BOOTSTRAP_THEME'))
+    <link rel="stylesheet" href="{{env('NEXUS_BOOTSTRAP_THEME')}}">
+    @endif
 </head>
 <body>
 
