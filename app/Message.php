@@ -16,7 +16,7 @@ class Message extends Model
 
     public function author()
     {
-        return $this->belongsTo('Nexus\User', 'id', 'author_id');
+        return $this->belongsTo('Nexus\User', 'author_id', 'id');
     }
 
     public function user()
