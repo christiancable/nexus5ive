@@ -62,6 +62,8 @@ Route::post('posts', 'Nexus\PostController@store');
 // messages
 Route::resource('messages', 'Nexus\MessageController');
 
+// activities 
+Route::resource('active', 'Nexus\ActivityController');
 /*
 
 Future Routes
