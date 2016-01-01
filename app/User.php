@@ -94,6 +94,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $this->hasMany('Nexus\Message', 'author_id');
     }
 
+    public function activity()
+    {
+        return $this->hasOne('Nexus\Activity');
+    }
+
     /* mutators */
 
     // public function setPasswordAttribute($value)
