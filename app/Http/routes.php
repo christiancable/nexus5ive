@@ -59,6 +59,9 @@ Route::post('comments', 'Nexus\CommentController@store');
 // posts
 Route::post('posts', 'Nexus\PostController@store');
 
+// messages
+Route::resource('messages', 'Nexus\MessageController');
+
 /*
 
 Future Routes
