@@ -138,4 +138,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     {
         Comment::where('user_id', $this->id)->update(['read' => true]);
     }
+
+    public function newMessageCount()
+    {
+        return $this->messages->where('read', false)->count();
+    }
 }
