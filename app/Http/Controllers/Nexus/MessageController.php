@@ -19,14 +19,29 @@ class MessageController extends Controller
      * @todo - generate $activeUsers array from a list of active users
      * @return Response
      */
-    public function index()
+    public function index($selected = null)
     {
         $allMessages = \Nexus\Message::with('user')->with('author')->where('user_id', \Auth::user()->id)->orderBy('id', 'desc')->get()->all();
         $messages = array_slice($allMessages, 5);
         $recentMessages = array_reverse(array_slice($allMessages, 0, 5));
-        $activeUsers = ['1' => 'Fraggle', '2' => 'Blew' ];
-        // remove the current user from activeUsers
-        return view('messages.index')->with(compact('messages', 'recentMessages', 'activeUsers'));
+        $recentActivities = \Nexus\Helpers\ActivityHelper::recentActivities();
+
+        $activeUsers = array();
+        foreach ($recentActivities as $activity) {
+            if (\Auth::user()->id != $activity['user_id']) {
+                $activeUsers[$activity['user_id']] = $activity->user->username;
+            }
+        }
+
+        // mark all messages as read
+        \Nexus\Message::where('user_id', \Auth::user()->id)->update(['read' => true]);
+
+        \Nexus\Helpers\ActivityHelper::updateActivity(
+            "Viewing <em>Inbox</em>",
+            action('Nexus\MessageController@index')
+        );
+
+        return view('messages.index')->with(compact('messages', 'recentMessages', 'activeUsers', 'selected'));
     }
 
     /**
