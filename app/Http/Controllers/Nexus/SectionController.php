@@ -57,6 +57,11 @@ class SectionController extends Controller
         } else {
             $section = \Nexus\Section::with('sections', 'topics')->where('id', $section_id)->first();
         }
+
+        \Nexus\Helpers\ActivityHelper::updateActivity(
+            "Browsing <em>{$section->title}</em>",
+            action('Nexus\SectionController@show', ['id' => $section->id])
+        );
         return view('sections.index')->with('section', $section);
     }
 
