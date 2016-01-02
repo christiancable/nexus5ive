@@ -60,6 +60,12 @@ class UserController extends Controller
             \Auth::user()->markCommentsAsRead();
             \Auth::user()->save();
         }
+
+        \Nexus\Helpers\ActivityHelper::updateActivity(
+            "Examining <em>{$user->username}</em>",
+            action('Nexus\UserController@show', ['user_name' => $user_name])
+        );
+
         return view('users.show')->with('user', $user);
     }
 
