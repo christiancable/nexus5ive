@@ -60,6 +60,7 @@ Route::post('comments', 'Nexus\CommentController@store');
 Route::post('posts', 'Nexus\PostController@store');
 
 // messages
+Route::get('messages/{id}', 'Nexus\MessageController@index');
 Route::resource('messages', 'Nexus\MessageController');
 
 // activities 
