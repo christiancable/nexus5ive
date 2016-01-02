@@ -8,6 +8,7 @@ class Activity extends Model
 {
     protected $table = 'activities';
     protected $dates = ['time'];
+    protected $fillable = ['user_id', 'text', 'route', 'time'];
 
     public function user()
     {
