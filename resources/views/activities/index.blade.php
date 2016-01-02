@@ -23,9 +23,17 @@
             @include('activities._read', $activity)
             @endforeach
         </ul>
+        @else 
+        <div class="content">
+            <div class="alert alert-warning" role="alert">Looks like no one is here. But *you* are here. How odd. It's a bit quiet isn't it?</div>
+        </div>
         @endif
     </div>
 
+    <hr>
+    <div class="content">
+    <small class="text-info">Based on user activity from the last {{env('NEXUS_RECENT_ACTIVITY')}} minutes.</small>
+    </div>
 
 </div>
 @endsection

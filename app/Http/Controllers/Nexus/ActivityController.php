@@ -6,19 +6,20 @@ use Illuminate\Http\Request;
 
 use Nexus\Http\Requests;
 use Nexus\Http\Controllers\Controller;
-use Carbon\Carbon;
 
 class ActivityController extends Controller
 {
     /**
      * Display a listing of the resource.
-     * @param   $within limit results to within this many minutes
      * @return \Illuminate\Http\Response
      */
-    public function index($within = 52)
+    public function index()
     {
-        $activities =  \Nexus\Activity::where('time', '>=', Carbon::now()->subMinutes($within))
-            ->get();
+        \Nexus\Helpers\ActivityHelper::updateActivity(
+            "Checking out <em>who else is online</em>",
+            action('Nexus\ActivityController@index')
+        );
+        $activities = \Nexus\Helpers\ActivityHelper::recentActivities();
         return view('activities.index')->with('activities', $activities);
     }
 
