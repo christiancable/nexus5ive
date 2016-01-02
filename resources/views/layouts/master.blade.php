@@ -30,10 +30,13 @@
           @if ($authUser = Auth::user())
             <?php
               $commentsCount = $authUser->newComments();
+              $messagesCount = $authUser->newMessageCount();
+              $notificationCount = $commentsCount + $messagesCount;
             ?>
             <ul class="nav navbar-nav">
               <li><a href="/users/">Examine User</a></li>
-               <li><a href="/leap">Topic Leap</a></li>
+               <li><a href="/leap">Topic Leap</a></li> 
+               <li><a href="{{ action('Nexus\ActivityController@index')}}">Who is Online</a></li>
                <li><a href="{{ action('Nexus\SectionController@latest')}}">Latest Posts</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
@@ -41,17 +44,27 @@
 
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                 {{$authUser->username}} ({{$authUser->popname}}) 
-                  @if ($commentsCount)
-                    <span class="badge">{{$commentsCount}}</span>
+                  @if ($notificationCount)
+                    <span class="badge">{{$notificationCount}}</span>
                   @endif
                 <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu">
-                  <li><a href="{{ action('Nexus\UserController@show', ['user_name' => $authUser->username])}}">Profile 
+                  <li><a href="{{ action('Nexus\UserController@show', ['user_name' => $authUser->username])}}"> 
+                  <span class="glyphicon glyphicon glyphicon-user" aria-hidden="true"></span> Profile 
                  @if ($commentsCount)
                     <span class="badge">{{$commentsCount}}</span>
                   @endif
                   </a></li>
+
+                  <li><a href="{{action('Nexus\MessageController@index')}}">
+                  <span class="glyphicon glyphicon glyphicon-envelope" aria-hidden="true"></span> Inbox 
+                 @if ($messagesCount)
+                    <span class="badge">{{$messagesCount}}</span>
+                  @endif
+                  </a></li>
+                  
+
                   <li role="separator" class="divider"></li>
                   <li><a href="{{ action('Auth\AuthController@getLogout')}}">Logout</a></li>
                 </ul>
