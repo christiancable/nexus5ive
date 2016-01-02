@@ -98,6 +98,10 @@ class TopicController extends Controller
             $view->save();
         }
 
+        \Nexus\Helpers\ActivityHelper::updateActivity(
+            "Reading <em>{$topic->title}</em>",
+            action('Nexus\TopicController@show', ['id' => $topic->id])
+        );
         return view('topics.index', compact('topic', 'posts', 'readonly', 'userCanSeeSecrets', 'readProgress'));
     }
 
