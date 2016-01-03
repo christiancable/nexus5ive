@@ -64,7 +64,7 @@ Route::get('messages/{id}', 'Nexus\MessageController@index');
 Route::resource('messages', 'Nexus\MessageController');
 
 // activities 
-Route::resource('active', 'Nexus\ActivityController');
+Route::resource('here', 'Nexus\ActivityController');
 /*
 
 Future Routes

@@ -18,14 +18,25 @@
 
     <div class="content">
         @if (count($activities))
-        <ul>
-            @foreach ($activities as $activity)
-            @include('activities._read', $activity)
-            @endforeach
-        </ul>
+        <table class="table table-striped table-condensed">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Name</th>
+                    <th>Status</th>
+                    <th>Current Action</th>
+                    <th>Last Active</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($activities as $activity)
+                @include('activities._read', $activity)
+                @endforeach
+            </tbody>
+        </table>
         @else 
         <div class="content">
-            <div class="alert alert-warning" role="alert">Looks like no one is here. But *you* are here. How odd. It's a bit quiet isn't it?</div>
+            <div class="alert alert-warning" role="alert">Looks like there's no one else here. But *you* are here. How odd. (╯°□°）╯︵ ┻━┻</div>
         </div>
         @endif
     </div>
