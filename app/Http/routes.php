@@ -23,7 +23,7 @@ Route::get('auth/logout', 'Auth\AuthController@getLogout');
 
 // API 
 Route::get('api/comments/count', ['middleware' => 'auth',  function() {
-    return Auth::user()->newComments();
+    return Auth::user()->newCommentCount();
 }]);
 
 
