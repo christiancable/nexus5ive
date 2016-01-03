@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('meta')
-<title>Active Users</title>
+<title>Who is Online</title>
 @endsection
 
 @section('content')
@@ -10,7 +10,7 @@
 
 
     <div class="content">
-        <h1>Active Users</h1>
+        <h1>Who is Online</h1>
         <p class="lead">Hell is other people</p>
     </div>
 
