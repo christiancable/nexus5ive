@@ -60,6 +60,16 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                 $modifiedPost->update_user_id = null;
                 $modifiedPost->update();
             }
+
+            /*
+            to keep a cascading delete when using softDeletes we must remove the related models here
+             */
+            $children = ['comments', 'sections', 'views', 'messages', 'sentMessages', 'activity', 'givenComments'];
+            foreach ($children as $child) {
+                if ($user->$child()) {
+                        $user->$child()->delete();
+                }
+            }
         });
     }
 
@@ -68,6 +78,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public function comments()
     {
         return $this->hasMany('Nexus\Comment', 'user_id', 'id')->orderBy('id', 'dec');
+    }
+
+    public function givenComments()
+    {
+        return $this->hasMany('Nexus\Comment', 'author_id', 'id')->orderBy('id', 'dec');
     }
 
     public function sections()
