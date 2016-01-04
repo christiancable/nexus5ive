@@ -100,13 +100,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $this->hasOne('Nexus\Activity');
     }
 
-    /* mutators */
-
-    // public function setPasswordAttribute($value)
-    // {
-    //     $this->attributes['password'] = \Hash::make($value);
-    // }
-    /* helper methods */
+      /* helper methods */
 
     public function incrementTotalPosts()
     {
@@ -114,25 +108,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         $this->save();
     }
 
-    /* returns true if the user has unread comments */
-    public function hasNewComments()
-    {
-        $return = false;
-
-        if (count($this->comments->where('read', false)->get('id')->take(1))) {
-            $return = true;
-        } else {
-            $return = false;
-        }
-
-        return $return;
-    }
-
     /* returns number of unread comments */
-    public function newComments()
+    public function newCommentCount()
     {
-        $return = \DB::table('comments')->select('id')->where('user_id', $this->id)->where('read', 0)->count();
-        return $return;
+        return $this->comments->where('read', false)->count();
     }
 
     public function markCommentsAsRead()
