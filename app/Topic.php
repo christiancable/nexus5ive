@@ -3,9 +3,12 @@
 namespace Nexus;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Log;
 
 class Topic extends Model
 {
+    use SoftDeletes;
 
     protected $fillable = [
         'title',
@@ -15,6 +18,26 @@ class Topic extends Model
         'weight'
     ];
 
+    public static function boot()
+    {
+        parent::boot();
+
+        // Attach event handler for deleting a topic
+        Topic::deleting(function($topic) {
+           
+            /*
+            to keep a cascading delete when using softDeletes we must remove the related models here
+             */
+            $children = ['posts', 'views'];
+            Log::info("Deleting Topic " . $topic->id);
+            foreach ($children as $child) {
+                if ($topic->$child()) {
+                        Log::info(" -   removing topic->$child");
+                        $topic->$child()->delete();
+                }
+            }
+        });
+    }
     public function getMostRecentPostTimeAttribute()
     {
         $result = false;
