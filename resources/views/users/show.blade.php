@@ -19,12 +19,14 @@
                 <h2>Comments</h2>
                 @include('comments.create', $user)
                 @if (count($user->comments))
-                    <ul>
+                    <table class="table table-striped table-condensed">
+                    <tbody>
                     @foreach ($user->comments as $comment)
                         @include('comments.show', $comment)
                     @endforeach
+                    </tbody>
+                    </table>
                 @endif
-                </ul>
             </div>
         </div>
 @endsection
