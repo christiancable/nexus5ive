@@ -145,6 +145,7 @@ return [
         Nexus\Providers\AppServiceProvider::class,
         Nexus\Providers\EventServiceProvider::class,
         Nexus\Providers\RouteServiceProvider::class,
+        Nexus\Providers\AuthServiceProvider::class,
 
         'Barryvdh\Debugbar\ServiceProvider',
 
