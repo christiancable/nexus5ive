@@ -29,10 +29,10 @@ class Topic extends Model
             to keep a cascading delete when using softDeletes we must remove the related models here
              */
             $children = ['posts', 'views'];
-            Log::info("Deleting Topic " . $topic->id);
+            Log::info("Deleting Topic $topic->title - $topic->id");
             foreach ($children as $child) {
                 if ($topic->$child()) {
-                        Log::info(" -   removing topic->$child");
+                        Log::info(" - removing topic->$child");
                         $topic->$child()->delete();
                 }
             }

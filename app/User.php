@@ -8,6 +8,7 @@ use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Log;
 
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract
 {
@@ -65,9 +66,20 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             to keep a cascading delete when using softDeletes we must remove the related models here
              */
             $children = ['comments', 'sections', 'views', 'messages', 'sentMessages', 'activity', 'givenComments'];
+            Log::info("Deleting User $user->username - $user->id");
             foreach ($children as $child) {
                 if ($user->$child()) {
-                        $user->$child()->delete();
+                    // we need to call delete on the grandchilden to
+                    // trigger their delete() events - seems dumb
+                    if (get_class($user->$child) === 'Illuminate\Database\Eloquent\Collection') {
+                        foreach ($user->$child as $grandchild) {
+                            Log::info(" - removing grandchildren of user->{$child}");
+                            $grandchild->delete();
+                        }
+                    } else {
+                        Log::info(" - removing user->$child");
+                        $user->$child->delete();
+                    }
                 }
             }
         });

@@ -23,11 +23,15 @@ class Section extends Model
             to keep a cascading delete when using softDeletes we must remove the related models here
              */
             $children = ['sections', 'topics'];
-            Log::info("Deleting Section " . $section->id);
+            Log::info("Deleting Section $section->title - $section->id");
             foreach ($children as $child) {
                 if ($section->$child()) {
-                        Log::info(" -   removing section->$child");
-                        $section->$child()->delete();
+                    Log::info(" - removing section->$child");
+                    // we need to call delete on the grandchilden to
+                    // trigger their delete() events - seems dumb
+                    foreach ($section->$child as $grandchild) {
+                        $grandchild->delete();
+                    }
                 }
             }
         });

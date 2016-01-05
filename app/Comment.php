@@ -14,12 +14,12 @@ class Comment extends Model
 
     public function author()
     {
-        return $this->hasOne('Nexus\User', 'id', 'author_id');
+        return $this->belongsTo('Nexus\User', 'author_id');
     }
 
     public function user()
     {
-        return $this->hasOne('Nexus\User', 'id', 'user_id');
+        return $this->belongsTo('Nexus\User', 'user_id');
     }
 }
 
