@@ -11,6 +11,8 @@ It is **nowhere near complete**.
 ## Install Steps
 
 * `composer install`
+* `cp .evn.example .env`
+* Edit .env; add your datbase info and sensible values for the NEXUS_* 
 * `php artisan migrate`
 * `php artisan nexus:install`
 
