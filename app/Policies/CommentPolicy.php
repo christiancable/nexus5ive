@@ -23,11 +23,11 @@ class CommentPolicy
     /**
      * Determine if the given user can delete the given comment.
      *
-     * @param  User  $user
-     * @param  Task  $task
+     * @param  User     $user
+     * @param  Comment  $comment
      * @return bool
      */
-    public function destroy(User $user, Comment $task)
+    public function destroy(User $user, Comment $comment)
     {
         return $user->id === $comment->user_id;
     }
