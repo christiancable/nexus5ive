@@ -12,7 +12,8 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        'App\Model' => 'App\Policies\ModelPolicy',
+        'Nexus\Model' => 'Nexus\Policies\ModelPolicy',
+        \Nexus\Comment::class => \Nexus\Policies\CommentPolicy::class,
     ];
     /**
      * Register any application authentication / authorization services.

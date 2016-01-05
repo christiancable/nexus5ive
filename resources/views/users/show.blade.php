@@ -19,12 +19,21 @@
                 <h2>Comments</h2>
                 @include('comments.create', $user)
                 @if (count($user->comments))
-                    <ul>
-                    @foreach ($user->comments as $comment)
-                        @include('comments.show', $comment)
-                    @endforeach
+                    <table class="table table-striped table-condensed">
+                    <tbody>
+
+                    @if (Auth::user()->id == $user->id)
+                        @foreach ($user->comments as $comment)
+                            @include('comments._edit', $comment)
+                        @endforeach
+                    @else
+                        @foreach ($user->comments as $comment)
+                            @include('comments._read', $comment)
+                        @endforeach
+                    @endif
+                    </tbody>
+                    </table>
                 @endif
-                </ul>
             </div>
         </div>
 @endsection
