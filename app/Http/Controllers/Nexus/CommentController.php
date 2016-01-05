@@ -6,15 +6,14 @@ use Illuminate\Http\Request;
 
 use Nexus\Http\Requests;
 use Nexus\Http\Controllers\Controller;
-// use Request;
 
 class CommentController extends Controller
 {
     public function __construct()
-	{
-    	$this->middleware('auth');
-	}
-	
+    {
+        $this->middleware('auth');
+    }
+    
     /**
      * Display a listing of the resource.
      *
@@ -101,8 +100,11 @@ class CommentController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, \Nexus\Comment $comment)
     {
-        //
+        $this->authorize('destroy', $comment);
+        $comment->delete();
+        
+        return redirect(action('Nexus\UserController@show', ['user_name' => \Auth::user()->username]));
     }
 }
