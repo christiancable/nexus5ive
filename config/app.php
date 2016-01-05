@@ -143,9 +143,9 @@ return [
          * Application Service Providers...
          */
         Nexus\Providers\AppServiceProvider::class,
+        Nexus\Providers\AuthServiceProvider::class,
         Nexus\Providers\EventServiceProvider::class,
         Nexus\Providers\RouteServiceProvider::class,
-        Nexus\Providers\AuthServiceProvider::class,
 
         'Barryvdh\Debugbar\ServiceProvider',
 
