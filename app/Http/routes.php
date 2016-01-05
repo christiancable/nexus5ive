@@ -54,7 +54,8 @@ Route::resource('section', 'Nexus\SectionController');
 Route::resource('topic', 'Nexus\TopicController');
 
 // comments
-Route::post('comments', 'Nexus\CommentController@store');
+Route::delete('comments/{comment}', 'Nexus\CommentController@destroy');
+Route::resource('comments', 'Nexus\CommentController');
 
 // posts
 Route::post('posts', 'Nexus\PostController@store');
