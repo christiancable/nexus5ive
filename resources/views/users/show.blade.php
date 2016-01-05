@@ -21,9 +21,16 @@
                 @if (count($user->comments))
                     <table class="table table-striped table-condensed">
                     <tbody>
-                    @foreach ($user->comments as $comment)
-                        @include('comments.show', $comment)
-                    @endforeach
+
+                    @if (Auth::user()->id == $user->id)
+                        @foreach ($user->comments as $comment)
+                            @include('comments._edit', $comment)
+                        @endforeach
+                    @else
+                        @foreach ($user->comments as $comment)
+                            @include('comments._read', $comment)
+                        @endforeach
+                    @endif
                     </tbody>
                     </table>
                 @endif
