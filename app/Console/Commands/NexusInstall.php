@@ -51,7 +51,7 @@ class NexusInstall extends Command
             $administrator->username = $username;
             $administrator->name = 'Administrator';
             $administrator->email = $email;
-            $administrator->password = $password;
+            $administrator->password = \Hash::make($password);
             $administrator->administrator = true;
 
             try {
