@@ -25,7 +25,7 @@ class RouteServiceProvider extends ServiceProvider
     public function boot(Router $router)
     {
         //
-
+        $router->model('comment', 'Nexus\Comment');
         parent::boot($router);
     }
 
