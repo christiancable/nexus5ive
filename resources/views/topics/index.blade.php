@@ -8,12 +8,12 @@
 
 
 <div class="container">
-    <div class="page-header">
         <h1>{{$topic->title}}</h1>
-        
-    </div>
+        @if ($topic->intro) 
+        <p class="lead">{!! nl2br($topic->intro)  !!}</p>
+        @endif
 </div>
-
+<hr>
 
 <div class="container">
     <div class="content">
