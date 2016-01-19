@@ -38,7 +38,8 @@ class MessageController extends Controller
 
         \Nexus\Helpers\ActivityHelper::updateActivity(
             "Viewing <em>Inbox</em>",
-            action('Nexus\MessageController@index')
+            action('Nexus\MessageController@index'),
+            \Auth::user()->id
         );
 
         return view('messages.index')->with(compact('messages', 'recentMessages', 'activeUsers', 'selected'));

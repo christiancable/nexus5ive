@@ -17,7 +17,8 @@ class ActivityController extends Controller
     {
         \Nexus\Helpers\ActivityHelper::updateActivity(
             "Checking out <em>who else is online</em>",
-            action('Nexus\ActivityController@index')
+            action('Nexus\ActivityController@index'),
+            \Auth::user()->id
         );
         $activities = \Nexus\Helpers\ActivityHelper::recentActivities();
         return view('activities.index')->with('activities', $activities);

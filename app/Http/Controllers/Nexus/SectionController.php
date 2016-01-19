@@ -60,7 +60,8 @@ class SectionController extends Controller
 
         \Nexus\Helpers\ActivityHelper::updateActivity(
             "Browsing <em>{$section->title}</em>",
-            action('Nexus\SectionController@show', ['id' => $section->id])
+            action('Nexus\SectionController@show', ['id' => $section->id]),
+            \Auth::user()->id
         );
         return view('sections.index')->with('section', $section);
     }

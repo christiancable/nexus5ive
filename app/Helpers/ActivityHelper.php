@@ -25,15 +25,31 @@ class ActivityHelper
 
     /**
      * updates or creates the current record of a user's activity in the BBS
-     * @param string $text description of the activity eg 'Reading AreaOrange'
-     * @param string $route the url of the activity if it exists eg '/topics/123'
+     * @param string $text - description of the activity eg 'Reading AreaOrange'
+     * @param string $route - the url of the activity if it exists eg '/topics/123'
+     * @param int $user_id - the user id
      */
-    public static function updateActivity($text = null, $route = null)
+    public static function updateActivity($text = null, $route = null, $user_id)
     {
-        $activity = \Nexus\Activity::firstOrNew(['user_id' => \Auth::user()->id]);
+        $activity = \Nexus\Activity::firstOrNew(['user_id' => $user_id]);
         $activity->text = $text;
         $activity->route = $route;
         $activity->time = time();
         $activity->save();
+    }
+
+    /**
+     * removes any existing activity for the current user
+     * @param int $user_id - the user id
+     */
+    public static function removeActivity($user_id)
+    {
+        try {
+            $activity = \Nexus\Activity::where('user_id', $user_id)->firstOrFail();
+            $activity->delete();
+        } catch (\Exception $e) {
+            \Log::info('Tried to remove non-existent activity: '. $e);
+        }
+
     }
 }

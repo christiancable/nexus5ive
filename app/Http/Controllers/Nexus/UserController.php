@@ -63,7 +63,8 @@ class UserController extends Controller
 
         \Nexus\Helpers\ActivityHelper::updateActivity(
             "Examining <em>{$user->username}</em>",
-            action('Nexus\UserController@show', ['user_name' => $user_name])
+            action('Nexus\UserController@show', ['user_name' => $user_name]),
+            \Auth::user()->id
         );
 
         return view('users.show')->with('user', $user);
