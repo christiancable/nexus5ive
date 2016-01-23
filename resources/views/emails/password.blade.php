@@ -7,4 +7,4 @@ click on the following URL to reset it:
 
 ++beep boop++
 
-The Nexus Five Robot
+The {{env('NEXUS_NAME')}} Robot
