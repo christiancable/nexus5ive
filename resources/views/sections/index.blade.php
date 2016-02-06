@@ -39,6 +39,13 @@
         @endforeach
         @endif
 
+        <?php unset($topic); ?>
+        @if(Auth::user()->id === $section->user_id) 
+            @include('topics._create', $section)
+        @endif
+        
+
+
         @if (count($section->sections))
         <hr>
         <div class="row">

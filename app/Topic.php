@@ -15,7 +15,8 @@ class Topic extends Model
         'intro',
         'secret',
         'readonly',
-        'weight'
+        'weight',
+        'section_id'
     ];
 
     public static function boot()

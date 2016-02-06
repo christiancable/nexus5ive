@@ -40,9 +40,12 @@ class TopicController extends Controller
      * @param  Request  $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(Requests\CreateTopicRequest $request)
     {
-        //
+        $input = $request->all();
+        $topic = \Nexus\Topic::create($input);
+        $redirect = action('Nexus\SectionController@show', ['id' => $topic->section_id]);
+        return redirect($redirect);
     }
 
     /**
