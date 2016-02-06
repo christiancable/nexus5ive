@@ -9,6 +9,8 @@
     @include('topics._read', $topic)
   </div>
   <div role="tabpanel" class="tab-pane" id="topic-edit{{$topic->id}}">
-   @include('topics._create', $topic)
+  	<div class="well">
+	@include('topics._create', $topic)
+	</div>
   </div>
 </div>

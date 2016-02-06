@@ -1,4 +1,4 @@
-<div class="well">
+
 
     @if (isset($topic))
         {!! 
@@ -70,4 +70,3 @@
         </ul>
     </div>
     @endif
-</div>

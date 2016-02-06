@@ -41,15 +41,23 @@
 
         <?php unset($topic); ?>
         @if(Auth::user()->id === $section->user_id) 
-        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#addTopic" aria-expanded="false" aria-controls="collapseExample">
-            <span class='glyphicon glyphicon-plus-sign'></span>&nbsp;&nbsp;Add New Topic
-        </button>
-        <div class="collapse" id="addTopic">
-            @include('topics._create', $section)
-        </div>
+            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+              <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="addNewTopic">
+                  <h4 class="panel-title">
+                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                      <span class='glyphicon  glyphicon-triangle-right'></span> Add New Topic
+                    </a>
+                  </h4>
+                </div>
+                <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="addNewTopic">
+                  <div class="panel-body">
+                     @include('topics._create', $section)
+                  </div>
+                </div>
+              </div>
+            </div>
         @endif
-        
-
 
         @if (count($section->sections))
         <hr>
