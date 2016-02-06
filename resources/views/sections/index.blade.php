@@ -41,7 +41,12 @@
 
         <?php unset($topic); ?>
         @if(Auth::user()->id === $section->user_id) 
+        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#addTopic" aria-expanded="false" aria-controls="collapseExample">
+            <span class='glyphicon glyphicon-plus-sign'></span>&nbsp;&nbsp;Add New Topic
+        </button>
+        <div class="collapse" id="addTopic">
             @include('topics._create', $section)
+        </div>
         @endif
         
 
