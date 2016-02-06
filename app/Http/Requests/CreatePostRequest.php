@@ -3,6 +3,8 @@
 namespace Nexus\Http\Requests;
 
 use Nexus\Http\Requests\Request;
+use Nexus\Topic;
+use Nexus\Section;
 
 class CreatePostRequest extends Request
 {
@@ -19,7 +21,8 @@ class CreatePostRequest extends Request
     {
 
         $return = false;
-
+        $topic = Topic::findOrFail($this::input('topic_id'));
+        $section =  Section::findOrFail($topic->section_id);
 
         if (\Auth::check()) {
             $authUser = \Auth::user();
@@ -29,12 +32,16 @@ class CreatePostRequest extends Request
                 $return = true;
             }
 
-            // @todo add other things here!
             // OR is the user the moderator
-            //
-            // OR is the topic NOT ready only
+            if ($authUser->id === $section->moderator->id) {
+                $return = true;
+            }
 
-            $return = true;
+            // OR is the topic NOT ready only
+            if(!$topic->readonly) {
+                $return = true;
+            }
+        
         } else {
             $return = false;
         }
