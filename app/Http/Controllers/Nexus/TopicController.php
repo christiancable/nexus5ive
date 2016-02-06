@@ -40,7 +40,7 @@ class TopicController extends Controller
      * @param  Request  $request
      * @return Response
      */
-    public function store(Requests\CreateTopicRequest $request)
+    public function store(Requests\Topic\CreateRequest $request)
     {
         $input = $request->all();
         $topic = \Nexus\Topic::create($input);

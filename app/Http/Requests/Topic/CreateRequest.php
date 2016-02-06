@@ -1,11 +1,11 @@
 <?php
 
-namespace Nexus\Http\Requests;
+namespace Nexus\Http\Requests\Topic;
 
 use Nexus\Http\Requests\Request;
 use Nexus\Section;
 
-class CreateTopicRequest extends Request
+class CreateRequest extends Request
 {
     /**
      * topic can be created by moderators of the current section or bbs sysops
