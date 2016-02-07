@@ -5,10 +5,12 @@
   @yield('meta')
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {{-- <link href="/css/app.css" rel="stylesheet"> --}}
     @if (env('NEXUS_BOOTSTRAP_THEME'))
     <link rel="stylesheet" href="{{env('NEXUS_BOOTSTRAP_THEME')}}">
+    @else
+    <link href="/css/app.css" rel="stylesheet">
     @endif
+    <link href="/css/extra.css" rel="stylesheet">
 </head>
 <body>
 

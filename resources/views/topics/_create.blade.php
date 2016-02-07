@@ -1,3 +1,4 @@
+<div class="well">
     @if (isset($topic))
         {!! 
         Form::model($topic, array(
@@ -68,3 +69,4 @@
         </ul>
     </div>
     @endif
+</div>
