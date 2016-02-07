@@ -1,5 +1,3 @@
-
-
     @if (isset($topic))
         {!! 
         Form::model($topic, array(
@@ -51,7 +49,7 @@
         </div>
 
         <div class="col-md-3 form-group">     
-                <label>Order {!! Form::selectRange('weight', 0, 10, 0, ['class' => 'form-control'])!!} </label>
+                <label>Order {!! Form::selectRange('weight', 0, 10, null, ['class' => 'form-control'])!!} </label>
         </div>
 
         <div class="col-md-3">
