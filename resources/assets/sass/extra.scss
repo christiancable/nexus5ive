@@ -1,0 +1,12 @@
+/* to fix overly large images used in topic intros */
+.content {
+    img {
+            max-width: 100%;
+        } 
+}
+
+/* remove double line for the tab nav on a topic */
+
+.nexus-topic-nav {
+	border-bottom: 0;	
+}
