@@ -4,8 +4,8 @@
     <ul class="dropdown-menu">      
       <li role="presentation" class="active"><a href="#topic-view{{$topic->id}}">View</a></li>
       <li role="presentation"><a href="#topic-edit{{$topic->id}}">Edit</a></li>
-    {{--   <li role="separator" class="divider"></li>
-      <li role="presentation"><a href="#topic-edit{{$topic->id}}"><span class="glyphicon glyphicon-trash" aria-hidden="true"> Remove</span></a></li> --}}
+      <li role="separator" class="divider"></li>
+      @include('topics._delete', $topic)
     </ul>
   </li>
 </ul>

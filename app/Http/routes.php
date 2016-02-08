@@ -51,6 +51,7 @@ Route::get('/section/latest', 'Nexus\SectionController@latest');
 Route::resource('section', 'Nexus\SectionController');
 
 // topics
+Route::delete('topic/{topic}', 'Nexus\TopicController@destroy');
 Route::resource('topic', 'Nexus\TopicController');
 
 // comments

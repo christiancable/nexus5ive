@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use Nexus\Http\Requests;
 use Nexus\Http\Controllers\Controller;
+use Nexus\Topic;
 
 class TopicController extends Controller
 {
@@ -141,8 +142,12 @@ class TopicController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function destroy($id)
+    public function destroy(Requests\Topic\DestroyRequest $request, $id)
     {
-        //
+        $topic = \Nexus\Topic::findOrFail($id);
+        $section_id = $topic->section->id;
+        $topic->delete();
+        $redirect = action('Nexus\SectionController@show', ['id' => $section_id]);
+        return redirect($redirect);
     }
 }
