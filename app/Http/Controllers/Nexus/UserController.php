@@ -93,7 +93,12 @@ class UserController extends Controller
     {
         $user = \Nexus\User::where('username', $user_name)->firstOrFail();
         $input = $request->all();
-        $input['password'] = \Hash::make($input['password']);
+        if ($input['password'] <> '') {
+            // to prevent setting password to an empty string https://trello.com/c/y1WAxwfb
+            $input['password'] = \Hash::make($input['password']);
+        } else {
+            unset ($input['password']);
+        }
         $user->update($input);
         return redirect('/users/'. $user_name);
     }
