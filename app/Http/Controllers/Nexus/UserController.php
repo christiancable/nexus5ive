@@ -100,6 +100,8 @@ class UserController extends Controller
             unset ($input['password']);
         }
         $user->update($input);
+
+        \Session::flash('alert', 'Profile Updated!');
         return redirect('/users/'. $user_name);
     }
 
