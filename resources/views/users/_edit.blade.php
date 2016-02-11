@@ -64,7 +64,7 @@ Form::model($user, array(
             <dl class="well dl-horizontal ">    
                 <dt>{!! Form::label('password','Password') !!}</dt>
                 <dd>{!! Form::password('password', null, ['class'=> 'form-control'])!!}</dd>     
-                <dt>{!! Form::label('password_confirmation','Verfy Password') !!}</dt>
+                <dt>{!! Form::label('password_confirmation','Verify Password') !!}</dt>
                 <dd>{!! Form::password('password_confirmation', null, ['class'=> 'form-control'])!!}</dd> 
             </dl>
         </div>
