@@ -20,8 +20,10 @@
             <span>Unknown User (Unknown User)</span>
         @endif
         <hr>
-
-        <p>{!! nl2br(strip_tags($post->text)) !!}</p>
+        <?php
+            $markdown = new Parsedown();
+        ?>
+        <p>{!! $markdown->text(nl2br(strip_tags($post->text))) !!}</p>
 
     </div>
     {{-- <li>{{$post->update_user_id}}</li> --}}
