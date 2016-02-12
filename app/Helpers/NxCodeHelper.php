@@ -20,10 +20,10 @@ class NxCodeHelper
 	    [picture-][-picture]
 	    [youtube-][-youtube] @todo - add embed code
 	    [ascii-][-ascii]
+	    [quote-][-quote]
 
 	    [u-][-u]
 	    [small-][-small]
-	    [quote-][-quote]
 	    [updated-][-updated]
 	    [hudson-][-hudson]
 	    [spoiler-][-spoiler]
@@ -59,8 +59,8 @@ class NxCodeHelper
 	    	'',
 	    	'`',
 	    	'`',
-	    	'`',
-	    	'`',
+	    	'_',
+	    	'_',
 	    ];
 
 	    $mdText = str_ireplace($nxTags, $mdTags, $nxText);
