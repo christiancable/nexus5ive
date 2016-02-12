@@ -43,6 +43,8 @@ class NxCodeHelper
 	    	'[-youtube]',
 	    	'[ascii-]',
 	    	'[-ascii]',
+	    	'[quote-]',
+	    	'[-quote]',
 	    ];
 	    $mdTags = [
 	    	'',
@@ -55,6 +57,8 @@ class NxCodeHelper
 	    	')',
 	    	'',
 	    	'',
+	    	'`',
+	    	'`',
 	    	'`',
 	    	'`',
 	    ];
