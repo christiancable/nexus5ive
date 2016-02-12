@@ -22,8 +22,10 @@
         <hr>
         <?php
             $markdown = new Parsedown();
+            $postText = $post->text;
+            $postText = Nexus\Helpers\NxCodeHelper::NxToMarkdown($postText);
         ?>
-        <p>{!! $markdown->text(nl2br(strip_tags($post->text))) !!}</p>
+        <p>{!! $markdown->text(nl2br(strip_tags($postText))) !!}</p>
 
     </div>
     {{-- <li>{{$post->update_user_id}}</li> --}}
