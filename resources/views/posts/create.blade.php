@@ -20,9 +20,58 @@
         {!! Form::textarea('text', null, ['class'=> 'form-control']) !!}
     </div>
 
-     <div class="form-group">
-        {!! Form::submit('Add Comment', ['class'=> 'btn btn-primary form-control']) !!}
-    </div>
+
+    <div class="row">
+
+        <div class="col-md-2">
+            <div class="form-group">
+            {!! Form::submit('Add Comment', ['class'=> 'btn btn-primary form-control']) !!}
+            </div>
+        </div>
+
+
+<?php
+$helpText = <<<TEXT
+<strong>Basics</strong>
+<pre>
+some **bold** text
+</pre>
+<pre>
+some _italics_
+</pre>
+<hr/>
+<strong>Links</strong>
+<pre>
+Here is a link [click here](https://nexus5.org.uk).
+</pre>
+or just paste in the address and it will be clickable
+<hr/>
+<strong>Images</strong>
+<pre>
+![Look a picture](http://example.com/picture.jpg)
+</pre>
+or
+<pre>
+[picture-]http://example.com/picture.jpg[-picture]
+</pre>
+<hr/>
+<strong>Lists</strong>
+<pre>
+Star Treks:
+
+- Original Series
+- Next Generation
+- Deep Space Nine
+- Voyager
+- Enterprise
+</pre>
+TEXT;
+?>
+        <div class="col-md-10">
+            <p  class="pull-right" data-toggle="popover" data-html="true" title="Formating Help" data-placement="left" data-content="{!! $helpText !!}">Formatting Help</p>
+        </div>
+
+</div>
 {!! Form::close() !!}
 
 {{-- the only error we have is if the user tries to leave a blank comment --}}
@@ -32,5 +81,12 @@
     </p>
 @endif 
 
+@section('javascript')
+<script>
+$(function () {
+  $('[data-toggle="popover"]').popover()
+})
+</script>
+@endsection
 
 
