@@ -68,7 +68,7 @@ Star Treks:
 TEXT;
 ?>
         <div class="col-md-10">
-            <p  class="pull-right" data-toggle="popover" data-html="true" title="Formating Help" data-placement="left" data-content="{!! $helpText !!}">Formatting Help</p>
+            <p  class="pull-right" data-toggle="popover" data-html="true" title="Formating Help" data-placement="left" data-content="{!! $helpText !!}"><u>Formatting Help</u></p>
         </div>
 
 </div>
