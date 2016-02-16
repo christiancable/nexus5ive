@@ -30,7 +30,7 @@
         </div>
 
         <div class="col-md-10">
-            <p  class="pull-right" data-toggle="popover" data-html="true" title="Formating Help" data-placement="left" data-content="{!! Nexus\Helpers\BoilerplateHelper::formattingHelp() !!}"><u>Formatting Help</u></p>
+            <p  class="pull-right small text-muted" data-toggle="popover" data-html="true" title="Formating Help" data-placement="left" data-content="{!! Nexus\Helpers\BoilerplateHelper::formattingHelp() !!}"><u>Formatting Help</u></p>
         </div>
 
 </div>
