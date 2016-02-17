@@ -8,10 +8,10 @@ namespace Nexus\Helpers;
 
 class BoilerplateHelper
 {
-	public static function formattingHelp()
-	{
+    public static function formattingHelp()
+    {
 
-		$helpText = <<<TEXT
+        $helpText = <<<TEXT
 <strong>Basics</strong>
 <pre>
 some **bold** text
@@ -47,7 +47,7 @@ Star Treks:
 </pre>
 TEXT;
 
-		return $helpText;
+        return $helpText;
 
-	}
+    }
 }
