@@ -20,12 +20,7 @@
             <span>Unknown User (Unknown User)</span>
         @endif
         <hr>
-        <?php
-            $markdown = new Parsedown();
-            $postText = $post->text;
-            $postText = Nexus\Helpers\NxCodeHelper::NxToMarkdown($postText);
-        ?>
-        <p>{!! $markdown->text(nl2br(strip_tags($postText))) !!}</p>
+        <p>{!! Nexus\Helpers\nxCodeHelper::nxDecode($post->text) !!}</p>
 
     </div>
     {{-- <li>{{$post->update_user_id}}</li> --}}
