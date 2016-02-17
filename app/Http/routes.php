@@ -22,10 +22,11 @@ Route::post('auth/login', 'Auth\AuthController@postLogin');
 Route::get('auth/logout', 'Auth\AuthController@getLogout');
 
 // API 
-Route::get('api/comments/count', ['middleware' => 'auth',  function() {
+Route::get('api/comments/count', ['middleware' => 'auth',  function () {
     return Auth::user()->newCommentCount();
 }]);
 
+Route::post('api/markdown/{text}', 'Nexus\Helpers\MarkdownHelper@markdown');
 
 // Password reset link request routes...
 Route::get('password/email', 'Auth\PasswordController@getEmail');
