@@ -80,7 +80,6 @@ class NxCodeHelper
     {
         $text = self::NxToMarkdown($text);
         $text = strip_tags($text);
-        $text = nl2br($text);
         $text = MarkdownHelper::markdown($text);
         
         return $text;
