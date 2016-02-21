@@ -98,6 +98,10 @@ class PostController extends Controller
         //
     }
 
+    /**
+     * @param request
+     * @return json - including markdown rendered version of the text field from the request
+     */
     public function previewPost(Request $request)
     {
         if (\Request::ajax()) {

@@ -22,8 +22,10 @@ function postPreview() {
 	            },
 	            dataType: 'JSON',
 	            success: function (data) {
+	            	if ($('input[name=title]').val()) {
+		                $('#preview-title').html($('input[name=title]').val());
+	            	}
 	                $('#preview-view').html(data.text);
-	                $('#preview-title').html($('input[name=title]').val());
 	            }
 	})
 }

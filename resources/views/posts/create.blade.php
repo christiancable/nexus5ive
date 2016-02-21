@@ -18,9 +18,9 @@
   </div>
 
   <div role="tabpanel" class="tab-pane" id="preview">
-    <div class="panel panel-primary">
+    <div class="panel panel-info">
         <div class="panel-heading">
-            <h3 class="panel-title" id='preview-title'>&hellip; waiting &hellip;</h3>
+            <h3 class="panel-title" id='preview-title'>&nbsp;</h3>
         </div>
         <div class="panel-body">
             <p id='preview-view'>&hellip; hold on a second &hellip;</p>
