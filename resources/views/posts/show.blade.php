@@ -20,7 +20,7 @@
             <span>Unknown User (Unknown User)</span>
         @endif
         <hr>
-        <p>{!! Nexus\Helpers\nxCodeHelper::nxDecode($post->text) !!}</p>
+        <p>{!! Nexus\Helpers\NxCodeHelper::nxDecode($post->text) !!}</p>
 
     </div>
     {{-- <li>{{$post->update_user_id}}</li> --}}
