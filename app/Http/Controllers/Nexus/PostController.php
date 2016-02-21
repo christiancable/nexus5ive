@@ -97,4 +97,14 @@ class PostController extends Controller
     {
         //
     }
+
+    public function previewPost(Request $request)
+    {
+        if (\Request::ajax()) {
+            $data = \Input::all();
+            $response = array();
+            $response['text'] = \Nexus\Helpers\NxCodeHelper::nxDecode($data['text']);
+            return \Response::json($response);
+        }
+    }
 }

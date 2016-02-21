@@ -5,21 +5,29 @@
 @else 
 @endif
 
-{!! Form::open(['url' => 'posts']) !!}
+<ul class="nav nav-tabs" id="{{$topic->id}}">
+    <li class="active"><a href="#edit">Compose</a></li>
+    <li><a href="#preview">Preview</a></li>
+</ul>
 
+<div class="tab-content">
+<br/>
+  <div role="tabpanel" class="tab-pane active" id="edit">
+    @include('posts._edit',$topic)
+    <?php $tabGroups[] = $topic->id ?>
+  </div>
 
-{!! Form::hidden('topic_id', $topic->id) !!}
-
-    <div class="form-group">
-        {!! Form::label('title', 'Subject') !!}
-        {!! Form::text('title', null, ['class'=> 'form-control']) !!}
+  <div role="tabpanel" class="tab-pane" id="preview">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title" id='preview-title'>&hellip; waiting &hellip;</h3>
+        </div>
+        <div class="panel-body">
+            <p id='preview-view'>&hellip; hold on a second &hellip;</p>
+        </div>
     </div>
-
-    <div class="form-group">
-{{--         {!! Form::label('message_text', 'Subject') !!} --}}
-        {!! Form::textarea('text', null, ['class'=> 'form-control']) !!}
-    </div>
-
+ </div>
+</div>
 
     <div class="row">
 
@@ -35,7 +43,6 @@
 
 </div>
 {!! Form::close() !!}
-
 {{-- the only error we have is if the user tries to leave a blank comment --}}
 @if ($errors->any())
     <p class="alert alert-danger">
@@ -49,6 +56,9 @@ $(function () {
   $('[data-toggle="popover"]').popover()
 })
 </script>
+@if (isset($tabGroups))
+    @include('javascript._postPreviewTabs', $tabGroups)
+@endif
 @endsection
 
 

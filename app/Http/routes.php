@@ -26,7 +26,7 @@ Route::get('api/comments/count', ['middleware' => 'auth',  function () {
     return Auth::user()->newCommentCount();
 }]);
 
-Route::post('api/markdown/{text}', 'Nexus\Helpers\MarkdownHelper@markdown');
+Route::post('api/nxcode', 'Nexus\PostController@previewPost');
 
 // Password reset link request routes...
 Route::get('password/email', 'Auth\PasswordController@getEmail');
