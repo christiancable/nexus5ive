@@ -5,9 +5,8 @@ jQuery(document).ready(function ($) {
             e.preventDefault();
         	if ($(this).attr("href") == "#preview") {
         		postPreview($(this));
-        	} else {
-	        	$(this).tab('show');        		
         	}
+        	$(this).tab('show');        		
         	
         })
     @endforeach   
@@ -27,7 +26,6 @@ function postPreview(tab) {
 		                $('#preview-title').html($('input[name=title]').val());
 	            	}
 	                $('#preview-view').html(data.text);
-	                $(tab).tab('show');
 	            }
 	})
 }
