@@ -4,15 +4,16 @@ jQuery(document).ready(function ($) {
         $('#{{$tabGroup}} a').click(function (e) {
             e.preventDefault();
         	if ($(this).attr("href") == "#preview") {
-        		postPreview();
+        		postPreview($(this));
+        	} else {
+	        	$(this).tab('show');        		
         	}
-        	$(this).tab('show')
         	
         })
     @endforeach   
 });
 
-function postPreview() {
+function postPreview(tab) {
 	$.ajax({
 	            type: 'POST',
 	            url: '/api/nxcode',
@@ -26,6 +27,7 @@ function postPreview() {
 		                $('#preview-title').html($('input[name=title]').val());
 	            	}
 	                $('#preview-view').html(data.text);
+	                $(tab).tab('show');
 	            }
 	})
 }
