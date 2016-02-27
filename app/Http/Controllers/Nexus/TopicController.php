@@ -107,7 +107,19 @@ class TopicController extends Controller
             action('Nexus\TopicController@show', ['id' => $topic->id]),
             \Auth::user()->id
         );
-        return view('topics.index', compact('topic', 'posts', 'readonly', 'userCanSeeSecrets', 'readProgress'));
+
+        $breadcrumbs = \Nexus\Helpers\BreadcrumbHelper::breadcrumbForTopic($topic);
+        return view(
+            'topics.index',
+            compact(
+                'topic',
+                'posts',
+                'readonly',
+                'userCanSeeSecrets',
+                'readProgress',
+                'breadcrumbs'
+            )
+        );
     }
 
     /**

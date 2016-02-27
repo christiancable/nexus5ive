@@ -4,6 +4,10 @@
 <title>{{$topic->title}}</title>
 @endsection
 
+@section('breadcrumbs')
+@include('_breadcrumbs', $breadcrumbs)
+@endsection 
+
 @section('content')
 
 
@@ -17,10 +21,6 @@
 
 <div class="container">
     <div class="content">
-
-
-                <p>Return to <a href="{{ action('Nexus\SectionController@show', ['section_id' => $topic->section_id]) }}">{{$topic->section->title}}</a><p>
-                
                 <?php
                 $postsChunk = $posts->paginate(10);
                 $reverseArray = [];

@@ -81,16 +81,7 @@
     </div>
   </nav>
 
-{{--   <div class="container">
-    <ol class="breadcrumb">
-      <li><a href="#">These</a></li>
-      <li><a href="#">Are</a></li>
-      <li><a href="#">Not</a></li>
-      <li><a href="#">Real</a></li>
-      <li class="active">Breadcrumbs</li>
-    </ol>
-  </div> --}}
-
+  @yield('breadcrumbs')
 
   @yield('content')
 

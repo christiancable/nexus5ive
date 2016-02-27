@@ -63,7 +63,9 @@ class SectionController extends Controller
             action('Nexus\SectionController@show', ['id' => $section->id]),
             \Auth::user()->id
         );
-        return view('sections.index')->with('section', $section);
+
+        $breadcrumbs = \Nexus\Helpers\BreadcrumbHelper::breadcrumbForSection($section);
+        return view('sections.index', compact('section', 'breadcrumbs'));
     }
 
     /**
