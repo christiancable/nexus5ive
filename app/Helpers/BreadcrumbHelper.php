@@ -53,4 +53,26 @@ class BreadcrumbHelper
         }
         return array_reverse($breadcrumbs);
     }
+
+    /**
+     * generates a fake breadcrumb trail for a page which isn't
+     * a topic of a section
+     *
+     * @param string
+     * @return an array of links to go in a breadcrumb trail
+     */
+    public static function breadcumbForUtility($location)
+    {
+        $breadcrumbs = array();
+        $crumb['title'] = $location;
+        $crumb['route'] = null;
+        $breadcrumbs[] = $crumb;
+
+        $section = \Nexus\Section::first();
+        $crumb['title'] = $section->title;
+        $crumb['route'] = action('Nexus\SectionController@show', ['section_id' => $section->id]);
+        $breadcrumbs[] = $crumb;
+
+        return array_reverse($breadcrumbs);
+    }
 }

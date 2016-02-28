@@ -120,7 +120,9 @@ class SectionController extends Controller
         $heading = 'Latest Posts';
         $lead = "The most recent posts from across Nexus";
         $topics = $this::recentTopics();
-        return view('topics.unread', compact('topics', 'heading', 'lead'));
+        $breadcrumbs = \Nexus\Helpers\BreadcrumbHelper::breadcumbForUtility($heading);
+
+        return view('topics.unread', compact('topics', 'heading', 'lead', 'breadcrumbs'));
     }
 
     /**
