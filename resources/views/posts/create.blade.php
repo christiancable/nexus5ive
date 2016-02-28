@@ -29,17 +29,40 @@
  </div>
 </div>
 
-    <div class="row">
-
-        <div class="col-md-2">
-            <div class="form-group">
+<?php
+  $formattingHelp = Nexus\Helpers\BoilerplateHelper::formattingHelp();
+?>
+<div class="row">
+    
+    <div class="col-md-2">
+        <div class="form-group">
             {!! Form::submit('Add Comment', ['class'=> 'btn btn-primary form-control']) !!}
-            </div>
         </div>
+    </div>
 
-        <div class="col-md-10">
-            <p  class="pull-right small text-muted" data-toggle="popover" data-html="true" title="Formating Help" data-placement="left" data-content="{!! Nexus\Helpers\BoilerplateHelper::formattingHelp() !!}"><u>Formatting Help</u></p>
+    <div class="col-md-10">
+      {{-- formatting help for larger screens --}}
+      <p class="pull-right small text-muted visible-md visible-lg" data-toggle="popover" data-html="true" title="Formating Help" data-placement="left" data-content="{!! $formattingHelp !!}"><u>Formatting Help</u></p>
+      
+      {{-- formatting help for small screens --}}
+      <div class="visible-xs visible-sm small">
+        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="formattinghelp">  
+              <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                <span class='glyphicon  glyphicon-triangle-right'></span> Formatting Help
+              </a>
+            </div>
+            <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="addNewTopic">
+              <div class="panel-body">
+                <p>{!! $formattingHelp !!}</p>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
+
+    </div>
 
 </div>
 {!! Form::close() !!}
