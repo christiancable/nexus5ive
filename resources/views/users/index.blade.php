@@ -1,5 +1,9 @@
 @extends('layouts.master')
 
+@section('breadcrumbs')
+@include('_breadcrumbs', $breadcrumbs)
+@endsection 
+
 @section('meta')
 <title>View Users</title>
 @endsection

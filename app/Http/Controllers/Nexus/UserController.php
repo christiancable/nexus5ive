@@ -22,7 +22,15 @@ class UserController extends Controller
     public function index()
     {
         $users =  \Nexus\User::select('username')->orderBy('username', 'asc')->get();
-        return view('users.index')->with('users', $users);
+
+        \Nexus\Helpers\ActivityHelper::updateActivity(
+            "Viewing list of Users",
+            action('Nexus\UserController@index'),
+            \Auth::user()->id
+        );
+        $breadcrumbs = \Nexus\Helpers\BreadcrumbHelper::breadcumbForUtility('Users');
+
+        return view('users.index', compact('users', 'breadcrumbs'));
     }
 
     /**
@@ -97,7 +105,7 @@ class UserController extends Controller
             // to prevent setting password to an empty string https://trello.com/c/y1WAxwfb
             $input['password'] = \Hash::make($input['password']);
         } else {
-            unset ($input['password']);
+            unset($input['password']);
         }
         $user->update($input);
 
