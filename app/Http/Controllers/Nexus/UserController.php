@@ -75,7 +75,9 @@ class UserController extends Controller
             \Auth::user()->id
         );
 
-        return view('users.show')->with('user', $user);
+        $breadcrumbs = \Nexus\Helpers\BreadcrumbHelper::breadcrumbForUser($user);
+
+        return view('users.show', compact('user', 'breadcrumbs'));
     }
 
     /**

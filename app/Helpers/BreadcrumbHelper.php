@@ -15,6 +15,7 @@ class BreadcrumbHelper
     public static function breadcrumbForTopic(\Nexus\Topic $topic)
     {
         $breadcrumbs = array();
+        $crumb = array();
         $crumb['title'] = $topic->title;
         $crumb['route'] = null;
         $breadcrumbs[] = $crumb;
@@ -39,6 +40,7 @@ class BreadcrumbHelper
     public static function breadcrumbForSection(\Nexus\Section $section)
     {
         $breadcrumbs = array();
+        $crumb = array();
         $crumb['title'] = $section->title;
         $crumb['route'] = null;
         $breadcrumbs[] = $crumb;
@@ -64,6 +66,7 @@ class BreadcrumbHelper
     public static function breadcumbForUtility($location)
     {
         $breadcrumbs = array();
+        $crumb = array();
         $crumb['title'] = $location;
         $crumb['route'] = null;
         $breadcrumbs[] = $crumb;
@@ -74,5 +77,31 @@ class BreadcrumbHelper
         $breadcrumbs[] = $crumb;
 
         return array_reverse($breadcrumbs);
+    }
+
+    /**
+     * generates a breadcrumb trail for a user profile
+     *
+     * @param Nexus\User
+     * @return an array of links to go in a breadcrumb trail
+     */
+    public static function breadcrumbForUser(\Nexus\User $user)
+    {
+        $breadcrumbs = array();
+        $crumb['title'] = $user->username;
+        $crumb['route'] = null;
+        $breadcrumbs[] = $crumb;
+
+        $crumb['title'] = 'Users';
+        $crumb['route'] = action('Nexus\UserController@index');
+        $breadcrumbs[] = $crumb;
+
+        $section = \Nexus\Section::first();
+        $crumb['title'] = $section->title;
+        $crumb['route'] = action('Nexus\SectionController@show', ['section_id' => $section->id]);
+        $breadcrumbs[] = $crumb;
+
+        return array_reverse($breadcrumbs);
+
     }
 }

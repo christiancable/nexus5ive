@@ -42,7 +42,9 @@ class MessageController extends Controller
             \Auth::user()->id
         );
 
-        return view('messages.index')->with(compact('messages', 'recentMessages', 'activeUsers', 'selected'));
+        $breadcrumbs = \Nexus\Helpers\BreadcrumbHelper::breadcumbForUtility('Inbox');
+
+        return view('messages.index')->with(compact('messages', 'recentMessages', 'activeUsers', 'selected', 'breadcrumbs'));
     }
 
     /**
