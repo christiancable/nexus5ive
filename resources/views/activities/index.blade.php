@@ -4,6 +4,10 @@
 <title>Who is Online</title>
 @endsection
 
+@section('breadcrumbs')
+@include('_breadcrumbs', $breadcrumbs)
+@endsection 
+
 @section('content')
 
 <div class="container">

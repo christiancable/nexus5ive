@@ -26,7 +26,9 @@ class ActivityController extends Controller
             \Auth::user()->id
         );
         $activities = \Nexus\Helpers\ActivityHelper::recentActivities();
-        return view('activities.index')->with('activities', $activities);
+        $breadcrumbs = \Nexus\Helpers\BreadcrumbHelper::breadcumbForUtility('Who is Online');
+
+        return view('activities.index', compact('activities', 'breadcrumbs'));
     }
 
     /**
