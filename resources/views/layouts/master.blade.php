@@ -11,6 +11,7 @@
     <link href="/css/app.css" rel="stylesheet">
     @endif
     <link href="/css/extra.css" rel="stylesheet">
+    <link rel="apple-touch-icon" href="apple-touch.png">
 </head>
 <body>
 
