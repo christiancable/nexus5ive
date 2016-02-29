@@ -6,28 +6,28 @@
     </div>
     @endif
 
-    <div class="panel-body">
+    <div class="panel-body break-long-words">
         <div class="row">
             <div class="col-sm-12 col-md-6">       
-            @if (isset($post->author))
+                @if (isset($post->author))
                 <span><a href="{{ action('Nexus\UserController@show', ['username' => $post->author->username]) }}">{{$post->author->username}}</a> ({{$post->popname}})</span>
-            @else
+                @else
                 <span>Unknown User (Unknown User)</span>
-            @endif
+                @endif
             </div>
             <div class="col-sm-12 col-md-6">
-            <?php
+                <?php
                 $postTime = $post->time;
                 $formattedTime = date('D, F jS Y - H:i', strtotime($post->time));
-            ?>  
-            @if ($readProgress < $postTime)
+                ?>  
+                @if ($readProgress < $postTime)
                 <span class="pull-right text-info visible-lg visible-md">{{ $formattedTime }}</span>
                 <span class="visible-sm visible-xs text-info">{{ $formattedTime }}</span>
-            @else 
+                @else 
                 <span class="pull-right text-muted visible-lg visible-md">{{ $formattedTime }}</span>   
                 <span class="visible-sm visible-xs text-muted">{{ $formattedTime }}</span>   
-            @endif     
-          </div>
+                @endif     
+            </div>
         </div>
         <hr>
         <p>{!! Nexus\Helpers\NxCodeHelper::nxDecode($post->text) !!}</p>
