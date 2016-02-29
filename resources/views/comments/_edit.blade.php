@@ -4,7 +4,7 @@
         </a>
     </strong>
 </td>
-<td class="col-sm-10">    
+<td class="col-sm-10 break-long-words">    
     @if ($comment->read === true)
     {{$comment->text}}
     @else 
