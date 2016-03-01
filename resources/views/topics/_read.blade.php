@@ -8,7 +8,7 @@
 
     <a href="{{ action('Nexus\TopicController@show', ['topic_id' => $topic->id])}}"> {{$topic->title}}</a>
 </h2>
-<p>{!!nl2br($topic->intro)!!}</p>
+<p class="break-long-words">{!! Nexus\Helpers\NxCodeHelper::nxDecode($topic->intro) !!}</p>
 @if ($mostRecentPostTime = $topic->most_recent_post_time)
     <p class="small text-muted">Latest Post {{$mostRecentPostTime->diffForHumans()}}</p>
 @endif
