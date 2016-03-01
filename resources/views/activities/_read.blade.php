@@ -4,7 +4,7 @@
 </a></td>
 <td><a href="{{action('Nexus\UserController@show', ['user_name' => $activity->user->username])}}">
     {{$activity->user->username}}</a></td>
-    <td>({{$activity->user->popname}})</td>
+    <td class="hidden-xs">({{$activity->user->popname}})</td>
     <td><a href="{{$activity->route}}">{!! $activity->text !!}</a></td>
     <td class="text-muted">{{$activity->time->diffForHumans()}} </td>
 </tr>

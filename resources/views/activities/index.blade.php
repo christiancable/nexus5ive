@@ -27,7 +27,7 @@
                 <tr>
                     <th></th>
                     <th>Name</th>
-                    <th>Status</th>
+                    <th class="hidden-xs">Status</th>
                     <th>Current Action</th>
                     <th>Last Active</th>
                 </tr>
