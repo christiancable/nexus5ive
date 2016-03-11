@@ -14,7 +14,7 @@
 <div class="container">
         <h1>{{$topic->title}}</h1>
         @if ($topic->intro) 
-        <p class="lead">{!! nl2br($topic->intro)  !!}</p>
+        <p class="lead">{!! Nexus\Helpers\NxCodeHelper::nxDecode($topic->intro)  !!}</p>
         @endif
 </div>
 <hr>
