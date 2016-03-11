@@ -19,6 +19,10 @@ some **bold** text
 <pre>
 some _italics_
 </pre>
+<pre>
+> some quoted text
+</pre>
+
 <hr/>
 <strong>Links</strong>
 <pre>
@@ -37,13 +41,14 @@ or
 <hr/>
 <strong>Lists</strong>
 <pre>
-Star Treks:
+Friends:
 
-- Original Series
-- Next Generation
-- Deep Space Nine
-- Voyager
-- Enterprise
+- Chandler Bing
+- Joey Tribbiani
+- Monica Geller
+- Phoebe Buffay
+- Rachel Green
+- Ross Geller
 </pre>
 TEXT;
 
