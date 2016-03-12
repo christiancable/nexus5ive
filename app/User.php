@@ -38,7 +38,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'location',
         'favouriteMovie',
         'favouriteMusic',
-        'private'
+        'private',
+        'viewLatestPostFirst'
     ];
      
     /**
@@ -57,7 +58,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         parent::boot();
 
         // Attach event handler, on deleting of the user
-        User::deleting(function($user) {
+        User::deleting(function ($user) {
             // for each post that the user has modified set the modified by user to null
             foreach ($user->modifiedPosts as $modifiedPost) {
                 $modifiedPost->update_user_id = null;

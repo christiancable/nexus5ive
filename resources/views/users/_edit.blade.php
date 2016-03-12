@@ -43,6 +43,8 @@ Form::model($user, array(
             <dd>{!! Form::checkbox('private')!!}</dd>
         </dl>
 
+
+
         <dl class="dl-horizontal col-md-6">        
             <dt>Location</dt>
             <dd>{!! Form::text('location', null, ['class'=> 'form-control'])!!}</dd>
@@ -53,6 +55,10 @@ Form::model($user, array(
             <dt>{!! Form::label('favouriteMusic','Favourite Band') !!}</dt>
             <dd>{!! Form::text('favouriteMusic', null, ['class'=> 'form-control'])!!}</dd>
 
+        {!! Form::hidden('viewLatestPostFirst', false) !!}
+        <dt>{!! Form::label('viewLatestPostFirst','Show Latest Posts First') !!}</dt>
+            <dd>{!! Form::checkbox('viewLatestPostFirst')!!}</dd>
+        </dl>
 
 
         </dl>

@@ -49,7 +49,13 @@ class PostController extends Controller
         $post = \Nexus\Post::create($input);
         \Auth::user()->incrementTotalPosts();
         
-        $redirect = action('Nexus\TopicController@show', ['id' => $post->topic_id]) . '#'  . $post->id;
+        // if we are viewing the topic with the most recent post at the bottom then
+        // redirect to that point in the page
+        if (\Auth::user()->viewLatestPostFirst) {
+            $redirect = action('Nexus\TopicController@show', ['id' => $post->topic_id]);
+        } else {
+            $redirect = action('Nexus\TopicController@show', ['id' => $post->topic_id]) . '#'  . $post->id;
+        }
         return redirect($redirect);
     }
 
