@@ -2,4 +2,7 @@
 /node_modules
 Homestead.yaml
 .env
-/public/css/*
+/public/css/
+/public/fonts/
+/storage/debugbar/
+.DS_Store
