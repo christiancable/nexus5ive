@@ -30,7 +30,7 @@
                 </dl>
                 </div>
 
-                <div class="well">{!! nl2br($user->about) !!}</div>
+                <div class="well">{!! Nexus\Helpers\NxCodeHelper::nxDecode($user->about) !!}</div>
                 @if (count($user->sections))
      {{--                <h2>Sections</h2> --}}
                     <span>If you like <strong>{{$user->username}}</strong> then check out these sections they moderate </span>
