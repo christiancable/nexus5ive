@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel
         \Nexus\Console\Commands\Inspire::class,
         \Nexus\Console\Commands\NexusUpgrade::class,
         \Nexus\Console\Commands\NexusInstall::class,
+         \Nexus\Console\Commands\NexusFixDuplicateViews::class,
     ];
 
     /**

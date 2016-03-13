@@ -89,6 +89,7 @@ class TopicController extends Controller
 
         // get the previously read progress so we can indicate this in the view
         $readProgress = $topic->mostRecentlyReadPostDate(\Auth::user()->id);
+        // @todo what happens if we have more than one view??
         $lastestView = \Nexus\View::where('topic_id', $topic_id)->where('user_id', \Auth::user()->id)->first();
 
         if ($lastestView) {
