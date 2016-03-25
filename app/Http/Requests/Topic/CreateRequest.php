@@ -8,11 +8,11 @@ use Nexus\Section;
 class CreateRequest extends Request
 {
     /**
-     * topic can be created by moderators of the current section or bbs sysops
+     * topic can be created by moderators of the current section or bbs administrators
      *
      * user should be
      * logged in
-     * user sysop | user moderator 
+     * user administrator | user moderator 
      *
      * @return bool
      */
@@ -24,8 +24,8 @@ class CreateRequest extends Request
             $authUser = \Auth::user();
             $section =  Section::findOrFail($this::input('section_id'));
                
-            // is the user a sysop
-            if ($authUser->Sysop) {
+            // is the user an administrator
+            if ($authUser->administrator) {
                 $return = true;
             }
 

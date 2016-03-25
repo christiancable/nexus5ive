@@ -10,7 +10,7 @@ use Log;
 class DestroyRequest extends Request
 {
     /**
-     * user can delete the topic if they are the moderator or a sysop
+     * user can delete the topic if they are the moderator or an administrator
      * @return bool
      */
     public function authorize()
@@ -21,8 +21,8 @@ class DestroyRequest extends Request
         if (\Auth::check()) {
             $authUser = \Auth::user();
                
-            // is the user a sysop
-            if ($authUser->Sysop) {
+            // is the user an administrator
+            if ($authUser->administrator) {
                 $return = true;
             }
 

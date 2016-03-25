@@ -13,7 +13,7 @@ class CreatePostRequest extends Request
      *
      * user should be
      * logged in
-     * user sysop | user moderator | topic NOT ready only
+     * user administrator | user moderator | topic NOT ready only
      *
      * @return bool
      */
@@ -27,7 +27,7 @@ class CreatePostRequest extends Request
         if (\Auth::check()) {
             $authUser = \Auth::user();
 
-            // is the user a sysop
+            // is the user an administrator
             if ($authUser->administrator) {
                 $return = true;
             }
