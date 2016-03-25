@@ -33,9 +33,17 @@
 
     <div class="content">
         @if (count($section->topics))
+        <?php 
+        $moderatedSections = array();
+        // make the current section the default by adding it first
+        $moderatedSections[$section->id] = $section->title;
+        foreach(Auth::user()->sections as $moderatedSection) {
+            $moderatedSections[$moderatedSection->id] = $moderatedSection->title;  
+        }
+        ?>
         @foreach ($section->topics as $topic)
             @if(Auth::user()->id === $section->user_id) 
-                 @include('topics._edit', $topic)
+                 @include('topics._edit', compact('topic', 'moderatedSections'))
                 <?php $tabGroups[] ='topic'.$topic->id ?>
             @else
                 @include('topics._read', $topic)
@@ -44,7 +52,7 @@
         @endif
 
         <?php unset($topic); ?>
-        @if(Auth::user()->id === $section->user_id) 
+        @if(Auth::user()->id === $section->user_id)
             <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
               <div class="panel panel-default">
                 <div class="panel-heading" role="tab" id="addNewTopic">

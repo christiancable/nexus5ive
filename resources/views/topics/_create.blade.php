@@ -7,10 +7,11 @@
             'method' => 'PATCH'
             )) !!}
         {!! Form::hidden('id', $topic->id) !!}
-        <?php 
+        <?php         
         $submitLabel = 'Save Changes';
         $submitIcon = 'glyphicon-pencil';
         $submitType = 'btn-info';
+           
         ?>
     @else 
         {!! 
@@ -18,7 +19,8 @@
         'route' => ['topic.store'],
         'class' => 'form'
         )) !!}
-        <?php $submitLabel = 'Add Topic';
+        <?php 
+        $submitLabel = 'Add Topic';
         $submitIcon = 'glyphicon-plus-sign';
         $submitType = 'btn-primary';
         ?>
@@ -36,17 +38,6 @@
         {!! Form::textarea('intro', null, ['class'=> 'form-control', 'rows' => '3', 'placeholder' => 'Introduction'])!!}
     </div>
     
-<?php
-    // move this into the controller because we don't want to do this each time 
-     $sections = array();
-     foreach(Auth::user()->sections as $section) {
-     	$tmpTitle = $section->title;
-     	$tmpID = $section->id;
-     	$sections[$section->id] = $section->title;  
-     }
-     ?>
-
-
     <div class="row form-inline">
         <div class="col-md-2">
             <div class="checkbox">
@@ -55,7 +46,10 @@
         </div>
 
         <div class="col-md-10 form-group">     
-                <label>Section {!! Form::select('section_id', $sections, null, ['class' => 'form-control'])!!} </label>
+        @if(isset($moderatedSections))
+            <label>Section {!! Form::select('section_id', $moderatedSections, null, ['class' => 'form-control'])!!} 
+            </label>
+        @endif
         </div>
 
 
