@@ -35,25 +35,48 @@
         {!! Form::label('intro','Introduction', ['class' => 'hidden']) !!}
         {!! Form::textarea('intro', null, ['class'=> 'form-control', 'rows' => '3', 'placeholder' => 'Introduction'])!!}
     </div>
+    
+<?php
+    // move this into the controller because we don't want to do this each time 
+     $sections = array();
+     foreach(Auth::user()->sections as $section) {
+     	$tmpTitle = $section->title;
+     	$tmpID = $section->id;
+     	$sections[$section->id] = $section->title;  
+     }
+     ?>
+
 
     <div class="row form-inline">
-        <div class="col-md-3">
+        <div class="col-md-2">
             <div class="checkbox">
                 <label>{!! Form::checkbox('secret')!!} Anonymous</label>
             </div>
         </div>
 
-        <div class="col-md-3">
+        <div class="col-md-10 form-group">     
+                <label>Section {!! Form::select('section_id', $sections, null, ['class' => 'form-control'])!!} </label>
+        </div>
+
+
+</div>
+
+    <div class="row form-inline">
+
+        <div class="col-md-2">
             <div class="checkbox">
                 <label>{!! Form::checkbox('readonly')!!} Read Only</label>
             </div>
         </div>
+     
 
-        <div class="col-md-3 form-group">     
+    
+        <div class="col-md-5 form-group">     
                 <label>Order {!! Form::selectRange('weight', 0, 10, null, ['class' => 'form-control'])!!} </label>
         </div>
 
-        <div class="col-md-3">
+
+        <div class="col-md-5">
                 {!! Form::button("<span class='glyphicon $submitIcon'></span>&nbsp;&nbsp;" . $submitLabel, array('type' => 'submit', 'class' => "btn pull-right $submitType")) !!}
         </div>
     </div>
