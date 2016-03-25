@@ -28,7 +28,7 @@ class CreatePostRequest extends Request
             $authUser = \Auth::user();
 
             // is the user a sysop
-            if ($authUser->Sysop) {
+            if ($authUser->administrator) {
                 $return = true;
             }
 
