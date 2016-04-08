@@ -20,4 +20,9 @@ class Post extends Model
     {
         return $this->belongsTo('Nexus\User', 'user_id');
     }
+
+    public function editor()
+    {
+        return $this->belongsTo('Nexus\User', 'update_user_id');
+    }
 }
