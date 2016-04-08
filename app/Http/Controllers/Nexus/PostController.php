@@ -90,10 +90,12 @@ class PostController extends Controller
      */
     public function update(Requests\Post\UpdateRequest $request, $id)
     {
-        // update time
         // update who last updated the post
+        $input = $request->all();
+
+        $input['update_user_id'] = \Auth::user()->id;
         $post = \Nexus\Post::findOrFail($id);
-        $post->update($request->all());
+        $post->update($input);
         return redirect()->route('topic.show', ['id' => $post->topic_id]);
     }
 
