@@ -1,3 +1,4 @@
+<div class="well">
 {!! Form::model($post, array(
             'route' => ['posts.update', $post->id],
             'class' => 'form',
@@ -14,9 +15,11 @@
     </div>
 
 <div class="row">    
-    <div class="col-md-2">
-        <div class="form-group">
-            {!! Form::submit('Update Comment', ['class'=> 'btn btn-primary form-control']) !!}
+    <div class="col-md-12">
+        <div class="form-group">          
+            {!! Form::button("<span class='glyphicon glyphicon-pencil'></span>&nbsp;&nbsp;Update" , array('type' => 'submit', 'class' => "btn pull-right btn-info")) !!}
+
+
         </div>
     </div>
 </div>
@@ -30,3 +33,4 @@
         </p>
     @endif 
 @endif
+</div>
