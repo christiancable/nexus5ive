@@ -31,5 +31,9 @@
         </div>
         <hr>
         <p>{!! Nexus\Helpers\NxCodeHelper::nxDecode($post->text) !!}</p>
+
+        @if ($post->editor)
+        <small class="pull-right text-muted">Edited by <strong>{{$post->editor->username}}</strong> at {{$post->updated_at->format('D, F jS Y - H:i')}}</small>
+        @endif 
     </div>
 </div>
