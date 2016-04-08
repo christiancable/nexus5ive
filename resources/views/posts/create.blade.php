@@ -13,19 +13,13 @@
 <div class="tab-content">
 <br/>
   <div role="tabpanel" class="tab-pane active" id="edit">
-    @include('posts._edit',$topic)
+    <?php unset($tabGroups); ?>
+    @include('posts._compose',$topic)
     <?php $tabGroups[] = $topic->id ?>
   </div>
 
   <div role="tabpanel" class="tab-pane" id="preview">
-    <div class="panel panel-info">
-        <div class="panel-heading">
-            <h3 class="panel-title" id='preview-title'>&nbsp;</h3>
-        </div>
-        <div class="panel-body">
-            <p id='preview-view'><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> <em>Loading&hellip;</em></p>
-        </div>
-    </div>
+    @include('posts._preview')
  </div>
 </div>
 
@@ -74,6 +68,8 @@
 @endif 
 
 @section('javascript')
+@parent
+{!! var_dump($tabGroups) !!}
 <script>
 $(function () {
   $('[data-toggle="popover"]').popover()

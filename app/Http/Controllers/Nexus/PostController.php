@@ -88,9 +88,13 @@ class PostController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Requests\Post\UpdateRequest $request, $id)
     {
-        //
+        // update time
+        // update who last updated the post
+        $post = \Nexus\Post::findOrFail($id);
+        $post->update($request->all());
+        return redirect()->route('topic.show', ['id' => $post->topic_id]);
     }
 
     /**
@@ -102,6 +106,7 @@ class PostController extends Controller
     public function destroy($id)
     {
         //
+        return "Deleting the post";
     }
 
     /**

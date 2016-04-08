@@ -60,7 +60,7 @@ Route::delete('comments/{comment}', 'Nexus\CommentController@destroy');
 Route::resource('comments', 'Nexus\CommentController');
 
 // posts
-Route::post('posts', 'Nexus\PostController@store');
+Route::resource('posts', 'Nexus\PostController');
 
 // messages
 Route::get('messages/{id}', 'Nexus\MessageController@index');

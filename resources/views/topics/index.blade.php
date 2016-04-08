@@ -51,10 +51,17 @@
 
     @forelse($postsArray as $post)
         
-        @if($topic->secret && $userCanSeeSecrets == false) 
-            @include('posts.showhidden', compact('post', 'readProgress'))
-        @else
-            @include('posts.show', compact('post', 'readProgress'))
+
+        @if($topic->section->moderator->id === Auth::user()->id)
+            @include('posts.moderate', compact('post', 'readProgress'))
+             <?php $tabGroups[] ='post'.$post->id ?>
+            <!-- populate javascript tabs here -->
+        @else 
+            @if($topic->secret && $userCanSeeSecrets == false) 
+                @include('posts.showhidden', compact('post', 'readProgress'))
+            @else
+                @include('posts.show', compact('post', 'readProgress'))
+            @endif
         @endif 
 
         @empty
@@ -70,4 +77,11 @@
     {!! $postsChunk->render() !!}
     </div>
 </div>
+
+@endsection
+
+@section('javascript')
+    @if (isset($tabGroups))
+        @include('javascript._jqueryTabs', $tabGroups)
+    @endif
 @endsection
