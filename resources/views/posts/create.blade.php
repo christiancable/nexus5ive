@@ -61,7 +61,7 @@
 </div>
 {!! Form::close() !!}
 {{-- the only error we have is if the user tries to leave a blank comment --}}
-@if ($errors->any())
+@if ($errors->post->any())
     <p class="alert alert-danger">
         Only a monster would try to leave an empty comment! 
     </p>

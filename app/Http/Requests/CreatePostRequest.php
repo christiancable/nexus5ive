@@ -17,6 +17,9 @@ class CreatePostRequest extends Request
      *
      * @return bool
      */
+
+    protected $errorBag = 'post';
+
     public function authorize()
     {
 
@@ -38,7 +41,7 @@ class CreatePostRequest extends Request
             }
 
             // OR is the topic NOT ready only
-            if(!$topic->readonly) {
+            if (!$topic->readonly) {
                 $return = true;
             }
         
