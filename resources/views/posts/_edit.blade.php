@@ -15,7 +15,7 @@
     </div>
 
     <div class="form-group">
-        {!! Form::textarea("form[$formName][text]", $post->text, ['class'=> 'form-control', 'id'=>'postText']) !!}
+        {!! Form::textarea("form[$formName][text]", $post->text, ['class'=> 'form-control']) !!}
     </div>
 
 <div class="row">    
