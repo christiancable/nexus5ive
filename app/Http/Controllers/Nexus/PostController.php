@@ -93,6 +93,10 @@ class PostController extends Controller
         // update who last updated the post
         $input = $request->all();
 
+        // copy the namespaced input files back into top level input
+        $input['title'] = $input['form'][$id]['title'];
+        $input['text'] = $input['form'][$id]['text'];
+
         $input['update_user_id'] = \Auth::user()->id;
         $post = \Nexus\Post::findOrFail($id);
         $post->update($input);

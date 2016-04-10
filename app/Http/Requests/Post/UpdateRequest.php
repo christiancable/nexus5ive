@@ -59,7 +59,7 @@ class UpdateRequest extends Request
     public function rules()
     {
         return [
-             'text' => 'required',
+             'form.'.$this::input('id').'.text' => 'required',
         ];
     }
 }

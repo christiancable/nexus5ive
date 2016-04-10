@@ -1,25 +1,33 @@
 <div class="well">
-{!! Form::model($post, array(
-            'route' => ['posts.update', $post->id],
-            'class' => 'form',
-            'method' => 'PATCH'
-            )) !!}
+<?php $formName = $post->id ?>
+{!! Form::open(
+    array(
+        'route'     => ['posts.update', $post->id],
+        'class'     => 'form',
+        'method'    => 'PATCH',
+        'name'      => $formName,
+        )
+) !!}
 {!! Form::hidden('id', $post->id) !!}
 
     <div class="form-group">
-        {!! Form::text('title', null, ['class'=> 'form-control', 'placeholder'=>'Subject']) !!}
+        {!! Form::text("form[$formName][title]", $post->title, ['class'=> 'form-control', 'placeholder'=>'Subject']) !!}
     </div>
 
     <div class="form-group">
-        {!! Form::textarea('text', null, ['class'=> 'form-control', 'id'=>'postText']) !!}
+        {!! Form::textarea("form[$formName][text]", $post->text, ['class'=> 'form-control', 'id'=>'postText']) !!}
     </div>
 
 <div class="row">    
     <div class="col-md-12">
         <div class="form-group">          
-            {!! Form::button("<span class='glyphicon glyphicon-pencil'></span>&nbsp;&nbsp;Update" , array('type' => 'submit', 'class' => "btn pull-right btn-info")) !!}
-
-
+            {!! Form::button("<span class='glyphicon glyphicon-pencil'></span>&nbsp;&nbsp;Update",
+                array(
+                    'type'  => 'submit',
+                    'class' => "btn pull-right btn-info", 
+                    'value' => $formName
+                    )
+            ) !!}
         </div>
     </div>
 </div>
