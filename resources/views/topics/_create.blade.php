@@ -39,41 +39,33 @@
     </div>
     
     <div class="row form-inline">
+
         <div class="col-md-2">
             <div class="checkbox">
                 <label>{!! Form::checkbox('secret')!!} Anonymous</label>
             </div>
-        </div>
-
-        <div class="col-md-10 form-group">     
-        @if(isset($moderatedSections))
-            <label>Section {!! Form::select('section_id', $moderatedSections, null, ['class' => 'form-control'])!!} 
-            </label>
-        @endif
-        </div>
-
-
-</div>
-
-    <div class="row form-inline">
-
-        <div class="col-md-2">
             <div class="checkbox">
                 <label>{!! Form::checkbox('readonly')!!} Read Only</label>
             </div>
         </div>
-     
 
-    
-        <div class="col-md-5 form-group">     
-                <label>Order {!! Form::selectRange('weight', 0, 10, null, ['class' => 'form-control'])!!} </label>
+        <div class="col-md-7 form-group">     
+        @if(isset($moderatedSections))
+            <label>Section {!! Form::select('section_id', $moderatedSections, null, ['class' => 'form-control'])!!} 
+            </label>
+        @endif
+        <label>Order {!! Form::selectRange('weight', 0, 10, null, ['class' => 'form-control'])!!} </label>
         </div>
 
 
-        <div class="col-md-5">
-                {!! Form::button("<span class='glyphicon $submitIcon'></span>&nbsp;&nbsp;" . $submitLabel, array('type' => 'submit', 'class' => "btn pull-right $submitType")) !!}
+        <div class="col-md-3">
+                {!! Form::button("<span class='glyphicon $submitIcon'></span>&nbsp;&nbsp;" . $submitLabel, array('type' => 'submit', 'class' => "btn pull-right  col-xs-12 $submitType")) !!}
         </div>
-    </div>
+   
+</div>
+
+   
+
         
     {!! Form::close() !!}
 

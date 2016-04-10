@@ -19,12 +19,12 @@
     </div>
 
 <div class="row">    
-    <div class="col-md-12">
+    <div class="col-sm-12">
         <div class="form-group">          
-            {!! Form::button("<span class='glyphicon glyphicon-pencil'></span>&nbsp;&nbsp;Update",
+            {!! Form::button("<span class='glyphicon glyphicon-pencil'></span>&nbsp;&nbsp;Save Changes",
                 array(
                     'type'  => 'submit',
-                    'class' => "btn pull-right btn-info", 
+                    'class' => "btn pull-right btn-info col-xs-12 col-sm-3", 
                     'value' => $formName
                     )
             ) !!}
