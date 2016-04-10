@@ -33,12 +33,12 @@
 
     <div class="content">
         @if (count($section->topics))
-        <?php 
+        <?php
         $moderatedSections = array();
         // make the current section the default by adding it first
         $moderatedSections[$section->id] = $section->title;
-        foreach(Auth::user()->sections as $moderatedSection) {
-            $moderatedSections[$moderatedSection->id] = $moderatedSection->title;  
+        foreach (Auth::user()->sections as $moderatedSection) {
+            $moderatedSections[$moderatedSection->id] = $moderatedSection->title;
         }
         ?>
         @foreach ($section->topics as $topic)
@@ -72,10 +72,16 @@
         @endif
 
         @if (count($section->sections))
+        <?php $subSectionCount = 0; ?>
         <hr>
         <div class="row">
             @foreach ($section->sections as $subSection)
+                <?php $subSectionCount++; ?>
                 @include('sections._read', $subSection)
+                {{-- force row to clear every 3 sections --}}
+                @if($subSectionCount % 3 === 0)
+                    <div class="clearfix"></div>
+                @endif
             @endforeach
         </div>
         @endif
