@@ -69,7 +69,6 @@
 
 @section('javascript')
 @parent
-{!! var_dump($tabGroups) !!}
 <script>
 $(function () {
   $('[data-toggle="popover"]').popover()
