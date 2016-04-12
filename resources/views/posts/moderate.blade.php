@@ -5,7 +5,7 @@
       <li role="presentation" class="active"><a href="#post-view{{$post->id}}">View</a></li>
       <li role="presentation"><a href="#post-edit{{$post->id}}">Edit</a></li>
       <li role="separator" class="divider"></li>
-      {{--  @include('topics._delete', $post) --}}
+      @include('posts._delete', $post)
     </ul>
   </li>
 </ul>

@@ -109,10 +109,13 @@ class PostController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function destroy($id)
+    public function destroy(Requests\Post\DeleteRequest $request, $id)
     {
-        //
-        return "Deleting the post";
+        // using forceDelete here because in this case we do not want a soft delete
+        $post = \Nexus\Post::findOrFail($id);
+        $topicID = $post->topic_id;
+        $post->forceDelete();
+        return redirect()->route('topic.show', ['id' => $post->topic_id]);
     }
 
     /**
