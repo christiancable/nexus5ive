@@ -57,11 +57,9 @@
              <?php $tabGroups[] ='post'.$post->id ?>
             <!-- populate javascript tabs here -->
         @else 
-            @if($topic->secret && $userCanSeeSecrets == false) 
-                @include('posts.showhidden', compact('post', 'readProgress'))
-            @else
-                @include('posts.show', compact('post', 'readProgress'))
-            @endif
+        {{-- if we are on the last post and we  are the author and it is recent
+        the display the moderate view so a user cn edit their post --}}    
+            @include('posts.show', compact('post', 'readProgress', 'userCanSeeSecrets'))
         @endif 
 
         @empty
