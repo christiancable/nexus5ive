@@ -4,8 +4,10 @@
     <ul class="dropdown-menu">      
       <li role="presentation" class="active"><a href="#post-view{{$post->id}}">View</a></li>
       <li role="presentation"><a href="#post-edit{{$post->id}}">Edit</a></li>
+      @if(!isset($hideDelete))
       <li role="separator" class="divider"></li>
       @include('posts._delete', $post)
+      @endif
     </ul>
   </li>
 </ul>

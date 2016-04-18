@@ -12,8 +12,7 @@ class UpdateRequest extends Request
      * a post can be edited at any time by
      * - topic moderator
      * - bbs administrator
-     *
-     * @todo: a post can be edited by the creator of the post within X seconds
+     * - the creator of the post within X seconds if that post is the most recent in the topic
      *
      * @return bool
      */
@@ -31,18 +30,22 @@ class UpdateRequest extends Request
             $return = false;
         }
 
-        // is the auth user a moderator of the current section
         $post = \Nexus\Post::findOrFail($this::input('id'));
+        
+        // is this the most recent post in this topic, is it by the logged in user and is it recent
+        $latestPost = $post->topic->posts->last();
 
-        try {
-            if ($post->topic->section->moderator->id == \Auth::id()) {
-                $return = true;
-            }
-        } catch (\Exception $e) {
-            $return = false;
-            \Log::error('Post Update - attempt edit edit post by non-moderator '. $e);
+        if (($post['id'] == $latestPost['id']) &&
+            ($post->author->id == \Auth::user()->id) &&
+            ($post->time->diffInSeconds() <= env('NEXUS_RECENT_EDIT') )) {
+            $return = true;
         }
 
+        // is the auth user a moderator of the current section
+        if ($post->topic->section->moderator->id == \Auth::id()) {
+            $return = true;
+        }
+        
         // is the auth user an administrator of the bbs
         if (\Auth::user()->administrator) {
             $return = true;

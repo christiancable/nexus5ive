@@ -24,7 +24,6 @@
         $latestPost = $posts->get()->first();
         $postsChunk = $posts->paginate(10);
         $postsArray = [];
-	
         foreach ($postsChunk as $post) {
             $postsArray[] = $post;
         }
@@ -55,13 +54,14 @@
 
         @if($topic->section->moderator->id === Auth::user()->id)
             @include('posts.moderate', compact('post', 'readProgress'))
-             <?php $tabGroups[] ='post'.$post->id ?>
+            <?php $tabGroups[] ='post'.$post->id ?>
             <!-- populate javascript tabs here -->
         @else 
         {{-- if we are on the last post and we  are the author and it is recent
         the display the moderate view so a user can edit their post --}}
-	    @if (($post['id'] == $latestPost['id']) && ($post->author->id == Auth::user()->id) && (true)) 
-                @include('posts.moderate', compact('post', 'readProgress'))
+	    @if (($post['id'] == $latestPost['id']) && ($post->author->id == Auth::user()->id) && ($post->time->diffInSeconds() <= env('NEXUS_RECENT_EDIT') )) 
+                <?php $hideDelete = true ?>
+                @include('posts.moderate', compact('post', 'readProgress', 'noDelete'))
                 <?php $tabGroups[] ='post'.$post->id ?>
 	    @else
 	        @include('posts.show', compact('post', 'readProgress', 'userCanSeeSecrets'))
