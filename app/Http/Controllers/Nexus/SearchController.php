@@ -21,8 +21,30 @@ class SearchController extends Controller
      */
     public function index()
     {
-        //
+        $text = 'Search';
+        $results = null;
+        $breadcrumbs = \Nexus\Helpers\BreadcrumbHelper::breadcumbForUtility('Search');
+
+        return view(
+            'search.results',
+            compact('results', 'breadcrumbs', 'text')
+        );
     }
+
+    /**
+     *
+     * @todo validation of search via request
+     *
+     */
+    public function submitSearch(Requests\Search\SearchRequest $request)
+    {
+        $input = $request->all();
+        $searchText = $input['text'];
+        
+        $redirect = action('Nexus\SearchController@find', ['text' => $searchText]);
+        return redirect($redirect);
+    }
+
 
     /**
      * perform a search against all the posts and
@@ -33,7 +55,7 @@ class SearchController extends Controller
      */
     public function find($text)
     {
-        $results = \Nexus\Post::where('text', 'like', "%$text%")->orderBy('time','desc');
+        $results = \Nexus\Post::where('text', 'like', "%$text%")->orderBy('time', 'desc');
 
         \Nexus\Helpers\ActivityHelper::updateActivity(
             "Searching",
@@ -42,11 +64,10 @@ class SearchController extends Controller
         );
 
         $breadcrumbs = \Nexus\Helpers\BreadcrumbHelper::breadcumbForUtility('Search');
-        // view with pagination
 
         return view(
             'search.results',
-            compact('results', 'breadcrumbs')
+            compact('results', 'breadcrumbs', 'text')
         );
     }
 }

@@ -71,5 +71,6 @@ Route::resource('messages', 'Nexus\MessageController');
 Route::resource('here', 'Nexus\ActivityController');
 
 // search
-Route::get('search/{text}', 'Nexus\SearchController@find');
 Route::get('search', 'Nexus\SearchController@index');
+Route::get('search/{text}', 'Nexus\SearchController@find');
+Route::post('search', 'Nexus\SearchController@submitSearch');
