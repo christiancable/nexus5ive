@@ -38,9 +38,9 @@
             ?>
             <ul class="nav navbar-nav">
               <li><a href="/users/">Examine User</a></li>
-               <li><a href="/leap">Topic Leap</a></li> 
+               <li><a href="/leap">Catch-up</a></li> 
                <li><a href="{{ action('Nexus\ActivityController@index')}}">Who is Online</a></li>
-               <li><a href="{{ action('Nexus\SectionController@latest')}}">Latest Posts</a></li>
+               <li><a href="{{ action('Nexus\SectionController@latest')}}">Latest</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
               <li class="dropdown">
