@@ -69,10 +69,7 @@ Route::resource('messages', 'Nexus\MessageController');
 
 // activities 
 Route::resource('here', 'Nexus\ActivityController');
-/*
 
-Future Routes
-
-GET /who/ - list of users online
-GET /inbox/ - a list of messages
-*/
+// search
+Route::get('search/{text}', 'Nexus\SearchController@find');
+Route::get('search', 'Nexus\SearchController@index');
