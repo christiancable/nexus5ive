@@ -22,7 +22,7 @@
     <div class="content">
     <?php
         $latestPost = $posts->get()->first();
-        $postsChunk = $posts->paginate(10);
+        $postsChunk = $posts->paginate(env('NEXUS_PAGINATION'));
         $postsArray = [];
         foreach ($postsChunk as $post) {
             $postsArray[] = $post;
