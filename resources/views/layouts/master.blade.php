@@ -39,7 +39,7 @@
             <ul class="nav navbar-nav">
               <li><a href="/users/">Users</a></li>
                <li><a href="/leap">Catch-up</a></li> 
-               <li><a href="{{ action('Nexus\ActivityController@index')}}">Who is Online</a></li>
+               <li><a href="{{ action('Nexus\ActivityController@index')}}">Who's Online</a></li>
                <li><a href="{{ action('Nexus\SectionController@latest')}}">Latest</a></li>
                <li><a href="{{ action('Nexus\SearchController@index')}}">Search</a></li>
             </ul>
