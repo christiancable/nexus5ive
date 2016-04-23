@@ -46,7 +46,6 @@
         If you don't look for anything then you won't find anything
     </p>
 </div>
-
 @else 
 
     @if($results)        
@@ -84,6 +83,14 @@
             {!! $paginatedResults->render() !!}
             </div>
         </div>
+    @else
+        @if (isset($displaySearchResults)) 
+        <div class="container">
+            <p class="alert alert-warning">
+                Small words like 'an', 'is', 'of' etc are excluded from the search. Please search again with different words.
+            </p>
+        </div>
+        @endif 
     @endif
 
 @endif
