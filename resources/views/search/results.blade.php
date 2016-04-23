@@ -64,7 +64,7 @@
             <div class="content">
             @foreach($paginatedResults as $result) 
                 <div class="panel panel-default">
-                  <div class="panel-body">
+                  <div class="panel-body break-long-words">
                     <p><a href="{!! Nexus\Helpers\TopicHelper::routeToPost($result) !!}">
                      @if($result->topic->secret)
                          <strong>Anonymous</strong>
