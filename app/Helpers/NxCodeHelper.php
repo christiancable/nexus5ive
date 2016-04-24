@@ -87,11 +87,12 @@ HTML;
         $videoTags = array();
         $embedCodes = array();
 
-        $pattern = '/\[youtube-\](.*)\[-youtube\]/i';
+        $pattern = '/\[youtube-\](.*)\[-youtube\]/im';
         // grab all youtube matches and populate array
-        preg_match($pattern, $text, $matches);
-
-        foreach ($matches as $match) {
+        preg_match_all($pattern, $text, $matches);
+        // echo "\n\n";
+        // var_dump($matches);
+        foreach ($matches[1] as $match) {
 
             preg_match(self::$youTubePattern, $match, $videoIDs);
 
