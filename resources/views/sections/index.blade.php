@@ -17,6 +17,15 @@
         <p>Moderated by: <a href="{{ action('Nexus\UserController@show', ['username' => $section->moderator->username])}}">{{$section->moderator->username}}</a></p>
     </div>
 
+
+    {{-- if you moderate the current section then show edit controls --}}
+    @if (Auth::user()->id === $section->user_id )
+        <div class="content">
+        <p>You moderate this section - here will be edit contols</p>
+        </div>
+    
+    @endif 
+
     @if (session('alert'))
     <div class="content">
         <div class="alert alert-warning" role="alert">No updated topics found. Why not start a new conversation or read more sections?</div>
@@ -77,7 +86,14 @@
         <div class="row">
             @foreach ($section->sections as $subSection)
                 <?php $subSectionCount++; ?>
-                @include('sections._read', $subSection)
+                {{-- the moderator of the parent can edit the sub sections here --}}
+                @if (Auth::user()->id === $section->user_id )
+                   @include('sections._subsection_moderator', $subSection)
+                <?php $tabGroups[] ='section'.$subSection->id ?>
+                @else
+                    @include('sections._subsection_view', $subSection)
+                @endif 
+                
                 {{-- force row to clear every 3 sections --}}
                 @if($subSectionCount % 3 === 0)
                     <div class="clearfix"></div>
