@@ -81,25 +81,44 @@
         @endif
 
         @if (count($section->sections))
-        <?php $subSectionCount = 0; ?>
+        <?php
+            $subSectionCount = 0;
+        ?>
         <hr>
         <div class="row">
             @foreach ($section->sections as $subSection)
                 <?php $subSectionCount++; ?>
                 {{-- the moderator of the parent can edit the sub sections here --}}
                 @if (Auth::user()->id === $section->user_id )
-                   @include('sections._subsection_moderator', $subSection)
-                <?php $tabGroups[] ='section'.$subSection->id ?>
+                
+                    <?php
+                        /*
+                            this section could be moved to anywhere owned by the moderator
+                            minus itself and it's subsections 
+
+                            @todo this feels like too much logic happening in the view
+                        */
+                        $allChildSections = \Nexus\Helpers\SectionHelper::allChildSections($subSection);
+                        $allChildSections->push($subSection);
+                        $destinations = \Auth::user()->sections->diff($allChildSections);
+                    ?>
+                    @include('sections._subsection_moderator', compact('subSection','destinations'))
+                    <?php $tabGroups[] ='section'.$subSection->id ?>
+
                 @else
                     @include('sections._subsection_view', $subSection)
                 @endif 
                 
                 {{-- force row to clear every 3 sections --}}
+
                 @if($subSectionCount % 3 === 0)
                     <div class="clearfix"></div>
                 @endif
+
             @endforeach
+
         </div>
+        
         @endif
     </div>
 
