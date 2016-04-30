@@ -86,9 +86,21 @@ class SectionController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Requests\Section\UpdateSubSection  $request, $id)
     {
-        dd(compact('request', 'id'));
+        $input = $request->all();
+        $formName = "subsection{$id}";
+
+        $input['title'] = $input['form'][$formName]['title'];
+        $input['intro'] = $input['form'][$formName]['intro'];
+        $input['parent_id'] = $input['form'][$formName]['parent_id'];
+        $input['weight'] = $input['form'][$formName]['weight'];
+        $input['user_id'] = $input['form'][$formName]['user_id'];
+
+        $section = \Nexus\Section::findOrFail($id);
+        $section->update($input);
+
+        return redirect()->route('section.show', ['id' => $section->id]);
     }
 
     /**

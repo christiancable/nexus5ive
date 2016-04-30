@@ -14,11 +14,11 @@
         {!! Form::hidden('id', $subSection->id) !!}
 
         <div class="form-group">
-            {!! Form::text("form[$formName][title]", $subSection->title, ['class'=> 'form-control', 'placeholder'=>'Subject']) !!}
+            {!! Form::text("form[$formName][title]", $subSection->title, ['class'=> 'form-control', 'placeholder'=>'Title']) !!}
         </div>
 
         <div class="form-group">
-            {!! Form::textarea("form[$formName][text]", $subSection->intro, ['class'=> 'form-control']) !!}
+            {!! Form::textarea("form[$formName][intro]", $subSection->intro, ['class'=> 'form-control']) !!}
         </div>
         <?php
             $submitLabel = 'Save Changes';
@@ -36,7 +36,7 @@
                 ?>
                 <label>
                     Parent Section {!! 
-                    Form::select("form[$formName][parent]",
+                    Form::select("form[$formName][parent_id]",
                         $destinationSections,
                         $subSection->parent->id,
                         ['class' => 'form-control'])
@@ -61,7 +61,7 @@
             <div class="col-md-6 form-group">
                 <label>
                     Moderator {!!
-                        Form::select("form[$formName][moderator]",
+                        Form::select("form[$formName][user_id]",
                             \Nexus\User::all()->lists('username', 'id')->toArray(),
                             $subSection->moderator->id,                    
                             ['class' => 'form-control'])
@@ -88,15 +88,18 @@
 
         {!! Form::close() !!}
 
-{{-- 
- @if (Session::get('postForm') == $post->id)
+
+    </div>
+ @if (Session::get('subSectionForm') == $subSection->id)
     @if ($errors->any())
-        <p class="alert alert-danger">
-            Comments cannot be empty. Please delete the comment instead. 
-        </p>
+        <div class="row">
+        <div class="col-sm-12">
+            <p class="alert alert-danger">
+            You need to <strong>give your section a title</strong>. Otherwise; <em>chaos</em>.
+            </p>
+            </div>
+        </div>
     @endif 
 @endif
---}}
-    </div>
 </div>
 
