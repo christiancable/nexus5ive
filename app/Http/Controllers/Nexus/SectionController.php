@@ -88,7 +88,7 @@ class SectionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        dd(compact('request', 'id'));
     }
 
     /**
