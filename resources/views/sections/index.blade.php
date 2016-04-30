@@ -19,12 +19,13 @@
 
 
     {{-- if you moderate the current section then show edit controls --}}
+    {{-- 
     @if (Auth::user()->id === $section->user_id )
         <div class="content">
         <p>You moderate this section - here will be edit contols</p>
         </div>
-    
     @endif 
+    --}}
 
     @if (session('alert'))
     <div class="content">
