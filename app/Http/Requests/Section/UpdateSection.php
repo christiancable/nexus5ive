@@ -4,7 +4,7 @@ namespace Nexus\Http\Requests\Section;
 
 use Nexus\Http\Requests\Request;
 
-class UpdateSubSection extends Request
+class UpdateSection extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -20,16 +20,16 @@ class UpdateSubSection extends Request
     {
         $return = false;
 
-        $formName = "subsection{$this::input('id')}";
+        $formName = key($this::input('form'));
         $formValues = $this::input('form')[$formName];
       
-        $this->session()->flash('subSectionForm', $this::input('id'));
+        $this->session()->flash('form', $formName);
 
         if (!\Auth::check()) {
             $return = false;
         }
 
-        $subSection = \Nexus\Section::findOrFail($this::input('id'));
+        $subSection = \Nexus\Section::findOrFail($formValues['id']);
         $destination = \Nexus\Section::findOrFail($formValues['parent_id']);
         
         // [1] a subsection can be edited by the moderator of its parent section
@@ -74,9 +74,10 @@ class UpdateSubSection extends Request
      */
     public function rules()
     {
+        $formName = key($this::input('form'));
         return [
-            'form.subsection'.$this::input('id').'.title' => 'required',
-            'form.subsection'.$this::input('id').'.user_id' => 'required|numeric',
+            "form.{$formName}.title" => 'required',
+            "form.{$formName}.user_id" => 'required|numeric',
         ];
     }
 }

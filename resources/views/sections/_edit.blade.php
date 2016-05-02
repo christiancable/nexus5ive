@@ -1,7 +1,9 @@
 {{-- this is for moderators to edit sub sections --}}
 <div class="panel panel-primary">
     <div class="well">
-        <?php $formName = 'subsection'.$subSection->id ?>
+        <?php
+            $formName = 'section'.$subSection->id;
+        ?>
         {!! Form::open(
             array(
                 'route'     => ['section.update', $subSection->id],
@@ -11,7 +13,8 @@
                 )
             ) 
         !!}
-        {!! Form::hidden('id', $subSection->id) !!}
+        
+        {!! Form::hidden("form[$formName][id]", $subSection->id) !!}
 
         <div class="form-group">
             {!! Form::text("form[$formName][title]", $subSection->title, ['class'=> 'form-control', 'placeholder'=>'Title']) !!}
@@ -90,7 +93,7 @@
 
 
     </div>
- @if (Session::get('subSectionForm') == $subSection->id)
+ @if (Session::get('form') == $formName)
     @if ($errors->any())
         <div class="row">
         <div class="col-sm-12">

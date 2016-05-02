@@ -86,10 +86,10 @@ class SectionController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update(Requests\Section\UpdateSubSection  $request, $id)
+    public function update(Requests\Section\UpdateSection $request, $id)
     {
         $input = $request->all();
-        $formName = "subsection{$id}";
+        $formName = "section{$id}";
 
         $input['title'] = $input['form'][$formName]['title'];
         $input['intro'] = $input['form'][$formName]['intro'];
