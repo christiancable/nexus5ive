@@ -12,13 +12,16 @@ class CreateRequest extends Request
      *
      * user should be
      * logged in
-     * user administrator | user moderator 
+     * user administrator | user moderator
      *
      * @return bool
      */
     public function authorize()
     {
         $return = false;
+
+        $formName = "topicCreate";
+        $this->session()->flash('form', $formName);
 
         if (\Auth::check()) {
             $authUser = \Auth::user();

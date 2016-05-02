@@ -7,11 +7,11 @@
             'method' => 'PATCH'
             )) !!}
         {!! Form::hidden('id', $topic->id) !!}
-        <?php         
+        <?php
+        $formName = 'topic'.$topic->id;
         $submitLabel = 'Save Changes';
         $submitIcon = 'glyphicon-pencil';
         $submitType = 'btn-info';
-           
         ?>
     @else 
         {!! 
@@ -19,7 +19,8 @@
         'route' => ['topic.store'],
         'class' => 'form'
         )) !!}
-        <?php 
+        <?php
+        $formName = 'topicCreate';
         $submitLabel = 'Add Topic';
         $submitIcon = 'glyphicon-plus-sign';
         $submitType = 'btn-primary';
@@ -65,10 +66,9 @@
 </div>
 
    
+{!! Form::close() !!}
 
-        
-    {!! Form::close() !!}
-
+@if (Session::get('form') == $formName)
     @if ($errors->all())
     <div class="alert alert-warning" role="alert">
         <ul>
@@ -78,4 +78,5 @@
         </ul>
     </div>
     @endif
+@endif
 </div>

@@ -9,8 +9,8 @@ class UpdateRequest extends Request
     /**
      * Determine if the user is authorized to make this request.
      * a topic can be updated by the section moderator or by an administrator
-     * 
-     * a topic can be moved to another section if the user moderators that section or 
+     *
+     * a topic can be moved to another section if the user moderators that section or
      * they are an administrator
      *
      * @return bool
@@ -22,6 +22,9 @@ class UpdateRequest extends Request
         if (!\Auth::check()) {
             $return = false;
         }
+      
+        $formName = "topic{$this::input('id')}";
+        $this->session()->flash('form', $formName);
 
         // does the user moderate the section that this topic is currently in?
         $topic = \Nexus\Topic::findOrFail($this::input('id'));
