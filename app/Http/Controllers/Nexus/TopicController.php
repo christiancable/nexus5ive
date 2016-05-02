@@ -43,7 +43,15 @@ class TopicController extends Controller
      */
     public function store(Requests\Topic\CreateRequest $request)
     {
+        $formName = "topicCreate";
         $input = $request->all();
+        $input['section_id'] = $input['form'][$formName]['section_id'];
+        $input['secret'] = $input['form'][$formName]['secret'];
+        $input['readonly'] = $input['form'][$formName]['readonly'];
+        $input['title'] = $input['form'][$formName]['title'];
+        $input['intro'] = $input['form'][$formName]['intro'];
+        $input['weight'] = $input['form'][$formName]['weight'];
+
         $topic = \Nexus\Topic::create($input);
         $redirect = action('Nexus\SectionController@show', ['id' => $topic->section_id]);
         return redirect($redirect);
@@ -145,7 +153,18 @@ class TopicController extends Controller
     public function update(Requests\Topic\UpdateRequest $request, $id)
     {
         $topic = \Nexus\Topic::findOrFail($id);
-        $topic->update($request->all());
+
+        $formName = "topic{$id}";
+
+        $input = $request->all();
+        $input['section_id'] = $input['form'][$formName]['section_id'];
+        $input['secret'] = $input['form'][$formName]['secret'];
+        $input['readonly'] = $input['form'][$formName]['readonly'];
+        $input['title'] = $input['form'][$formName]['title'];
+        $input['intro'] = $input['form'][$formName]['intro'];
+        $input['weight'] = $input['form'][$formName]['weight'];
+
+        $topic->update($input);
         return  redirect()->route('section.show', ['id' => $topic->section_id]);
     }
 

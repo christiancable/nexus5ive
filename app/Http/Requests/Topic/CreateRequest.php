@@ -21,12 +21,14 @@ class CreateRequest extends Request
         $return = false;
 
         $formName = "topicCreate";
+        $formValues = $this::input('form')[$formName];
         $this->session()->flash('form', $formName);
+
 
         if (\Auth::check()) {
             $authUser = \Auth::user();
-            $section =  Section::findOrFail($this::input('section_id'));
-               
+            $section =  Section::findOrFail($formValues['section_id']);
+
             // is the user an administrator
             if ($authUser->administrator) {
                 $return = true;
@@ -50,14 +52,12 @@ class CreateRequest extends Request
      */
     public function rules()
     {
+        $formName = "topicCreate";
         return [
-            'title' => 'required',
-            'intro' => 'required',
-            'section_id' => 'required',
-            // 'secret' => 'required',
-            // 'readonly' => 'required',
-            'weight' => 'required',
-         
+            "form.{$formName}.title" => 'required',
+            "form.{$formName}.intro" => 'required',
+            "form.{$formName}.section_id" => 'required|numeric',
+            "form.{$formName}.weight" => 'required|numeric',
         ];
     }
 }

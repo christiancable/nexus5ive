@@ -22,19 +22,20 @@ class UpdateRequest extends Request
         if (!\Auth::check()) {
             $return = false;
         }
-      
-        $formName = "topic{$this::input('id')}";
+
+        $formName = key($this::input('form'));
+        $formValues = $this::input('form')[$formName];
         $this->session()->flash('form', $formName);
 
         // does the user moderate the section that this topic is currently in?
-        $topic = \Nexus\Topic::findOrFail($this::input('id'));
+        $topic = \Nexus\Topic::findOrFail($formValues['id']);
         if ($topic->section->moderator->id == \Auth::id()) {
             $return = true;
         }
         
         // is the user moving the topic to a section they moderate?
         try {
-            \Auth::user()->sections()->where('id',$this::input('section_id'))->firstOrFail();
+            \Auth::user()->sections()->where('id', $formValues['section_id'])->firstOrFail();
         } catch (\Exception $e) {
             $return = false;
             \Log::error('Topic Update - Attempt to move to unowned section '. $e);
@@ -55,8 +56,14 @@ class UpdateRequest extends Request
      */
     public function rules()
     {
+
+        $formName = key($this::input('form'));
+        
         return [
-            'title' => 'required',
+            "form.{$formName}.title" => 'required',
+            "form.{$formName}.intro" => 'required',
+            "form.{$formName}.section_id" => 'required|numeric',
+            "form.{$formName}.weight" => 'required|numeric',
         ];
     }
 }

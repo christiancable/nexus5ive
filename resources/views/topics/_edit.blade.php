@@ -15,6 +15,6 @@
     @include('topics._read', $topic)
   </div>
   <div role="tabpanel" class="tab-pane" id="topic-edit{{$topic->id}}">
-   @include('topics._create', $topic)
+   @include('topics._update', $topic)
  </div>
 </div>
