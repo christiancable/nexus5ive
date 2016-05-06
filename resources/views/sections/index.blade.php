@@ -11,21 +11,36 @@
 @section('content')
 <div class="container">
 
-    <div class="content">
-        <h1>{{$section->title}}</h1>
-        <p class="lead">{{$section->intro}}</p>
-        <p>Moderated by: <a href="{{ action('Nexus\UserController@show', ['username' => $section->moderator->username])}}">{{$section->moderator->username}}</a></p>
-    </div>
+@if (Auth::user()->id === $section->user_id )
 
+    <ul class="nav nav-tabs" id="section{{$section->id}}">
+        <li class="active"><a href="#view">View</a></li>
+        <li><a href="#settings">Settings</a></li>
+    </ul>
 
-    {{-- if you moderate the current section then show edit controls --}}
-    {{-- 
-    @if (Auth::user()->id === $section->user_id )
+    <div class="tab-content">
+    <br/>
+      <div role="tabpanel" class="tab-pane active" id="view">
+        @include('sections._header_view', $section)
+        <?php  $tabGroups[] = "section{$section->id}" ?>
+      </div>
+
+      <div role="tabpanel" class="tab-pane" id="settings">
         <div class="content">
         <p>You moderate this section - here will be edit contols</p>
         </div>
-    @endif 
-    --}}
+     </div>
+    </div>
+
+@else
+    @include('sections._header_view', $section)
+@endif 
+
+
+
+
+    {{-- if you moderate the current section then show edit controls --}}
+
 
     @if (session('alert'))
     <div class="content">
