@@ -15,6 +15,7 @@
         !!}
         
         {!! Form::hidden("form[$formName][id]", $subSection->id) !!}
+        {!! Form::hidden("form[$formName][current_section]", $section->parent_id) !!}
 
         <div class="form-group">
             {!! Form::text("form[$formName][title]", $subSection->title, ['class'=> 'form-control', 'placeholder'=>'Title']) !!}

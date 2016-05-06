@@ -27,7 +27,7 @@
 
       <div role="tabpanel" class="tab-pane" id="settings">
         <div class="content">
-        <p>You moderate this section - here will be edit contols</p>
+        @include('sections._header_edit', $section)
         </div>
      </div>
     </div>
