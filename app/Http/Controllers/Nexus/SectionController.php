@@ -91,9 +91,18 @@ class SectionController extends Controller
         $input = $request->all();
         $formName = "section{$id}";
 
+        /*
+        main menu has no parent so gets empty string 
+        we need to explicitly set this to null
+        */
+        if (strlen($input['form'][$formName]['parent_id']) !== 0) {
+            $input['parent_id'] = $input['form'][$formName]['parent_id'];
+        } else {
+            $input['parent_id'] = null;
+        }
+        
         $input['title'] = $input['form'][$formName]['title'];
         $input['intro'] = $input['form'][$formName]['intro'];
-        $input['parent_id'] = $input['form'][$formName]['parent_id'];
         $input['weight'] = $input['form'][$formName]['weight'];
         $input['user_id'] = $input['form'][$formName]['user_id'];
 
