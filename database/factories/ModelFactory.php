@@ -14,9 +14,21 @@
 $factory->define(Nexus\User::class, function ($faker) {
     return [
         'name' => $faker->name,
-        'username' => $faker->username,
+        'username' => $faker->unique()->username,
         'email' => $faker->email,
         'password' => str_random(10),
         'remember_token' => str_random(10),
     ];
 });
+
+
+
+$factory->define(Nexus\Section::class, function ($faker) {
+    return [
+        'title' => $faker->sentence,
+        'intro' => $faker->paragraph,
+        'user_id' => $faker->randomDigitNotNull,
+        'parent_id' => $faker->randomDigitNotNull,
+    ];
+});
+
