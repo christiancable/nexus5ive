@@ -32,3 +32,11 @@ $factory->define(Nexus\Section::class, function ($faker) {
     ];
 });
 
+
+$factory->define(Nexus\Topic::class, function ($faker) {
+    return [
+        'title' => $faker->sentence,
+        'intro' => $faker->paragraph,
+        'section_id' => $faker->randomDigitNotNull,
+    ];
+});
