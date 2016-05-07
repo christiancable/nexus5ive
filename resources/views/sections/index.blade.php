@@ -59,12 +59,7 @@
     <div class="content">
         @if (count($section->topics))
         <?php
-        $moderatedSections = array();
-        // make the current section the default by adding it first
-        $moderatedSections[$section->id] = $section->title;
-        foreach (Auth::user()->sections as $moderatedSection) {
-            $moderatedSections[$moderatedSection->id] = $moderatedSection->title;
-        }
+            $moderatedSections = Auth::user()->sections->pluck('title','id')->toArray();
         ?>
         @foreach ($section->topics as $topic)
             @if(Auth::user()->id === $section->user_id) 
