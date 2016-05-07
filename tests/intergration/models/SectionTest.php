@@ -50,36 +50,71 @@ class SectionTest extends TestCase
     
     public function test_deleting_section_soft_deletes_its_topics()
     {
-                
-        // GIVEN we have a section
-        $section = factory(Section::class, 1)->create();
-        // AND that section has a number of topics
+        // GIVEN we have a user
+        $user = factory(User::class, 1)->create();
+        
+        // AND we have a section
+        $section = factory(Section::class, 1)
+            ->create([
+                'parent_id' => null,
+                'user_id' => $user->id,
+                ]);
+
+        // AND that section has topics
         factory(Topic::class, 10)->create(['section_id' => $section->id]);
         $topicsInSectionCount = $section->topics->count();
-        
-        // AND we have another section with some topics
-        $anotherSection = factory(Section::class, 1)->create();
-        factory(Topic::class, 10)->create(['section_id' => $anotherSection->id]);
-        
-
+                
         $topicCount = Topic::all()->count();
-        
- 
+    
         // WHEN we delete that section
         $section->delete();
-    
+
         // THEN the total number of topics is reduced by the number of topics
-        // belonging to that section
+        // belonging to the original section
         $topicCountAfterDeletion = Topic::all()->count();
         $this->assertEquals($topicCount - $topicsInSectionCount, $topicCountAfterDeletion);
-
-        // AND those topics are all soft deleted
-        // AND the other topics are not affected
         
+        // AND the count of topics for that section is now zero
+        $this->assertEquals(Topic::where('section_id', $section->id)->count(), 0);
+        
+        // BUT that section has soft deleted topics with match the orignal count
+        $this->assertEquals(Topic::withTrashed()->where('section_id', $section->id)->count(), $topicsInSectionCount);
+    }
+
+    public function test_deleting_section_soft_deletes_its_subsections()
+    {
+        // given we have a user with a section and that sub section
+         $user = factory(User::class, 1)->create();
+        
+        // AND we have a section
+        $section = factory(Section::class, 1)
+            ->create([
+                'parent_id' => null,
+                'user_id' => $user->id,
+                ]);
+
+        // with subsections
+        factory(Section::class, 6)
+            ->create([
+                'parent_id' => $section->id,
+                'user_id' => $user->id,
+                ]);
+
+        $subsectionCount = Section::where('parent_id', $section->id)->count();
+
+        // when we delete that section
+        $section->delete();
+
+        // then section and subsections are soft deleted
+        $this->assertTrue($section->trashed());
+
+        // we have no subsections
+        $this->assertEquals(Section::where('parent_id', $section->id)->count(), 0);
+
+        // we have the right amount of soft deleted subsections
+        $this->assertEquals(Section::withTrashed()->where('parent_id', $section->id)->count(), $subsectionCount);
     }
     /*
-    test_deleting_section_soft_deletes_its_topics
-    test_deleting_section_soft_deletes_its_subsections
 
     TopicTest
     test_deleting_topic_soft_deletes_its_posts
