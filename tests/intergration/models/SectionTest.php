@@ -47,7 +47,36 @@ class SectionTest extends TestCase
         $this->assertTrue($section->trashed());
     }
     
+    
+    public function test_deleting_section_soft_deletes_its_topics()
+    {
+                
+        // GIVEN we have a section
+        $section = factory(Section::class, 1)->create();
+        // AND that section has a number of topics
+        factory(Topic::class, 10)->create(['section_id' => $section->id]);
+        $topicsInSectionCount = $section->topics->count();
+        
+        // AND we have another section with some topics
+        $anotherSection = factory(Section::class, 1)->create();
+        factory(Topic::class, 10)->create(['section_id' => $anotherSection->id]);
+        
 
+        $topicCount = Topic::all()->count();
+        
+ 
+        // WHEN we delete that section
+        $section->delete();
+    
+        // THEN the total number of topics is reduced by the number of topics
+        // belonging to that section
+        $topicCountAfterDeletion = Topic::all()->count();
+        $this->assertEquals($topicCount - $topicsInSectionCount, $topicCountAfterDeletion);
+
+        // AND those topics are all soft deleted
+        // AND the other topics are not affected
+        
+    }
     /*
     test_deleting_section_soft_deletes_its_topics
     test_deleting_section_soft_deletes_its_subsections
