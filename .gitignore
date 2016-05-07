@@ -6,3 +6,6 @@ Homestead.yaml
 /public/fonts/
 /storage/debugbar/
 .DS_Store
+.idea/
+/extra.scss
+/extra.scss.map
