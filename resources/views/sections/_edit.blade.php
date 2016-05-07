@@ -31,17 +31,11 @@
         ?>
 
         <div class="row form-inline">
-            <div class="col-md-6 form-group">     
-                <?php
-                    $destinationSections = array();
-                    foreach ($destinations as $destination) {
-                        $destinationSections[$destination->id] = $destination->title;
-                    }
-                ?>
+            <div class="col-md-6 form-group">
                 <label>
                     Parent Section {!! 
                     Form::select("form[$formName][parent_id]",
-                        $destinationSections,
+                        $destinations->pluck('title','id')->toArray(),
                         $subSection->parent->id,
                         ['class' => 'form-control'])
                     !!}
