@@ -60,7 +60,7 @@ class MessageController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  CreateCommentRequest  $request
+     * @param  Requests\Message\CreateRequest $request
      * @return Response
      */
     public function store(Requests\Message\CreateRequest $request)

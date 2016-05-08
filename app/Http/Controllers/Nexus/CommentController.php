@@ -37,10 +37,10 @@ class CommentController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  CreateCommentRequest  $request
+     * @param  Requests\Comment\Create  $request
      * @return Response
      */
-    public function store(Requests\CreateCommentRequest $request)
+    public function store(Requests\Comment\Create $request)
     {
         $input = $request->all();
 

@@ -1,10 +1,10 @@
 <?php
 
-namespace Nexus\Http\Requests;
+namespace Nexus\Http\Requests\Comment;
 
 use Nexus\Http\Requests\Request;
 
-class CreateCommentRequest extends Request
+class Create extends Request
 {
     /**
      * Only logged in users can leave comments on profiles
