@@ -60,10 +60,10 @@ class MessageController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Requests\Message\Create $request
+     * @param  Requests\Message\CreateRequest $request
      * @return Response
      */
-    public function store(Requests\Message\Create $request)
+    public function store(Requests\Message\CreateRequest $request)
     {
         $input = $request->all();
         $input['read'] = false;

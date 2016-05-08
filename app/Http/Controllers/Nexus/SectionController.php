@@ -86,7 +86,7 @@ class SectionController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update(Requests\Section\UpdateSection $request, $id)
+    public function update(Requests\Section\UpdateRequest $request, $id)
     {
         $input = $request->all();
         $formName = "section{$id}";

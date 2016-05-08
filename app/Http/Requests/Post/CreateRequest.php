@@ -1,12 +1,12 @@
 <?php
 
-namespace Nexus\Http\Requests;
+namespace Nexus\Http\Requests\Post;
 
 use Nexus\Http\Requests\Request;
 use Nexus\Topic;
 use Nexus\Section;
 
-class CreatePostRequest extends Request
+class CreateRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.

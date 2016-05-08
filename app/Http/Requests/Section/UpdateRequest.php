@@ -4,7 +4,7 @@ namespace Nexus\Http\Requests\Section;
 
 use Nexus\Http\Requests\Request;
 
-class UpdateSection extends Request
+class UpdateRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.

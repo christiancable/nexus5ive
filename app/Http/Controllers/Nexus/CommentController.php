@@ -40,7 +40,7 @@ class CommentController extends Controller
      * @param  Requests\Comment\Create  $request
      * @return Response
      */
-    public function store(Requests\Comment\Create $request)
+    public function store(Requests\Comment\CreateRequest $request)
     {
         $input = $request->all();
 

@@ -4,7 +4,7 @@ namespace Nexus\Http\Requests\Comment;
 
 use Nexus\Http\Requests\Request;
 
-class Create extends Request
+class CreateRequest extends Request
 {
     /**
      * Only logged in users can leave comments on profiles

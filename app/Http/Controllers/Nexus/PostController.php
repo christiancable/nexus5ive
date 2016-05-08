@@ -40,7 +40,7 @@ class PostController extends Controller
      * @param  Request  $request
      * @return Response
      */
-    public function store(Requests\CreatePostRequest $request)
+    public function store(Requests\Post\CreateRequest $request)
     {
         $input = $request->all();
         $input['user_id'] = \Auth::user()->id;
