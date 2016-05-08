@@ -114,10 +114,4 @@ class SectionTest extends TestCase
         // we have the right amount of soft deleted subsections
         $this->assertEquals(Section::withTrashed()->where('parent_id', $section->id)->count(), $subsectionCount);
     }
-    /*
-
-    TopicTest
-    test_deleting_topic_soft_deletes_its_posts
-    
-    */
 }
