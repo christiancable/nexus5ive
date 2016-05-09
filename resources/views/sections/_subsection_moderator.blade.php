@@ -7,12 +7,8 @@
     <ul class="dropdown-menu">      
       <li role="presentation" class="active"><a href="#section-view{{$subSection->id}}">View</a></li>
       <li role="presentation"><a href="#section-edit{{$subSection->id}}">Edit</a></li>
-    {{--
-      @if(!isset($hideDelete))
       <li role="separator" class="divider"></li>
-     @include('posts._delete', $subSection) 
-      @endif
-      --}}
+      @include('sections._delete', $subSection) 
     </ul>
   </li>
 </ul>
