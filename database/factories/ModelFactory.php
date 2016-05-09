@@ -40,3 +40,14 @@ $factory->define(Nexus\Topic::class, function ($faker) {
         'section_id' => $faker->randomDigitNotNull,
     ];
 });
+
+$factory->define(Nexus\Post::class, function ($faker) {
+    return [
+        'title' => $faker->sentence,
+        'text' => $faker->paragraph,
+        'popname' => $faker->sentence,
+        'time' => $faker->date,
+        'user_id' => $faker->randomDigitNotNull,
+        'topic_id' => $faker->randomDigitNotNull,
+    ];
+});
