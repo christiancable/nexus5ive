@@ -78,7 +78,7 @@
                 <div class="panel-heading" role="tab" id="addNewTopic">
                   <h4 class="panel-title">
                     <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                      <span class='glyphicon  glyphicon-triangle-right'></span> Add New Topic
+                      <span class='glyphicon glyphicon-comment'></span>&nbsp; Add New Topic
                     </a>
                   </h4>
                 </div>
@@ -143,7 +143,7 @@
                 <div class="panel-heading" role="tab" id="addNewSection">
                   <h4 class="panel-title">
                     <a class="collapsed" role="button" data-toggle="collapse" data-parent="#newSectionAccordion" href="#newSectionPanel" aria-expanded="false" aria-controls="newSectionPanel">
-                      <span class='glyphicon  glyphicon-triangle-right'></span> Add New Section
+                      <span class='glyphicon  glyphicon-folder-open'></span>&nbsp; Add New Section
                     </a>
                   </h4>
                 </div>
