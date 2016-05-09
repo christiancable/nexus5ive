@@ -59,7 +59,7 @@
     <div class="content">
         @if (count($section->topics))
         <?php
-            $moderatedSections = Auth::user()->sections->pluck('title','id')->toArray();
+            $moderatedSections = Auth::user()->sections->pluck('title', 'id')->toArray();
         ?>
         @foreach ($section->topics as $topic)
             @if(Auth::user()->id === $section->user_id) 
@@ -131,6 +131,33 @@
         </div>
         
         @endif
+
+
+        @if(Auth::user()->id === $section->user_id)
+            {{-- if we have no current sections then add in the hr to separate topics and sections --}}
+            @if (count($section->sections) == 0)
+            <hr/>
+            @endif
+            <div class="panel-group" id="newSectionAccordion" role="tablist" aria-multiselectable="true">
+              <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="addNewSection">
+                  <h4 class="panel-title">
+                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#newSectionAccordion" href="#newSectionPanel" aria-expanded="false" aria-controls="newSectionPanel">
+                      <span class='glyphicon  glyphicon-triangle-right'></span> Add New Section
+                    </a>
+                  </h4>
+                </div>
+                <div id="newSectionPanel" class="panel-collapse collapse" role="tabpanel" aria-labelledby="addNewSection">
+                  <div class="panel-body">
+                     @include('sections._create', $section)
+                  </div>
+                </div>
+              </div>
+            </div>
+        @endif
+
+
+
     </div>
 
 </div>
