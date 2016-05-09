@@ -39,9 +39,18 @@ class SectionController extends Controller
      * @param  Request  $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(Requests\Section\CreateRequest $request)
     {
-        //
+        $formName = "sectionCreate";
+        $input = $request->all();
+        $input['parent_id'] = $input['form'][$formName]['parent_id'];
+        $input['user_id'] = $input['form'][$formName]['user_id'];
+        $input['title'] = $input['form'][$formName]['title'];
+        $input['intro'] = $input['form'][$formName]['intro'];
+        
+        $section = \Nexus\Section::create($input);
+        $redirect = action('Nexus\SectionController@show', ['id' => $section->id]);
+        return redirect($redirect);
     }
 
     /**
