@@ -97,19 +97,8 @@ class TopicController extends Controller
 
         // get the previously read progress so we can indicate this in the view
         $readProgress = $topic->mostRecentlyReadPostDate(\Auth::user()->id);
-        // @todo what happens if we have more than one view??
-        $lastestView = \Nexus\View::where('topic_id', $topic_id)->where('user_id', \Auth::user()->id)->first();
-
-        if ($lastestView) {
-            $lastestView->latest_view_date = $topic->most_recent_post_time;
-            $lastestView->update();
-        } else {
-            $view = new \Nexus\View;
-            $view->user_id = \Auth::user()->id;
-            $view->topic_id = $topic->id;
-            $view->latest_view_date = $topic->most_recent_post_time;
-            $view->save();
-        }
+        
+        \Nexus\Helpers\ViewHelper::updateReadProgress(\Auth::user(), $topic);
 
         \Nexus\Helpers\ActivityHelper::updateActivity(
             "Reading <em>{$topic->title}</em>",
