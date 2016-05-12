@@ -41,9 +41,10 @@ class ViewHelper
 
 
     /**
-     * reports if a topic has been updated since the a user last read
+     * reports if a given topic has been updated since the a user last read
      *
-     * @param  int $user_id id of a user
+     * @param  \Nexus\User $user - the user
+     * @param  \Nexus\Topic $topic - a topic
      * @return boolean has the topic being updated or not
      */
     public static function topicHasUnreadPosts(\Nexus\User $user, \Nexus\Topic $topic)
@@ -66,5 +67,42 @@ class ViewHelper
         }
 
         return $return;
+    }
+
+    /**
+     * reports on the status of a given topic for a user
+     *
+     * @param  \Nexus\User $user - the user
+     * @param  \Nexus\Topic $topic - a topic
+     * @return array - of status values
+     */
+    public static function getTopicStatus(\Nexus\User $user, \Nexus\Topic $topic)
+    {
+        $status = [
+            'new_posts' => false,
+            'never_read' => false,
+            'unsubscribed' => false,
+        ];
+
+        $mostRecentlyReadPostDate =  \Nexus\Helpers\ViewHelper::getReadProgress($user, $topic);
+        $mostRecentPostDate = $topic->most_recent_post_time;
+
+        $view = \Nexus\View::where('topic_id', $topic->id)->where('user_id', $user->id)->first();
+
+        if ($view !== null) {
+            if ($view->unsubscribed != 0) {
+                 $status['unsubscribed'] = true;
+            }
+
+            if ($mostRecentPostDate !== false && $mostRecentlyReadPostDate !== false) {
+                if ($mostRecentPostDate->gt($mostRecentlyReadPostDate)) {
+                    $status['new_posts'] = true;
+                }
+            }
+        } else {
+            $status['never_read'] = true;
+        }
+
+        return $status;
     }
 }

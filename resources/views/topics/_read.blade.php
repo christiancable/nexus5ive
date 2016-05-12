@@ -1,12 +1,29 @@
+<?php
+$status = \Nexus\Helpers\ViewHelper::getTopicStatus(Auth::user(), $topic);
+?>
 <div class="well">
 <h2>
-	@if (\Nexus\Helpers\ViewHelper::topicHasUnreadPosts(Auth::user(), $topic))
-    <span class="glyphicon glyphicon-fire text-danger" aria-hidden="true"></span>
-    @else
-    <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
-    @endif
+	@if ($status['unsubscribed'])
+		<?php $textClass = 'text-muted' ?>
+		<a href="{{ action('Nexus\TopicController@show', ['topic_id' => $topic->id])}}" class="{{$textClass}}"> 
+		<span class="glyphicon glyphicon-eye-close {{$textClass}}" aria-hidden="true"></span>
 
-    <a href="{{ action('Nexus\TopicController@show', ['topic_id' => $topic->id])}}"> {{$topic->title}}</a>
+    @elseif ($status['new_posts'])
+	    <?php $textClass = 'text-danger' ?>
+	    <a href="{{ action('Nexus\TopicController@show', ['topic_id' => $topic->id])}}" class="{{$textClass}}"> 
+	    <span class="glyphicon glyphicon-fire {{$textClass}}" aria-hidden="true"></span>
+
+    @elseif ($status['never_read'])
+	    <?php $textClass = 'text-warning' ?>
+	    <a href="{{ action('Nexus\TopicController@show', ['topic_id' => $topic->id])}}" class="{{$textClass}}"> 
+	    <span class="glyphicon glyphicon-asterisk {{$textClass}}" aria-hidden="true"></span>
+	    
+    @else 
+    	<?php $textClass = '' ?>
+    	<a href="{{ action('Nexus\TopicController@show', ['topic_id' => $topic->id])}}" class="{{$textClass}}"> 
+	    <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
+    @endif  
+    {{$topic->title}}</a>
 </h2>
 <p class="break-long-words">{!! Nexus\Helpers\NxCodeHelper::nxDecode($topic->intro) !!}</p>
 @if ($mostRecentPostTime = $topic->most_recent_post_time)
