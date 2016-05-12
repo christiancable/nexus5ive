@@ -96,7 +96,7 @@ class TopicController extends Controller
         }
 
         // get the previously read progress so we can indicate this in the view
-        $readProgress = $topic->mostRecentlyReadPostDate(\Auth::user()->id);
+        $readProgress =  \Nexus\Helpers\ViewHelper::getReadProgress(\Auth::user(), $topic);
         
         \Nexus\Helpers\ViewHelper::updateReadProgress(\Auth::user(), $topic);
 

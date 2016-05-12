@@ -1,6 +1,6 @@
 <div class="well">
 <h2>
-    @if ($topic->unreadPosts(Auth::user()->id))
+	@if (\Nexus\Helpers\ViewHelper::topicHasUnreadPosts(Auth::user(), $topic))
     <span class="glyphicon glyphicon-fire text-danger" aria-hidden="true"></span>
     @else
     <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>

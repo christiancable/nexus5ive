@@ -24,7 +24,7 @@ class Topic extends Model
         parent::boot();
 
         // Attach event handler for deleting a topic
-        Topic::deleting(function($topic) {
+        Topic::deleting(function ($topic) {
            
             /*
             to keep a cascading delete when using softDeletes we must remove the related models here
@@ -53,52 +53,6 @@ class Topic extends Model
         }
 
         return $result;
-    }
-
-    public function mostRecentlyReadPostDate($user_id)
-    {
-        $result = false;
-
-        $latestView = \Nexus\View::select('latest_view_date')
-            ->where('topic_id', $this->id)
-            ->where('user_id', $user_id)
-            ->first();
-
-        if ($latestView) {
-            $result = $latestView->latest_view_date;
-        }
-
-        return $result;
-    }
-
-    /**
-     * reports if a topic has been updated since the a user last read
-     *
-     * this might actually live in the topicController
-     * @param  int $user_id id of a user
-     * @return boolean has the topic being updated or not
-     */
-    public function unreadPosts($user_id)
-    {
-        $return = true;
-
-        $mostRecentlyReadPostDate = $this->mostRecentlyReadPostDate($user_id);
-
-        if ($mostRecentlyReadPostDate) {
-            if ($mostRecentlyReadPostDate <> $this->most_recent_post_time) {
-                $return = true;
-            } else {
-                $return = false;
-            }
-        } else {
-            $return = false;
-        }
-        
-        if (!$this->most_recent_post_time) {
-            $return = false;
-        }
-
-        return $return;
     }
 
     // sections
