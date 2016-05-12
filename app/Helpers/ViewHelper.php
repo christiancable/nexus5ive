@@ -16,7 +16,7 @@ class ViewHelper
             $lastestView->update();
         } else {
             $view = new \Nexus\View;
-            $view->user_id = \Auth::user()->id;
+            $view->user_id = $user->id;
             $view->topic_id = $topic->id;
             $view->latest_view_date = $topic->most_recent_post_time;
             $view->save();
