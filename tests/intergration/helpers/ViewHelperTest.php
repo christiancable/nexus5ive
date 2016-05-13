@@ -13,9 +13,9 @@ use Nexus\Post;
 */
 class ViewHelperTest extends TestCase
 {
-	use DatabaseTransactions;
+    use DatabaseTransactions;
     
-   public function test_getReadProgress_returns_time_of_most_recently_read_post_time()
+    public function test_getReadProgress_returns_time_of_most_recently_read_post_time()
     {
         $faker = \Faker\Factory::create();
 
@@ -62,7 +62,7 @@ class ViewHelperTest extends TestCase
         );
     }
 
-    public function  test_getTopicStatus_indicates_new_posts_for_a_topic_with_new_posts()
+    public function test_getTopicStatus_indicates_new_posts_for_a_topic_with_new_posts()
     {
         $faker = \Faker\Factory::create();
 
@@ -152,5 +152,51 @@ class ViewHelperTest extends TestCase
         $topicStatus = \Nexus\Helpers\ViewHelper::getTopicStatus($user, $topic);
 
         $this->assertFalse($topicStatus['never_read']);
+    }
+
+    public function test_getTopicStatus_returns_unsubscribed_when_a_user_unsubscribes()
+    {
+        $faker = \Faker\Factory::create();
+
+        // GIVEN we have a user
+         $user = factory(User::class, 1)->create();
+        
+        // AND we add a topic
+        $topic = factory(Topic::class, 1)->create();
+
+        // WHEN the user is unsubscribed from the topic
+        \Nexus\Helpers\ViewHelper::unsubscribeFromTopic($user, $topic);
+
+        // THEN the topic does not appear new to the user
+        $topicStatus = \Nexus\Helpers\ViewHelper::getTopicStatus($user, $topic);
+
+        $this->assertTrue($topicStatus['unsubscribed']);
+    }
+
+    public function test_getTopicStatus_returns_subscribed_when_a_user_resubscribes()
+    {
+        $faker = \Faker\Factory::create();
+
+        // GIVEN we have a user
+         $user = factory(User::class, 1)->create();
+        
+        // AND we add a topic
+        $topic = factory(Topic::class, 1)->create();
+
+        // WHEN the user is unsubscribed from the topic
+        \Nexus\Helpers\ViewHelper::unsubscribeFromTopic($user, $topic);
+
+        // THEN the topic does not appear new to the user
+        $topicStatus = \Nexus\Helpers\ViewHelper::getTopicStatus($user, $topic);
+
+        $this->assertTrue($topicStatus['unsubscribed']);
+
+        // WHEN the user is unsubscribed from the topic
+        \Nexus\Helpers\ViewHelper::subscribeToTopic($user, $topic);
+
+        // THEN the topic does not appear new to the user
+        $topicStatus = \Nexus\Helpers\ViewHelper::getTopicStatus($user, $topic);
+
+        $this->assertFalse($topicStatus['unsubscribed']);
     }
 }

@@ -105,4 +105,44 @@ class ViewHelper
 
         return $status;
     }
+
+    /**
+     * unsubscribes the user from the topic
+     **/
+    public static function unsubscribeFromTopic(\Nexus\User $user, \Nexus\Topic $topic)
+    {
+        $lastestView = \Nexus\View::where('topic_id', $topic->id)->where('user_id', $user->id)->first();
+
+        if ($lastestView) {
+            $lastestView->unsubscribed = true;
+            $lastestView->update();
+        } else {
+            $view = new \Nexus\View;
+            $view->user_id = $user->id;
+            $view->topic_id = $topic->id;
+            $view->latest_view_date = $topic->most_recent_post_time;
+            $view->unsubscribed = true;
+            $view->save();
+        }
+    }
+
+    /**
+     * subscribes the user from the topic
+     **/
+    public static function subscribeToTopic(\Nexus\User $user, \Nexus\Topic $topic)
+    {
+        $lastestView = \Nexus\View::where('topic_id', $topic->id)->where('user_id', $user->id)->first();
+
+        if ($lastestView) {
+            $lastestView->unsubscribed = false;
+            $lastestView->update();
+        } else {
+            $view = new \Nexus\View;
+            $view->user_id = $user->id;
+            $view->topic_id = $topic->id;
+            $view->latest_view_date = $topic->most_recent_post_time;
+            $view->unsubscribed = false;
+            $view->save();
+        }
+    }
 }
