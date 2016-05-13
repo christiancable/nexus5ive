@@ -98,6 +98,10 @@ class TopicController extends Controller
         // get the previously read progress so we can indicate this in the view
         $readProgress =  \Nexus\Helpers\ViewHelper::getReadProgress(\Auth::user(), $topic);
         
+        // get the subscription status
+        $topicStatus = \Nexus\Helpers\ViewHelper::getTopicStatus(\Auth::user(), $topic);
+        $unsubscribed = $topicStatus['unsubscribed'];
+
         \Nexus\Helpers\ViewHelper::updateReadProgress(\Auth::user(), $topic);
 
         \Nexus\Helpers\ActivityHelper::updateActivity(
@@ -115,7 +119,8 @@ class TopicController extends Controller
                 'readonly',
                 'userCanSeeSecrets',
                 'readProgress',
-                'breadcrumbs'
+                'breadcrumbs',
+                'unsubscribed'
             )
         );
     }
@@ -170,5 +175,26 @@ class TopicController extends Controller
         $topic->delete();
         $redirect = action('Nexus\SectionController@show', ['id' => $section_id]);
         return redirect($redirect);
+    }
+
+    /**
+     *
+     * toggles a users subscription to the topic
+     */
+    public function updateSubscription(Requests\Topic\SubscriptionRequest $request, $id)
+    {
+        $input = $request->all();
+        $topic = \Nexus\Topic::findOrFail($id);
+
+        if ($input['command'] === 'subscribe') {
+            \Nexus\Helpers\ViewHelper::subscribeToTopic(\Auth::user(), $topic);
+            $message = '**Subscribed!** _Catch-up_ will return you here when new comments are added.';
+        } else {
+            \Nexus\Helpers\ViewHelper::unsubscribeFromTopic(\Auth::user(), $topic);
+            $message = '**Unsubscribed!** New comments here will be hidden from _Catch-up_.';
+        }
+
+        $request->session()->flash('headerAlert', $message);
+        return  redirect()->route('topic.show', ['id' => $topic->id]);
     }
 }

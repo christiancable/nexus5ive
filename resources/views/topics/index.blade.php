@@ -15,7 +15,16 @@
     @if ($topic->intro) 
         <p class="lead">{!! Nexus\Helpers\NxCodeHelper::nxDecode($topic->intro)  !!}</p>
     @endif
+    @include('topics._subscribe', compact('topic','unsubscribed'))
 </div>
+
+@if ($message = Session::get('headerAlert'))
+<div class="container">
+    <div class="alert alert-info" role="alert">
+        {!! Nexus\Helpers\NxCodeHelper::nxDecode($message) !!}
+    </div>
+</div>
+@endif
 <hr>
 
 <div class="container">

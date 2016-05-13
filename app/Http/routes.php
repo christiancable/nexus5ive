@@ -53,6 +53,8 @@ Route::resource('section', 'Nexus\SectionController');
 
 // topics
 Route::delete('topic/{topic}', 'Nexus\TopicController@destroy');
+Route::post('/topic/{topic}/subscribe', 'Nexus\TopicController@updateSubscription')
+    ->name('topic.updateSubscription');
 Route::resource('topic', 'Nexus\TopicController');
 
 // comments
@@ -69,6 +71,8 @@ Route::resource('messages', 'Nexus\MessageController');
 
 // activities 
 Route::resource('here', 'Nexus\ActivityController');
+
+
 
 // search
 Route::get('search', 'Nexus\SearchController@index');
