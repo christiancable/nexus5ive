@@ -3,9 +3,12 @@
 namespace Nexus;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class View extends Model
 {
+    use SoftDeletes;
+
     /* dates */
     protected $dates = ['latest_view_date'];
 
@@ -19,4 +22,3 @@ class View extends Model
         return $this->belongsTo('Nexus\Topic');
     }
 }
-
