@@ -11,13 +11,14 @@ class Section extends Model
     use SoftDeletes;
 
     protected $fillable = ['id','title','intro','user_id','parent_id', 'weight'];
+    protected $dates = ['deleted_at'];
 
     public static function boot()
     {
         parent::boot();
 
         // Attach event handler for deleting a section
-        Section::deleting(function($section) {
+        Section::deleting(function ($section) {
            
             /*
             to keep a cascading delete when using softDeletes we must remove the related models here

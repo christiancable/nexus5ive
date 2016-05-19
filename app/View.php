@@ -10,7 +10,7 @@ class View extends Model
     use SoftDeletes;
 
     /* dates */
-    protected $dates = ['latest_view_date'];
+    protected $dates = ['latest_view_date', 'deleted_at'];
 
     public function user()
     {

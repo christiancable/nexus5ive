@@ -72,9 +72,10 @@ Route::resource('messages', 'Nexus\MessageController');
 // activities 
 Route::resource('here', 'Nexus\ActivityController');
 
-
-
 // search
 Route::get('search', 'Nexus\SearchController@index');
 Route::get('search/{text}', 'Nexus\SearchController@find');
 Route::post('search', 'Nexus\SearchController@submitSearch');
+
+// restore
+Route::resource('restore', 'Nexus\RestoreController');
