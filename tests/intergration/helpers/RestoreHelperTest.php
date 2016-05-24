@@ -105,4 +105,36 @@ class RestoreHelperTest extends TestCase
             // THEN the topic is restored
             $this->assertFalse($topic->trashed());
         }
+
+        public function test_restoreSectionToSection_restores_a_section()
+        {
+            // given we have a section with topics
+            $number_of_topics = 10;
+            $section = factory(Section::class, 1)->create();
+            $section_id = $section->id; 
+            factory(Topic::class, $number_of_topics)->create(['section_id' => $section_id]);
+
+            // and we have another section
+            $anotherSection = factory(Section::class, 1)->create();
+                        
+            // and we delete the section
+            $section->delete(); 
+            // the section is deleted
+            $this->assertTrue($section->trashed());
+            // and so are the topics 
+            $this->assertEquals(Section::withTrashed()->find($section_id)->topics->count(), 0);
+            $this->assertEquals(Section::withTrashed()->find($section_id)->trashedTopics->count(), $number_of_topics);
+
+            // when the section is restored to another section
+            \Nexus\Helpers\RestoreHelper::restoreSectionToSection($section, $anotherSection);
+            
+            // then the section is not trashed
+            $this->assertFalse($section->trashed());
+            // and neither are the topics 
+            $this->assertEquals(Section::find($section_id)->topics->count(), $number_of_topics);
+            $this->assertEquals(Section::find($section_id)->trashedTopics->count(), 0);
+            
+            // and its parent is the other section
+            $this->assertEquals($section->parent_id, $anotherSection->id);
+        }
 }
