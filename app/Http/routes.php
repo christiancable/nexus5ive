@@ -79,3 +79,5 @@ Route::post('search', 'Nexus\SearchController@submitSearch');
 
 // restore
 Route::resource('restore', 'Nexus\RestoreController');
+Route::post('restore/section/{section}', 'Nexus\RestoreController@section')
+    ->name('restore.section');
