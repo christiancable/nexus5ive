@@ -65,6 +65,12 @@ class Section extends Model
         return $this->hasMany('Nexus\Topic')->orderBy('weight', 'asc');
     }
 
+    public function trashedTopics()
+    {
+        return $this->hasMany('Nexus\Topic')->onlyTrashed()->orderBy('weight', 'asc');
+    }
+
+
     public function slug()
     {
         return str_slug($this->title, '-');
