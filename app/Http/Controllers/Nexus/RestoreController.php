@@ -21,13 +21,22 @@ class RestoreController extends Controller
      */
     public function index()
     {
-        // $trashedSections =  \Auth::user()->sections()->onlyTrashed()->orderBy('deleted_at', 'desc')->get();
         $trashedSections = \Nexus\Section::onlyTrashed()
             ->where('user_id', \Auth::user()->id)
             ->with('trashedTopics')
-            ->orderBy('deleted_at', 'desc')
             ->get();
+
         // add trashed sections which are children of moderated sections which are not moderated by the user
+        // @todo: can this be a query?
+        foreach (\Auth::user()->sections as $moderatedSections) {
+            $unmoderatedSections = $moderatedSections->sections()->onlyTrashed()->with('trashedTopics')->where('user_id', '!=', \Auth::user()->id)->get();
+            foreach ($unmoderatedSections as $unmoderatedSection) {
+                $trashedSections->push($unmoderatedSection);
+            }
+        }
+
+        $trashedSections = $trashedSections->sortByDesc('deleted_at');
+        
         $breadcrumbs = \Nexus\Helpers\BreadcrumbHelper::breadcumbForUtility('Restore');
         $destinationSections = \Auth::user()->sections()->get();
 
@@ -100,7 +109,7 @@ class RestoreController extends Controller
         //
     }
 
-    public function section(Request $request, $id)
+    public function section(Requests\section\RestoreRequest $request, $id)
     {
         $trashedSection = \Nexus\Section::onlyTrashed()->findOrFail($id);
         $destinationSection = \Nexus\Section::findOrFail($request->destination);
