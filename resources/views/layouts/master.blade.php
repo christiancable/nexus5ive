@@ -67,11 +67,16 @@
                     <span class="badge">{{$messagesCount}}</span>
                   @endif
                   </a></li>
-                  
-
+                  @if ($authUser->sections->count())
                   <li role="separator" class="divider"></li>
+                  <li class="dropdown-header">Moderator Goodies</li>
+                    <li><a href="{{ action('Nexus\RestoreController@index')}}">
+                    <span class="glyphicon glyphicon glyphicon glyphicon-open" aria-hidden="true"></span> Your Archive</a></li>
+                   @endif
+                   <li role="separator" class="divider"></li>
                     <li><a href="{{ action('Auth\AuthController@getLogout')}}">
-                    <span class="glyphicon glyphicon glyphicon-log-out" aria-hidden="true"></span> Logout</a></li>
+                    <span class="glyphicon glyphicon glyphicon-log-out" aria-hidden="true"></span> Restore</a></li>
+                  
                 </ul>
               </li>
             </ul>
