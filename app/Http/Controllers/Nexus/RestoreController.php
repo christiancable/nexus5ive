@@ -37,7 +37,7 @@ class RestoreController extends Controller
 
         $trashedSections = $trashedSections->sortByDesc('deleted_at');
         
-        $breadcrumbs = \Nexus\Helpers\BreadcrumbHelper::breadcumbForUtility('Restore');
+        $breadcrumbs = \Nexus\Helpers\BreadcrumbHelper::breadcumbForUtility('Your Archive');
         $destinationSections = \Auth::user()->sections()->get();
 
         return view('restore.index', compact('trashedSections', 'breadcrumbs', 'destinationSections'));
