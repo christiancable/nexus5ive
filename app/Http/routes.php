@@ -78,6 +78,6 @@ Route::get('search/{text}', 'Nexus\SearchController@find');
 Route::post('search', 'Nexus\SearchController@submitSearch');
 
 // restore
-Route::resource('restore', 'Nexus\RestoreController');
-Route::post('restore/section/{section}', 'Nexus\RestoreController@section')
-    ->name('restore.section');
+Route::resource('archive', 'Nexus\RestoreController');
+Route::post('archive/section/{section}', 'Nexus\RestoreController@section')
+    ->name('archive.section');
