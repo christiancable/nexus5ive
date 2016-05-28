@@ -11,10 +11,10 @@
 @section('content')
 
 <div class="container">
-    <h1>Restore</h1>
+    <h1>Your Archive</h1>
 
     <span class="lead">
-    But you know what? It's never too late to get it back.
+    "But you know what? It's never too late to get it back."
     </span>
 </div>
 <hr>
@@ -27,7 +27,7 @@
 	</div>
 @else 
 	<div class="container">
-		<h2>Archived Sections</h2>
+		<h2>Sections</h2>
 		<hr>
 	</div>
 	@foreach ($trashedSections as $section)
