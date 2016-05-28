@@ -30,9 +30,15 @@
 		<h2>Sections</h2>
 		<hr>
 	</div>
-	@foreach ($trashedSections as $section)
+	@forelse ($trashedSections as $section)
 	    @include('restore.section', $section)
-	@endforeach
+	@empty
+	<div class="container">
+		<div  class="alert alert-info">
+			You don't have any archived sections to restore.
+		</div>
+	</div>
+	@endforelse
 
 @endif          
 @endsection
