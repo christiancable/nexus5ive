@@ -75,7 +75,7 @@
                    @endif
                    <li role="separator" class="divider"></li>
                     <li><a href="{{ action('Auth\AuthController@getLogout')}}">
-                    <span class="glyphicon glyphicon glyphicon-log-out" aria-hidden="true"></span> Restore</a></li>
+                    <span class="glyphicon glyphicon glyphicon-log-out" aria-hidden="true"></span> Logout</a></li>
                   
                 </ul>
               </li>
