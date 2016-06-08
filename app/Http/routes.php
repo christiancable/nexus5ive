@@ -81,3 +81,5 @@ Route::post('search', 'Nexus\SearchController@submitSearch');
 Route::resource('archive', 'Nexus\RestoreController');
 Route::post('archive/section/{section}', 'Nexus\RestoreController@section')
     ->name('archive.section');
+Route::post('archive/topic/{topic}', 'Nexus\RestoreController@topic')
+    ->name('archive.topic');

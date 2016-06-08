@@ -40,5 +40,20 @@
 	</div>
 	@endforelse
 
+    <div class="container">
+		<h2>Topics</h2>
+		<hr>
+	</div>
+	@forelse ($trashedTopics as $topic)
+        @include('restore.topic', $topic)
+	@empty
+	<div class="container">
+		<div  class="alert alert-info">
+			You don't have any archived topics to restore.
+		</div>
+	</div>
+	@endforelse
+
 @endif          
+
 @endsection

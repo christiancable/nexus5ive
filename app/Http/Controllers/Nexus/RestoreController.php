@@ -36,11 +36,11 @@ class RestoreController extends Controller
         }
 
         $trashedSections = $trashedSections->sortByDesc('deleted_at');
-        
+        $trashedTopics = \Auth::user()->trashedTopics;
         $breadcrumbs = \Nexus\Helpers\BreadcrumbHelper::breadcumbForUtility('Your Archive');
         $destinationSections = \Auth::user()->sections()->get();
 
-        return view('restore.index', compact('trashedSections', 'breadcrumbs', 'destinationSections'));
+        return view('restore.index', compact('trashedSections', 'trashedTopics', 'breadcrumbs', 'destinationSections'));
     }
 
     /**
@@ -117,6 +117,17 @@ class RestoreController extends Controller
         \Nexus\Helpers\RestoreHelper::restoreSectionToSection($trashedSection, $destinationSection);
      
         $redirect = action('Nexus\SectionController@show', ['id' => $trashedSection->id]);
+        return redirect($redirect);
+    }
+    
+    public function topic(Requests\topic\RestoreRequest $request, $id)
+    {
+        $trashedTopic = \Nexus\Topic::onlyTrashed()->findOrFail($id);
+        $destinationSection = \Nexus\Section::findOrFail($request->destination);
+        
+        \Nexus\Helpers\RestoreHelper::restoreTopicToSection($trashedTopic, $destinationSection);
+        
+        $redirect = action('Nexus\SectionController@show', ['id' => $destinationSection->id]);
         return redirect($redirect);
     }
 }
