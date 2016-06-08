@@ -83,3 +83,7 @@ Route::post('archive/section/{section}', 'Nexus\RestoreController@section')
     ->name('archive.section');
 Route::post('archive/topic/{topic}', 'Nexus\RestoreController@topic')
     ->name('archive.topic');
+
+// utilities
+Route::get('updateSubscriptions', 'Nexus\TopicController@markAllSubscribedTopicsAsRead');
+

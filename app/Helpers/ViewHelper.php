@@ -145,4 +145,17 @@ class ViewHelper
             $view->save();
         }
     }
+    
+    /*
+        updates the read progress of all previously read topics
+        with the latest post of those topics
+    */
+    public static function catchUpCatchUp(\Nexus\User $user)
+    {
+        $views = $user->views;
+        
+        foreach($views as $view) {
+            self::updateReadProgress($user, $view->topic);
+        }
+    }
 }

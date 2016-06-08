@@ -197,4 +197,17 @@ class TopicController extends Controller
         $request->session()->flash('headerAlert', $message);
         return  redirect()->route('topic.show', ['id' => $topic->id]);
     }
+    
+    /*
+        update the latest read time for each subscribed topic
+    */
+    public function markAllSubscribedTopicsAsRead()
+    {
+        \Nexus\Helpers\ViewHelper::catchUpCatchUp(\Auth::user());
+        
+        $message = '**Success!** all subscribed topics are now marked as read';
+        \Session::flash('headerAlert', $message);
+        
+        return redirect('/');
+    }
 }
