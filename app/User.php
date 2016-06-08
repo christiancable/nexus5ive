@@ -140,13 +140,24 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
       @todo: why does the hasManyThrough not work here?
       return $this->hasManyThrough('Nexus\Topic', 'Nexus\Section', 'user_id', 'section_id');
       */
-        
+    /*  
         $results = \DB::table('topics')
             ->join('sections', 'topics.section_id', '=', 'sections.id')
             ->whereNotNull('topics.deleted_at')
-            ->where('sections.user_id', '=', $this->id)->get();
-            
+            ->where('sections.user_id', '=', $this->id)
+            ->select('topics.*')
+            ->get();
+                
+                
         return collect($results);
+    */
+        $sectionIDs = $this->sections->pluck('id')->toArray();
+        
+        $trashedTopics = Topic::onlyTrashed()
+            ->whereIn('section_id', $sectionIDs)
+            ->get();
+        
+        return $trashedTopics;
     }
     /* helper methods */
 
