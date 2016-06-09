@@ -107,11 +107,13 @@
 @endif
 
 
-@if (session('alert'))
-    <div class="container">
-        <div class="alert alert-warning" role="alert">No updated topics found. Why not start a new conversation or read more sections?</div>
+@if ($message = Session::get('headerWarning'))
+<div class="container">
+    <div class="alert alert-warning" role="alert">
+        {!! Nexus\Helpers\NxCodeHelper::nxDecode($message) !!}
     </div>
-@endif 
+</div>
+@endif
   
 @if (session('topic'))
     <div class="container">

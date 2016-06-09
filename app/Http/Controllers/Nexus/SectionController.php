@@ -186,9 +186,13 @@ class SectionController extends Controller
             // redirect to section
             return redirect()->action('Nexus\SectionController@show', [$topics[0]->section->id])->with('topic', $topics[0]);
         } else {
+            
             // set alert
+            $message = 'No updated topics found. Why not start a new conversation or read more sections?';
+            \Session::flash('headerWarning', $message);
+            
             // redirect to main menu
-            return redirect('/')->with('alert', true);
+            return redirect('/');
         }
     }
 }
