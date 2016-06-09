@@ -182,9 +182,20 @@ class SectionController extends Controller
         }
 
         if (count($topics)) {
-            // the parent section of the unread topic
-            // redirect to section
-            return redirect()->action('Nexus\SectionController@show', [$topics[0]->section->id])->with('topic', $topics[0]);
+
+            // set alert
+            $topicURL = action('Nexus\TopicController@show', ['topic_id' => $topics[0]->id]);
+            $topicTitle = $topics[0]->title;
+            $subscribeAllURL = action('Nexus\TopicController@markAllSubscribedTopicsAsRead');            
+            $message = <<< Markdown
+People have been talking! New posts found in **[$topicTitle]($topicURL)**
+
+Seeing too many old topics then **[mark all subscribed topics as read]($subscribeAllURL)**
+Markdown;
+            \Session::flash('headerSuccess', $message);
+            
+            // redirect to the parent section of the unread topic
+            return redirect()->action('Nexus\SectionController@show', [$topics[0]->section->id]);
         } else {
             
             // set alert
