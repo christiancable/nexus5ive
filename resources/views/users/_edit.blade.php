@@ -1,10 +1,3 @@
- @if (session('alert'))
- <div class="content">
-    <div class="alert bg-success" role="alert">{{ session('alert') }}</div>
-</div>
-@endif 
-
-
 @if ($errors->all())
     <div class="alert alert-warning" role="alert">
     <ul>
