@@ -90,12 +90,20 @@
 
   @yield('breadcrumbs')
   
-  @if ($message = Session::get('headerAlert'))
-    <div class="container">
-        <div class="alert alert-info" role="alert">
-            {!! Nexus\Helpers\NxCodeHelper::nxDecode($message) !!}
-        </div>
+@if ($message = Session::get('headerAlert'))
+<div class="container">
+    <div class="alert alert-info" role="alert">
+        {!! Nexus\Helpers\NxCodeHelper::nxDecode($message) !!}
     </div>
+</div>
+@endif
+
+@if ($message = Session::get('headerSuccess'))
+<div class="container">
+    <div class="alert alert-success" role="alert">
+        {!! Nexus\Helpers\NxCodeHelper::nxDecode($message) !!}
+    </div>
+</div>
 @endif
 
 
