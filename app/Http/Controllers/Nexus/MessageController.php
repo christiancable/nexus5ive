@@ -21,7 +21,12 @@ class MessageController extends Controller
      */
     public function index($selected = null)
     {
-        $allMessages = \Nexus\Message::with('user')->with('author')->where('user_id', \Auth::user()->id)->orderBy('id', 'desc')->get()->all();
+        $allMessages = \Nexus\Message::with('user')
+            ->with('author')
+            ->where('user_id', \Auth::user()->id)
+            ->orderBy('id', 'desc')
+            ->get()
+            ->all();
         $messages = array_slice($allMessages, 5);
         $recentMessages = array_reverse(array_slice($allMessages, 0, 5));
         $recentActivities = \Nexus\Helpers\ActivityHelper::recentActivities();
@@ -44,7 +49,8 @@ class MessageController extends Controller
 
         $breadcrumbs = \Nexus\Helpers\BreadcrumbHelper::breadcumbForUtility('Inbox');
 
-        return view('messages.index')->with(compact('messages', 'recentMessages', 'activeUsers', 'selected', 'breadcrumbs'));
+        return view('messages.index')
+            ->with(compact('messages', 'recentMessages', 'activeUsers', 'selected', 'breadcrumbs'));
     }
 
     /**

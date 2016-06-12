@@ -86,4 +86,3 @@ Route::post('archive/topic/{topic}', 'Nexus\RestoreController@topic')
 
 // utilities
 Route::get('updateSubscriptions', 'Nexus\TopicController@markAllSubscribedTopicsAsRead');
-

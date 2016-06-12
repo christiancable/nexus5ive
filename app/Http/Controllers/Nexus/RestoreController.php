@@ -29,7 +29,12 @@ class RestoreController extends Controller
         // add trashed sections which are children of moderated sections which are not moderated by the user
         // @todo: can this be a query?
         foreach (\Auth::user()->sections as $moderatedSections) {
-            $unmoderatedSections = $moderatedSections->sections()->onlyTrashed()->with('trashedTopics')->where('user_id', '!=', \Auth::user()->id)->get();
+            $unmoderatedSections = $moderatedSections
+                ->sections()
+                ->onlyTrashed()
+                ->with('trashedTopics')
+                ->where('user_id', '!=', \Auth::user()->id)
+                ->get();
             foreach ($unmoderatedSections as $unmoderatedSection) {
                 $trashedSections->push($unmoderatedSection);
             }

@@ -154,7 +154,7 @@ class ViewHelper
     {
         $views = $user->views;
         
-        foreach($views as $view) {
+        foreach ($views as $view) {
             self::updateReadProgress($user, $view->topic);
         }
     }

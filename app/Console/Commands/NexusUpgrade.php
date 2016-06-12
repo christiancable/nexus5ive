@@ -76,7 +76,8 @@ class NexusUpgrade extends Command
                     $newUser->banned = true;
                 }
                 // avoid reusing email addresses
-                $emailUses = \DB::table('usertable')->select('user_id')->where('user_email', $classicUser->user_email)->get();
+                $emailUses = \DB::table('usertable')
+                    ->select('user_id')->where('user_email', $classicUser->user_email)->get();
                 $count = count($emailUses);
                 if ($count > 1) {
                     $newUser->email = $classicUser->user_name . '@fakeemail.com';
@@ -272,7 +273,7 @@ class NexusUpgrade extends Command
             $count = \DB::select('select count(message_id) as count from messagetable')[0]->count;
             $this->line("Found $count posts");
             $bar = $this->output->createProgressBar($count);
-            \DB::table('messagetable')->chunk(1000, function($posts) use (&$errorCount, &$count, &$bar) {
+            \DB::table('messagetable')->chunk(1000, function ($posts) use (&$errorCount, &$count, &$bar) {
                 foreach ($posts as $classicPost) {
                     $newPost = new \Nexus\Post;
                     $newPost->id                = $classicPost->message_id;
@@ -320,7 +321,7 @@ class NexusUpgrade extends Command
             $count = \DB::select('select count(topicview_id) as count from topicview')[0]->count;
             $this->line("Found $count views");
             $bar = $this->output->createProgressBar($count);
-            \DB::table('topicview')->chunk(1000, function($views) use (&$errorCount, &$count, &$bar) {
+            \DB::table('topicview')->chunk(1000, function ($views) use (&$errorCount, &$count, &$bar) {
 
                 foreach ($views as $classicView) {
                     $newView = new \Nexus\View;
@@ -364,7 +365,7 @@ class NexusUpgrade extends Command
             $count = \DB::select('select count(nexusmessage_id) as count from nexusmessagetable')[0]->count;
             $this->line("Found $count messages");
             $bar = $this->output->createProgressBar($count);
-            \DB::table('nexusmessagetable')->chunk(1000, function($messages) use (&$errorCount, &$count, &$bar) {
+            \DB::table('nexusmessagetable')->chunk(1000, function ($messages) use (&$errorCount, &$count, &$bar) {
 
                 foreach ($messages as $classicMessage) {
                     $newMessage = new \Nexus\Message;

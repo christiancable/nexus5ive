@@ -130,27 +130,16 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         return $this->hasOne('Nexus\Activity');
     }
     
-    /* 
+    /*
       returns collection of trashed topics
     */
     public function getTrashedTopicsAttribute()
     {
-   
-     /* 
-      @todo: why does the hasManyThrough not work here?
-      return $this->hasManyThrough('Nexus\Topic', 'Nexus\Section', 'user_id', 'section_id');
-      */
-    /*  
-        $results = \DB::table('topics')
-            ->join('sections', 'topics.section_id', '=', 'sections.id')
-            ->whereNotNull('topics.deleted_at')
-            ->where('sections.user_id', '=', $this->id)
-            ->select('topics.*')
-            ->get();
-                
-                
-        return collect($results);
-    */
+        /*
+            @todo: why does the hasManyThrough not work here?
+            return $this->hasManyThrough('Nexus\Topic', 'Nexus\Section', 'user_id', 'section_id');
+        */
+
         $sectionIDs = $this->sections->pluck('id')->toArray();
         
         $trashedTopics = Topic::onlyTrashed()

@@ -15,7 +15,7 @@ class DestroyRequest extends Request
      */
     public function authorize()
     {
-        $return = false;   
+        $return = false;
         $topic = \Nexus\Topic::findOrFail($this->topic);
 
         if (\Auth::check()) {

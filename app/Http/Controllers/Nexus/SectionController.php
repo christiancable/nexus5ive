@@ -186,7 +186,7 @@ class SectionController extends Controller
             // set alert
             $topicURL = action('Nexus\TopicController@show', ['topic_id' => $topics[0]->id]);
             $topicTitle = $topics[0]->title;
-            $subscribeAllURL = action('Nexus\TopicController@markAllSubscribedTopicsAsRead');            
+            $subscribeAllURL = action('Nexus\TopicController@markAllSubscribedTopicsAsRead');
             $message = <<< Markdown
 People have been talking! New posts found in **[$topicTitle]($topicURL)**
 

@@ -7,7 +7,7 @@ use Nexus\Http\Requests\Request;
 class RestoreRequest extends Request
 {
     /**
-     * a topic can only be restored by 
+     * a topic can only be restored by
      * the moderator of the section and destination section
      *
      * @return bool
@@ -24,9 +24,9 @@ class RestoreRequest extends Request
         if (($destinationSection->moderator->id === $currentUserID) &&
             ($originalSection->moderator->id === $currentUserID)) {
                 $return = true;
-            } else {
-                $return = false;
-            }
+        } else {
+            $return = false;
+        }
         
         return $return;
     }

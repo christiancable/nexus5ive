@@ -8,12 +8,12 @@ use Nexus\Section;
 class SubscriptionRequest extends Request
 {
     /**
-     * a topic and be subscribed / unsubscribed by anyone 
+     * a topic and be subscribed / unsubscribed by anyone
      *
      * @return bool
      */
     public function authorize()
-    {   
+    {
         return true;
     }
 

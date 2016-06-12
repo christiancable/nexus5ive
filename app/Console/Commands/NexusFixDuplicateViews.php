@@ -18,7 +18,8 @@ class NexusFixDuplicateViews extends Command
      *
      * @var string
      */
-    protected $description = 'Remove duplicate views from bug in previous nexus. Not for normal use. Bug fix https://trello.com/c/arfNHMgT';
+    protected $description =
+        'Remove duplicate views from bug in previous nexus. Not for normal use. Bug fix https://trello.com/c/arfNHMgT';
 
     /**
      * Create a new command instance.

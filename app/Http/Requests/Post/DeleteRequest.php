@@ -13,7 +13,7 @@ class DeleteRequest extends Request
      *     user is the moderator of the topic
      *     user is an administrator
      *
-     * @todo 
+     * @todo
      *     user is the author
      *     post time is within XX sections
      *
@@ -21,7 +21,7 @@ class DeleteRequest extends Request
      */
     public function authorize()
     {
-        $return = false;         
+        $return = false;
 
         $post = \Nexus\Post::findOrFail($this->post);
 
