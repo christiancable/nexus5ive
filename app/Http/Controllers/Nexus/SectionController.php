@@ -68,9 +68,9 @@ class SectionController extends Controller
         }
 
         \Nexus\Helpers\ActivityHelper::updateActivity(
+            \Auth::user()->id,
             "Browsing <em>{$section->title}</em>",
-            action('Nexus\SectionController@show', ['id' => $section->id]),
-            \Auth::user()->id
+            action('Nexus\SectionController@show', ['id' => $section->id])
         );
 
         $breadcrumbs = \Nexus\Helpers\BreadcrumbHelper::breadcrumbForSection($section);

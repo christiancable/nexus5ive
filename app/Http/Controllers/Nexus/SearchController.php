@@ -113,9 +113,9 @@ pattern;
         }
 
         \Nexus\Helpers\ActivityHelper::updateActivity(
+            \Auth::user()->id,
             "Searching",
-            action('Nexus\SearchController@index'),
-            \Auth::user()->id
+            action('Nexus\SearchController@index')
         );
 
         $breadcrumbs = \Nexus\Helpers\BreadcrumbHelper::breadcumbForUtility('Search');

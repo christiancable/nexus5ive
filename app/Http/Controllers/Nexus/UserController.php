@@ -24,9 +24,9 @@ class UserController extends Controller
         $users =  \Nexus\User::select('username')->orderBy('username', 'asc')->get();
 
         \Nexus\Helpers\ActivityHelper::updateActivity(
+            \Auth::user()->id,
             "Viewing list of Users",
-            action('Nexus\UserController@index'),
-            \Auth::user()->id
+            action('Nexus\UserController@index')
         );
         $breadcrumbs = \Nexus\Helpers\BreadcrumbHelper::breadcumbForUtility('Users');
 
@@ -70,9 +70,9 @@ class UserController extends Controller
         }
 
         \Nexus\Helpers\ActivityHelper::updateActivity(
+            \Auth::user()->id,
             "Examining <em>{$user->username}</em>",
-            action('Nexus\UserController@show', ['user_name' => $user_name]),
-            \Auth::user()->id
+            action('Nexus\UserController@show', ['user_name' => $user_name])
         );
 
         $breadcrumbs = \Nexus\Helpers\BreadcrumbHelper::breadcrumbForUser($user);

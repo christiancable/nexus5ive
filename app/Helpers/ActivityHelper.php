@@ -29,7 +29,7 @@ class ActivityHelper
      * @param string $route - the url of the activity if it exists eg '/topics/123'
      * @param int $user_id - the user id
      */
-    public static function updateActivity($text = null, $route = null, $user_id)
+    public static function updateActivity($user_id, $text = null, $route = null)
     {
         $activity = \Nexus\Activity::firstOrNew(['user_id' => $user_id]);
         $activity->text = $text;

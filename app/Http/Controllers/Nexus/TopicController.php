@@ -105,9 +105,9 @@ class TopicController extends Controller
         \Nexus\Helpers\ViewHelper::updateReadProgress(\Auth::user(), $topic);
 
         \Nexus\Helpers\ActivityHelper::updateActivity(
+            \Auth::user()->id,
             "Reading <em>{$topic->title}</em>",
-            action('Nexus\TopicController@show', ['id' => $topic->id]),
-            \Auth::user()->id
+            action('Nexus\TopicController@show', ['id' => $topic->id])
         );
 
         $breadcrumbs = \Nexus\Helpers\BreadcrumbHelper::breadcrumbForTopic($topic);

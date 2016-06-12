@@ -42,9 +42,9 @@ class MessageController extends Controller
         \Nexus\Message::where('user_id', \Auth::user()->id)->update(['read' => true]);
 
         \Nexus\Helpers\ActivityHelper::updateActivity(
+            \Auth::user()->id,
             "Viewing <em>Inbox</em>",
-            action('Nexus\MessageController@index'),
-            \Auth::user()->id
+            action('Nexus\MessageController@index')
         );
 
         $breadcrumbs = \Nexus\Helpers\BreadcrumbHelper::breadcumbForUtility('Inbox');
