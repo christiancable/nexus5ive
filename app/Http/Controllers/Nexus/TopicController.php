@@ -194,7 +194,7 @@ class TopicController extends Controller
             $message = '**Unsubscribed!** New comments here will be hidden from _Catch-up_.';
         }
 
-        $request->session()->flash('headerAlert', $message);
+        \Nexus\Helpers\FlashHelper::showAlert($message, 'success');
         return  redirect()->route('topic.show', ['id' => $topic->id]);
     }
     
@@ -206,7 +206,7 @@ class TopicController extends Controller
         \Nexus\Helpers\ViewHelper::catchUpCatchUp(\Auth::user());
         
         $message = '**Success!** all subscribed topics are now marked as read';
-        \Session::flash('headerAlert', $message);
+        \Nexus\Helpers\FlashHelper::showAlert($message, 'success');
         
         return redirect('/');
     }

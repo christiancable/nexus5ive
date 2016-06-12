@@ -192,7 +192,7 @@ People have been talking! New posts found in **[$topicTitle]($topicURL)**
 
 Seeing too many old topics then **[mark all subscribed topics as read]($subscribeAllURL)**
 Markdown;
-            \Session::flash('headerSuccess', $message);
+            \Nexus\Helpers\FlashHelper::showAlert($message, 'success');
             
             // redirect to the parent section of the unread topic
             return redirect()->action('Nexus\SectionController@show', [$topics[0]->section->id]);
@@ -200,7 +200,7 @@ Markdown;
             
             // set alert
             $message = 'No updated topics found. Why not start a new conversation or read more sections?';
-            \Session::flash('headerWarning', $message);
+            \Nexus\Helpers\FlashHelper::showAlert($message, 'warning');
             
             // redirect to main menu
             return redirect('/');

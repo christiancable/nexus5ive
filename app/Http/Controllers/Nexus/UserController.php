@@ -111,8 +111,7 @@ class UserController extends Controller
         }
         $user->update($input);
         
-        \Session::flash('headerSuccess', 'Profile Updated!');
-
+        \Nexus\Helpers\FlashHelper::showAlert('Profile Updated!', 'success');
         return redirect('/users/'. $user_name);
     }
 
