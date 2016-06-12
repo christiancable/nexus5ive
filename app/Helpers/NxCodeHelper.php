@@ -4,7 +4,6 @@ namespace Nexus\Helpers;
 
 class NxCodeHelper
 {
-
     private static $youTubeHTMLStart = <<< 'HTML'
 <div class="video-wrapper">
       <iframe id="youtube-player" src="//www.youtube.com/embed/
@@ -16,13 +15,18 @@ HTML;
 HTML;
 
     // http://regexlib.com/REDetails.aspx?regexp_id=3514
-    private static $youTubePattern = '/(?:[hH][tT]{2}[pP][sS]{0,1}:\/\/)?[wW]{0,3}\.{0,1}[yY][oO][uU][tT][uU](?:\.[bB][eE]|[bB][eE]\.[cC][oO][mM])?\/(?:(?:[wW][aA][tT][cC][hH])?(?:\/)?\?(?:.*)?[vV]=([a-zA-Z0-9--]+).*|([A-Za-z0-9--]+))/';
+    private static $youTubePattern = <<< 'PATTERN'
+/(?:[hH][tT]{2}[pP][sS]{0,1}:\/\/)?[wW]{0,3}\.{0,1}[yY][oO][uU][tT][uU](?:\.[bB][eE]|[bB][eE]\.[cC][oO][mM])?\/(?:(?:[wW][aA][tT][cC][hH])?(?:\/)?\?(?:.*)?[vV]=([a-zA-Z0-9--]+).*|([A-Za-z0-9--]+))/
+PATTERN;
+
     /**
-    * converts a string with NXCode tags into
-    * markdown tags
-    * @param $text string string with nxcode tags
-    * @return string with markdown tags
-    **/
+     * converts a string with NXCode tags into
+     * markdown tags.
+     *
+     * @param $text string string with nxcode tags
+     *
+     * @return string with markdown tags
+     **/
     public static function nxToMarkdown($nxText)
     {
         /*
@@ -78,9 +82,9 @@ HTML;
     }
 
     /**
-    * converts a string with NXCode YouTube tags into
-    * text with youtueb embed code
-    **/
+     * converts a string with NXCode YouTube tags into
+     * text with youtueb embed code.
+     **/
     public static function embedYouTube($text)
     {
         $matches = array();
@@ -93,7 +97,6 @@ HTML;
         // echo "\n\n";
         // var_dump($matches);
         foreach ($matches[1] as $match) {
-
             preg_match(self::$youTubePattern, $match, $videoIDs);
 
             $currentVideoID = end($videoIDs);
@@ -101,7 +104,7 @@ HTML;
             if (strlen($currentVideoID)) {
                 // make the valid embed code
                 $videoTags[] = '[youtube-]'.$match.'[-youtube]';
-                $embedCodes[] = self::$youTubeHTMLStart. $currentVideoID . self::$youTubeHTMLStop;
+                $embedCodes[] = self::$youTubeHTMLStart.$currentVideoID.self::$youTubeHTMLStop;
             } else {
                 // replace invalid youtube tag with empty string
                 $videoTags[] = '[youtube-]'.$match.'[-youtube]';
@@ -109,15 +112,16 @@ HTML;
             }
         }
         $text = str_ireplace($videoTags, $embedCodes, $text);
-       
+
         return $text;
     }
 
     /**
      * decode text so that it is suitable for display
-     * for use in blade templates
+     * for use in blade templates.
      *
      * @param $text string - text of a post containing markdown and nxcode
+     *
      * @return string - formatting version of $text
      **/
     public static function nxDecode($text)
@@ -126,7 +130,7 @@ HTML;
         $text = strip_tags($text);
         $text = self::embedYouTube($text);
         $text = MarkdownHelper::markdown($text);
-        
+
         return $text;
     }
 }
