@@ -94,6 +94,18 @@
   
   @yield('content')
 
+@if (Auth::check())
+<nav class="navbar navbar-inverse navbar-fixed-bottom visible-xs">
+  <div class="container">
+    <ul class="nav navbar-nav">
+     <li class="text-center"><a class="col-xs-12" href="/leap"><span class="glyphicon glyphicon-circle-arrow-right" aria-hidden="true"></span> Catch-up</a></li> 
+   </ul>
+ </div>
+</nav>
+@endif
+
+
+
  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
  <script src="https://code.jquery.com/jquery.js"></script>
     @yield('javascript')
