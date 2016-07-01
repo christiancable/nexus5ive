@@ -37,8 +37,8 @@
               $notificationCount = $commentsCount + $messagesCount;
             ?>
             <ul class="nav navbar-nav">
-              <li><a href="/users/">Users</a></li>
-               <li><a href="/leap">Catch-up</a></li> 
+              <li><a href="{{ action('Nexus\UserController@index')}}">Users</a></li>
+               <li><a href="{{ action('Nexus\SectionController@leap')}}">Catch-up</a></li> 
                <li><a href="{{ action('Nexus\ActivityController@index')}}">Who's Online</a></li>
                <li><a href="{{ action('Nexus\SectionController@latest')}}">Latest</a></li>
                <li><a href="{{ action('Nexus\SearchController@index')}}">Search</a></li>
@@ -98,7 +98,9 @@
 <nav class="navbar navbar-inverse navbar-fixed-bottom visible-xs">
   <div class="container">
     <ul class="nav navbar-nav">
-     <li class="text-center"><a class="col-xs-12" href="/leap"><span class="glyphicon glyphicon-circle-arrow-right" aria-hidden="true"></span> Catch-up</a></li> 
+     <li class="text-center"><a class="col-xs-12" href="{{ action('Nexus\SectionController@leap')}}">
+       <span class="glyphicon glyphicon-circle-arrow-right" aria-hidden="true"></span> <strong>Catch-up</strong> to next topic</a>
+     </li> 
    </ul>
  </div>
 </nav>
