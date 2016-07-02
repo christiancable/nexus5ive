@@ -25,7 +25,8 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand " href="/">{{env('NEXUS_NAME')}}</a>
+        <a class="navbar-brand" {!! Nexus\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Home') !!}
+            href="/">{{env('NEXUS_NAME')}}</a>
       </div>
       <div id="navbar" class="navbar-collapse collapse">
 
@@ -37,11 +38,16 @@
               $notificationCount = $commentsCount + $messagesCount;
             ?>
             <ul class="nav navbar-nav">
-              <li><a href="{{ action('Nexus\UserController@index')}}">Users</a></li>
-               <li><a href="{{ action('Nexus\SectionController@leap')}}">Catch-up</a></li> 
-               <li><a href="{{ action('Nexus\ActivityController@index')}}">Who's Online</a></li>
-               <li><a href="{{ action('Nexus\SectionController@latest')}}">Latest</a></li>
-               <li><a href="{{ action('Nexus\SearchController@index')}}">Search</a></li>
+                <li><a {!! Nexus\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Users') !!} 
+                    href="{{ action('Nexus\UserController@index')}}">Users</a></li>
+                <li><a {!! Nexus\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Catch-Up') !!}
+                    href="{{ action('Nexus\SectionController@leap')}}">Catch-up</a></li> 
+                <li><a {!! Nexus\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Whos Online') !!}
+                    href="{{ action('Nexus\ActivityController@index')}}">Who's Online</a></li>
+                <li><a {!! Nexus\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Latest') !!}
+                    href="{{ action('Nexus\SectionController@latest')}}">Latest</a></li>
+                <li><a {!! Nexus\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Search') !!}
+                    href="{{ action('Nexus\SearchController@index')}}">Search</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
               <li class="dropdown">
@@ -98,7 +104,8 @@
 <nav class="navbar navbar-inverse navbar-fixed-bottom visible-xs">
   <div class="container">
     <ul class="nav navbar-nav">
-     <li class="text-center"><a class="col-xs-12" href="{{ action('Nexus\SectionController@leap')}}">
+     <li class="text-center"><a class="col-xs-12" {!! Nexus\Helpers\GoogleAnalyticsHelper::onClickEvent('BottomNavigation', 'Catch-Up') !!}
+        href="{{ action('Nexus\SectionController@leap')}}">
        <span class="glyphicon glyphicon-circle-arrow-right" aria-hidden="true"></span> <strong>Catch-up</strong> to next topic</a>
      </li> 
    </ul>
