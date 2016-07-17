@@ -11,7 +11,41 @@
 @section('content')
         <div class="container">
             <div class="content">
+
+{{-- <div id="the-basics">
+  <input class="typeahead form-control" type="text" placeholder="States of USA">
+  <input type="hidden" name="_token" value="{{ csrf_token() }}">
+</div> --}}
+
+
+
                 <h1 class="title">Users</h1>
+
+
+{!! Form::open(['url' => 'search', 'id'=>'usersearch']) !!}
+    <div class="form-group" role="search">
+        {!! Form::text('text', null, ['class'=> 'typeahead form-control', 'placeholder'=>"Username"]) !!}
+    </div>
+
+    <div class="row">    
+    <div class="col-sm-12">
+        <div class="form-group">          
+            {!! Form::button("<span class='glyphicon glyphicon-search'></span>&nbsp;&nbsp;Search",
+                array(
+                    'type'  => 'submit',
+                    'class' => "btn pull-right btn-primary col-xs-12 col-sm-3"
+                    )
+            ) !!}
+        </div>
+    </div>
+</div>
+{!! Form::close() !!}
+
+
+<hr/>
+
+
+
                 <?php
                     $skiplinks = array();
                     $currentLetter = "";
@@ -66,4 +100,38 @@
                 </ul>
             </div>
         </div>
+@endsection
+
+
+@section('javascript')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>  
+
+<script type="text/javascript">
+
+$('#usersearch .typeahead').typeahead({
+  hint: true,
+  highlight: true,
+  minLength: 2
+},
+{
+   name: 'users',
+  source:  function (query, process, process) {
+        return $.post('{{route('api.users')}}', { query: query, _token: '{!! csrf_token() !!}' }, function (data) {
+                return process(data);
+            });
+    },
+  templates: {
+    empty: [
+        '<div class="list-group search-results-dropdown"><div class="list-group-item">Nothing found.</div></div>'
+    ],
+    header: [
+        '<div class="list-group search-results-dropdown">'
+    ],
+    suggestion: function (data) {
+         return '<a href="{!! Request::url() !!}/' + data.username + '" class="list-group-item">' + data.username + '</a>'
+    }
+
+    }
+});
+</script>
 @endsection

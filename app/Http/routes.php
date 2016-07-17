@@ -1,4 +1,5 @@
 <?php
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,6 +26,14 @@ Route::get('auth/logout', 'Auth\AuthController@getLogout');
 Route::get('api/comments/count', ['middleware' => 'auth',  function () {
     return Auth::user()->newCommentCount();
 }]);
+
+
+Route::post('api/users', function (Request $request) {
+    $input = $request->all();
+    $username = $input['query'];
+    $data = \Nexus\User::select('username')->where('username', "LIKE", "%$username%")->orderBy('username', 'asc')->get()->toArray();
+    return response()->json($data);
+})->name('api.users');
 
 Route::post('api/nxcode', 'Nexus\PostController@previewPost');
 
