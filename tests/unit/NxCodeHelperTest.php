@@ -4,6 +4,7 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Nexus\Helpers\NxCodeHelper;
+use Nexus\Helpers\MarkdownHelper;
 
 class NxCodeHelperTest extends TestCase
 {
@@ -66,5 +67,30 @@ HTML
             $expectedOutput = '',
             ),
           );
+    }
+
+    /**
+     * test custom markdown extensions
+     *
+     * @dataProvider providerMarkdownExtensions
+     */
+    public function testMarkdownExtensions($input, $expectedOutput)
+    {
+        $output = MarkdownHelper::markdown($input);
+        $this->assertEquals($output, $expectedOutput);
+    }
+
+    public function providerMarkdownExtensions()
+    {
+      return array(
+        'blank text' => array(
+          $input = '',
+          $expectedOutput = '',
+          ),
+        'link' => array(
+          $input = '[a link](http://example.com)',
+          $expectedOutput = '<p><a href="http://example.com" target="_blank">a link</a></p>',
+          ),
+        );
     }
 }

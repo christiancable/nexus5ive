@@ -14,8 +14,7 @@ class MarkdownHelper
      */
     public static function markdown($markdown)
     {
-
-        $parser = new Parsedown();
+        $parser = new NxMarkdown();
         $html = $parser->text($markdown);
 
         return $html;
