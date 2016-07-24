@@ -5,17 +5,34 @@ namespace Nexus\Helpers;
 class NxMarkdown extends \Parsedown
 {
 
+    protected function addLinkTargetBlank($Excerpt)
+    {
+        if (isset($Excerpt['element']['attributes']['href'])) {
+            if (stripos($Excerpt['element']['attributes']['href'], 'http') !== false) {
+                $Excerpt['element']['attributes']['target'] = '_blank';
+            }
+        }
+        return $Excerpt;
+    }
     /**
      * add target blank for external links
     **/
     protected function inlineLink($Excerpt)
     {
-        $link = parent::inlineLink($Excerpt);
-        if (isset($link['element']['attributes']['href'])) {
-            if (stripos($link['element']['attributes']['href'], 'http') !== false) {
-                $link['element']['attributes']['target'] = '_blank';
-            }
-        }
-        return $link;
+        $Excerpt = parent::inlineLink($Excerpt);
+        $Excerpt = self::addLinkTargetBlank($Excerpt);
+
+        return $Excerpt;
+    }
+
+    /**
+     * add target blank for external links
+    **/
+    protected function inlineUrl($Excerpt)
+    {
+        $Excerpt = parent::inlineUrl($Excerpt);
+        $Excerpt = self::addLinkTargetBlank($Excerpt);
+
+        return $Excerpt;
     }
 }

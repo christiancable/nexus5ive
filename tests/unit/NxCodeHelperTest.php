@@ -95,6 +95,10 @@ HTML
                 $input = '[a link](/users)',
                 $expectedOutput = '<p><a href="/users">a link</a></p>',
             ),
+            'inline internal link' => array(
+                $input = 'http://example.com',
+                $expectedOutput = '<p><a href="http://example.com" target="_blank">http://example.com</a></p>',
+            ),
         );
     }
 }
