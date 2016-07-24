@@ -82,15 +82,19 @@ HTML
 
     public function providerMarkdownExtensions()
     {
-      return array(
-        'blank text' => array(
-          $input = '',
-          $expectedOutput = '',
-          ),
-        'link' => array(
-          $input = '[a link](http://example.com)',
-          $expectedOutput = '<p><a href="http://example.com" target="_blank">a link</a></p>',
-          ),
+        return array(
+            'blank text' => array(
+                $input = '',
+                $expectedOutput = '',
+            ),
+            'external link' => array(
+                $input = '[a link](http://example.com)',
+                $expectedOutput = '<p><a href="http://example.com" target="_blank">a link</a></p>',
+            ),
+            'internal link' => array(
+                $input = '[a link](/users)',
+                $expectedOutput = '<p><a href="/users">a link</a></p>',
+            ),
         );
     }
 }
