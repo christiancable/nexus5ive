@@ -185,6 +185,8 @@ class SectionController extends Controller
 
             // set alert
             $topicURL = action('Nexus\TopicController@show', ['topic_id' => $topics[0]->id]);
+            // force the url to be relative so we don't later make this open in the new window
+            $topicURL = str_replace(url('/'), '', $topicURL);
             $topicTitle = $topics[0]->title;
             $subscribeAllURL = action('Nexus\TopicController@markAllSubscribedTopicsAsRead');
             $message = <<< Markdown
