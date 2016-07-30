@@ -101,4 +101,30 @@ HTML
             ),
         );
     }
+
+
+        /**
+     * test custom markdown extensions
+     *
+     * @dataProvider providerNxCode
+     */
+    public function testNxCode($input, $expectedOutput)
+    {
+        $output = NxCodeHelper::spoilerTags($input);
+        $this->assertEquals($output, $expectedOutput);
+    }
+
+    public function providerNxCode()
+    {
+        return array(
+            'spoiler tag' => array(
+                $input = 'Oh my [spoiler-]Brad Pitt is Edward Norton![-spoiler]',
+                $expectedOutput = 'Oh my <span class="spoiler">Brad Pitt is Edward Norton!</span>',
+            ),
+            'multiple spoiler tags' => array(
+                $input = 'Oh my [spoiler-]Brad Pitt is Edward Norton![-spoiler] and [spoiler-]it was Earth all along[-spoiler]',
+                $expectedOutput = 'Oh my <span class="spoiler">Brad Pitt is Edward Norton!</span> and <span class="spoiler">it was Earth all along</span>',
+            ),
+        );
+    }
 }

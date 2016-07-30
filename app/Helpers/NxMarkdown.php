@@ -4,7 +4,6 @@ namespace Nexus\Helpers;
 
 class NxMarkdown extends \Parsedown
 {
-
     protected function addLinkTargetBlank($Excerpt)
     {
         if (isset($Excerpt['element']['attributes']['href'])) {

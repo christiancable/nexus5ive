@@ -116,6 +116,30 @@ PATTERN;
         return $text;
     }
 
+    public static function spoilerTags($text)
+    {
+        $matches = array();
+        $pattern = '/\[spoiler-\](.*)\[-spoiler\]/iU';
+        $spoilerStart = '<span class="spoiler">';
+        $spoilerStop = '</span>';
+        preg_match_all($pattern, $text, $matches);
+
+        foreach ($matches[0] as $key => $value) {
+
+            // echo "\n\n--------";
+            // echo "REPLACE $value\n\n";
+            // echo "WITH {$matches[1][$key]}\n\n";
+
+            $text = str_replace($value, $spoilerStart . $matches[1][$key] . $spoilerStop, $text);
+            // var_dump($match);
+            // var_dump($match[0]);
+            // echo "and";
+            // var_dump($match[1]);
+        }
+        
+
+        return $text;
+    }
     /**
      * decode text so that it is suitable for display
      * for use in blade templates.
@@ -129,6 +153,7 @@ PATTERN;
         $text = self::NxToMarkdown($text);
         $text = strip_tags($text);
         $text = self::embedYouTube($text);
+        $text = self::spoilerTags($text);
         $text = MarkdownHelper::markdown($text);
 
         return $text;
