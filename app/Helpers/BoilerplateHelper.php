@@ -22,7 +22,11 @@ some _italics_
 <pre>
 > some quoted text
 </pre>
-
+<hr/>
+<strong>Spoilers</strong>
+<pre>
+[spoiler-]he's a ghost[-spoiler]
+</pre>
 <hr/>
 <strong>Links</strong>
 <pre>
