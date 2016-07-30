@@ -48,6 +48,10 @@ class PostController extends Controller
         $input['time'] = time();
         $post = \Nexus\Post::create($input);
         \Auth::user()->incrementTotalPosts();
+
+        // scan post for mentions
+        \Nexus\Helpers\MentionHelper::makeMentions($post);
+        
         
         // if we are viewing the topic with the most recent post at the bottom then
         // redirect to that point in the page

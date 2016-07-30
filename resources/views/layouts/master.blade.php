@@ -26,7 +26,8 @@
           <span class="icon-bar"></span>
         </button>
         <a class="navbar-brand" {!! Nexus\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Home') !!}
-            href="/">{{env('NEXUS_NAME')}}</a>
+            {{-- href="/"><span class="glyphicon glyphicon glyphicon-home" aria-hidden="true"></span> {{env('NEXUS_NAME')}}</a> --}}
+            href="/"><span class="glyphicon glyphicon glyphicon-home" aria-hidden="true"></span></a>
       </div>
       <div id="navbar" class="navbar-collapse collapse">
 
@@ -49,6 +50,32 @@
                 <li><a {!! Nexus\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Search') !!}
                     href="{{ action('Nexus\SearchController@index')}}">Search</a></li>
             </ul>
+          
+
+            <?php
+              $mentions = $authUser->mentions;
+              $mentionCount = count($mentions);
+            ?>
+            @if ($mentionCount > 0 )
+            <ul class="nav navbar-nav navbar-right">
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                  <span class="glyphicon glyphicon glyphicon-bell" aria-hidden="true"></span>
+                  <span class="badge">{{$mentionCount}}</span>
+                  <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                  @foreach ($mentions as $mention)
+                    <li><a href="{{Nexus\Helpers\TopicHelper::routeToPost($mention->post)}}"><strong>{{$mention->post->author->username}}</strong> mentioned you in <strong>{{$mention->post->topic->title }}</strong></a></li>
+                  @endforeach
+                 {{--  <li role="separator" class="divider"></li>
+                  <li><a href=""><span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span> Clear Mentions - @todo: make this work</a></li> --}}
+                </ul>
+                @endif
+              </li>
+            </ul>
+
+
             <ul class="nav navbar-nav navbar-right">
               <li class="dropdown">
 

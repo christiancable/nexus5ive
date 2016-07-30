@@ -51,7 +51,12 @@
         @endif 
     @endif
 
-    @forelse($postsArray as $post)        
+    @forelse($postsArray as $post) 
+
+        <?php
+            // @todo - I don't think this should live here
+            \Nexus\Helpers\MentionHelper::removeMentions(\Auth::user(), $post);
+        ?>
 
         @if($topic->section->moderator->id === Auth::user()->id)
             @include('posts.moderate', compact('post', 'readProgress'))
