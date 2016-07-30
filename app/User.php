@@ -89,6 +89,11 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     }
 
     /* related models */
+
+    public function mentions()
+    {
+        return $this->hasMany('Nexus\Mention')->orderBy('id', 'dec');
+    }
     
     public function comments()
     {
