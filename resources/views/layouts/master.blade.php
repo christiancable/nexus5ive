@@ -61,7 +61,7 @@
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                   <span class="glyphicon glyphicon glyphicon-bell" aria-hidden="true"></span>
-                  <span class="badge">{{$mentionCount}}</span>
+                  <span class="badge progress-bar-danger">{{$mentionCount}}</span>
                   <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu">
@@ -90,14 +90,14 @@
                   <li><a href="{{ action('Nexus\UserController@show', ['user_name' => $authUser->username])}}"> 
                   <span class="glyphicon glyphicon glyphicon-user" aria-hidden="true"></span> Profile 
                  @if ($commentsCount)
-                    <span class="badge progress-bar-danger">{{$commentsCount}}</span>
+                    <span class="badge progress-bar-info">{{$commentsCount}}</span>
                   @endif
                   </a></li>
 
                   <li><a href="{{action('Nexus\MessageController@index')}}">
                   <span class="glyphicon glyphicon glyphicon-envelope" aria-hidden="true"></span> Inbox 
                  @if ($messagesCount)
-                    <span class="badge">{{$messagesCount}}</span>
+                    <span class="badge progress-bar-info">{{$messagesCount}}</span>
                   @endif
                   </a></li>
                   @if ($authUser->sections->count())
