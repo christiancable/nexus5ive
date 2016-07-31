@@ -82,7 +82,7 @@
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                 {{$authUser->username}} ({{$authUser->popname}}) 
                   @if ($notificationCount)
-                    <span class="badge">{{$notificationCount}}</span>
+                    <span class="badge progress-bar-danger">{{$notificationCount}}</span>
                   @endif
                 <span class="caret"></span>
                 </a>
@@ -90,7 +90,7 @@
                   <li><a href="{{ action('Nexus\UserController@show', ['user_name' => $authUser->username])}}"> 
                   <span class="glyphicon glyphicon glyphicon-user" aria-hidden="true"></span> Profile 
                  @if ($commentsCount)
-                    <span class="badge">{{$commentsCount}}</span>
+                    <span class="badge progress-bar-danger">{{$commentsCount}}</span>
                   @endif
                   </a></li>
 
