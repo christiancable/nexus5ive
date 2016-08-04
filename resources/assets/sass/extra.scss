@@ -64,14 +64,22 @@ blockquote {
   left:0;
 }
 
+/* bottom nav */
+
 /* 
 add spacing at bottom so the navbar doesn't cover up the formatting help 
 http://getbootstrap.com/components/#navbar-fixed-bottom
-*/
-body { padding-bottom: 70px; }
+// */
+body { padding-bottom: 80px; }
 
+.navbar-fixed-bottom {
+  .glyphicon {
+    font-size: x-large;
+  }
+}
 /* spoiler text */
 .spoiler {
   background: black;
   color: black;
 }
+

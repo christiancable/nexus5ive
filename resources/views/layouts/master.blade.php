@@ -128,12 +128,18 @@
         @yield('content')
 
         @if (Auth::check())
-        <nav class="navbar navbar-inverse navbar-fixed-bottom visible-xs">
+        <nav class="navbar navbar-default navbar-fixed-bottom visible-xs">
           <div class="container">
             <ul class="nav navbar-nav">
-             <li class="text-center"><a class="col-xs-12" {!! Nexus\Helpers\GoogleAnalyticsHelper::onClickEvent('BottomNavigation', 'Catch-Up') !!}
-              href="{{ action('Nexus\SectionController@leap')}}">
-              <span class="glyphicon glyphicon-circle-arrow-right" aria-hidden="true"></span> <strong>Catch-up</strong> to next topic</a>
+             <li class="text-center col-xs-6">
+               <a {!! Nexus\Helpers\GoogleAnalyticsHelper::onClickEvent('BottomNavigation', 'Catch-Up') !!}
+                href="{{ action('Nexus\SectionController@leap')}}">
+                <span class="glyphicon glyphicon-circle-arrow-right" aria-hidden="true" style="vertical-align:middle"></span> Next</a>
+            </li> 
+             <li class="text-center col-xs-6">
+               <a {!! Nexus\Helpers\GoogleAnalyticsHelper::onClickEvent('BottomNavigation', 'Latest') !!}
+                href="{{ action('Nexus\SectionController@latest')}}">
+                <span class="glyphicon glyphicon-time" aria-hidden="true" style="vertical-align:middle"></span> Latest</a>
             </li> 
           </ul>
         </div>
