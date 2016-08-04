@@ -33,7 +33,10 @@
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
         <span class="sr-only">Toggle navigation</span>
-        <span class="glyphicon glyphicon-menu-hamburger"></span> <span>Menu</span> <span class="badge progress-bar-danger">{{$notificationCount}}</span>
+        <span class="glyphicon glyphicon-menu-hamburger"></span> <span>Menu</span> 
+        @if ($notificationCount > 0 )
+          <span class="badge progress-bar-danger">{{$notificationCount}}</span>
+        @endif
       </button>
       <a class="navbar-brand" {!! Nexus\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Home') !!}
       href="/"><span class="glyphicon glyphicon glyphicon-home" aria-hidden="true"></span></a>
