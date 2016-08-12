@@ -24,6 +24,7 @@
     <?php
         $latestPost = $posts->get()->first();
         $postsChunk = $posts->paginate(env('NEXUS_PAGINATION'));
+        Auth::user()->removeMentions($postsChunk->items());
         $postsArray = [];
         foreach ($postsChunk as $post) {
             $postsArray[] = $post;
@@ -55,7 +56,7 @@
 
         <?php
             // @todo - I don't think this should live here
-            \Nexus\Helpers\MentionHelper::removeMentions(\Auth::user(), $post);
+            // \Nexus\Helpers\MentionHelper::removeMentions(\Auth::user(), $post);
         ?>
 
         @if($topic->section->moderator->id === Auth::user()->id)

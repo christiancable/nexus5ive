@@ -52,8 +52,10 @@ class testMentions extends TestCase
             ->dontSee('Clear All Mentions');
 
         // WHEN the user is mentioned in the topic by the other user
-        \Nexus\Helpers\MentionHelper::addMention($user, $post);
+        // \Nexus\Helpers\MentionHelper::addMention($user, $post);
 
+        $user->addMention($post);
+        
         // reloading the model here because otherwise the related
         $user = User::find($originalUserID);
 

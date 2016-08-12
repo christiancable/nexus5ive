@@ -182,4 +182,17 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     {
         $this->mentions()->delete();
     }
+
+    public function addMention(\Nexus\Post $post)
+    {
+        $mention = new \Nexus\Mention;
+        $mention->user_id = $this->id;
+        $mention->post_id = $post->id;
+        $this->mentions()->save($mention);
+    }
+
+    public function removeMentions(Array $posts)
+    {
+        $this->mentions()->whereIn('post_id', array_pluck($posts, 'id'))->delete();
+    }
 }
