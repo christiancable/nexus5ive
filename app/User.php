@@ -176,4 +176,10 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     {
         return $this->messages->where('read', false)->count();
     }
+
+    // dealing with @ mentions
+    public function clearMentions()
+    {
+        $this->mentions()->delete();
+    }
 }

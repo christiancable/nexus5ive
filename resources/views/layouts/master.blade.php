@@ -46,13 +46,13 @@
       <ul class="nav navbar-nav">
         <li><a {!! Nexus\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Users') !!} 
           href="{{ action('Nexus\UserController@index')}}">Users</a></li>
-          <li><a {!! Nexus\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Catch-Up') !!}
+        <li><a {!! Nexus\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Catch-Up') !!}
             href="{{ action('Nexus\SectionController@leap')}}">Catch-up</a></li> 
-            <li><a {!! Nexus\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Whos Online') !!}
+        <li><a {!! Nexus\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Whos Online') !!}
               href="{{ action('Nexus\ActivityController@index')}}">Who's Online</a></li>
-              <li><a {!! Nexus\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Latest') !!}
+        <li><a {!! Nexus\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Latest') !!}
                 href="{{ action('Nexus\SectionController@latest')}}">Latest</a></li>
-                <li><a {!! Nexus\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Search') !!}
+        <li><a {!! Nexus\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Search') !!}
                   href="{{ action('Nexus\SearchController@index')}}">Search</a></li>
                 </ul>
 
@@ -68,8 +68,18 @@
                       @foreach ($mentions as $mention)
                       <li><a href="{{Nexus\Helpers\TopicHelper::routeToPost($mention->post)}}"><strong>{{$mention->post->author->username}}</strong> mentioned you in <strong>{{$mention->post->topic->title }}</strong></a></li>
                       @endforeach
-                 {{--  <li role="separator" class="divider"></li>
-                 <li><a href=""><span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span> Clear Mentions - @todo: make this work</a></li> --}}
+                 <li role="separator" class="divider"></li>
+                 <li>
+              <form action="{{action('Nexus\MentionController@destroyAll')}}" method="POST">
+              {{ csrf_field() }}
+              {{ method_field('DELETE') }}
+              <li role="presentation">{!! Form::button('<span class="glyphicon glyphicon-ok"></span> Clear All Mentions</button>', ['Type' => 'Submit', 'class' => 'btn btn-link', 'id' => 'Clear All Mentions' ]) !!}</li>
+              {!! Form::close() !!}
+        </li>
+
+                 
+                 
+                 
                </ul>
                @endif
              </li>
