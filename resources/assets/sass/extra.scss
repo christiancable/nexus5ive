@@ -83,3 +83,7 @@ body { padding-bottom: 80px; }
   color: black;
 }
 
+/* keep button links in sentence case */
+.btn-link {
+  text-transform: initial;
+}
