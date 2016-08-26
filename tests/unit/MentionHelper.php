@@ -10,7 +10,7 @@ class MentionHelperTest extends TestCase
     
     /**
      *
-     * @dataProvider providerdentifyMentionedUsersFindsUsernames
+     * @dataProvider provideridentifyMentionedUsersFindsUsernames
      **/
     public function testIdentifyMentionsFindsUsernames($input, $expectedOutput)
     {
@@ -18,7 +18,7 @@ class MentionHelperTest extends TestCase
         $this->assertEquals($output, $expectedOutput);
     }
 
-    public function providerdentifyMentionedUsersFindsUsernames()
+    public function provideridentifyMentionedUsersFindsUsernames()
     {
         return array(
             'blank post' => array(
@@ -35,4 +35,33 @@ class MentionHelperTest extends TestCase
             ),
         );
     }
+    
+    /**
+    *
+    * @dataProvider providerHighlightMentionsHighlights
+    **/
+    public function testHighlightMentionsHighlights($input, $expectedOutput)
+    {
+        $output = MentionHelper::highlightMentions($input);
+        $this->assertEquals($output, $expectedOutput);
+    }
+
+    public function providerHighlightMentionsHighlights()
+    {
+        return array(
+            'blank post' => array(
+                $input = '',
+                $expectedOutput = '',
+            ),
+            'single mention' => array(
+                $input = 'hey @christiancable how are you?',
+                $expectedOutput = 'hey <span class="text-muted">@</span><mark><strong>christiancable</strong></mark> how are you?',
+            ),
+            'multiple mentions' => array(
+                $input = 'hey @christiancable have you seen @AgentOrange',
+                $expectedOutput = 'hey <span class="text-muted">@</span><mark><strong>christiancable</strong></mark> have you seen <span class="text-muted">@</span><mark><strong>AgentOrange</strong></mark>',
+            ),
+        );
+    }
+
 }

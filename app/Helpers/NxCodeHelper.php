@@ -154,6 +154,7 @@ PATTERN;
         $text = self::embedYouTube($text);
         $text = self::spoilerTags($text);
         $text = MarkdownHelper::markdown($text);
+        $text = MentionHelper::highlightMentions($text);
 
         return $text;
     }

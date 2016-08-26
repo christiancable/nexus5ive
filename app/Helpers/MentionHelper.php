@@ -34,4 +34,17 @@ class MentionHelper
             }
         }
     }
+
+    /**
+    * added css to highlight @mentions to text
+    * @param string $text
+    * @return string $text
+    */
+    public static function highlightMentions($text)
+    {
+        $pattern = '/@([[:word:]]+)/';
+        $replacement = '<span class="text-muted">@</span><mark><strong>${1}</strong></mark>';
+        $highlightedText = preg_replace($pattern, $replacement, $text);
+        return $highlightedText;
+    }
 }
