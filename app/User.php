@@ -195,4 +195,14 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     {
         $this->mentions()->whereIn('post_id', array_pluck($posts, 'id'))->delete();
     }
+
+    public function notificationCount()
+    {
+        $count = 0;
+        $count = $count + $this->newMessageCount();
+        $count = $count + $this->newCommentCount();
+        $count = $count + count($this->Mentions);
+
+        return $count;
+    }
 }

@@ -23,10 +23,9 @@ Route::post('auth/login', 'Auth\AuthController@postLogin');
 Route::get('auth/logout', 'Auth\AuthController@getLogout');
 
 // API 
-Route::get('api/comments/count', ['middleware' => 'auth',  function () {
-    return Auth::user()->newCommentCount();
-}]);
-
+Route::get('api/notifications', ['middleware' => 'auth',  function () {
+    return Auth::user()->notificationCount();
+}])->name('api.notificationCount');
 
 Route::post('api/users', function (Request $request) {
     $input = $request->all();
@@ -36,6 +35,12 @@ Route::post('api/users', function (Request $request) {
 })->name('api.users');
 
 Route::post('api/nxcode', 'Nexus\PostController@previewPost');
+
+// Interface partials
+Route::get('interface/toolbar', ['middleware' => 'auth',  function () {
+    return response()->view('_toolbar');
+}])->name('interface.toolbar');
+
 
 // Password reset link request routes...
 Route::get('password/email', 'Auth\PasswordController@getEmail');

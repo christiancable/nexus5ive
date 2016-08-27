@@ -15,155 +15,45 @@
 </head>
 <body>
 
+  @if (Auth::check())
+  <span id="top-toolbar">
+    @include('_toolbar')
+  </span>
+  @endif 
 
- @if (Auth::check())
-   @if ($authUser = Auth::user())
-<?php
-    $commentsCount = $authUser->newCommentCount();
-    $messagesCount = $authUser->newMessageCount();
-    $mentions = $authUser->mentions;
-    $mentionCount = count($mentions);
+  @yield('breadcrumbs')
 
-    $profileNotificationCount = $commentsCount + $messagesCount;
-    $notificationCount = $profileNotificationCount + $mentionCount;
-?>
+  @include('_alerts')
 
- <nav class="navbar navbar-default ">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="glyphicon glyphicon-menu-hamburger"></span> <span>Menu</span> 
-        @if ($notificationCount > 0 )
-          <span class="badge progress-bar-danger">{{$notificationCount}}</span>
-        @endif
-      </button>
-      <a class="navbar-brand" {!! Nexus\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Home') !!}
-      href="/"><span class="glyphicon glyphicon glyphicon-home" aria-hidden="true"></span></a>
-    </div>
-    <div id="navbar" class="navbar-collapse collapse">
+  @yield('content')
 
+  @if (Auth::check())
+  <nav class="navbar navbar-default navbar-fixed-bottom visible-xs">
+    <div class="container">
       <ul class="nav navbar-nav">
-        <li><a {!! Nexus\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Users') !!} 
-          href="{{ action('Nexus\UserController@index')}}">Users</a></li>
-        <li><a {!! Nexus\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Catch-Up') !!}
-            href="{{ action('Nexus\SectionController@leap')}}">Catch-up</a></li> 
-        <li><a {!! Nexus\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Whos Online') !!}
-              href="{{ action('Nexus\ActivityController@index')}}">Who's Online</a></li>
-        <li><a {!! Nexus\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Latest') !!}
-                href="{{ action('Nexus\SectionController@latest')}}">Latest</a></li>
-        <li><a {!! Nexus\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Search') !!}
-                  href="{{ action('Nexus\SearchController@index')}}">Search</a></li>
-                </ul>
-
-                @if ($mentionCount > 0 )
-                <ul class="nav navbar-nav navbar-right">
-                  <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                      <span class="glyphicon glyphicon glyphicon-bell" aria-hidden="true"></span>
-                      <span class="badge progress-bar-danger">{{$mentionCount}}</span>
-                      <span class="caret"></span>
-                    </a>
-                    <ul class="dropdown-menu">
-                      @foreach ($mentions as $mention)
-                      <li><a href="{{Nexus\Helpers\TopicHelper::routeToPost($mention->post)}}"><strong>{{$mention->post->author->username}}</strong> mentioned you in <strong>{{$mention->post->topic->title }}</strong></a></li>
-                      @endforeach
-                 <li role="separator" class="divider"></li>
-                 <li>
-              <form action="{{action('Nexus\MentionController@destroyAll')}}" method="POST">
-              {{ csrf_field() }}
-              {{ method_field('DELETE') }}
-              <li role="presentation">{!! Form::button('<span class="glyphicon glyphicon-ok"></span> Clear All Mentions</button>', ['Type' => 'Submit', 'class' => 'btn btn-link', 'id' => 'Clear All Mentions' ]) !!}</li>
-              {!! Form::close() !!}
-        </li>
-
-                 
-                 
-                 
-               </ul>
-               @endif
-             </li>
-           </ul>
+       <li class="text-center col-xs-6">
+         <a {!! Nexus\Helpers\GoogleAnalyticsHelper::onClickEvent('BottomNavigation', 'Catch-Up') !!}
+         href="{{ action('Nexus\SectionController@leap')}}">
+         <span class="glyphicon glyphicon-circle-arrow-right" aria-hidden="true" style="vertical-align:middle"></span> Next</a>
+       </li> 
+       <li class="text-center col-xs-6">
+         <a {!! Nexus\Helpers\GoogleAnalyticsHelper::onClickEvent('BottomNavigation', 'Latest') !!}
+         href="{{ action('Nexus\SectionController@latest')}}">
+         <span class="glyphicon glyphicon-time" aria-hidden="true" style="vertical-align:middle"></span> Latest</a>
+       </li> 
+     </ul>
+   </div>
+ </nav>
+ @endif
 
 
-           <ul class="nav navbar-nav navbar-right">
-            <li class="dropdown">
+ <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+ <script src="https://code.jquery.com/jquery.js"></script>
+ @yield('javascript')
+ <!-- Include all compiled plugins (below), or include individual files as needed -->
+ @include('javascript._toolbar');
+ <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+ @include('_googleanaytics')
 
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                {{$authUser->username}} ({{$authUser->popname}}) 
-                @if ($profileNotificationCount)
-                <span class="badge progress-bar-danger">{{$profileNotificationCount}}</span>
-                @endif
-                <span class="caret"></span>
-              </a>
-              <ul class="dropdown-menu">
-                <li><a href="{{ action('Nexus\UserController@show', ['user_name' => $authUser->username])}}"> 
-                  <span class="glyphicon glyphicon glyphicon-user" aria-hidden="true"></span> Profile 
-                  @if ($commentsCount)
-                  <span class="badge progress-bar-info">{{$commentsCount}}</span>
-                  @endif
-                </a></li>
-
-                <li><a href="{{action('Nexus\MessageController@index')}}">
-                  <span class="glyphicon glyphicon glyphicon-envelope" aria-hidden="true"></span> Inbox 
-                  @if ($messagesCount)
-                  <span class="badge progress-bar-info">{{$messagesCount}}</span>
-                  @endif
-                </a></li>
-                @if ($authUser->sections->count())
-                <li role="separator" class="divider"></li>
-                <li class="dropdown-header">Moderator Goodies</li>
-                <li><a href="{{ action('Nexus\RestoreController@index')}}">
-                  <span class="glyphicon glyphicon glyphicon glyphicon-open" aria-hidden="true"></span> Your Archive</a></li>
-                  @endif
-                  <li role="separator" class="divider"></li>
-                  <li><a href="{{ action('Auth\AuthController@getLogout')}}">
-                    <span class="glyphicon glyphicon glyphicon-log-out" aria-hidden="true"></span> Logout</a></li>
-
-                  </ul>
-                </li>
-              </ul>
-
-              @endif
-
-              @endif
-            </div><!--/.nav-collapse -->
-          </div>
-        </nav>
-
-        @yield('breadcrumbs')
-
-        @include('_alerts')
-
-        @yield('content')
-
-        @if (Auth::check())
-        <nav class="navbar navbar-default navbar-fixed-bottom visible-xs">
-          <div class="container">
-            <ul class="nav navbar-nav">
-             <li class="text-center col-xs-6">
-               <a {!! Nexus\Helpers\GoogleAnalyticsHelper::onClickEvent('BottomNavigation', 'Catch-Up') !!}
-                href="{{ action('Nexus\SectionController@leap')}}">
-                <span class="glyphicon glyphicon-circle-arrow-right" aria-hidden="true" style="vertical-align:middle"></span> Next</a>
-            </li> 
-             <li class="text-center col-xs-6">
-               <a {!! Nexus\Helpers\GoogleAnalyticsHelper::onClickEvent('BottomNavigation', 'Latest') !!}
-                href="{{ action('Nexus\SectionController@latest')}}">
-                <span class="glyphicon glyphicon-time" aria-hidden="true" style="vertical-align:middle"></span> Latest</a>
-            </li> 
-          </ul>
-        </div>
-      </nav>
-      @endif
-
-
-
-      <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-      <script src="https://code.jquery.com/jquery.js"></script>
-      @yield('javascript')
-      <!-- Include all compiled plugins (below), or include individual files as needed -->
-      <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-      @include('_googleanaytics')
-
-    </body>
-    </html>
+</body>
+</html>
