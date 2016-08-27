@@ -166,29 +166,32 @@ class SectionController extends Controller
     public function leap()
     {
          // should we be passing the user_id into this method?
-        $views = \Nexus\View::with('topic')->where('user_id', \Auth::user()->id)->where('unsubscribed', 0)->get();
+        $views = \Nexus\View::with('topic')
+            ->where('user_id', \Auth::user()->id)
+            ->where('latest_view_date', '!=', "0000-00-00 00:00:00")
+            ->where('unsubscribed', 0)->get();
     
-        $topics = array();
-
-        // trying to avoid N+1 problem by breaking out as soon as we have a result
-        foreach ($views as $view) {
+        $topics = $views->map(function ($view, $key) {
             if (!is_null($view->topic)) {
-                if (($view->latest_view_date != $view->topic->most_recent_post_time)
-                    && ($view->topic->most_recent_post_time)) {
-                    $topics[] =  $view->topic;
-                    break;
+                if ($view->latest_view_date != $view->topic->most_recent_post_time) {
+                    return $view;
                 }
             }
-        }
+        })->reject(function ($view) {
+            return empty($view);
+        });
 
-        if (count($topics)) {
+        if ($topics->count()) {
+
+            $destinationTopic = $topics->first()->topic;
 
             // set alert
-            $topicURL = action('Nexus\TopicController@show', ['topic_id' => $topics[0]->id]);
+            $topicURL = action('Nexus\TopicController@show', ['topic_id' => $destinationTopic->id]);
             // force the url to be relative so we don't later make this open in the new window
             $topicURL = str_replace(url('/'), '', $topicURL);
-            $topicTitle = $topics[0]->title;
+            $topicTitle = $destinationTopic->title;
             $subscribeAllURL = action('Nexus\TopicController@markAllSubscribedTopicsAsRead');
+            $subscribeAllURL = str_replace(url('/'), '', $subscribeAllURL);
             $message = <<< Markdown
 People have been talking! New posts found in **[$topicTitle]($topicURL)**
 
@@ -197,7 +200,7 @@ Markdown;
             \Nexus\Helpers\FlashHelper::showAlert($message, 'success');
             
             // redirect to the parent section of the unread topic
-            return redirect()->action('Nexus\SectionController@show', [$topics[0]->section->id]);
+            return redirect()->action('Nexus\SectionController@show', [$destinationTopic->section->id]);
         } else {
             
             // set alert
