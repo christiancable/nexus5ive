@@ -5,7 +5,30 @@
         </div>
 
         <div class="panel-body">
-            <p><em>{{$subSection->intro}}</em></p>
-            {{--  <p><a class="btn btn-default" href="{{ action('Nexus\SectionController@show', ['id' => $subSection->id])}}" role="button">View details &raquo;</a></p> --}}
+            <p>{!! Nexus\Helpers\NxCodeHelper::nxDecode($subSection->intro)  !!}</p>
+             @if($subSection->topics->count() || $subSection->sections->count())
+            <p class="small text-muted">Contains:
+	            @if($subSection->topics->count())
+		            {{$subSection->topics->count()}} 
+	            	@if($subSection->topics->count() > 1)
+		            	topics 
+	            	@else
+		            	topic
+	            	@endif
+	            @endif            
+	            @if($subSection->topics->count() && $subSection->sections->count())
+	            and
+	            @endif
+	            @if($subSection->sections->count())
+	            	{{$subSection->sections->count()}} 
+	            	@if($subSection->sections->count() > 1)
+		            	sections 
+	            	@else
+		            	section
+	            	@endif
+	            @endif
+            @endif
+            </p>
+			{{-- <p class="small text-muted" >Latest Post in [TOPIC TITLE](link to topic), time</p> --}}
         </div>
     </div>
