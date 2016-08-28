@@ -6,29 +6,32 @@
 
         <div class="panel-body">
             <p>{!! Nexus\Helpers\NxCodeHelper::nxDecode($subSection->intro)  !!}</p>
-             @if($subSection->topics->count() || $subSection->sections->count())
-            <p class="small text-muted">Contains:
-	            @if($subSection->topics->count())
-		            {{$subSection->topics->count()}} 
-	            	@if($subSection->topics->count() > 1)
-		            	topics 
-	            	@else
-		            	topic
-	            	@endif
-	            @endif            
-	            @if($subSection->topics->count() && $subSection->sections->count())
-	            and
-	            @endif
-	            @if($subSection->sections->count())
-	            	{{$subSection->sections->count()}} 
-	            	@if($subSection->sections->count() > 1)
-		            	sections 
-	            	@else
-		            	section
-	            	@endif
-	            @endif
+             @if($subSection->topicCount || $subSection->sectionCount)
+            <p class="small text-muted">
+                @if($subSection->topicCount)
+                    {{$subSection->topicCount}} 
+                    @if($subSection->topicCount > 1)
+                        topics 
+                    @else
+                        topic
+                    @endif
+                @endif            
+                @if($subSection->topicCount && $subSection->sectionCount)
+                and
+                @endif
+                @if($subSection->sectionCount)
+                    {{$subSection->sectionCount}} 
+                    @if($subSection->sectionCount > 1)
+                        sections 
+                    @else
+                        section
+                    @endif
+                @endif
             @endif
             </p>
-			{{-- <p class="small text-muted" >Latest Post in [TOPIC TITLE](link to topic), time</p> --}}
+           @if($subSection->most_recent_post)     
+            <p class="small text-muted">Latest Post in <a href="{{ action('Nexus\TopicController@show', ['id' => $subSection->most_recent_post->topic->id])}}">{{$subSection->most_recent_post->topic->title}}</a>, {{$subSection->most_recent_post->time->diffForHumans()}}</p> 
+            @endif
+            
         </div>
     </div>

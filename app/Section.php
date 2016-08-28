@@ -65,6 +65,17 @@ class Section extends Model
         return $this->hasMany('Nexus\Topic')->orderBy('weight', 'asc');
     }
 
+    // counts - hopefully faster ...
+    public function getTopicCountAttribute()
+    {
+        return Topic::select(\DB::raw('count(id) as count'))->where('section_id', $this->id)->pluck('count');
+    }
+
+    public function getSectionCountAttribute()
+    {
+        return Section::select(\DB::raw('count(id) as count'))->where('parent_id', $this->id)->pluck('count');
+    }
+
     public function trashedTopics()
     {
         return $this->hasMany('Nexus\Topic')->onlyTrashed()->orderBy('weight', 'asc');
@@ -75,22 +86,16 @@ class Section extends Model
 
     public function getMostRecentPostAttribute()
     {
-        $result = null;
+        $post = null;
 
-        if (!$this->topics->isEmpty()) {
-            $result = $this->topics->map(function ($topic) {
-                if (!$topic->posts->isEmpty()) {
-                    return $topic->posts->last();
-                }
-            })
-            ->reject(function ($topic) {
-                return empty($topic);
-            });
-
-            $result = $result->sortByDesc('id')->first();
-        }
+        $topicIDs = Topic::select('id')->where('section_id', $this->id)->get()->toArray();
+        $postID = Post::select('id')->whereIn('topic_id', $topicIDs)->orderBy('id', 'desc')->get()->first();
         
-        return $result;
+        if ($postID) {
+            $post = Post::find($postID->id);
+        }
+        return $post;
+
     }
 
     public function slug()
