@@ -71,6 +71,28 @@ class Section extends Model
     }
 
 
+    // posts
+
+    public function getMostRecentPostAttribute()
+    {
+        $result = null;
+
+        if (!$this->topics->isEmpty()) {
+            $result = $this->topics->map(function ($topic) {
+                if (!$topic->posts->isEmpty()) {
+                    return $topic->posts->last();
+                }
+            })
+            ->reject(function ($topic) {
+                return empty($topic);
+            });
+
+            $result = $result->sortByDesc('id')->first();
+        }
+        
+        return $result;
+    }
+
     public function slug()
     {
         return str_slug($this->title, '-');
