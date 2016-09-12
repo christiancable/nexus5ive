@@ -62,11 +62,19 @@ HTML
           $expectedOutput = '',
         ),
 
-         'youtube tag with invalid content' => array(
-            $input = '[youtube-]https://vimeo.com/87031388[-youtube]',
-            $expectedOutput = '',
-            ),
-          );
+        'youtube tag with invalid content' => array(
+          $input = '[youtube-]https://vimeo.com/87031388[-youtube]',
+          $expectedOutput = '',
+          ),
+
+        'Red Hot Chili Peppers - Give It Away - ID with an underscore' => array(
+          $input = '[youtube-]https://youtu.be/Mr_uHJPUlO8[-youtube]',
+         $expectedOutput = <<< HTML
+{$this->youTubeHTMLStart}Mr_uHJPUlO8{$this->youTubeHTMLStop}
+HTML
+          ,
+          ),
+        );
     }
 
     /**
