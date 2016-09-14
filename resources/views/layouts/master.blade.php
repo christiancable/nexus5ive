@@ -5,8 +5,8 @@
   @yield('meta')
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  @if (env('NEXUS_BOOTSTRAP_THEME'))
-  <link rel="stylesheet" href="{{env('NEXUS_BOOTSTRAP_THEME')}}">
+  @if (config('nexus.bootstrap_theme'))
+  <link rel="stylesheet" href="{{config('nexus.bootstrap_theme')}}">
   @else
   <link href="/css/app.css" rel="stylesheet">
   @endif

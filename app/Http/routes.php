@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 */
 
 // authentication
-if (env('NEXUS_ALLOW_REGISTRATIONS') == true) {
+if (config('nexus.allow_registrations') == true) {
     Route::get('auth/register', 'Auth\AuthController@getRegister');
     Route::post('auth/register', 'Auth\AuthController@postRegister');
 }

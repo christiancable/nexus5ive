@@ -5,7 +5,7 @@
 <div class="container">
 
 <div class="content">
-  <h1>{{env('NEXUS_NAME')}}</h1>
+  <h1>{{config('nexus.name')}}</h1>
   <p class="lead">hell is other people</p>
 </div>
 <hr/>

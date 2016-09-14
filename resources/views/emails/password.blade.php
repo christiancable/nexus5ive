@@ -7,4 +7,4 @@ click on the following URL to reset it:
 
 ++beep boop++
 
-The {{env('NEXUS_NAME')}} Robot
+The {{config('nexus.name')}} Robot

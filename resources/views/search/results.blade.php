@@ -58,7 +58,7 @@
         @endif
 
         <?php
-        $paginatedResults = $results->paginate(env('NEXUS_PAGINATION'));
+        $paginatedResults = $results->paginate(config('nexus.pagination'));
         ?>
         <div class="container">
             <div class="content">

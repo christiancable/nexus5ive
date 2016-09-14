@@ -17,7 +17,7 @@ class ActivityHelper
     public static function recentActivities()
     {
 
-        $within = env('NEXUS_RECENT_ACTIVITY');
+        $within = config('nexus.recent_activity');
         $activities =  \Nexus\Activity::where('time', '>=', Carbon::now()->subMinutes($within))
             ->get();
         return $activities;

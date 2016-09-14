@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('meta')
-<title>{{env('NEXUS_NAME')}} - Login</title>
+<title>{{config('nexus.name')}} - Login</title>
 @endsection
 
 @section('content')
@@ -9,7 +9,7 @@
 <div class="container">
 
   <div class="content">
-    <h1>{{env('NEXUS_NAME')}}</h1>
+    <h1>{{config('nexus.name')}}</h1>
     <p class="lead">when time becomes a loop</p>
   </div>
   <hr/>

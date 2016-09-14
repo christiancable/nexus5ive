@@ -37,7 +37,7 @@ class UpdateRequest extends Request
 
         if (($post['id'] == $latestPost['id']) &&
             ($post->author->id == \Auth::user()->id) &&
-            ($post->time->diffInSeconds() <= env('NEXUS_RECENT_EDIT') )) {
+            ($post->time->diffInSeconds() <= config('nexus.recent_edit'))) {
             $return = true;
         }
 
