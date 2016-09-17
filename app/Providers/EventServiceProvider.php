@@ -17,10 +17,10 @@ class EventServiceProvider extends ServiceProvider
             'Nexus\Listeners\EventListener',
         ],
         'Illuminate\Auth\Events\Login' => [
-            'Nexus\Handlers\Events\AuthLoginEventHandler',
+            'Nexus\Listeners\UserIncreaseTotalVisits',
         ],
         'Illuminate\Auth\Events\Logout' => [
-            'Nexus\Handlers\Events\AuthLogoutEventHandler',
+            'Nexus\Listeners\UserRemoveActivity',
         ],
 
     ];
