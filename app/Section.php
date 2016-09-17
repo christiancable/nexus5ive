@@ -68,12 +68,12 @@ class Section extends Model
     // counts - hopefully faster ...
     public function getTopicCountAttribute()
     {
-        return Topic::select(\DB::raw('count(id) as count'))->where('section_id', $this->id)->pluck('count');
+        return Topic::select(\DB::raw('count(id) as count'))->where('section_id', $this->id)->value('count');
     }
 
     public function getSectionCountAttribute()
     {
-        return Section::select(\DB::raw('count(id) as count'))->where('parent_id', $this->id)->pluck('count');
+        return Section::select(\DB::raw('count(id) as count'))->where('parent_id', $this->id)->value('count');
     }
 
     public function trashedTopics()
