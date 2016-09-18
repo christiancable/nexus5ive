@@ -15,7 +15,7 @@ class MentionHelperTest extends TestCase
     public function testIdentifyMentionsFindsUsernames($input, $expectedOutput)
     {
         $output = MentionHelper::identifyMentions($input);
-        $this->assertEquals($output, $expectedOutput);
+        $this->assertEquals($expectedOutput, $output);
     }
 
     public function provideridentifyMentionedUsersFindsUsernames()
@@ -32,6 +32,10 @@ class MentionHelperTest extends TestCase
             'multiple mentions' => array(
                 $input = 'hey @christiancable have you seen @AgentOrange',
                 $expectedOutput = array('christiancable', 'AgentOrange'),
+            ),
+            'email address which should not be matched' => array(
+                $input = 'my email is christian@nexus5.org.uk',
+                $expectedOutput = array(),
             ),
         );
     }
@@ -59,7 +63,7 @@ class MentionHelperTest extends TestCase
             ),
             'multiple mentions' => array(
                 $input = 'hey @christiancable have you seen @AgentOrange',
-                $expectedOutput = 'hey <span class="text-muted">@</span><mark><strong>christiancable</strong></mark> have you seen <span class="text-muted">@</span><mark><strong>AgentOrange</strong></mark>',
+                $expectedOutput = 'hey <span class="text-muted">@</span><mark><strong>christiancable</strong></mark> have you seen <span class="text-muted">@</span><mark><strong>AgentOrange</strong></mark> ',
             ),
         );
     }
