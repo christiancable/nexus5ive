@@ -3,9 +3,7 @@ namespace Nexus\Helpers;
 
 class MentionHelper
 {
-
-    private static $mentionPattern = '/(?:\@)(\w+)(?:\s|$)/';
-
+    private static $mentionPattern = '/(?<=[\W]|^)@(\w+)/';
      /**
      * searches for @user mentions in text
      *
@@ -15,7 +13,6 @@ class MentionHelper
     public static function identifyMentions($text)
     {
         $matches = array();
-        // $pattern = '/@([[:word:]]+)/';
     
         $matchCount = preg_match_all(self::$mentionPattern, $text, $matches);
         
@@ -45,7 +42,7 @@ class MentionHelper
     */
     public static function highlightMentions($text)
     {
-        $replacement = '<span class="text-muted">@</span><mark><strong>${1}</strong></mark> ';
+        $replacement = '<span class="text-muted">@</span><mark><strong>${1}</strong></mark>';
         $highlightedText = preg_replace(self::$mentionPattern, $replacement, $text);
         return $highlightedText;
     }

@@ -47,7 +47,7 @@ class MentionHelperTest extends TestCase
     public function testHighlightMentionsHighlights($input, $expectedOutput)
     {
         $output = MentionHelper::highlightMentions($input);
-        $this->assertEquals($output, $expectedOutput);
+        $this->assertEquals($expectedOutput, $output);
     }
 
     public function providerHighlightMentionsHighlights()
@@ -63,7 +63,11 @@ class MentionHelperTest extends TestCase
             ),
             'multiple mentions' => array(
                 $input = 'hey @christiancable have you seen @AgentOrange',
-                $expectedOutput = 'hey <span class="text-muted">@</span><mark><strong>christiancable</strong></mark> have you seen <span class="text-muted">@</span><mark><strong>AgentOrange</strong></mark> ',
+                $expectedOutput = 'hey <span class="text-muted">@</span><mark><strong>christiancable</strong></mark> have you seen <span class="text-muted">@</span><mark><strong>AgentOrange</strong></mark>',
+            ),
+            'mention with html' => array(
+                $input = '<p>@christiancable</p>',
+                $expectedOutput = '<p><span class="text-muted">@</span><mark><strong>christiancable</strong></mark></p>',
             ),
         );
     }
