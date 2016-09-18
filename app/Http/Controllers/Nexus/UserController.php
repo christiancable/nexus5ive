@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Log;
 use Nexus\Http\Requests;
 use Nexus\Http\Controllers\Controller;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class UserController extends Controller
 {
@@ -62,7 +63,14 @@ class UserController extends Controller
      */
     public function show($user_name)
     {
-        $user = \Nexus\User::with('comments', 'comments.author')->where('username', $user_name)->firstOrFail();
+
+        try {
+            $user = \Nexus\User::with('comments', 'comments.author')->where('username', $user_name)->firstOrFail();
+        } catch (ModelNotFoundException $ex) {
+            $message = "$user_name not found. Maybe you're thinking of someone else";
+            \Nexus\Helpers\FlashHelper::showAlert($message, 'warning');
+            return redirect('/users/');
+        }
 
         if ($user->id === \Auth::user()->id) {
             \Auth::user()->markCommentsAsRead();
