@@ -59,15 +59,15 @@ class MentionHelperTest extends TestCase
             ),
             'single mention' => array(
                 $input = 'hey @christiancable how are you?',
-                $expectedOutput = 'hey <span class="text-muted">@</span><mark><strong>christiancable</strong></mark> how are you?',
+                $expectedOutput = 'hey <span class="text-muted">@</span><mark><strong><a href="/users/christiancable">christiancable</a></strong></mark> how are you?',
             ),
             'multiple mentions' => array(
                 $input = 'hey @christiancable have you seen @AgentOrange',
-                $expectedOutput = 'hey <span class="text-muted">@</span><mark><strong>christiancable</strong></mark> have you seen <span class="text-muted">@</span><mark><strong>AgentOrange</strong></mark>',
+                $expectedOutput = 'hey <span class="text-muted">@</span><mark><strong><a href="/users/christiancable">christiancable</a></strong></mark> have you seen <span class="text-muted">@</span><mark><strong><a href="/users/AgentOrange">AgentOrange</a></strong></mark>',
             ),
             'mention with html' => array(
                 $input = '<p>@christiancable</p>',
-                $expectedOutput = '<p><span class="text-muted">@</span><mark><strong>christiancable</strong></mark></p>',
+                $expectedOutput = '<p><span class="text-muted">@</span><mark><strong><a href="/users/christiancable">christiancable</a></strong></mark></p>',
             ),
         );
     }

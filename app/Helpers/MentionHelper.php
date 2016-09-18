@@ -42,7 +42,7 @@ class MentionHelper
     */
     public static function highlightMentions($text)
     {
-        $replacement = '<span class="text-muted">@</span><mark><strong>${1}</strong></mark>';
+        $replacement = '<span class="text-muted">@</span><mark><strong><a href="/users/${1}">${1}</a></strong></mark>';
         $highlightedText = preg_replace(self::$mentionPattern, $replacement, $text);
         return $highlightedText;
     }
