@@ -22,6 +22,7 @@ return [
     'timezone' => env('NEXUS_TIMEZONE'),
     'recent_edit' => env('NEXUS_RECENT_EDIT'),
     'pagination' => env('NEXUS_PAGINATION'),
+    'special_event' => env('NEXUS_SPECIAL_EVENT', ''),
     'google_anaytics_activate' => env('GOOGLE_ANAYTICS_ACTIVATE', false),
     'google_analytics_id' => env('GOOGLE_ANALYTICS_ID'),
 ];

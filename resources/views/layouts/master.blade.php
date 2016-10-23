@@ -6,11 +6,14 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   @if (config('nexus.bootstrap_theme'))
-  <link rel="stylesheet" href="{{config('nexus.bootstrap_theme')}}">
+    <link rel="stylesheet" href="{{config('nexus.bootstrap_theme')}}">
   @else
-  <link href="/css/app.css" rel="stylesheet">
+    <link href="/css/app.css" rel="stylesheet">
   @endif
   <link href="/css/extra.css" rel="stylesheet">
+  @if (config('nexus.special_event') === 'halloween')
+    <link rel="stylesheet" href="/css/spooky.css">
+  @endif
   <link rel="apple-touch-icon" href="/apple-touch.png">
 </head>
 <body>

@@ -10,7 +10,11 @@
 
   <div class="content">
     <h1>{{config('nexus.name')}}</h1>
-    <p class="lead">when time becomes a loop</p>
+@if (config('nexus.special_event') === 'halloween')
+   @include('special.halloween._loginHeading')
+@else
+  <p class="lead">when time becomes a loop</p>
+@endif 
   </div>
   <hr/>
 
@@ -62,10 +66,13 @@
 
    <div class="col-md-6">
 
-    <p class="lead">There are those who believe that <strong>spodding</strong> here began out there, far across the network, with tribes of users who may have been the forefathers of the <em>Prestoneites</em>, or the <em>Facebookers</em>, or the <em>Twitters</em>.</p>
+@if (config('nexus.special_event') === 'halloween')
+  @include('special.halloween._login')
+@else
+<p class="lead">There are those who believe that <strong>spodding</strong> here began out there, far across the network, with tribes of users who may have been the forefathers of the <em>Prestoneites</em>, or the <em>Facebookers</em>, or the <em>Twitters</em>.</p>
 
     <p>That they may have been the architects of the great forums, or the lost civilizations of <em>Monochrome</em> or <em>anonyMUD</em>. Some believe that there may yet be brothers of man who even now fight to survive somewhere beyond the screen&hellip;</p>
-
+@endif
   </div>
 </div> <!-- .row -->
 <a href="/password/email">Forgotten Your Password?</a>
