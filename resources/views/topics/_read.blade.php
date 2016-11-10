@@ -26,7 +26,13 @@ $status = \Nexus\Helpers\ViewHelper::getTopicStatus(Auth::user(), $topic);
     {{$topic->title}}</a>
 </h2>
 <p class="break-long-words">{!! Nexus\Helpers\NxCodeHelper::nxDecode($topic->intro) !!}</p>
-@if ($mostRecentPostTime = $topic->most_recent_post_time)
-    <p class="small text-muted">Latest Post {{$mostRecentPostTime->diffForHumans()}}</p>
+@if ($topic->most_recent_post)
+    <p class="small text-muted">Latest Post by 
+    @if($topic->secret == true)
+          Anonymous,
+    @else 
+        <a href="{{ action('Nexus\UserController@show', ['username' => $topic->most_recent_post->author->username]) }}">{{$topic->most_recent_post->author->username}}</a>, 
+    @endif 
+        {{$topic->most_recent_post->time->diffForHumans()}}</p>
 @endif
 </div>

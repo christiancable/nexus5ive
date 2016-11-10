@@ -55,6 +55,12 @@ class Topic extends Model
         return $result;
     }
 
+    public function getMostRecentPostAttribute()
+    {
+        $latestPost = $this->posts->last();
+
+        return $latestPost;
+    }
     // sections
      
     public function section()
