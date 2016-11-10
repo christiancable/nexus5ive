@@ -7,6 +7,7 @@
         <div class="panel-body">
             <p>{!! Nexus\Helpers\NxCodeHelper::nxDecode($subSection->intro)  !!}</p>
              @if($subSection->topicCount || $subSection->sectionCount)
+           <hr/>
             <p class="small text-muted">
                 @if($subSection->topicCount)
                     {{$subSection->topicCount}} 
@@ -28,10 +29,12 @@
                     @endif
                 @endif
             @endif
-            </p>
-           @if($subSection->most_recent_post)     
-            <p class="small text-muted">Latest Post in <a href="{{ action('Nexus\TopicController@show', ['id' => $subSection->most_recent_post->topic->id])}}">{{$subSection->most_recent_post->topic->title}}</a>, {{$subSection->most_recent_post->time->diffForHumans()}}</p> 
+           @if($subSection->most_recent_post)
+                <br/>
+                Latest Post in <a href="{{ action('Nexus\TopicController@show', ['id' => $subSection->most_recent_post->topic->id])}}">{{$subSection->most_recent_post->topic->title}}</a>, {{$subSection->most_recent_post->time->diffForHumans()}}</p> 
             @endif
+            </p>
             
+
         </div>
     </div>
