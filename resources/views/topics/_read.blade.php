@@ -27,7 +27,12 @@ $status = \Nexus\Helpers\ViewHelper::getTopicStatus(Auth::user(), $topic);
 </h2>
 <p class="break-long-words">{!! Nexus\Helpers\NxCodeHelper::nxDecode($topic->intro) !!}</p>
 @if ($topic->most_recent_post)
-    <p class="small text-muted">Latest Post by 
+    <hr/>
+    <p class="small text-muted">Latest Post 
+    @if($topic->most_recent_post->title)
+    <em>&ldquo;{{$topic->most_recent_post->title}}&rdquo;</em> 
+    @endif 
+    by
     @if($topic->secret == true)
           Anonymous,
     @else 
