@@ -28,13 +28,25 @@ class TopicHelper
 
     public static function recentTopics($maxresults = 10)
     {
-        $latestPosts = \Nexus\Post::orderBy('id', 'desc')->take($maxresults)->get(['topic_id'])->groupBy('topic_id');
 
-        $topics = array();
-        foreach ($latestPosts as $topic) {
-            $topics[] = $topic[0]->topic;
-        }
+        $allTopicIDs = \Nexus\Topic::with('most_recent_post_id')
+            ->select('id')
+            ->get()
+            ->pluck('id', 'most_recent_post_id.post_id')
+            ->flip()
+            ->sort()
+            ->reverse()
+            ->flip()
+            ->values()
+            ->take($maxresults);
+        
+        $allTopicIDsOrdered = implode(',', $allTopicIDs->toArray());
 
+        $topics = \Nexus\Topic::with('most_recent_post')
+            ->whereIn('id', $allTopicIDs)
+            ->orderByRaw(\DB::raw("FIELD(id, $allTopicIDsOrdered)"))
+            ->get();
+    
         return $topics;
     }
 }

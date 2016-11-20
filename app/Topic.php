@@ -41,7 +41,7 @@ class Topic extends Model
     }
     public function getMostRecentPostTimeAttribute()
     {
-        $result = false;
+         $result = false;
 
         $latestPost =  Post::select('time')
             ->where('topic_id', $this->id)
@@ -52,14 +52,19 @@ class Topic extends Model
             $result = $latestPost->time;
         }
 
+//         $result = $this->most_recent_post->time;
         return $result;
     }
 
-    public function getMostRecentPostAttribute()
+    public function most_recent_post()
     {
-        $latestPost = $this->posts->last();
+        return $this->hasOne('Nexus\Post')->latest();
+    }
+    
+    public function most_recent_post_id()
+    {
+        return $this->hasOne('Nexus\Post')->latest()->select(['id as post_id','topic_id']);
 
-        return $latestPost;
     }
     // sections
      
