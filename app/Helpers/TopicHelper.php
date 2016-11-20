@@ -25,4 +25,16 @@ class TopicHelper
         );
         return $route;
     }
+
+    public static function recentTopics($maxresults = 10)
+    {
+        $latestPosts = \Nexus\Post::orderBy('id', 'desc')->take($maxresults)->get(['topic_id'])->groupBy('topic_id');
+
+        $topics = array();
+        foreach ($latestPosts as $topic) {
+            $topics[] = $topic[0]->topic;
+        }
+
+        return $topics;
+    }
 }

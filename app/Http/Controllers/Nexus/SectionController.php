@@ -137,24 +137,11 @@ class SectionController extends Controller
         return redirect($redirect);
     }
 
-
-    public function recentTopics($maxresults = 10)
-    {
-        $latestPosts = \Nexus\Post::orderBy('id', 'desc')->take($maxresults)->get(['topic_id'])->groupBy('topic_id');
-
-        $topics = array();
-        foreach ($latestPosts as $topic) {
-            $topics[] = $topic[0]->topic;
-        }
-
-        return $topics;
-    }
-
     public function latest()
     {
         $heading = 'Latest Posts';
         $lead = "The most recent posts from across Nexus";
-        $topics = $this::recentTopics();
+        $topics = \Nexus\Helpers\TopicHelper::recentTopics();
         $breadcrumbs = \Nexus\Helpers\BreadcrumbHelper::breadcumbForUtility($heading);
 
         return view('topics.unread', compact('topics', 'heading', 'lead', 'breadcrumbs'));
