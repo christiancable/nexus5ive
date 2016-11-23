@@ -24,9 +24,12 @@
     <div class="content">
 
         @if (count($topics))
+
+        
         @foreach ($topics as $topic)
-         @include('topics._read', $topic)
+         @include('topics._read-compact', $topic)
         @endforeach
+        
         @endif
     </div>
 
