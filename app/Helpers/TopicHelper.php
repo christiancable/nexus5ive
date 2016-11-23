@@ -50,7 +50,7 @@ SQL;
 
         $allTopicIDs = array_pluck(\DB::select(\DB::raw($sql)), 'topic_id');
         $allTopicIDsString = implode(',', $allTopicIDs);
-        $topics = \Nexus\Topic::with('most_recent_post', 'most_recent_post.author')
+        $topics = \Nexus\Topic::with('most_recent_post', 'most_recent_post.author', 'section')
             ->whereIn('id', $allTopicIDs)
             ->orderByRaw(\DB::raw("FIELD(id, $allTopicIDsString)"))
             ->get();
