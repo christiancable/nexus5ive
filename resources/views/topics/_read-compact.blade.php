@@ -1,12 +1,37 @@
-<div class="panel panel-default">
+<?php
+$status = \Nexus\Helpers\ViewHelper::getTopicStatus(Auth::user(), $topic);
+
+if ($status['unsubscribed']) {
+    $textClass = 'text-muted';
+    $panelClass = '';
+    $icon = 'glyphicon-eye-close';
+} elseif ($status['new_posts']) {
+    $textClass = 'text-danger';
+    $panelClass = 'panel-danger';
+    $icon = 'glyphicon-fire';
+} elseif ($status['never_read']) {
+    $textClass = 'text-warning';
+    $panelClass = 'panel-warning';
+    $icon = 'glyphicon-asterisk';
+} else {
+    $textClass = '';
+    $panelClass = 'panel-default';
+    $icon = 'glyphicon-comment';
+}
+?>
+
+<div class="panel {{$panelClass}}">
   <!-- Default panel contents -->
+        <a href="{{ action('Nexus\TopicController@show', ['topic_id' => $topic->id])}}" class="{{$textClass}}">
   <div class="panel-heading">
-      <strong><a href="{{ action('Nexus\TopicController@show', ['topic_id' => $topic->id])}}">{{$topic->title}}</a></strong>
+        <span class="glyphicon {{$icon}}" aria-hidden="true"></span>
+        <strong>{{$topic->title}}</strong>
   </div>
+        </a>
   
   <!-- List group -->
   <ul class="list-group">
-    <li class="list-group-item">Last post {{$topic->most_recent_post->time->diffForHumans()}} by 
+    <li class="list-group-item">Latest post {{$topic->most_recent_post->time->diffForHumans()}} by 
         @if($topic->secret == true)
         <strong>Anonymous</strong>
         @else 
