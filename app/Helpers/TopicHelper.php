@@ -28,23 +28,31 @@ class TopicHelper
 
     public static function recentTopics($maxresults = 10)
     {
+        /*
+        inspired by 
+        http://stackoverflow.com/questions/612231/how-can-i-select-rows-with-maxcolumn-value-distinct-by-another-column-in-sql
+        */
 
-        $allTopicIDs = \Nexus\Topic::with('most_recent_post_id')
-            ->select('id')
-            ->get()
-            ->pluck('id', 'most_recent_post_id.post_id')
-            ->flip()
-            ->sort()
-            ->reverse()
-            ->flip()
-            ->values()
-            ->take($maxresults);
-        
-        $allTopicIDsOrdered = implode(',', $allTopicIDs->toArray());
+        $sql = <<<SQL
+SELECT tt.topic_id
+FROM posts tt
+INNER JOIN
+    (SELECT topic_id, MAX(id) AS LatestPostID
+    FROM posts
+    WHERE deleted_at IS NULL 
+    GROUP BY topic_id) groupedtt 
+ON tt.topic_id = groupedtt.topic_id 
+AND tt.id = groupedtt.LatestPostID 
+WHERE deleted_at IS NULL 
+ORDER BY tt.id desc limit $maxresults
+SQL;
+    
 
-        $topics = \Nexus\Topic::with('most_recent_post')
+        $allTopicIDs = array_pluck(\DB::select(\DB::raw($sql)), 'topic_id');
+        $allTopicIDsString = implode(',', $allTopicIDs);
+        $topics = \Nexus\Topic::with('most_recent_post', 'most_recent_post.author')
             ->whereIn('id', $allTopicIDs)
-            ->orderByRaw(\DB::raw("FIELD(id, $allTopicIDsOrdered)"))
+            ->orderByRaw(\DB::raw("FIELD(id, $allTopicIDsString)"))
             ->get();
     
         return $topics;
