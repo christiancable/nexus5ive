@@ -18,6 +18,6 @@
 	}
 
 	$(document).ready(function() {
-		setInterval(checkNotifications, 2000)
+		setInterval(checkNotifications, {{config('nexus.notification_check_interval')}})
 	});
 </script>

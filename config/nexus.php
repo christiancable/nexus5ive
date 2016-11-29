@@ -23,6 +23,7 @@ return [
     'recent_edit' => env('NEXUS_RECENT_EDIT'),
     'pagination' => env('NEXUS_PAGINATION'),
     'special_event' => env('NEXUS_SPECIAL_EVENT', ''),
+    'notification_check_interval' => env('NEXUS_NOTIFICATION_CHECK_INTERVAL', 2000),
     'google_anaytics_activate' => env('GOOGLE_ANAYTICS_ACTIVATE', false),
     'google_analytics_id' => env('GOOGLE_ANALYTICS_ID'),
 ];
