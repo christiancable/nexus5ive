@@ -14,7 +14,7 @@ if ($status['unsubscribed']) {
     $panelClass = 'panel-warning';
     $icon = 'glyphicon-asterisk';
 } else {
-    $textClass = '';
+    $textClass = 'text-primary';
     $panelClass = 'panel-default';
     $icon = 'glyphicon-comment';
 }
@@ -24,8 +24,10 @@ if ($status['unsubscribed']) {
   <!-- Default panel contents -->
         <a href="{{ action('Nexus\TopicController@show', ['topic_id' => $topic->id])}}" class="{{$textClass}}">
   <div class="panel-heading">
-        <span class="glyphicon {{$icon}}" aria-hidden="true"></span>
-        <strong>{{$topic->title}}</strong>
+        <h2 class="{{$textClass}}">
+        <span class="glyphicon {{$icon}} {{$textClass}}" aria-hidden="true"></span>
+        {{$topic->title}}
+        </h2>
   </div>
         </a>
   
@@ -35,7 +37,7 @@ if ($status['unsubscribed']) {
         @if($topic->secret == true)
         <strong>Anonymous</strong>
         @else 
-        <a href="{{ action('Nexus\UserController@show', ['username' => $topic->most_recent_post->author->username]) }}"><strong>{{$topic->most_recent_post->author->username}}</strong></a>
+        <span class="text-muted">@</span><mark><a href="{{ action('Nexus\UserController@show', ['username' => $topic->most_recent_post->author->username]) }}"><strong>{{$topic->most_recent_post->author->username}}</strong></a></mark>
         @endif 
 
          in 
@@ -45,7 +47,7 @@ if ($status['unsubscribed']) {
 
     </ul>
     <div class="panel-body">
-        <p><a href="{{ action('Nexus\TopicController@show', ['topic_id' => $topic->id])}}">{!! substr(strip_tags(Nexus\Helpers\NxCodeHelper::nxDecode($topic->most_recent_post->text)), 0, 140) !!}&hellip;</a></p>
+        <p><a href="{{ action('Nexus\TopicController@show', ['topic_id' => $topic->id])}}" class="text-muted">{!! substr(strip_tags(Nexus\Helpers\NxCodeHelper::nxDecode($topic->most_recent_post->text)), 0, 140) !!}&hellip;</a></p>
     </div>
 
 </div>
