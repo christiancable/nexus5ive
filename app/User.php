@@ -205,4 +205,14 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
         return $count;
     }
+
+    /**
+     * Present the user model.
+     *
+     * @return ViewModels/UserPresenter
+     */
+    public function present()
+    {
+        return new \Nexus\ViewModels\UserPresenter($this);
+    }
 }
