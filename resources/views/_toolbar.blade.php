@@ -24,18 +24,18 @@
     </div>
     <div id="navbar" class="navbar-collapse collapse">
 
-      <ul class="nav navbar-nav">
-        <li><a {!! Nexus\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Users') !!} 
-          href="{{ action('Nexus\UserController@index')}}">Users</a></li>
-          <li><a {!! Nexus\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Catch-Up') !!}
-            href="{{ action('Nexus\SectionController@leap')}}">Catch-up</a></li> 
-            <li><a {!! Nexus\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Whos Online') !!}
-              href="{{ action('Nexus\ActivityController@index')}}">Who's Online</a></li>
-              <li><a {!! Nexus\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Latest') !!}
-                href="{{ action('Nexus\SectionController@latest')}}">Latest</a></li>
-                <li><a {!! Nexus\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Search') !!}
-                  href="{{ action('Nexus\SearchController@index')}}">Search</a></li>
-                </ul>
+    <ul class="nav navbar-nav">
+      <li><a {!! Nexus\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Users') !!} 
+      href="{{ action('Nexus\UserController@index')}}">Users</a></li>
+      <li><a {!! Nexus\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Catch-Up') !!}
+      href="{{ action('Nexus\SectionController@leap')}}">Catch-up</a></li> 
+      <li><a {!! Nexus\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Whos Online') !!}
+      href="{{ action('Nexus\ActivityController@index')}}">Who's Online</a></li>
+      <li><a {!! Nexus\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Latest') !!}
+      href="{{ action('Nexus\SectionController@latest')}}">Latest</a></li>
+      <li><a {!! Nexus\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Search') !!}
+      href="{{ action('Nexus\SearchController@index')}}">Search</a></li>
+    </ul>
 
                 @if ($mentionCount > 0 )
                 <ul class="nav navbar-nav navbar-right">
@@ -66,7 +66,7 @@
                   <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                        {{$authUser->username}} ({{$authUser->popname}}) 
+                        {{$authUser->username}} &ndash; {{$authUser->popname}} 
                         @if ($profileNotificationCount)
                           <span class="badge progress-bar-danger">{{$profileNotificationCount}}</span>
                         @endif

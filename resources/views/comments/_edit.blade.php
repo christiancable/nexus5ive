@@ -1,7 +1,6 @@
 <tr>
     <td class="col-sm-1"><strong>
-        <a href="{{ action('Nexus\UserController@show', ['user_name' => $comment->author->username]) }}">{{$comment->author->username}}
-        </a>
+       {!! $comment->author->present()->profileLink !!}
     </strong>
 </td>
 <td class="col-sm-10 break-long-words">    

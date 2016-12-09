@@ -37,7 +37,7 @@ if ($status['unsubscribed']) {
         @if($topic->secret == true)
         <strong>Anonymous</strong>
         @else 
-        <span class="text-muted">@</span><mark><a href="{{ action('Nexus\UserController@show', ['username' => $topic->most_recent_post->author->username]) }}"><strong>{{$topic->most_recent_post->author->username}}</strong></a></mark>
+        {!! $topic->most_recent_post->author->present()->profileLink !!}
         @endif 
 
          in 

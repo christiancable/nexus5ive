@@ -14,9 +14,9 @@
                  <span><strong>Anonymous</strong> (Hidden User)</span>
             @else 
                 @if (isset($post->author))
-                    <span><a href="{{ action('Nexus\UserController@show', ['username' => $post->author->username]) }}">{{$post->author->username}}</a> ({{$post->popname}})</span>
+                {!! $post->author->present()->profileLink !!} &ndash; {{$post->popname}}
                 @else
-                    <span><strong>Unknown User (Unknown User)</span>
+                    <span><strong>Unknown User &ndash; Unknown User</span>
                 @endif
             @endif 
             </div>

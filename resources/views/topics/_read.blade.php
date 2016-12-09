@@ -36,7 +36,7 @@ $status = \Nexus\Helpers\ViewHelper::getTopicStatus(Auth::user(), $topic);
     @if($topic->secret == true)
           Anonymous,
     @else 
-        <a href="{{ action('Nexus\UserController@show', ['username' => $topic->most_recent_post->author->username]) }}">{{$topic->most_recent_post->author->username}}</a>, 
+        {!! $topic->most_recent_post->author->present()->profileLink !!}, 
     @endif 
         {{$topic->most_recent_post->time->diffForHumans()}}</p>
 @endif
