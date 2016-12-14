@@ -54,7 +54,7 @@
  <script src="https://code.jquery.com/jquery.js"></script>
  @yield('javascript')
  <!-- Include all compiled plugins (below), or include individual files as needed -->
- @include('javascript._toolbar');
+ @include('javascript._toolbar')
  <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
  @include('_googleanaytics')
 
