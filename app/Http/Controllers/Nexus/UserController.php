@@ -22,8 +22,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users =  \Nexus\User::select('username')->orderBy('username', 'asc')->get();
-
+        $users =  \Nexus\User::select('username', 'name', 'popname', 'latestLogin')->orderBy('username', 'asc')->get();
         \Nexus\Helpers\ActivityHelper::updateActivity(
             \Auth::user()->id,
             "Viewing list of Users",

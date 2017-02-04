@@ -17,7 +17,7 @@
 </div>
 <hr>
 
-<div class="container">
+<div class="container" id="users-list">
 {!! Form::open(['url' => 'search', 'id'=>'usersearch']) !!}
     <div class="form-group" role="search">
         <select autofocus id="selectUser" class="form-control">
@@ -29,60 +29,24 @@
     </div>
 {!! Form::close() !!}
 <hr/>
-
-
-
-                <?php
-                    $skiplinks = array();
-                    $currentLetter = "";
-                    $previousLetter = "";
-                    $allLetters = array();
-                    $listItems = '';
-
-                    $listItems .= "<div class='row'>";
-                ?>
-    
+<?php
+$previousLetter = '';
+$currentLetter = '';
+?>
                 @foreach ($users as $user) 
-                        <?php
-                        $currentLetter = strtoupper($user->username)[0];
-
-                        if ($currentLetter != $previousLetter) {
-                            if ($previousLetter !="") {
-                                $listItems .= '</ul></div>';
-                                $listItems .= '</div>';
-                            }
-                            
-                            $allLetters[] = $currentLetter;
-                            $previousLetter = $currentLetter;
-
-                           // start a new row of panels
-                            if (!((count($allLetters)-1) % 3)) {
-                                 $listItems .= "</div>";
-                                 $listItems .= "<div class='row'>";
-                            }
-
-                            $listItems .= "<div class='col-md-4'>";
-                            $listItems .= '<div class="panel panel-default">';
-                            $listItems .= "<div id='$currentLetter' class='panel-heading'>$currentLetter</div>";
-                            $listItems .= '<ul class="list-group">';
-                        } else {
-                        }
-                        $url =  action('Nexus\UserController@show', ['user_name' => $user->username]);
-                        $listItems .= '<li class="list-group-item"><a href="'. $url . '">' . $user->username . '</a></li>';
-                        ?>
+                <?php
+                $currentLetter = strtoupper($user->username[0]);
+                ?>
+                @if ($currentLetter !== $previousLetter) 
+                    <h2 class="bg-info"><span>{{ $currentLetter }}</span></h2>
+                    <hr/>
+                @endif 
+                     @include('users._panel', $user)
+                <?php
+                $previousLetter = $currentLetter;
+                ?>
                 @endforeach
-
-                @if (count($allLetters))                
-                <ul class="nav nav-pills">
-                    @foreach ($allLetters as $letter)
-                        <li><a href="#{{$letter}}">{{$letter}}</a></li>
-                    @endforeach
-                </ul>
-                <hr>
-                @endif
-
-
-                {!! $listItems !!}
+              
                 </ul>
             </div>
         </div>

@@ -87,3 +87,23 @@ body { padding-bottom: 80px; }
 .btn-link {
   text-transform: initial;
 }
+
+#users-list {
+
+  h2 {
+    border-radius: 1em;
+    width: 1.5em;
+    height: 1.5em;
+    text-align: center;
+    opacity: 0.25;
+    span {
+      color: white;
+      line-height: 1.5em;
+    }
+  }
+  .user-panel {
+    a:hover {
+      text-decoration: none;
+    }
+  } 
+}
