@@ -69,12 +69,12 @@ $currentLetter = '';
 
 @section('javascript')
     <script src="https://unpkg.com/vue@2.1.3/dist/vue.js"></script>
-    
+
 <script>
 Vue.component('user-panel', {
     props: ['user'],
     template: `
-<a :href="'./' + user.username">
+<a :href="'/users/' + user.username">
     <div class="panel panel-primary panel-user">
        <div class="panel-heading">
            <h3 class="panel-title clearfix">
