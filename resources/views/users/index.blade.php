@@ -16,19 +16,33 @@
     <span class="lead">"I fight for the Users"</span>
 </div>
 <hr>
-
 <div class="container" id="users-list">
-{!! Form::open(['url' => 'search', 'id'=>'usersearch']) !!}
-    <div class="form-group" role="search">
-        <select autofocus id="selectUser" class="form-control">
-            @foreach ($users as $user) 
-            <option value="/{{Request::path()}}/{{$user->username}}">{{$user->username}}</option>
-            @endforeach
-            <option value="" selected="selected" disabled="disabled">Select User</option>
-        </select>
-    </div>
-{!! Form::close() !!}
-<hr/>
+
+<div id="root" v-cloak>
+    <form>
+        <div class="form-group" role="search">
+        <input v-model="filter" class="form-control" placeholder="Search for a user">
+        </div>
+    </form>
+
+    <template v-for="(user, index) in users">
+        <section v-if="(user.username + user.name).search(filterRegExp) !==-1">
+        <template v-if="index != 0">
+            <template v-if="user.username[0].toLowerCase() != users[index - 1].username[0].toLowerCase()">
+             <h2 class="bg-info"><span>@{{user.username[0].toUpperCase() }}</span></h2>
+            <hr/>
+            </template>   
+        </template>
+        <template v-else>
+            <h2 class="bg-info"><span>@{{user.username[0].toUpperCase() }}</span></h2>
+            <hr/>
+        </template>
+            <user-panel v-bind:user="user" ></user-panel>
+        </section>
+    </template>
+</div>
+
+<div class="hidden-from-vue">
 <?php
 $previousLetter = '';
 $currentLetter = '';
@@ -49,21 +63,67 @@ $currentLetter = '';
               
                 </ul>
             </div>
-        </div>
+</div>        
 @endsection
 
 
 @section('javascript')
-<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+    <script src="https://unpkg.com/vue@2.1.3/dist/vue.js"></script>
+    
+<script>
+Vue.component('user-panel', {
+    props: ['user'],
+    template: `
+<a :href="'./' + user.username">
+    <div class="panel panel-primary panel-user">
+       <div class="panel-heading">
+           <h3 class="panel-title clearfix">
+               <span class="text-muted">@</span><strong>@{{user.username}}</strong> <em class="pull-right">@{{user.name}}</em>
+           </h3>
+       </div>
+       <div class="panel-body">
+         @{{user.popname}}
+      </div>
+      <div class="panel-footer clearfix" v-if="user.latestLogin != null">
+          <span class="pull-right">Latest Visit @{{user.latestLogin | formatDate}}</span>
+      </div>
+  </div>
+</a>
+    `,
+    filters: {
+        formatDate: function(value) {
+            let dateFormat = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit'};
+            let unformattedDate = Date.parse(value);
+            let eventDate = new Date(unformattedDate);
+            return eventDate.toLocaleDateString('en-GB', dateFormat);
+        }
+    }
+});
 
+var app = new Vue({
+    el: '#root',
 
+    data: {
+        users: {!! json_encode($users) !!},
+        filter: '',
+        currentLetter: '',
+        previousLetter: '',
+    },
 
-<script type="text/javascript">
-$("#selectUser").select2();
+    computed: {
+        filterRegExp: function() {
+            let filterString = this.filter;
+            return RegExp(filterString, 'i');
+      },
+    },
 
-$("#selectUser").change(function() {
-    window.location.replace($(this).val());
+     mounted() {
+        for (el of document.getElementsByClassName('hidden-from-vue')) {
+          el.style.display = 'none';
+        }
+    },
+
 });
 </script>
+
 @endsection

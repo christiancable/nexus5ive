@@ -16,8 +16,6 @@
           <span class="pull-right">Latest Visit {{$user->latestLogin->diffForHumans()}}</span>
       </div>
       @endif
-
-
   </div>
 </a>
 
