@@ -28,7 +28,8 @@ class ActivityController extends Controller
         $activities = \Nexus\Helpers\ActivityHelper::recentActivities();
         $breadcrumbs = \Nexus\Helpers\BreadcrumbHelper::breadcumbForUtility('Who is Online');
 
-        return view('activities.index', compact('activities', 'breadcrumbs'));
+        $activityWindow = \Carbon\Carbon::now()->subMinutes(config('nexus.recent_activity'));
+        return view('activities.index', compact('activities', 'breadcrumbs', 'activityWindow'));
     }
 
     /**

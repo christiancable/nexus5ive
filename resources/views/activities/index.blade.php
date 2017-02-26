@@ -47,7 +47,7 @@
 
     <hr>
     <div class="content">
-    <small class="text-info">Based on user activity from the last {{config('nexus.recent_activity')}} minutes.</small>
+    <small class="text-info">Based on activity from the last {{$activityWindow->diffForHumans(null,true)}}.</small>
     </div>
 
 </div>
