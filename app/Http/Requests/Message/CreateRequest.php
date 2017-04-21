@@ -2,9 +2,10 @@
 
 namespace Nexus\Http\Requests\Message;
 
+use Illuminate\Foundation\Http\FormRequest;
 use Nexus\Http\Requests\Request;
 
-class CreateRequest extends Request
+class CreateRequest extends FormRequest
 {
     /**
      * Only logged in users can leave comments on profiles

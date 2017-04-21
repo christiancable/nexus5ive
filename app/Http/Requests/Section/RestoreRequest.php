@@ -2,9 +2,10 @@
 
 namespace Nexus\Http\Requests\Section;
 
+use Illuminate\Foundation\Http\FormRequest;
 use Nexus\Http\Requests\Request;
 
-class RestoreRequest extends Request
+class RestoreRequest extends FormRequest
 {
     /**
      * a section can only be restored by

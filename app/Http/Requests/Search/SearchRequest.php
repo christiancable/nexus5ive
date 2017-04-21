@@ -2,9 +2,10 @@
 
 namespace Nexus\Http\Requests\Search;
 
+use Illuminate\Foundation\Http\FormRequest;
 use Nexus\Http\Requests\Request;
 
-class SearchRequest extends Request
+class SearchRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

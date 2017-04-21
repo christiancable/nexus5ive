@@ -2,9 +2,10 @@
 
 namespace Nexus\Http\Requests\Section;
 
+use Illuminate\Foundation\Http\FormRequest;
 use Nexus\Http\Requests\Request;
 
-class DestroyRequest extends Request
+class DestroyRequest extends FormRequest
 {
     /**
      * a section can only be archived by the

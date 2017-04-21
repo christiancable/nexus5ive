@@ -2,9 +2,10 @@
 
 namespace Nexus\Http\Requests\Post;
 
+use Illuminate\Foundation\Http\FormRequest;
 use Nexus\Http\Requests\Request;
 
-class DeleteRequest extends Request
+class DeleteRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

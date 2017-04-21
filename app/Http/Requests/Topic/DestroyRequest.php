@@ -2,12 +2,13 @@
 
 namespace Nexus\Http\Requests\Topic;
 
+use Illuminate\Foundation\Http\FormRequest;
 use Nexus\Http\Requests\Request;
 use Nexus\Section;
 use Nexus\Topic;
 use Log;
 
-class DestroyRequest extends Request
+class DestroyRequest extends FormRequest
 {
     /**
      * user can delete the topic if they are the moderator or an administrator

@@ -2,11 +2,12 @@
 
 namespace Nexus\Http\Requests\Post;
 
+use Illuminate\Foundation\Http\FormRequest;
 use Nexus\Http\Requests\Request;
 use Nexus\Topic;
 use Nexus\Section;
 
-class CreateRequest extends Request
+class CreateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

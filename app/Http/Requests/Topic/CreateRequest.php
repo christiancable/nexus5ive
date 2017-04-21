@@ -2,10 +2,11 @@
 
 namespace Nexus\Http\Requests\Topic;
 
+use Illuminate\Foundation\Http\FormRequest;
 use Nexus\Http\Requests\Request;
 use Nexus\Section;
 
-class CreateRequest extends Request
+class CreateRequest extends FormRequest
 {
     /**
      * topic can be created by moderators of the current section or bbs administrators

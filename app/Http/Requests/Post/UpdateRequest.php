@@ -2,9 +2,10 @@
 
 namespace Nexus\Http\Requests\Post;
 
+use Illuminate\Foundation\Http\FormRequest;
 use Nexus\Http\Requests\Request;
 
-class UpdateRequest extends Request
+class UpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to update a given post

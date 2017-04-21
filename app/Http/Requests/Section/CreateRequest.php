@@ -2,9 +2,10 @@
 
 namespace Nexus\Http\Requests\Section;
 
+use Illuminate\Foundation\Http\FormRequest;
 use Nexus\Http\Requests\Request;
 
-class CreateRequest extends Request
+class CreateRequest extends FormRequest
 {
     /**
      * a user can create a section if they

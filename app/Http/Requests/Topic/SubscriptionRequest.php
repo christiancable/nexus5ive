@@ -2,10 +2,11 @@
 
 namespace Nexus\Http\Requests\Topic;
 
+use Illuminate\Foundation\Http\FormRequest;
 use Nexus\Http\Requests\Request;
 use Nexus\Section;
 
-class SubscriptionRequest extends Request
+class SubscriptionRequest extends FormRequest
 {
     /**
      * a topic and be subscribed / unsubscribed by anyone
