@@ -1,5 +1,4 @@
 <?php
-
 return [
 
     /*
@@ -13,7 +12,7 @@ return [
     |
     */
 
-    'fetch' => PDO::FETCH_CLASS,
+    'fetch' => PDO::FETCH_OBJ,
 
     /*
     |--------------------------------------------------------------------------
@@ -46,10 +45,10 @@ return [
 
     'connections' => [
 
-        'sqlite' => [
-            'driver'   => 'sqlite',
-            'database' => storage_path('database.sqlite'),
-            'prefix'   => '',
+       'sqlite' => [
+            'driver' => 'sqlite',
+            'database' => env('DB_DATABASE', database_path('database.sqlite')),
+            'prefix' => '',
         ],
     
         'sqlite_testing' => [
@@ -72,16 +71,18 @@ return [
         //     'strict'    => false,
         // ],
 
-        'mysql' => [
-            'driver'    => 'mysql',
-            'host'      => env('DB_HOST', 'localhost'),
-            'database'  => env('DB_DATABASE', ''),
-            'username'  => env('DB_USERNAME', ''),
-            'password'  => env('DB_PASSWORD', ''),
-            'charset'   => 'utf8mb4',
-            'collation' => 'utf8mb4_unicode_ci',
-            'prefix'    => '',
-            'strict'    => false,
+         'mysql' => [
+            'driver' => 'mysql',
+            'host' => env('DB_HOST', '127.0.0.1'),
+            'port' => env('DB_PORT', '3306'),
+            'database' => env('DB_DATABASE', 'forge'),
+            'username' => env('DB_USERNAME', 'forge'),
+            'password' => env('DB_PASSWORD', ''),
+            'charset' => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix' => '',
+            'strict' => true,
+            'engine' => null,
         ],
 
         // 'pgsql' => [
@@ -132,15 +133,13 @@ return [
     */
 
     'redis' => [
-
         'cluster' => false,
-
         'default' => [
-            'host'     => '127.0.0.1',
-            'port'     => 6379,
+            'host' => env('REDIS_HOST', '127.0.0.1'),
+            'password' => env('REDIS_PASSWORD', null),
+            'port' => env('REDIS_PORT', 6379),
             'database' => 0,
         ],
-
     ],
 
 ];
