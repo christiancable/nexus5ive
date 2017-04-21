@@ -2,6 +2,7 @@
 
 namespace Nexus;
 
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Auth\Passwords\CanResetPassword;
@@ -14,6 +15,7 @@ use Log;
 
 class User extends Model implements AuthenticatableContract, AuthorizableContract, CanResetPasswordContract
 {
+    use Notifiable;
     use Authenticatable, Authorizable, CanResetPassword;
     use SoftDeletes;
     /**
