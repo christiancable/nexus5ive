@@ -77,7 +77,7 @@
 @endif
   </div>
 </div> <!-- .row -->
-<a href="/password/email">Forgotten Your Password?</a>
+ <a href="{{ url('/password/reset') }}">Forgot Your Password?</a>
 <hr/>
 
 </div> <!-- .container -->

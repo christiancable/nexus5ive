@@ -1,53 +1,49 @@
 @extends('layouts.master')
 
+<!-- Main Content -->
 @section('content')
 <div class="container">
-  <div class="col-md-6">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="panel panel-default">
+                <div class="panel-heading">Reset Password</div>
+                <div class="panel-body">
+                    @if (session('status'))
+                        <div class="alert alert-success">
+                            {{ session('status') }}
+                        </div>
+                    @endif
 
+                    <form class="form-horizontal" role="form" method="POST" action="{{ url('/password/email') }}">
+                        {{ csrf_field() }}
 
+                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                            <label for="email" class="col-md-4 control-label">E-Mail Address</label>
 
-    {!! Form::open(array('url' => '/password/reset', 'class' => 'form')) !!}
+                            <div class="col-md-6">
+                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required>
 
-    <input type="hidden" name="token" value="{{ $token }}">
-    {!! csrf_field() !!}
+                                @if ($errors->has('email'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('email') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
 
-    <h1>Reset Your Password</h1>
-
-    @if (count($errors) > 0)
-    <div class="alert alert-danger">
-      There were some problems resetting your password:
-      <br />
-      <ul>
-        @foreach ($errors->all() as $error)
-        <li>{{ $error }}</li>
-        @endforeach
-      </ul>
+                        <div class="form-group">
+                            <div class="col-md-6 col-md-offset-4">
+                                <button type="submit" class="btn btn-primary">
+                                    Send Password Reset Link
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                    <hr>
+                    <a href="mailto:{{config('nexus.admin_email')}}?subject=Password Help!">Forgotten your username or using a different email address?</a>
+                </div>
+            </div>
+        </div>
     </div>
-    @endif
-
-    <div class="form-group">
-      {!! Form::label('email', 'Your E-mail Address') !!}
-      {!! Form::text('email', null, 
-      array('class'=>'form-control', 'placeholder'=>'E-mail')) !!}
-    </div>
-
-    <div class="form-group">
-     {!! Form::label('password', 'New Password') !!}
-     {!! Form::password('password', 
-     array('class'=>'form-control', 'placeholder'=>'Password')) !!}
-   </div>
-
-   <div class="form-group">
-     {!! Form::label('password_confirmation', 'Confirm Password') !!}
-     {!! Form::password('password_confirmation', 
-     array('class'=>'form-control', 'placeholder'=>'Password')) !!}
-   </div>
-
-   <div class="form-group">
-    {!! Form::submit('Reset Password', 
-    array('class'=>'btn btn-primary')) !!}
-  </div>
-  {!! Form::close() !!}
-</div>
 </div>
 @endsection
