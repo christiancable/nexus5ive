@@ -102,6 +102,5 @@ class BreadcrumbHelper
         $breadcrumbs[] = $crumb;
 
         return array_reverse($breadcrumbs);
-
     }
 }

@@ -95,7 +95,6 @@ class Section extends Model
             $post = Post::find($postID->id);
         }
         return $post;
-
     }
 
     public function slug()

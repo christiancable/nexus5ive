@@ -24,7 +24,6 @@ class RestoreRequest extends Request
 
 
         if ($destinationSection->moderator->id === $currentUserID) {
-
             // case [1]
             if ($trashedSection->parent != null) {
                 if ($trashedSection->parent->moderator->id === $currentUserID) {
@@ -36,7 +35,6 @@ class RestoreRequest extends Request
             if ($trashedSection->moderator->id === $currentUserID) {
                 $return = true;
             }
-
         }
 
         return $return;

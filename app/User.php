@@ -191,7 +191,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         $this->mentions()->save($mention);
     }
 
-    public function removeMentions(Array $posts)
+    public function removeMentions(array $posts)
     {
         $this->mentions()->whereIn('post_id', array_pluck($posts, 'id'))->delete();
     }

@@ -72,7 +72,6 @@ pattern;
         preg_match($pattern, $text, $matches);
 
         if (!$matches) {
-
             // set initial results as nothing
             $results = false;
 

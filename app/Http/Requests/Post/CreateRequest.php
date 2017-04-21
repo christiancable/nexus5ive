@@ -44,7 +44,6 @@ class CreateRequest extends Request
             if (!$topic->readonly) {
                 $return = true;
             }
-        
         } else {
             $return = false;
         }

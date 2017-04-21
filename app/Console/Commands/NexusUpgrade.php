@@ -174,12 +174,10 @@ class NexusUpgrade extends Command
                     
                     $newSection->save();
                     $bar->advance();
-
                 } catch (\Exception $e) {
                     $errorCount++;
                     \Log::error('Nexus:upgrade - Failed to add section '. $e);
                 }
-                
             }
 
             $bar->finish();
@@ -197,7 +195,6 @@ class NexusUpgrade extends Command
                     $errorCount++;
                     \Log::error('Nexus:upgrade - Failed to add parent to section '. $e);
                 }
-
             }
             unset($classicSections);
             $bar->finish();

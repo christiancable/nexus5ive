@@ -44,7 +44,6 @@ class UpdateRequest extends Request
             } else {
                 $return = false;
             }
-
         } else {
             // sub section
             $destination = \Nexus\Section::findOrFail($formValues['parent_id']);

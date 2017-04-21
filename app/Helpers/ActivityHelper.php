@@ -50,6 +50,5 @@ class ActivityHelper
         } catch (\Exception $e) {
             \Log::info('Tried to remove non-existent activity: '. $e);
         }
-
     }
 }

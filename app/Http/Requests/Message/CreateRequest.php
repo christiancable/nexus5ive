@@ -17,7 +17,6 @@ class CreateRequest extends Request
             return true;
         } else {
             return false;
-            
         }
     }
 

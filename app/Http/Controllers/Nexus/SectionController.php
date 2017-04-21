@@ -169,7 +169,6 @@ class SectionController extends Controller
         });
 
         if ($topics->count()) {
-
             $destinationTopic = $topics->first()->topic;
 
             // set alert
@@ -189,7 +188,6 @@ Markdown;
             // redirect to the parent section of the unread topic
             return redirect()->action('Nexus\SectionController@show', [$destinationTopic->section->id]);
         } else {
-            
             // set alert
             $message = 'No updated topics found. Why not start a new conversation or read more sections?';
             \Nexus\Helpers\FlashHelper::showAlert($message, 'warning');

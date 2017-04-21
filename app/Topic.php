@@ -64,7 +64,6 @@ class Topic extends Model
     public function most_recent_post_id()
     {
         return $this->hasOne('Nexus\Post')->latest()->select(['id as post_id','topic_id']);
-
     }
     // sections
      

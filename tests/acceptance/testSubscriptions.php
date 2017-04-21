@@ -136,7 +136,5 @@ class testSubscriptions extends TestCase
             ->visit('/topic/' . $topic->id)
             ->dontSee('Unsubscribe from this topic')
             ->see('Resubscribe to this topic');
-
-
     }
 }

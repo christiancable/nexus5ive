@@ -71,5 +71,4 @@ class MentionHelperTest extends TestCase
             ),
         );
     }
-
 }
