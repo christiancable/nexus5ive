@@ -10,7 +10,7 @@
 </div>
 <hr/>
 
-{!! Form::open(array('url' => '/auth/register', 
+{!! Form::open(array('url' => '/register', 
 'class' => 'form')) !!}
 <div class="row">
 
