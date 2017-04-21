@@ -36,4 +36,11 @@ class LoginController extends Controller
     {
         $this->middleware('guest', ['except' => 'logout']);
     }
+
+    /* this is to override the trait so we use the username
+    field rather than the email field as the username - cfc*/
+    public function username()
+    {
+        return 'username';
+    }
 }
