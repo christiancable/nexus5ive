@@ -1,11 +1,11 @@
 <?php
-  $authUser = Auth::user();
-  $commentsCount = $authUser->newCommentCount();
-  $messagesCount = $authUser->newMessageCount();
-  $mentions = $authUser->mentions;
-  $mentionCount = count($mentions);
-  $profileNotificationCount = $commentsCount + $messagesCount;
-  $notificationCount = $profileNotificationCount + $mentionCount;
+$authUser = Auth::user();
+$commentsCount = $authUser->newCommentCount();
+$messagesCount = $authUser->newMessageCount();
+$mentions = $authUser->mentions;
+$mentionCount = count($mentions);
+$profileNotificationCount = $commentsCount + $messagesCount;
+$notificationCount = $profileNotificationCount + $mentionCount;
 ?>
 <nav class="navbar navbar-default">
   <div class="container">
@@ -14,9 +14,9 @@
         <span class="sr-only">Toggle navigation</span>
         <span class="glyphicon glyphicon-menu-hamburger"></span> <span>Menu</span> 
         @if ($notificationCount > 0 )
-          <span class="badge progress-bar-danger" id="notification-count">{{$notificationCount}}</span>
+        <span class="badge progress-bar-danger" id="notification-count">{{$notificationCount}}</span>
         @else
-          <span class="hidden" id="notification-count">0</span>
+        <span class="hidden" id="notification-count">0</span>
         @endif
       </button>
       <a class="navbar-brand" {!! Nexus\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Home') !!}
@@ -24,18 +24,18 @@
     </div>
     <div id="navbar" class="navbar-collapse collapse">
 
-    <ul class="nav navbar-nav">
-      <li><a {!! Nexus\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Users') !!} 
-      href="{{ action('Nexus\UserController@index')}}">Users</a></li>
-      <li><a {!! Nexus\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Catch-Up') !!}
-      href="{{ action('Nexus\SectionController@leap')}}">Catch-up</a></li> 
-      <li><a {!! Nexus\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Whos Online') !!}
-      href="{{ action('Nexus\ActivityController@index')}}">Who's Online</a></li>
-      <li><a {!! Nexus\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Latest') !!}
-      href="{{ action('Nexus\SectionController@latest')}}">Latest</a></li>
-      <li><a {!! Nexus\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Search') !!}
-      href="{{ action('Nexus\SearchController@index')}}">Search</a></li>
-    </ul>
+      <ul class="nav navbar-nav">
+        <li><a {!! Nexus\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Users') !!} 
+          href="{{ action('Nexus\UserController@index')}}">Users</a></li>
+          <li><a {!! Nexus\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Catch-Up') !!}
+            href="{{ action('Nexus\SectionController@leap')}}">Catch-up</a></li> 
+            <li><a {!! Nexus\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Whos Online') !!}
+              href="{{ action('Nexus\ActivityController@index')}}">Who's Online</a></li>
+              <li><a {!! Nexus\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Latest') !!}
+                href="{{ action('Nexus\SectionController@latest')}}">Latest</a></li>
+                <li><a {!! Nexus\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Search') !!}
+                  href="{{ action('Nexus\SearchController@index')}}">Search</a></li>
+                </ul>
 
                 @if ($mentionCount > 0 )
                 <ul class="nav navbar-nav navbar-right">
@@ -68,7 +68,7 @@
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                         {{$authUser->username}} &ndash; {{$authUser->popname}} 
                         @if ($profileNotificationCount)
-                          <span class="badge progress-bar-danger">{{$profileNotificationCount}}</span>
+                        <span class="badge progress-bar-danger">{{$profileNotificationCount}}</span>
                         @endif
                         <span class="caret"></span>
                       </a>
@@ -93,12 +93,19 @@
                           <span class="glyphicon glyphicon glyphicon glyphicon-open" aria-hidden="true"></span> Your Archive</a></li>
                           @endif
                           <li role="separator" class="divider"></li>
-                          <li><a href="{{ action('Auth\LoginController@logout')}}">
-                            <span class="glyphicon glyphicon glyphicon-log-out" aria-hidden="true"></span> Logout</a></li>
+                          
 
-                          </ul>
-                        </li>
-                      </ul>
-                    </div><!--/.nav-collapse -->
-                  </div>
-                </nav>
+                          <form action="{{url('/logout')}}" method="POST">
+                            {{ csrf_field() }}
+                            <li><button class="btn btn-link"><span class="dglyphicon glyphicon glyphicon-log-out" aria-hidden="true"></span> Logout </button></li>
+                          </form>
+
+                          
+                          
+
+                        </ul>
+                      </li>
+                    </ul>
+                  </div><!--/.nav-collapse -->
+                </div>
+              </nav>
