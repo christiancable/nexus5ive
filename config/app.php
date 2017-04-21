@@ -151,7 +151,7 @@ return [
         Illuminate\Foundation\Providers\FoundationServiceProvider::class,
         Illuminate\Hashing\HashServiceProvider::class,
         Illuminate\Mail\MailServiceProvider::class,
-        // Illuminate\Notifications\NotificationServiceProvider::class, - cfc - removed upgrade to 5.2
+        Illuminate\Notifications\NotificationServiceProvider::class,
         Illuminate\Pagination\PaginationServiceProvider::class,
         Illuminate\Pipeline\PipelineServiceProvider::class,
         Illuminate\Queue\QueueServiceProvider::class,
@@ -215,7 +215,7 @@ http://bonyweb.com/en/notes/how-to-install-html-form-helper-in-laravel-5-1/
         'Lang'      => Illuminate\Support\Facades\Lang::class,
         'Log'       => Illuminate\Support\Facades\Log::class,
         'Mail'      => Illuminate\Support\Facades\Mail::class,
-        // 'Notification' => Illuminate\Support\Facades\Notification::class, - cfc - removed upgrade to 5.2
+        'Notification' => Illuminate\Support\Facades\Notification::class,
         'Password'  => Illuminate\Support\Facades\Password::class,
         'Queue'     => Illuminate\Support\Facades\Queue::class,
         'Redirect'  => Illuminate\Support\Facades\Redirect::class,
