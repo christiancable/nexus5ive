@@ -93,7 +93,7 @@
                           <span class="glyphicon glyphicon glyphicon glyphicon-open" aria-hidden="true"></span> Your Archive</a></li>
                           @endif
                           <li role="separator" class="divider"></li>
-                          <li><a href="{{ action('Auth\AuthController@getLogout')}}">
+                          <li><a href="{{ action('Auth\LoginController@logout')}}">
                             <span class="glyphicon glyphicon glyphicon-log-out" aria-hidden="true"></span> Logout</a></li>
 
                           </ul>
