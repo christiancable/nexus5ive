@@ -20,24 +20,24 @@ class MentionHelperTest extends TestCase
 
     public function provideridentifyMentionedUsersFindsUsernames()
     {
-        return array(
-            'blank post' => array(
+        return [
+            'blank post' => [
                 $input = '',
-                $expectedOutput = array(),
-            ),
-            'single mention' => array(
+                $expectedOutput = [],
+            ],
+            'single mention' => [
                 $input = 'hey @christiancable how are you?',
-                $expectedOutput = array('christiancable'),
-            ),
-            'multiple mentions' => array(
+                $expectedOutput = ['christiancable'],
+            ],
+            'multiple mentions' => [
                 $input = 'hey @christiancable have you seen @AgentOrange',
-                $expectedOutput = array('christiancable', 'AgentOrange'),
-            ),
-            'email address which should not be matched' => array(
+                $expectedOutput = ['christiancable', 'AgentOrange'],
+            ],
+            'email address which should not be matched' => [
                 $input = 'my email is christian@nexus5.org.uk',
-                $expectedOutput = array(),
-            ),
-        );
+                $expectedOutput = [],
+            ],
+        ];
     }
     
     /**
@@ -52,23 +52,23 @@ class MentionHelperTest extends TestCase
 
     public function providerHighlightMentionsHighlights()
     {
-        return array(
-            'blank post' => array(
+        return [
+            'blank post' => [
                 $input = '',
                 $expectedOutput = '',
-            ),
-            'single mention' => array(
+            ],
+            'single mention' => [
                 $input = 'hey @christiancable how are you?',
                 $expectedOutput = 'hey <span class="text-muted">@</span><mark><strong><a href="/users/christiancable">christiancable</a></strong></mark> how are you?',
-            ),
-            'multiple mentions' => array(
+            ],
+            'multiple mentions' => [
                 $input = 'hey @christiancable have you seen @AgentOrange',
                 $expectedOutput = 'hey <span class="text-muted">@</span><mark><strong><a href="/users/christiancable">christiancable</a></strong></mark> have you seen <span class="text-muted">@</span><mark><strong><a href="/users/AgentOrange">AgentOrange</a></strong></mark>',
-            ),
-            'mention with html' => array(
+            ],
+            'mention with html' => [
                 $input = '<p>@christiancable</p>',
                 $expectedOutput = '<p><span class="text-muted">@</span><mark><strong><a href="/users/christiancable">christiancable</a></strong></mark></p>',
-            ),
-        );
+            ],
+        ];
     }
 }

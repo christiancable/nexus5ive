@@ -9,9 +9,9 @@ use Nexus\Http\Controllers\Controller;
 
 class SearchController extends Controller
 {
-    private static $stopWords = array(
+    private static $stopWords = [
         'the','and','an','of',
-    );
+    ];
 
     public function __construct()
     {
@@ -77,7 +77,7 @@ pattern;
 
             // look for all the words
             $rawSearchTerms = explode(' ', $text);
-            $searchTerms = array();
+            $searchTerms = [];
 
             // remove stop words here
             foreach ($rawSearchTerms as $word) {

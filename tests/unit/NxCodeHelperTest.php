@@ -33,18 +33,18 @@ HTML;
 
     public function providerYouTubeTagsAddEmbedCode()
     {
-        return array(
-        'blank text' => array(
+        return [
+        'blank text' => [
           $input = '',
           $expectedOutput = '',
-        ),
+        ],
 
-        'single valid youtube tag' => array(
+        'single valid youtube tag' => [
           $input = '[youtube-]https://www.youtube.com/watch?v=dQw4w9WgXcQ[-youtube]',
           $expectedOutput = "{$this->youTubeHTMLStart}dQw4w9WgXcQ{$this->youTubeHTMLStop}",
-        ),
+        ],
 
-        'text with 2 valid youtube tags' => array(
+        'text with 2 valid youtube tags' => [
           $input = <<< 'HTML'
 look here is a video [youtube-]https://www.youtube.com/watch?v=bDOZbvE01Fk[-youtube] and here is another 
 [youtube-]https://www.youtube.com/watch?v=dQw4w9WgXcQ[-youtube]
@@ -55,26 +55,26 @@ look here is a video {$this->youTubeHTMLStart}bDOZbvE01Fk{$this->youTubeHTMLStop
 {$this->youTubeHTMLStart}dQw4w9WgXcQ{$this->youTubeHTMLStop}
 HTML
         ,
-        ),
+        ],
 
-        'youtube tag with no content' => array(
+        'youtube tag with no content' => [
           $input = '[youtube-][-youtube]',
           $expectedOutput = '',
-        ),
+        ],
 
-        'youtube tag with invalid content' => array(
+        'youtube tag with invalid content' => [
           $input = '[youtube-]https://vimeo.com/87031388[-youtube]',
           $expectedOutput = '',
-          ),
+          ],
 
-        'Red Hot Chili Peppers - Give It Away - ID with an underscore' => array(
+        'Red Hot Chili Peppers - Give It Away - ID with an underscore' => [
           $input = '[youtube-]https://youtu.be/Mr_uHJPUlO8[-youtube]',
          $expectedOutput = <<< HTML
 {$this->youTubeHTMLStart}Mr_uHJPUlO8{$this->youTubeHTMLStop}
 HTML
           ,
-          ),
-        );
+          ],
+        ];
     }
 
     /**
@@ -90,24 +90,24 @@ HTML
 
     public function providerMarkdownExtensions()
     {
-        return array(
-            'blank text' => array(
+        return [
+            'blank text' => [
                 $input = '',
                 $expectedOutput = '',
-            ),
-            'external link' => array(
+            ],
+            'external link' => [
                 $input = '[a link](http://example.com)',
                 $expectedOutput = '<p><a href="http://example.com" target="_blank">a link</a></p>',
-            ),
-            'internal link' => array(
+            ],
+            'internal link' => [
                 $input = '[a link](/users)',
                 $expectedOutput = '<p><a href="/users">a link</a></p>',
-            ),
-            'inline internal link' => array(
+            ],
+            'inline internal link' => [
                 $input = 'http://example.com',
                 $expectedOutput = '<p><a href="http://example.com" target="_blank">http://example.com</a></p>',
-            ),
-        );
+            ],
+        ];
     }
 
 
@@ -124,15 +124,15 @@ HTML
 
     public function providerNxCode()
     {
-        return array(
-            'spoiler tag' => array(
+        return [
+            'spoiler tag' => [
                 $input = 'Oh my [spoiler-]Brad Pitt is Edward Norton![-spoiler]',
                 $expectedOutput = 'Oh my <span class="spoiler">Brad Pitt is Edward Norton!</span>',
-            ),
-            'multiple spoiler tags' => array(
+            ],
+            'multiple spoiler tags' => [
                 $input = 'Oh my [spoiler-]Brad Pitt is Edward Norton![-spoiler] and [spoiler-]it was Earth all along[-spoiler]',
                 $expectedOutput = 'Oh my <span class="spoiler">Brad Pitt is Edward Norton!</span> and <span class="spoiler">it was Earth all along</span>',
-            ),
-        );
+            ],
+        ];
     }
 }

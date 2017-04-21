@@ -12,14 +12,14 @@ class MentionHelper
      */
     public static function identifyMentions($text)
     {
-        $matches = array();
+        $matches = [];
     
         $matchCount = preg_match_all(self::$mentionPattern, $text, $matches);
         
         if ($matchCount) {
             $return = $matches[1];
         } else {
-            $return = array();
+            $return = [];
         }
         return $return;
     }

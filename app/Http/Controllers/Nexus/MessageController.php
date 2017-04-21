@@ -31,7 +31,7 @@ class MessageController extends Controller
         $recentMessages = array_reverse(array_slice($allMessages, 0, 5));
         $recentActivities = \Nexus\Helpers\ActivityHelper::recentActivities();
 
-        $activeUsers = array();
+        $activeUsers = [];
         foreach ($recentActivities as $activity) {
             if (\Auth::user()->id != $activity['user_id']) {
                 $activeUsers[$activity['user_id']] = $activity->user->username;

@@ -14,15 +14,15 @@ class BreadcrumbHelper
      */
     public static function breadcrumbForTopic(\Nexus\Topic $topic)
     {
-        $breadcrumbs = array();
-        $crumb = array();
+        $breadcrumbs = [];
+        $crumb = [];
         $crumb['title'] = $topic->title;
         $crumb['route'] = null;
         $breadcrumbs[] = $crumb;
 
         $section = $topic->section;
         do {
-            $crumb = array();
+            $crumb = [];
             $crumb['title'] = $section->title;
             $crumb['route'] = action('Nexus\SectionController@show', ['section_id' => $section->id]);
             $breadcrumbs[] = $crumb;
@@ -39,15 +39,15 @@ class BreadcrumbHelper
      */
     public static function breadcrumbForSection(\Nexus\Section $section)
     {
-        $breadcrumbs = array();
-        $crumb = array();
+        $breadcrumbs = [];
+        $crumb = [];
         $crumb['title'] = $section->title;
         $crumb['route'] = null;
         $breadcrumbs[] = $crumb;
         $section = $section->parent;
 
         while ($section != null) {
-            $crumb = array();
+            $crumb = [];
             $crumb['title'] = $section->title;
             $crumb['route'] = action('Nexus\SectionController@show', ['section_id' => $section->id]);
             $breadcrumbs[] = $crumb;
@@ -65,8 +65,8 @@ class BreadcrumbHelper
      */
     public static function breadcumbForUtility($location)
     {
-        $breadcrumbs = array();
-        $crumb = array();
+        $breadcrumbs = [];
+        $crumb = [];
         $crumb['title'] = $location;
         $crumb['route'] = null;
         $breadcrumbs[] = $crumb;
@@ -87,7 +87,7 @@ class BreadcrumbHelper
      */
     public static function breadcrumbForUser(\Nexus\User $user)
     {
-        $breadcrumbs = array();
+        $breadcrumbs = [];
         $crumb['title'] = $user->username;
         $crumb['route'] = null;
         $breadcrumbs[] = $crumb;

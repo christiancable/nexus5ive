@@ -100,9 +100,9 @@ HTML;
      **/
     public static function embedYouTube($text)
     {
-        $matches = array();
-        $videoTags = array();
-        $embedCodes = array();
+        $matches = [];
+        $videoTags = [];
+        $embedCodes = [];
 
         $pattern = '/\[youtube-\](.*)\[-youtube\]/im';
         // grab all youtube matches and populate array
@@ -131,11 +131,11 @@ HTML;
 
     public static function spoilerTags($text)
     {
-        $matches = array();
+        $matches = [];
         $pattern = '/\[spoiler-\](.*)\[-spoiler\]/iU';
 
-        $spoilers = array();
-        $unspoiledspoilers = array();
+        $spoilers = [];
+        $unspoiledspoilers = [];
 
         $spoilerStart = '<span class="spoiler">';
         $spoilerStop = '</span>';

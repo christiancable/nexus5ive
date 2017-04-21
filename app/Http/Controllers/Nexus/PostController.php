@@ -130,7 +130,7 @@ class PostController extends Controller
     {
         if (\Request::ajax()) {
             $data = \Input::all();
-            $response = array();
+            $response = [];
             $response['text'] = \Nexus\Helpers\NxCodeHelper::nxDecode($data['text']);
             return \Response::json($response);
         }
