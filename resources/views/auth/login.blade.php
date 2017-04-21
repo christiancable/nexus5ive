@@ -22,8 +22,10 @@
   <div class="row">
     <div class="col-md-6">
 
+     <form class="form" role="form" method="POST" action="{{ url('/login') }}">
+                        {{ csrf_field() }}
 
-     {!! Form::open(array('url' => '/auth/login', 'class' => 'form')) !!}
+     {{-- {!! Form::open(array('url' => '/auth/login', 'class' => 'form')) !!} --}}
 
      @if (count($errors) > 0)
 
