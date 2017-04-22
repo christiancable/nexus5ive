@@ -83,7 +83,9 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
                         }
                     } else {
                         Log::info(" - removing user->$child");
-                        $user->$child->delete();
+                        if ($user->child) {
+                            $user->$child->delete();
+                        }
                     }
                 }
             }
