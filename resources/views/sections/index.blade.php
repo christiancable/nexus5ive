@@ -66,12 +66,12 @@
               <div class="panel panel-default">
                 <div class="panel-heading" role="tab" id="addNewTopic">
                   <h4 class="panel-title">
-                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#addTopic" aria-expanded="false" aria-controls="addTopic">
                       <span class='glyphicon glyphicon-comment'></span>&nbsp; Add New Topic
                     </a>
                   </h4>
                 </div>
-                <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="addNewTopic">
+                <div id="addTopic" class="panel-collapse collapse" role="tabpanel" aria-labelledby="addNewTopic">
                   <div class="panel-body">
                      @include('topics._create', $section)
                   </div>

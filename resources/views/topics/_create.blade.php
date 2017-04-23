@@ -1,61 +1,75 @@
 <div class="well">
     {!! 
         Form::open(array(
-        'route' => ['topic.store'],
-        'class' => 'form'
-    )) !!}
-    <?php
+            'route' => ['topic.store'],
+            'class' => 'form'
+            )) !!}
+        <?php
         $formName = 'topicCreate';
         $submitLabel = 'Add Topic';
         $submitIcon = 'glyphicon-plus-sign';
         $submitType = 'btn-primary';
-    ?>
-    {!! Form::hidden("form[$formName][section_id]", $section->id) !!}
-    {!! Form::hidden("form[$formName][secret]", false) !!}  
-    {!! Form::hidden("form[$formName][readonly]", false) !!}
+        ?>
+        {!! Form::hidden("form[$formName][section_id]", $section->id) !!}
+        {!! Form::hidden("form[$formName][secret]", false) !!}  
+        {!! Form::hidden("form[$formName][readonly]", false) !!}
 
-    <div class="form-group">    
-        {!! Form::label("form[$formName][title]",'Title', ['class' => 'hidden']) !!}
-        {!! Form::text("form[$formName][title]", null, ['class'=> 'form-control', 'placeholder' => 'Title'])!!}
-    </div>
-    <div class="form-group">
-        {!! Form::label("form[$formName][intro]",'Introduction', ['class' => 'hidden']) !!}
-        {!! Form::textarea("form[$formName][intro]", null, ['class'=> 'form-control', 'rows' => '3', 'placeholder' => 'Introduction'])!!}
-    </div>
-    
-    <div class="row form-inline">
-
-        <div class="col-md-2">
-            <div class="checkbox">
-                <label>{!! Form::checkbox("form[$formName][secret]")!!} Anonymous</label>
-            </div>
-            <div class="checkbox">
-                <label>{!! Form::checkbox("form[$formName][readonly]")!!} Read Only</label>
-            </div>
+        <div class="form-group">    
+            {!! Form::label("form[$formName][title]",'Title', ['class' => 'hidden']) !!}
+            {!! Form::text("form[$formName][title]", null, ['class'=> 'form-control', 'placeholder' => 'Title'])!!}
+        </div>
+        <div class="form-group">
+            {!! Form::label("form[$formName][intro]",'Introduction', ['class' => 'hidden']) !!}
+            {!! Form::textarea("form[$formName][intro]", null, ['class'=> 'form-control', 'rows' => '3', 'placeholder' => 'Introduction'])!!}
         </div>
 
-        <div class="col-md-7 form-group">     
-        <label>Order {!! Form::selectRange("form[$formName][weight]", 0, 10, null, ['class' => 'form-control'])!!} </label>
-        </div>
+        <div class="row form-inline">
 
-        <div class="col-md-3">
+            <div class="col-md-2">
+                <div class="checkbox">
+                    <label>{!! Form::checkbox("form[$formName][secret]")!!} Anonymous</label>
+                </div>
+                <div class="checkbox">
+                    <label>{!! Form::checkbox("form[$formName][readonly]")!!} Read Only</label>
+                </div>
+            </div>
+
+            <div class="col-md-7 form-group">     
+                <label>Order {!! Form::selectRange("form[$formName][weight]", 0, 10, null, ['class' => 'form-control'])!!} </label>
+            </div>
+
+            <div class="col-md-3">
                 {!! Form::button("<span class='glyphicon $submitIcon'></span>&nbsp;&nbsp;" . $submitLabel, array('type' => 'submit', 'class' => "btn pull-right  col-xs-12 $submitType")) !!}
+            </div>
+
         </div>
-   
-</div>
 
-   
-{!! Form::close() !!}
 
-@if (Session::get('form') == $formName)
-    @if ($errors->all())
-    <div class="alert alert-warning" role="alert">
-        <ul>
-            @foreach($errors->all() as $error)
-            <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-    @endif
-@endif
+        {!! Form::close() !!}
+
+        @if (Session::get('form') == $formName)
+            @if ($errors->all())
+            <div class="row">
+                <script tyle="text/javascript">
+                    var addTopicPanel = document.getElementById('addTopic');
+                    if (addTopicPanel.classList) {
+                      addTopicPanel.classList.add('in');
+                  } else {
+                      addTopicPanel.className += ' ' + 'in';
+                  }
+
+                  var distance = addTopicPanel.offsetTop;
+                  console.log("scroll to " + distance);
+                  window.scrollTo(0, distance);
+                </script>
+                <div class="col-md-12 alert alert-warning" role="alert">
+                    <ul>
+                        @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
+            @endif
+        @endif
 </div>
