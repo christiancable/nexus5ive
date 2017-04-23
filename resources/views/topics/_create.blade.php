@@ -44,32 +44,7 @@
 
         </div>
 
-
         {!! Form::close() !!}
 
-        @if (Session::get('form') == $formName)
-            @if ($errors->all())
-            <div class="row">
-                <script tyle="text/javascript">
-                    var addTopicPanel = document.getElementById('addTopic');
-                    if (addTopicPanel.classList) {
-                      addTopicPanel.classList.add('in');
-                  } else {
-                      addTopicPanel.className += ' ' + 'in';
-                  }
-
-                  var distance = addTopicPanel.offsetTop;
-                  console.log("scroll to " + distance);
-                  window.scrollTo(0, distance);
-                </script>
-                <div class="col-md-12 alert alert-warning" role="alert">
-                    <ul>
-                        @foreach($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            </div>
-            @endif
-        @endif
-</div>
+    </div>
+    @include('forms._createErrors', ['errors' => $errors, 'formName' => $formName, 'formContainer' => 'addTopic'])

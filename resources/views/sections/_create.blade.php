@@ -31,16 +31,5 @@
 
    
 {!! Form::close() !!}
-
-@if (Session::get('form') == $formName)
-    @if ($errors->all())
-    <div class="alert alert-warning" role="alert">
-        <ul>
-            @foreach($errors->all() as $error)
-            <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-    @endif
-@endif
 </div>
+ @include('forms._createErrors', ['errors' => $errors, 'formName' => $formName, 'formContainer' => 'newSectionPanel'])
