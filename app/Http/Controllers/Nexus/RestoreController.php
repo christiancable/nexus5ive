@@ -114,7 +114,7 @@ class RestoreController extends Controller
         //
     }
 
-    public function section(Requests\section\RestoreRequest $request, $id)
+    public function section(Requests\Section\RestoreRequest $request, $id)
     {
         $trashedSection = \Nexus\Section::onlyTrashed()->findOrFail($id);
         $destinationSection = \Nexus\Section::findOrFail($request->destination);
@@ -125,7 +125,7 @@ class RestoreController extends Controller
         return redirect($redirect);
     }
     
-    public function topic(Requests\topic\RestoreRequest $request, $id)
+    public function topic(Requests\Topic\RestoreRequest $request, $id)
     {
         $trashedTopic = \Nexus\Topic::onlyTrashed()->findOrFail($id);
         $destinationSection = \Nexus\Section::findOrFail($request->destination);
