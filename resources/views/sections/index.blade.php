@@ -9,7 +9,7 @@
 @endsection 
 
 @section('content')
-<div class="container">
+<div class="container section">
 
 @if (Auth::user()->id === $section->user_id )
 

@@ -1,7 +1,7 @@
 <?php
 $status = \Nexus\Helpers\ViewHelper::getTopicStatus(Auth::user(), $topic);
 ?>
-<div class="well">
+<div class="well topic">
     <div class="row">
         <div class="col-sm-9">
             <h2>
