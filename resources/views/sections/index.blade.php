@@ -62,22 +62,24 @@
 
         <?php unset($topic); ?>
         @if(Auth::user()->id === $section->user_id)
-            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-              <div class="panel panel-default">
+        <div class="panel-group" id="newTopicAccordion" role="tablist" aria-multiselectable="true">
+            <div class="panel panel-success">
                 <div class="panel-heading" role="tab" id="addNewTopic">
-                  <h4 class="panel-title">
                     <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#addTopic" aria-expanded="false" aria-controls="addTopic">
-                      <span class='glyphicon glyphicon-comment'></span>&nbsp; Add New Topic
+                        <h4 class="panel-title">
+                            <span class='glyphicon glyphicon-comment'></span>&nbsp; Add New Topic
+                            <i class="indicator glyphicon glyphicon-chevron-down  pull-right"></i>
+                        </h4>
                     </a>
-                  </h4>
                 </div>
+
                 <div id="addTopic" class="panel-collapse collapse" role="tabpanel" aria-labelledby="addNewTopic">
-                  <div class="panel-body">
-                     @include('topics._create', $section)
-                  </div>
+                    <div class="panel-body">
+                        @include('topics._create', $section)
+                    </div>
                 </div>
-              </div>
             </div>
+        </div>
         @endif
 
         @if (count($section->sections))
@@ -128,21 +130,22 @@
             <hr/>
             @endif
             <div class="panel-group" id="newSectionAccordion" role="tablist" aria-multiselectable="true">
-              <div class="panel panel-default">
+              <div class="panel panel-success">
                 <div class="panel-heading" role="tab" id="addNewSection">
-                  <h4 class="panel-title">
                     <a class="collapsed" role="button" data-toggle="collapse" data-parent="#newSectionAccordion" href="#newSectionPanel" aria-expanded="false" aria-controls="newSectionPanel">
-                      <span class='glyphicon  glyphicon-folder-open'></span>&nbsp; Add New Section
-                    </a>
-                  </h4>
-                </div>
-                <div id="newSectionPanel" class="panel-collapse collapse" role="tabpanel" aria-labelledby="addNewSection">
-                  <div class="panel-body">
-                     @include('sections._create', $section)
-                  </div>
-                </div>
+                      <h4 class="panel-title">
+                          <span class='glyphicon  glyphicon-folder-open'></span>&nbsp; Add New Section
+                          <i class="indicator glyphicon glyphicon-chevron-down  pull-right"></i>
+                      </h4>
+                  </a>
               </div>
-            </div>
+              <div id="newSectionPanel" class="panel-collapse collapse" role="tabpanel" aria-labelledby="addNewSection">
+                  <div class="panel-body">
+                   @include('sections._create', $section)
+               </div>
+           </div>
+       </div>
+   </div>
         @endif
 
 
@@ -156,4 +159,5 @@
     @if (isset($tabGroups))
         @include('javascript._jqueryTabs', $tabGroups)
     @endif
+    @include('javascript._jqueryChevronToggles')
 @endsection
