@@ -6,8 +6,7 @@ jQuery(document).ready(function ($) {
         	if ($(this).attr("href") == "#preview") {
         		postPreview($(this));
         	}
-        	$(this).tab('show');        		
-        	
+        	$(this).tab('show');        		     	
         })
     @endforeach   
 });
