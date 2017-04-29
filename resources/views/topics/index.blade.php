@@ -95,6 +95,4 @@
     @if (isset($tabGroups))
         @include('javascript._jqueryTabs', $tabGroups)
     @endif
-
-    @include('javascript._jquerySpoilers')
 @endsection
