@@ -14,9 +14,11 @@ require('laravel-elixir-vue-2');
  */
 
 elixir((mix) => {
-    mix.sass('app.scss')
-       .webpack('app.js');
+    mix.sass(['app.scss', 'extra.scss'])
+        .webpack('app.js');
+
+    // we keep the extra styles as an additional file so it can be added to any custom theme in use
+    // but if we're not using a them this is ignored in the master layout
     mix.sass('extra.scss', 'public/css/extra.css');
-    mix.sass('spooky.scss', 'public/css/spooky.css');
     mix.copy('node_modules/bootstrap-sass/assets/fonts/bootstrap','public/fonts/bootstrap');
 });

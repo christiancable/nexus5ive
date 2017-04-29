@@ -7,10 +7,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   @if (config('nexus.bootstrap_theme'))
     <link rel="stylesheet" href="{{config('nexus.bootstrap_theme')}}">
+    <link href="/css/extra.css" rel="stylesheet">
   @else
     <link href="/css/app.css" rel="stylesheet">
   @endif
-  <link href="/css/extra.css" rel="stylesheet">
   @if (config('nexus.special_event') === 'halloween')
     <link rel="stylesheet" href="/css/spooky.css">
   @endif
@@ -51,8 +51,7 @@
 
 
  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
- <script src="https://code.jquery.com/jquery.js"></script>
- <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+ <script src="/js/app.js"></script>
  @yield('javascript')
  <!-- Include all compiled plugins (below), or include individual files as needed -->
  @include('javascript._toolbar')
