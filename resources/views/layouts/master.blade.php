@@ -54,7 +54,11 @@
  <script src="/js/app.js"></script>
  @yield('javascript')
  <!-- Include all compiled plugins (below), or include individual files as needed -->
+ 
+ @if (Auth::check())
  @include('javascript._toolbar')
+ @endif
+
  @include('_googleanaytics')
 
 </body>
