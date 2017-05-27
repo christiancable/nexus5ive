@@ -1,6 +1,6 @@
 <?php
 
-namespace Nexus\Console\Commands;
+namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 
@@ -34,14 +34,14 @@ class NexusUpgrade extends Command
     {
         $this->info('Importing Users');
         $errorCount = 0;
-        if (!\Nexus\User::first()) {
+        if (!\App\User::first()) {
             $count = \DB::select('select count(user_id) as count from usertable')[0]->count;
             $this->line("Found $count users ");
             $bar = $this->output->createProgressBar($count);
             $classicUsers = \DB::table('usertable')->get();
             
             foreach ($classicUsers as $classicUser) {
-                $newUser = new \Nexus\User;
+                $newUser = new \App\User;
                 
                 $newUser->id = $classicUser->user_id;
                 $newUser->username = $classicUser->user_name;
@@ -116,13 +116,13 @@ class NexusUpgrade extends Command
     {
         $this->info('Importing Comments');
         $errorCount = 0;
-        if (!\Nexus\Comment::first()) {
+        if (!\App\Comment::first()) {
             $count = \DB::select('select count(comment_id) as count from commenttable')[0]->count;
             $this->line("Found $count comments ");
             $bar = $this->output->createProgressBar($count);
             $classicComments = \DB::table('commenttable')->get();
             foreach ($classicComments as $classicComment) {
-                $newComment = new \Nexus\Comment;
+                $newComment = new \App\Comment;
                 $newComment->id = $classicComment->comment_id;
                 $newComment->text = $classicComment->text;
                 $newComment->user_id = $classicComment->user_id;
@@ -156,7 +156,7 @@ class NexusUpgrade extends Command
     {
         $this->info('Importing Sections');
         $errorCount = 0;
-        if (!\Nexus\Section::first()) {
+        if (!\App\Section::first()) {
             $count = \DB::select('select count(section_id) as count from sectiontable')[0]->count;
             $this->line("Found $count sections ");
             $this->line("Migrating Sections ");
@@ -165,7 +165,7 @@ class NexusUpgrade extends Command
         
             foreach ($classicSections as $classicSection) {
                 try {
-                    $newSection = new \Nexus\Section;
+                    $newSection = new \App\Section;
                     $newSection->id = $classicSection->section_id;
                     $newSection->title = $classicSection->section_title;
                     $newSection->intro = $classicSection->section_intro;
@@ -187,7 +187,7 @@ class NexusUpgrade extends Command
 
             foreach ($classicSections as $classicSection) {
                 try {
-                    $newSection = \Nexus\Section::findOrFail($classicSection->section_id);
+                    $newSection = \App\Section::findOrFail($classicSection->section_id);
                     $newSection->parent_id = $classicSection->parent_id;
                     $newSection->save();
                     $bar->advance();
@@ -212,7 +212,7 @@ class NexusUpgrade extends Command
     {
         $this->info('Importing Topics');
         $errorCount = 0;
-        if (!\Nexus\Topic::first()) {
+        if (!\App\Topic::first()) {
             $count = \DB::select('select count(topic_id) as count from topictable')[0]->count;
             $this->line("Found $count topics");
 
@@ -220,7 +220,7 @@ class NexusUpgrade extends Command
             $classicTopics = \DB::table('topictable')->get();
         
             foreach ($classicTopics as $classicTopic) {
-                $newTopic = new \Nexus\Topic;
+                $newTopic = new \App\Topic;
                 $newTopic->id = $classicTopic->topic_id;
                 $newTopic->title = $classicTopic->topic_title;
                 $newTopic->intro = $classicTopic->topic_description;
@@ -265,14 +265,14 @@ class NexusUpgrade extends Command
     {
         $this->info('Importing Posts');
 
-        if (!\Nexus\Post::first()) {
+        if (!\App\Post::first()) {
             $errorCount = 0;
             $count = \DB::select('select count(message_id) as count from messagetable')[0]->count;
             $this->line("Found $count posts");
             $bar = $this->output->createProgressBar($count);
             \DB::table('messagetable')->chunk(1000, function ($posts) use (&$errorCount, &$count, &$bar) {
                 foreach ($posts as $classicPost) {
-                    $newPost = new \Nexus\Post;
+                    $newPost = new \App\Post;
                     $newPost->id                = $classicPost->message_id;
                     $newPost->text              = $classicPost->message_text;
                     $newPost->topic_id          = $classicPost->topic_id;
@@ -313,7 +313,7 @@ class NexusUpgrade extends Command
     {
         $this->info('Importing Views');
 
-        if (!\Nexus\View::first()) {
+        if (!\App\View::first()) {
             $errorCount = 0;
             $count = \DB::select('select count(topicview_id) as count from topicview')[0]->count;
             $this->line("Found $count views");
@@ -321,7 +321,7 @@ class NexusUpgrade extends Command
             \DB::table('topicview')->chunk(1000, function ($views) use (&$errorCount, &$count, &$bar) {
 
                 foreach ($views as $classicView) {
-                    $newView = new \Nexus\View;
+                    $newView = new \App\View;
                     $newView->id                    = $classicView->topicview_id;
                     $newView->user_id               = $classicView->user_id;
                     $newView->topic_id              = $classicView->topic_id;
@@ -357,7 +357,7 @@ class NexusUpgrade extends Command
     {
         $this->info('Importing Mesages');
 
-        if (!\Nexus\Message::first()) {
+        if (!\App\Message::first()) {
             $errorCount = 0;
             $count = \DB::select('select count(nexusmessage_id) as count from nexusmessagetable')[0]->count;
             $this->line("Found $count messages");
@@ -365,7 +365,7 @@ class NexusUpgrade extends Command
             \DB::table('nexusmessagetable')->chunk(1000, function ($messages) use (&$errorCount, &$count, &$bar) {
 
                 foreach ($messages as $classicMessage) {
-                    $newMessage = new \Nexus\Message;
+                    $newMessage = new \App\Message;
                     $newMessage->id                    = $classicMessage->nexusmessage_id;
                     $newMessage->user_id               = $classicMessage->user_id;
                     $newMessage->author_id             = $classicMessage->from_id;

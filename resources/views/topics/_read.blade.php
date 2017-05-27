@@ -1,5 +1,5 @@
 <?php
-$status = \Nexus\Helpers\ViewHelper::getTopicStatus(Auth::user(), $topic);
+$status = \App\Helpers\ViewHelper::getTopicStatus(Auth::user(), $topic);
 ?>
 <div class="well topic">
     <div class="row">
@@ -27,7 +27,7 @@ $status = \Nexus\Helpers\ViewHelper::getTopicStatus(Auth::user(), $topic);
                 @endif  
                 {{$topic->title}}</a>
             </h2>
-            <p class="break-long-words">{!! Nexus\Helpers\NxCodeHelper::nxDecode($topic->intro) !!}</p>
+            <p class="break-long-words">{!! App\Helpers\NxCodeHelper::nxDecode($topic->intro) !!}</p>
         </div>
 
         <div class="col-sm-3">

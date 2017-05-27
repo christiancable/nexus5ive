@@ -1,6 +1,6 @@
 <?php
 
-namespace Nexus;
+namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -42,27 +42,27 @@ class Section extends Model
     
     public function moderator()
     {
-        return $this->belongsTo('Nexus\User', 'user_id', 'id');
+        return $this->belongsTo('App\User', 'user_id', 'id');
     }
 
     // sections
 
     public function parent()
     {
-        return $this->belongsTo('Nexus\Section', 'parent_id', 'id');
+        return $this->belongsTo('App\Section', 'parent_id', 'id');
     }
 
     public function sections()
     {
-        return $this->hasMany('Nexus\Section', 'parent_id', 'id')->orderBy('weight', 'asc');
+        return $this->hasMany('App\Section', 'parent_id', 'id')->orderBy('weight', 'asc');
     }
 
     // topics
     
     public function topics()
     {
-        // return $this->hasMany('Nexus\Topic', 'topic_id', 'id')->orderBy('topic_weight', 'asc');
-        return $this->hasMany('Nexus\Topic')->orderBy('weight', 'asc');
+        // return $this->hasMany('App\Topic', 'topic_id', 'id')->orderBy('topic_weight', 'asc');
+        return $this->hasMany('App\Topic')->orderBy('weight', 'asc');
     }
 
     // counts - hopefully faster ...
@@ -78,7 +78,7 @@ class Section extends Model
 
     public function trashedTopics()
     {
-        return $this->hasMany('Nexus\Topic')->onlyTrashed()->orderBy('weight', 'asc');
+        return $this->hasMany('App\Topic')->onlyTrashed()->orderBy('weight', 'asc');
     }
 
 

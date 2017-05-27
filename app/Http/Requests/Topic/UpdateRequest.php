@@ -1,9 +1,9 @@
 <?php
 
-namespace Nexus\Http\Requests\Topic;
+namespace App\Http\Requests\Topic;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Nexus\Http\Requests\Request;
+use App\Http\Requests\Request;
 
 class UpdateRequest extends FormRequest
 {
@@ -29,7 +29,7 @@ class UpdateRequest extends FormRequest
         $this->session()->flash('form', $formName);
 
         // does the user moderate the section that this topic is currently in?
-        $topic = \Nexus\Topic::findOrFail($formValues['id']);
+        $topic = \App\Topic::findOrFail($formValues['id']);
         if ($topic->section->moderator->id == \Auth::id()) {
             $return = true;
         }

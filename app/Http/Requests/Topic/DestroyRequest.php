@@ -1,11 +1,11 @@
 <?php
 
-namespace Nexus\Http\Requests\Topic;
+namespace App\Http\Requests\Topic;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Nexus\Http\Requests\Request;
-use Nexus\Section;
-use Nexus\Topic;
+use App\Http\Requests\Request;
+use App\Section;
+use App\Topic;
 use Log;
 
 class DestroyRequest extends FormRequest
@@ -17,7 +17,7 @@ class DestroyRequest extends FormRequest
     public function authorize()
     {
         $return = false;
-        $topic = \Nexus\Topic::findOrFail($this->topic);
+        $topic = \App\Topic::findOrFail($this->topic);
 
         if (\Auth::check()) {
             $authUser = \Auth::user();

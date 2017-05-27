@@ -1,5 +1,5 @@
 <?php
-namespace Nexus;
+namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -13,16 +13,16 @@ class Post extends Model
     
     public function topic()
     {
-        return $this->belongsTo('Nexus\Topic');
+        return $this->belongsTo('App\Topic');
     }
     
     public function author()
     {
-        return $this->belongsTo('Nexus\User', 'user_id');
+        return $this->belongsTo('App\User', 'user_id');
     }
 
     public function editor()
     {
-        return $this->belongsTo('Nexus\User', 'update_user_id');
+        return $this->belongsTo('App\User', 'update_user_id');
     }
 }

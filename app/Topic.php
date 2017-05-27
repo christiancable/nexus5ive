@@ -1,6 +1,6 @@
 <?php
 
-namespace Nexus;
+namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -58,18 +58,18 @@ class Topic extends Model
 
     public function most_recent_post()
     {
-        return $this->hasOne('Nexus\Post')->latest();
+        return $this->hasOne('App\Post')->latest();
     }
     
     public function most_recent_post_id()
     {
-        return $this->hasOne('Nexus\Post')->latest()->select(['id as post_id','topic_id']);
+        return $this->hasOne('App\Post')->latest()->select(['id as post_id','topic_id']);
     }
     // sections
      
     public function section()
     {
-        return $this->belongsTo('Nexus\Section');
+        return $this->belongsTo('App\Section');
     }
 
 
@@ -77,13 +77,13 @@ class Topic extends Model
     
     public function posts()
     {
-        return $this->hasMany('Nexus\Post')->orderBy('id', 'asc');
+        return $this->hasMany('App\Post')->orderBy('id', 'asc');
     }
 
     // views
 
     public function views()
     {
-        return $this->hasMany('Nexus\View')->orderBy('latest_view_date', 'dec');
+        return $this->hasMany('App\View')->orderBy('latest_view_date', 'dec');
     }
 }

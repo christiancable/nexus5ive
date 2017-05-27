@@ -1,6 +1,6 @@
 <?php
 
-namespace Nexus\Helpers;
+namespace App\Helpers;
 
 class NxCodeHelper
 {

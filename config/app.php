@@ -167,11 +167,11 @@ return [
         /*
          * Application Service Providers...
          */
-        Nexus\Providers\AppServiceProvider::class,
-        // Nexus\Providers\BroadcastServiceProvider::class,
-        Nexus\Providers\AuthServiceProvider::class,
-        Nexus\Providers\EventServiceProvider::class,
-        Nexus\Providers\RouteServiceProvider::class,
+        App\Providers\AppServiceProvider::class,
+        // App\Providers\BroadcastServiceProvider::class,
+        App\Providers\AuthServiceProvider::class,
+        App\Providers\EventServiceProvider::class,
+        App\Providers\RouteServiceProvider::class,
 
         'Barryvdh\Debugbar\ServiceProvider',
 

@@ -42,7 +42,7 @@
             </div>
         </div>
         <hr>
-        <p>{!! Nexus\Helpers\NxCodeHelper::nxDecode($post->text) !!}</p>
+        <p>{!! App\Helpers\NxCodeHelper::nxDecode($post->text) !!}</p>
 
         @if ($post->editor)
               {{-- if we are anonymous them we want to see fuzzy times  --}}

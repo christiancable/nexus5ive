@@ -1,6 +1,6 @@
 <?php
 
-namespace Nexus;
+namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -16,11 +16,11 @@ class Message extends Model
 
     public function author()
     {
-        return $this->belongsTo('Nexus\User', 'author_id', 'id');
+        return $this->belongsTo('App\User', 'author_id', 'id');
     }
 
     public function user()
     {
-        return $this->belongsTo('Nexus\User');
+        return $this->belongsTo('App\User');
     }
 }

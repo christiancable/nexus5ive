@@ -1,6 +1,6 @@
 <?php
 
-namespace Nexus\Providers;
+namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 

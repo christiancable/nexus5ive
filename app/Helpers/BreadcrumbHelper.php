@@ -1,5 +1,5 @@
 <?php
-namespace Nexus\Helpers;
+namespace App\Helpers;
 
 /* 
    helper methods for dealing with breadcrumbs
@@ -8,11 +8,11 @@ namespace Nexus\Helpers;
 class BreadcrumbHelper
 {
     /**
-     * @param Nexus\Topic
+     * @param App\Topic
      * @return an array of links to go in a breadcrumb trail
      *
      */
-    public static function breadcrumbForTopic(\Nexus\Topic $topic)
+    public static function breadcrumbForTopic(\App\Topic $topic)
     {
         $breadcrumbs = [];
         $crumb = [];
@@ -33,11 +33,11 @@ class BreadcrumbHelper
     }
 
     /**
-     * @param Nexus\Section
+     * @param App\Section
      * @return an array of links to go in a breadcrumb trail
      *
      */
-    public static function breadcrumbForSection(\Nexus\Section $section)
+    public static function breadcrumbForSection(\App\Section $section)
     {
         $breadcrumbs = [];
         $crumb = [];
@@ -71,7 +71,7 @@ class BreadcrumbHelper
         $crumb['route'] = null;
         $breadcrumbs[] = $crumb;
 
-        $section = \Nexus\Section::first();
+        $section = \App\Section::first();
         $crumb['title'] = $section->title;
         $crumb['route'] = action('Nexus\SectionController@show', ['section_id' => $section->id]);
         $breadcrumbs[] = $crumb;
@@ -82,10 +82,10 @@ class BreadcrumbHelper
     /**
      * generates a breadcrumb trail for a user profile
      *
-     * @param Nexus\User
+     * @param App\User
      * @return an array of links to go in a breadcrumb trail
      */
-    public static function breadcrumbForUser(\Nexus\User $user)
+    public static function breadcrumbForUser(\App\User $user)
     {
         $breadcrumbs = [];
         $crumb['title'] = $user->username;
@@ -96,7 +96,7 @@ class BreadcrumbHelper
         $crumb['route'] = action('Nexus\UserController@index');
         $breadcrumbs[] = $crumb;
 
-        $section = \Nexus\Section::first();
+        $section = \App\Section::first();
         $crumb['title'] = $section->title;
         $crumb['route'] = action('Nexus\SectionController@show', ['section_id' => $section->id]);
         $breadcrumbs[] = $crumb;

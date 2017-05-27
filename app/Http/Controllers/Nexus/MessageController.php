@@ -1,11 +1,11 @@
 <?php
 
-namespace Nexus\Http\Controllers\Nexus;
+namespace App\Http\Controllers\Nexus;
 
 use Illuminate\Http\Request;
 
-use Nexus\Http\Requests;
-use Nexus\Http\Controllers\Controller;
+use App\Http\Requests;
+use App\Http\Controllers\Controller;
 
 class MessageController extends Controller
 {
@@ -21,7 +21,7 @@ class MessageController extends Controller
      */
     public function index($selected = null)
     {
-        $allMessages = \Nexus\Message::with('user')
+        $allMessages = \App\Message::with('user')
             ->with('author')
             ->where('user_id', \Auth::user()->id)
             ->orderBy('id', 'desc')
@@ -29,7 +29,7 @@ class MessageController extends Controller
             ->all();
         $messages = array_slice($allMessages, 5);
         $recentMessages = array_reverse(array_slice($allMessages, 0, 5));
-        $recentActivities = \Nexus\Helpers\ActivityHelper::recentActivities();
+        $recentActivities = \App\Helpers\ActivityHelper::recentActivities();
 
         $activeUsers = [];
         foreach ($recentActivities as $activity) {
@@ -39,15 +39,15 @@ class MessageController extends Controller
         }
 
         // mark all messages as read
-        \Nexus\Message::where('user_id', \Auth::user()->id)->update(['read' => true]);
+        \App\Message::where('user_id', \Auth::user()->id)->update(['read' => true]);
 
-        \Nexus\Helpers\ActivityHelper::updateActivity(
+        \App\Helpers\ActivityHelper::updateActivity(
             \Auth::user()->id,
             "Viewing <em>Inbox</em>",
-            action('Nexus\MessageController@index')
+            action('App\MessageController@index')
         );
 
-        $breadcrumbs = \Nexus\Helpers\BreadcrumbHelper::breadcumbForUtility('Inbox');
+        $breadcrumbs = \App\Helpers\BreadcrumbHelper::breadcumbForUtility('Inbox');
 
         return view('messages.index')
             ->with(compact('messages', 'recentMessages', 'activeUsers', 'selected', 'breadcrumbs'));
@@ -77,9 +77,9 @@ class MessageController extends Controller
         $input['time'] = time();
         $input['author_id'] = \Auth::user()->id;
 
-        \Nexus\Message::create($input);
+        \App\Message::create($input);
 
-        return redirect(action('Nexus\MessageController@index'));
+        return redirect(action('App\MessageController@index'));
     }
 
     /**

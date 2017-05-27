@@ -1,5 +1,5 @@
 <?php
-namespace Nexus\Helpers;
+namespace App\Helpers;
 
 use Carbon\Carbon;
 
@@ -18,7 +18,7 @@ class ActivityHelper
     {
 
         $within = config('nexus.recent_activity');
-        $activities =  \Nexus\Activity::where('time', '>=', Carbon::now()->subMinutes($within))
+        $activities =  \App\Activity::where('time', '>=', Carbon::now()->subMinutes($within))
             ->get();
         return $activities;
     }
@@ -31,7 +31,7 @@ class ActivityHelper
      */
     public static function updateActivity($user_id, $text = null, $route = null)
     {
-        $activity = \Nexus\Activity::firstOrNew(['user_id' => $user_id]);
+        $activity = \App\Activity::firstOrNew(['user_id' => $user_id]);
         $activity->text = $text;
         $activity->route = $route;
         $activity->time = time();
@@ -45,7 +45,7 @@ class ActivityHelper
     public static function removeActivity($user_id)
     {
         try {
-            $activity = \Nexus\Activity::where('user_id', $user_id)->firstOrFail();
+            $activity = \App\Activity::where('user_id', $user_id)->firstOrFail();
             $activity->delete();
         } catch (\Exception $e) {
             \Log::info('Tried to remove non-existent activity: '. $e);

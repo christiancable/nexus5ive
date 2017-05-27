@@ -1,11 +1,11 @@
 <?php
 
-namespace Nexus\Http\Controllers\Nexus;
+namespace App\Http\Controllers\Nexus;
 
 use Illuminate\Http\Request;
 
-use Nexus\Http\Requests;
-use Nexus\Http\Controllers\Controller;
+use App\Http\Requests;
+use App\Http\Controllers\Controller;
 use Auth;
 use Redirect;
 

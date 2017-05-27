@@ -1,9 +1,9 @@
 <?php
 
-namespace Nexus\Listeners;
+namespace App\Listeners;
 
-use Nexus\Events;
-use Nexus\User;
+use App\Events;
+use App\User;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Carbon\Carbon;

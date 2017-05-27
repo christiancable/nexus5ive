@@ -1,9 +1,9 @@
 <?php
 
-namespace Nexus\Http\Requests\Topic;
+namespace App\Http\Requests\Topic;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Nexus\Http\Requests\Request;
+use App\Http\Requests\Request;
 
 class RestoreRequest extends FormRequest
 {
@@ -18,9 +18,9 @@ class RestoreRequest extends FormRequest
         $return = false;
 
         $currentUserID =  \Auth::user()->id;
-        $trashedTopic = \Nexus\Topic::onlyTrashed()->findOrFail($this->topic);
-        $originalSection = \Nexus\Section::withTrashed()->findOrFail($trashedTopic->section_id);
-        $destinationSection = \Nexus\Section::findOrFail($this->destination);
+        $trashedTopic = \App\Topic::onlyTrashed()->findOrFail($this->topic);
+        $originalSection = \App\Section::withTrashed()->findOrFail($trashedTopic->section_id);
+        $destinationSection = \App\Section::findOrFail($this->destination);
 
         if (($destinationSection->moderator->id === $currentUserID) &&
             ($originalSection->moderator->id === $currentUserID)) {

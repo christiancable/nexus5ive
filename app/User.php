@@ -1,6 +1,6 @@
 <?php
 
-namespace Nexus;
+namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Auth\Authenticatable;
@@ -96,47 +96,47 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
     public function mentions()
     {
-        return $this->hasMany('Nexus\Mention')->orderBy('id', 'dec');
+        return $this->hasMany('App\Mention')->orderBy('id', 'dec');
     }
     
     public function comments()
     {
-        return $this->hasMany('Nexus\Comment', 'user_id', 'id')->orderBy('id', 'dec');
+        return $this->hasMany('App\Comment', 'user_id', 'id')->orderBy('id', 'dec');
     }
 
     public function givenComments()
     {
-        return $this->hasMany('Nexus\Comment', 'author_id', 'id')->orderBy('id', 'dec');
+        return $this->hasMany('App\Comment', 'author_id', 'id')->orderBy('id', 'dec');
     }
 
     public function sections()
     {
-        return $this->hasMany('Nexus\Section');
+        return $this->hasMany('App\Section');
     }
 
     public function views()
     {
-        return $this->hasMany('Nexus\View')->orderBy('latest_view_date', 'dec');
+        return $this->hasMany('App\View')->orderBy('latest_view_date', 'dec');
     }
 
     public function modifiedPosts()
     {
-        return $this->hasMany('Nexus\Post', 'update_user_id', 'id');
+        return $this->hasMany('App\Post', 'update_user_id', 'id');
     }
 
     public function messages()
     {
-        return $this->hasMany('Nexus\Message');
+        return $this->hasMany('App\Message');
     }
 
     public function sentMessages()
     {
-        return $this->hasMany('Nexus\Message', 'author_id');
+        return $this->hasMany('App\Message', 'author_id');
     }
 
     public function activity()
     {
-        return $this->hasOne('Nexus\Activity');
+        return $this->hasOne('App\Activity');
     }
     
     /*
@@ -146,7 +146,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     {
         /*
             @todo: why does the hasManyThrough not work here?
-            return $this->hasManyThrough('Nexus\Topic', 'Nexus\Section', 'user_id', 'section_id');
+            return $this->hasManyThrough('App\Topic', 'App\Section', 'user_id', 'section_id');
         */
 
         $sectionIDs = $this->sections->pluck('id')->toArray();
@@ -187,9 +187,9 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         $this->mentions()->delete();
     }
 
-    public function addMention(\Nexus\Post $post)
+    public function addMention(\App\Post $post)
     {
-        $mention = new \Nexus\Mention;
+        $mention = new \App\Mention;
         $mention->user_id = $this->id;
         $mention->post_id = $post->id;
         $this->mentions()->save($mention);
@@ -217,6 +217,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     public function present()
     {
-        return new \Nexus\ViewModels\UserPresenter($this);
+        return new \App\ViewModels\UserPresenter($this);
     }
 }

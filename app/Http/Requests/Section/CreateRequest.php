@@ -1,9 +1,9 @@
 <?php
 
-namespace Nexus\Http\Requests\Section;
+namespace App\Http\Requests\Section;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Nexus\Http\Requests\Request;
+use App\Http\Requests\Request;
 
 class CreateRequest extends FormRequest
 {
@@ -21,7 +21,7 @@ class CreateRequest extends FormRequest
         $formValues = $this::input('form')[$formName];
         $this->session()->flash('form', $formName);
 
-        $parentSection = \Nexus\Section::findOrFail($formValues['parent_id']);
+        $parentSection = \App\Section::findOrFail($formValues['parent_id']);
         if (\Auth::user()->id == $parentSection->moderator->id) {
             $return = true;
         } else {

@@ -1,5 +1,5 @@
 <?php
-$status = \Nexus\Helpers\ViewHelper::getTopicStatus(Auth::user(), $topic);
+$status = \App\Helpers\ViewHelper::getTopicStatus(Auth::user(), $topic);
 
 if ($status['unsubscribed']) {
     $textClass = 'text-muted';
@@ -47,7 +47,7 @@ if ($status['unsubscribed']) {
 
     </ul>
     <div class="panel-body">
-        <p><a href="{{ action('Nexus\TopicController@show', ['topic_id' => $topic->id])}}" class="text-muted">{!! substr(strip_tags(Nexus\Helpers\NxCodeHelper::nxDecode($topic->most_recent_post->text)), 0, 140) !!}&hellip;</a></p>
+        <p><a href="{{ action('Nexus\TopicController@show', ['topic_id' => $topic->id])}}" class="text-muted">{!! substr(strip_tags(App\Helpers\NxCodeHelper::nxDecode($topic->most_recent_post->text)), 0, 140) !!}&hellip;</a></p>
     </div>
 
 </div>

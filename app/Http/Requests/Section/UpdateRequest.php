@@ -1,9 +1,9 @@
 <?php
 
-namespace Nexus\Http\Requests\Section;
+namespace App\Http\Requests\Section;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Nexus\Http\Requests\Request;
+use App\Http\Requests\Request;
 
 class UpdateRequest extends FormRequest
 {
@@ -35,7 +35,7 @@ class UpdateRequest extends FormRequest
         }
 
         // if $formValues['parent_id'] is null then we are editing the main menu
-        $section = \Nexus\Section::findOrFail($formValues['id']);
+        $section = \App\Section::findOrFail($formValues['id']);
         
         // are we editing the current section OR a sub section
         if ($formValues['id'] === $formValues['current_section']) {
@@ -47,7 +47,7 @@ class UpdateRequest extends FormRequest
             }
         } else {
             // sub section
-            $destination = \Nexus\Section::findOrFail($formValues['parent_id']);
+            $destination = \App\Section::findOrFail($formValues['parent_id']);
 
             // [1] a subsection can be edited by the moderator of its parent section
             if ($section->parent->moderator->id == \Auth::user()->id) {
@@ -57,7 +57,7 @@ class UpdateRequest extends FormRequest
             }
 
             // [2] a subsection cannot be moved into a decedent section
-            $decedents = \Nexus\Helpers\SectionHelper::allChildSections($section);
+            $decedents = \App\Helpers\SectionHelper::allChildSections($section);
             if ($decedents->where('id', $destination->id)->count() > 0) {
                 $destination_not_child = false;
             } else {

@@ -1,9 +1,9 @@
 <?php
 
-namespace Nexus\Http\Requests\Message;
+namespace App\Http\Requests\Message;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Nexus\Http\Requests\Request;
+use App\Http\Requests\Request;
 
 class CreateRequest extends FormRequest
 {

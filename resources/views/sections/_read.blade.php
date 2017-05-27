@@ -7,7 +7,7 @@
     <div class="panel-body">
         <div class="row">
             <div class="col-sm-9">
-                {!! Nexus\Helpers\NxCodeHelper::nxDecode($subSection->intro)  !!}
+                {!! App\Helpers\NxCodeHelper::nxDecode($subSection->intro)  !!}
             </div>
             <div class="col-sm-3">
                 @if($subSection->topicCount || $subSection->sectionCount)

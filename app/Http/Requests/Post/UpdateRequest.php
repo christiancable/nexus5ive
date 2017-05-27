@@ -1,9 +1,9 @@
 <?php
 
-namespace Nexus\Http\Requests\Post;
+namespace App\Http\Requests\Post;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Nexus\Http\Requests\Request;
+use App\Http\Requests\Request;
 
 class UpdateRequest extends FormRequest
 {
@@ -31,7 +31,7 @@ class UpdateRequest extends FormRequest
             $return = false;
         }
 
-        $post = \Nexus\Post::findOrFail($this::input('id'));
+        $post = \App\Post::findOrFail($this::input('id'));
         
         // is this the most recent post in this topic, is it by the logged in user and is it recent
         $latestPost = $post->topic->posts->last();

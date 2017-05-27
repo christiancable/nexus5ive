@@ -1,7 +1,7 @@
 @if ($flash = Session::get('headerAlert'))
 <div class="container">
     <div class="alert alert-{{$flash['level']}}" role="alert">
-        {!! Nexus\Helpers\NxCodeHelper::nxDecode($flash['body']) !!}
+        {!! App\Helpers\NxCodeHelper::nxDecode($flash['body']) !!}
     </div>
 </div>
 @endif

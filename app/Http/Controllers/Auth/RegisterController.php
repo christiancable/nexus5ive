@@ -1,10 +1,10 @@
 <?php
 
-namespace Nexus\Http\Controllers\Auth;
+namespace App\Http\Controllers\Auth;
 
-use Nexus\User;
+use App\User;
 use Validator;
-use Nexus\Http\Controllers\Controller;
+use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
 class RegisterController extends Controller

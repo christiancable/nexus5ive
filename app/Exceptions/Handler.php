@@ -1,6 +1,6 @@
 <?php
 
-namespace Nexus\Exceptions;
+namespace App\Exceptions;
 
 use Illuminate\Auth\AuthenticationException;
 use Exception;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Nexus\Providers;
+namespace App\Providers;
 
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -13,8 +13,8 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        'Nexus\Model' => 'App\Policies\ModelPolicy',
-        \Nexus\Comment::class => \Nexus\Policies\CommentPolicy::class,
+        'App\Model' => 'App\Policies\ModelPolicy',
+        \App\Comment::class => \App\Policies\CommentPolicy::class,
     ];
 
     /**

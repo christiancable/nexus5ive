@@ -65,7 +65,7 @@
             @foreach($paginatedResults as $result) 
                 <div class="panel panel-default">
                   <div class="panel-body break-long-words">
-                    <p><a href="{!! Nexus\Helpers\TopicHelper::routeToPost($result) !!}">
+                    <p><a href="{!! App\Helpers\TopicHelper::routeToPost($result) !!}">
                      @if($result->topic->secret)
                          <strong>Anonymous</strong>
                     @else 
@@ -76,7 +76,7 @@
 
                     @endif
                     in <strong>{{ $result->topic->title}}</strong></a><span class="text-muted"> {{ $result->time->diffForHumans() }}</span></p>
-                    <p>{!! Nexus\Helpers\NxCodeHelper::nxDecode($result->text) !!}</p>
+                    <p>{!! App\Helpers\NxCodeHelper::nxDecode($result->text) !!}</p>
                   </div>
                 </div>
             @endforeach

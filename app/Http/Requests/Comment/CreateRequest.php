@@ -1,9 +1,9 @@
 <?php
 
-namespace Nexus\Http\Requests\Comment;
+namespace App\Http\Requests\Comment;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Nexus\Http\Requests\Request;
+use App\Http\Requests\Request;
 
 class CreateRequest extends FormRequest
 {

@@ -1,21 +1,21 @@
 <?php
-namespace Nexus\Helpers;
+namespace App\Helpers;
 
 class ViewHelper
 {
     /**
      * records a users read progress within a topic
      */
-    public static function updateReadProgress(\Nexus\User $user, \Nexus\Topic $topic)
+    public static function updateReadProgress(\App\User $user, \App\Topic $topic)
     {
 
-        $lastestView = \Nexus\View::where('topic_id', $topic->id)->where('user_id', $user->id)->first();
+        $lastestView = \App\View::where('topic_id', $topic->id)->where('user_id', $user->id)->first();
 
         if ($lastestView) {
             $lastestView->latest_view_date = $topic->most_recent_post_time;
             $lastestView->update();
         } else {
-            $view = new \Nexus\View;
+            $view = new \App\View;
             $view->user_id = $user->id;
             $view->topic_id = $topic->id;
             $view->latest_view_date = $topic->most_recent_post_time;
@@ -23,11 +23,11 @@ class ViewHelper
         }
     }
 
-    public static function getReadProgress(\Nexus\User $user, \Nexus\Topic $topic)
+    public static function getReadProgress(\App\User $user, \App\Topic $topic)
     {
         $result = false;
 
-        $latestView = \Nexus\View::select('latest_view_date')
+        $latestView = \App\View::select('latest_view_date')
             ->where('topic_id', $topic->id)
             ->where('user_id', $user->id)
             ->first();
@@ -43,14 +43,14 @@ class ViewHelper
     /**
      * reports if a given topic has been updated since the a user last read
      *
-     * @param  \Nexus\User $user - the user
-     * @param  \Nexus\Topic $topic - a topic
+     * @param  \App\User $user - the user
+     * @param  \App\Topic $topic - a topic
      * @return boolean has the topic being updated or not
      */
-    public static function topicHasUnreadPosts(\Nexus\User $user, \Nexus\Topic $topic)
+    public static function topicHasUnreadPosts(\App\User $user, \App\Topic $topic)
     {
         $return = true;
-        $mostRecentlyReadPostDate =  \Nexus\Helpers\ViewHelper::getReadProgress($user, $topic);
+        $mostRecentlyReadPostDate =  \App\Helpers\ViewHelper::getReadProgress($user, $topic);
 
         if ($mostRecentlyReadPostDate) {
             if ($mostRecentlyReadPostDate <> $topic->most_recent_post_time) {
@@ -72,11 +72,11 @@ class ViewHelper
     /**
      * reports on the status of a given topic for a user
      *
-     * @param  \Nexus\User $user - the user
-     * @param  \Nexus\Topic $topic - a topic
+     * @param  \App\User $user - the user
+     * @param  \App\Topic $topic - a topic
      * @return array - of status values
      */
-    public static function getTopicStatus(\Nexus\User $user, \Nexus\Topic $topic)
+    public static function getTopicStatus(\App\User $user, \App\Topic $topic)
     {
         $status = [
             'new_posts' => false,
@@ -84,10 +84,10 @@ class ViewHelper
             'unsubscribed' => false,
         ];
 
-        $mostRecentlyReadPostDate =  \Nexus\Helpers\ViewHelper::getReadProgress($user, $topic);
+        $mostRecentlyReadPostDate =  \App\Helpers\ViewHelper::getReadProgress($user, $topic);
         $mostRecentPostDate = $topic->most_recent_post_time;
 
-        $view = \Nexus\View::where('topic_id', $topic->id)->where('user_id', $user->id)->first();
+        $view = \App\View::where('topic_id', $topic->id)->where('user_id', $user->id)->first();
 
         if ($view !== null) {
             if ($view->unsubscribed != 0) {
@@ -109,15 +109,15 @@ class ViewHelper
     /**
      * unsubscribes the user from the topic
      **/
-    public static function unsubscribeFromTopic(\Nexus\User $user, \Nexus\Topic $topic)
+    public static function unsubscribeFromTopic(\App\User $user, \App\Topic $topic)
     {
-        $lastestView = \Nexus\View::where('topic_id', $topic->id)->where('user_id', $user->id)->first();
+        $lastestView = \App\View::where('topic_id', $topic->id)->where('user_id', $user->id)->first();
 
         if ($lastestView) {
             $lastestView->unsubscribed = true;
             $lastestView->update();
         } else {
-            $view = new \Nexus\View;
+            $view = new \App\View;
             $view->user_id = $user->id;
             $view->topic_id = $topic->id;
             $view->latest_view_date = $topic->most_recent_post_time;
@@ -129,15 +129,15 @@ class ViewHelper
     /**
      * subscribes the user from the topic
      **/
-    public static function subscribeToTopic(\Nexus\User $user, \Nexus\Topic $topic)
+    public static function subscribeToTopic(\App\User $user, \App\Topic $topic)
     {
-        $lastestView = \Nexus\View::where('topic_id', $topic->id)->where('user_id', $user->id)->first();
+        $lastestView = \App\View::where('topic_id', $topic->id)->where('user_id', $user->id)->first();
 
         if ($lastestView) {
             $lastestView->unsubscribed = false;
             $lastestView->update();
         } else {
-            $view = new \Nexus\View;
+            $view = new \App\View;
             $view->user_id = $user->id;
             $view->topic_id = $topic->id;
             $view->latest_view_date = $topic->most_recent_post_time;
@@ -150,7 +150,7 @@ class ViewHelper
         updates the read progress of all previously read topics
         with the latest post of those topics
     */
-    public static function catchUpCatchUp(\Nexus\User $user)
+    public static function catchUpCatchUp(\App\User $user)
     {
         $views = $user->views;
         

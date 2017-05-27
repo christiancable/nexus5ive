@@ -1,11 +1,11 @@
 <?php
 
-namespace Nexus\Http\Controllers\Nexus;
+namespace App\Http\Controllers\Nexus;
 
 use Illuminate\Http\Request;
 
-use Nexus\Http\Requests;
-use Nexus\Http\Controllers\Controller;
+use App\Http\Requests;
+use App\Http\Controllers\Controller;
 
 class PostController extends Controller
 {
@@ -46,19 +46,19 @@ class PostController extends Controller
         $input['user_id'] = \Auth::user()->id;
         $input['popname'] = \Auth::user()->popname;
         $input['time'] = time();
-        $post = \Nexus\Post::create($input);
+        $post = \App\Post::create($input);
         \Auth::user()->incrementTotalPosts();
 
         // scan post for mentions
-        \Nexus\Helpers\MentionHelper::makeMentions($post);
+        \App\Helpers\MentionHelper::makeMentions($post);
         
         
         // if we are viewing the topic with the most recent post at the bottom then
         // redirect to that point in the page
         if (\Auth::user()->viewLatestPostFirst) {
-            $redirect = action('Nexus\TopicController@show', ['id' => $post->topic_id]);
+            $redirect = action('App\TopicController@show', ['id' => $post->topic_id]);
         } else {
-            $redirect = action('Nexus\TopicController@show', ['id' => $post->topic_id]) . '#'  . $post->id;
+            $redirect = action('App\TopicController@show', ['id' => $post->topic_id]) . '#'  . $post->id;
         }
         return redirect($redirect);
     }
@@ -102,7 +102,7 @@ class PostController extends Controller
         $input['text'] = $input['form'][$id]['text'];
 
         $input['update_user_id'] = \Auth::user()->id;
-        $post = \Nexus\Post::findOrFail($id);
+        $post = \App\Post::findOrFail($id);
         $post->update($input);
         return redirect()->route('topic.show', ['id' => $post->topic_id]);
     }
@@ -116,7 +116,7 @@ class PostController extends Controller
     public function destroy(Requests\Post\DeleteRequest $request, $id)
     {
         // using forceDelete here because in this case we do not want a soft delete
-        $post = \Nexus\Post::findOrFail($id);
+        $post = \App\Post::findOrFail($id);
         $topicID = $post->topic_id;
         $post->forceDelete();
         return redirect()->route('topic.show', ['id' => $post->topic_id]);
@@ -131,7 +131,7 @@ class PostController extends Controller
         if (\Request::ajax()) {
             $data = \Input::all();
             $response = [];
-            $response['text'] = \Nexus\Helpers\NxCodeHelper::nxDecode($data['text']);
+            $response['text'] = \App\Helpers\NxCodeHelper::nxDecode($data['text']);
             return \Response::json($response);
         }
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Nexus;
+namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -9,11 +9,11 @@ class Mention extends Model
   
     public function post()
     {
-        return $this->belongsTo('Nexus\Post');
+        return $this->belongsTo('App\Post');
     }
 
     public function user()
     {
-        return $this->belongsTo('Nexus\User');
+        return $this->belongsTo('App\User');
     }
 }

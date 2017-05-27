@@ -19,21 +19,21 @@ $notificationCount = $profileNotificationCount + $mentionCount;
         <span class="hidden" id="notification-count">0</span>
         @endif
       </button>
-      <a class="navbar-brand" {!! Nexus\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Home') !!}
+      <a class="navbar-brand" {!! App\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Home') !!}
       href="/"><span class="glyphicon glyphicon glyphicon-home" aria-hidden="true"></span></a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
 
       <ul class="nav navbar-nav">
-        <li><a {!! Nexus\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Users') !!} 
+        <li><a {!! App\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Users') !!} 
           href="{{ action('Nexus\UserController@index')}}">Users</a></li>
-          <li><a {!! Nexus\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Catch-Up') !!}
+          <li><a {!! App\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Catch-Up') !!}
             href="{{ action('Nexus\SectionController@leap')}}">Catch-up</a></li> 
-            <li><a {!! Nexus\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Whos Online') !!}
+            <li><a {!! App\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Whos Online') !!}
               href="{{ action('Nexus\ActivityController@index')}}">Who's Online</a></li>
-              <li><a {!! Nexus\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Latest') !!}
+              <li><a {!! App\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Latest') !!}
                 href="{{ action('Nexus\SectionController@latest')}}">Latest</a></li>
-                <li><a {!! Nexus\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Search') !!}
+                <li><a {!! App\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Search') !!}
                   href="{{ action('Nexus\SearchController@index')}}">Search</a></li>
                 </ul>
 
@@ -47,7 +47,7 @@ $notificationCount = $profileNotificationCount + $mentionCount;
                     </a>
                     <ul class="dropdown-menu">
                       @foreach ($mentions as $mention)
-                      <li><a href="{{Nexus\Helpers\TopicHelper::routeToPost($mention->post)}}"><strong>{{$mention->post->author->username}}</strong> mentioned you in <strong>{{$mention->post->topic->title }}</strong></a></li>
+                      <li><a href="{{App\Helpers\TopicHelper::routeToPost($mention->post)}}"><strong>{{$mention->post->author->username}}</strong> mentioned you in <strong>{{$mention->post->topic->title }}</strong></a></li>
                       @endforeach
                       <li role="separator" class="divider"></li>
                       <li>

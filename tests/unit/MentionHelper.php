@@ -3,7 +3,7 @@
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Nexus\Helpers\MentionHelper;
+use App\Helpers\MentionHelper;
 
 class MentionHelperTest extends TestCase
 {

@@ -1,12 +1,12 @@
 <?php
-namespace Nexus\Helpers;
+namespace App\Helpers;
 
 class RestoreHelper
 {
     /**
      * restores a topic, along with its posts and views, to a section
      */
-    public static function restoreTopicToSection(\Nexus\Topic $topic, \Nexus\Section $section)
+    public static function restoreTopicToSection(\App\Topic $topic, \App\Section $section)
     {
         $topic->posts()->restore();
         $topic->views()->restore();
@@ -16,7 +16,7 @@ class RestoreHelper
         $topic->save();
     }
 
-    public static function restoreSectionToSection(\Nexus\Section $deletedSection, \Nexus\Section $destinationSection)
+    public static function restoreSectionToSection(\App\Section $deletedSection, \App\Section $destinationSection)
     {
         foreach ($deletedSection->trashedTopics as $trashedTopic) {
             self::restoreTopicToSection($trashedTopic, $deletedSection);

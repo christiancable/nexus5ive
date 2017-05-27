@@ -1,5 +1,5 @@
 <?php
-namespace Nexus\Helpers;
+namespace App\Helpers;
 
 /* 
     google analytics methods

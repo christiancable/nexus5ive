@@ -1,5 +1,5 @@
 <?php
-namespace Nexus\Helpers;
+namespace App\Helpers;
 
 class MentionHelper
 {
@@ -24,11 +24,11 @@ class MentionHelper
         return $return;
     }
 
-    public static function makeMentions(\Nexus\Post $post)
+    public static function makeMentions(\App\Post $post)
     {
         $users = self::identifyMentions($post->text);
         foreach ($users as $username) {
-            $user = \Nexus\User::where('username', $username)->first();
+            $user = \App\User::where('username', $username)->first();
             if ($user) {
                 $user->addMention($post);
             }

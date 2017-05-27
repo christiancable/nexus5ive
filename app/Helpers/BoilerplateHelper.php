@@ -1,5 +1,5 @@
 <?php
-namespace Nexus\Helpers;
+namespace App\Helpers;
 
 /**
 * a class to return standard chunks of text

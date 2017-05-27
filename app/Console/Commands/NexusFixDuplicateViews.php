@@ -1,6 +1,6 @@
 <?php
 
-namespace Nexus\Console\Commands;
+namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 
@@ -39,7 +39,7 @@ class NexusFixDuplicateViews extends Command
     public function handle()
     {
         $this->info('Looking for Duplicates...');
-        $users = \Nexus\User::all();
+        $users = \App\User::all();
 
         foreach ($users as $user) {
             $sortedViews = $user->views->sortBy('topic_id');

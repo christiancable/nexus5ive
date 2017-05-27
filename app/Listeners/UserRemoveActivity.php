@@ -1,10 +1,10 @@
 <?php
 
-namespace Nexus\Listeners;
+namespace App\Listeners;
 
-use Nexus\Events;
-use Nexus\User;
-use Nexus\Helpers\ActivityHelper;
+use App\Events;
+use App\User;
+use App\Helpers\ActivityHelper;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Carbon\Carbon;

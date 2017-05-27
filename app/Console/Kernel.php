@@ -1,6 +1,6 @@
 <?php
 
-namespace Nexus\Console;
+namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -13,10 +13,10 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        \Nexus\Console\Commands\Inspire::class,
-        \Nexus\Console\Commands\NexusUpgrade::class,
-        \Nexus\Console\Commands\NexusInstall::class,
-         \Nexus\Console\Commands\NexusFixDuplicateViews::class,
+        \App\Console\Commands\Inspire::class,
+        \App\Console\Commands\NexusUpgrade::class,
+        \App\Console\Commands\NexusInstall::class,
+         \App\Console\Commands\NexusFixDuplicateViews::class,
     ];
 
     /**

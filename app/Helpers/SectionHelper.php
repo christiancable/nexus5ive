@@ -1,15 +1,15 @@
 <?php
-namespace Nexus\Helpers;
+namespace App\Helpers;
 
 class SectionHelper
 {
     /**
     * create a collection of all descendant sections
     *
-    * @param Nexus\Section - a section
+    * @param App\Section - a section
     * @return collection of all descendant sections
     */
-    public static function allChildSections(\Nexus\Section $section)
+    public static function allChildSections(\App\Section $section)
     {
         $allChildSections = new \Illuminate\Support\Collection;
         foreach ($section->sections as $child) {
@@ -20,7 +20,7 @@ class SectionHelper
         return $allChildSections;
     }
 
-    private static function listChildren(\Nexus\Section $section, $children)
+    private static function listChildren(\App\Section $section, $children)
     {
         foreach ($section->sections as $child) {
             $children->prepend($child);

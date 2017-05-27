@@ -1,6 +1,6 @@
 <?php
 
-namespace Nexus\Providers;
+namespace App\Providers;
 
 use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -13,14 +13,14 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        'Nexus\Events\SomeEvent' => [
-            'Nexus\Listeners\EventListener',
+        'App\Events\SomeEvent' => [
+            'App\Listeners\EventListener',
         ],
         'Illuminate\Auth\Events\Login' => [
-            'Nexus\Listeners\UserIncreaseTotalVisits',
+            'App\Listeners\UserIncreaseTotalVisits',
         ],
         'Illuminate\Auth\Events\Logout' => [
-            'Nexus\Listeners\UserRemoveActivity',
+            'App\Listeners\UserRemoveActivity',
         ],
 
     ];

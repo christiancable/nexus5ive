@@ -1,10 +1,10 @@
 <?php
 
-namespace Nexus\Policies;
+namespace App\Policies;
 
 use Illuminate\Auth\Access\HandlesAuthorization;
-use Nexus\Comment;
-use Nexus\User;
+use App\Comment;
+use App\User;
 
 class CommentPolicy
 {

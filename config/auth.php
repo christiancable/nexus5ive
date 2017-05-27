@@ -67,7 +67,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => Nexus\User::class, // updated to use Nexus namespace
+            'model' => App\User::class, // updated to use Nexus namespace
         ],
 
         // 'users' => [

@@ -3,9 +3,9 @@
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Nexus\Topic;
-use Nexus\Post;
-use Nexus\User;
+use App\Topic;
+use App\Post;
+use App\User;
 
 class TopicTest extends TestCase
 {
@@ -14,8 +14,8 @@ class TopicTest extends TestCase
     public function test_deleting_topic_soft_deletes_its_posts()
     {
         // GIVEN we have a topic with post
-        $topic = factory(Topic::class, 1)->create();
-        factory(Post::class, 20)->create(['topic_id' => $topic->id]);
+        $topic = factory(App\Topic::class, 1)->create();
+        factory(App\Post::class, 20)->create(['topic_id' => $topic->id]);
     
         // we have 1 topic with 20 posts
         $this->assertEquals(Topic::all()->count(), 1);
@@ -38,17 +38,17 @@ class TopicTest extends TestCase
         $faker = \Faker\Factory::create();
 
         // GIVEN we have a topic with posts
-        $topic = factory(Topic::class, 1)->create();
+        $topic = factory(App\Topic::class, 1)->create();
 
         // posts from the last month but not today
-        factory(Post::class, 20)
+        factory(App\Post::class, 20)
             ->create(
                 ['topic_id' => $topic->id,
                 'time' => $faker->dateTimeThisMonth('-1 days')]
             );
 
         // the most recent post being from today
-        $newPost = factory(Post::class, 1)
+        $newPost = factory(App\Post::class, 1)
             ->create(
                 ['topic_id' => $topic->id,
                 'time' => new \DateTime('now')]

@@ -1,11 +1,11 @@
 <?php
 
-namespace Nexus\Http\Controllers\Nexus;
+namespace App\Http\Controllers\Nexus;
 
 use Illuminate\Http\Request;
 
-use Nexus\Http\Requests;
-use Nexus\Http\Controllers\Controller;
+use App\Http\Requests;
+use App\Http\Controllers\Controller;
 
 class RestoreController extends Controller
 {
@@ -21,7 +21,7 @@ class RestoreController extends Controller
      */
     public function index()
     {
-        $trashedSections = \Nexus\Section::onlyTrashed()
+        $trashedSections = \App\Section::onlyTrashed()
             ->where('user_id', \Auth::user()->id)
             ->with('trashedTopics')
             ->get();
@@ -42,7 +42,7 @@ class RestoreController extends Controller
 
         $trashedSections = $trashedSections->sortByDesc('deleted_at');
         $trashedTopics = \Auth::user()->trashedTopics;
-        $breadcrumbs = \Nexus\Helpers\BreadcrumbHelper::breadcumbForUtility('Your Archive');
+        $breadcrumbs = \App\Helpers\BreadcrumbHelper::breadcumbForUtility('Your Archive');
         $destinationSections = \Auth::user()->sections()->get();
 
         return view('restore.index', compact('trashedSections', 'trashedTopics', 'breadcrumbs', 'destinationSections'));
@@ -116,23 +116,23 @@ class RestoreController extends Controller
 
     public function section(Requests\Section\RestoreRequest $request, $id)
     {
-        $trashedSection = \Nexus\Section::onlyTrashed()->findOrFail($id);
-        $destinationSection = \Nexus\Section::findOrFail($request->destination);
+        $trashedSection = \App\Section::onlyTrashed()->findOrFail($id);
+        $destinationSection = \App\Section::findOrFail($request->destination);
      
-        \Nexus\Helpers\RestoreHelper::restoreSectionToSection($trashedSection, $destinationSection);
+        \App\Helpers\RestoreHelper::restoreSectionToSection($trashedSection, $destinationSection);
      
-        $redirect = action('Nexus\SectionController@show', ['id' => $trashedSection->id]);
+        $redirect = action('App\SectionController@show', ['id' => $trashedSection->id]);
         return redirect($redirect);
     }
     
     public function topic(Requests\Topic\RestoreRequest $request, $id)
     {
-        $trashedTopic = \Nexus\Topic::onlyTrashed()->findOrFail($id);
-        $destinationSection = \Nexus\Section::findOrFail($request->destination);
+        $trashedTopic = \App\Topic::onlyTrashed()->findOrFail($id);
+        $destinationSection = \App\Section::findOrFail($request->destination);
         
-        \Nexus\Helpers\RestoreHelper::restoreTopicToSection($trashedTopic, $destinationSection);
+        \App\Helpers\RestoreHelper::restoreTopicToSection($trashedTopic, $destinationSection);
         
-        $redirect = action('Nexus\SectionController@show', ['id' => $destinationSection->id]);
+        $redirect = action('App\SectionController@show', ['id' => $destinationSection->id]);
         return redirect($redirect);
     }
 }

@@ -1,11 +1,11 @@
 <?php
 
-namespace Nexus\Http\Requests\Post;
+namespace App\Http\Requests\Post;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Nexus\Http\Requests\Request;
-use Nexus\Topic;
-use Nexus\Section;
+use App\Http\Requests\Request;
+use App\Topic;
+use App\Section;
 
 class CreateRequest extends FormRequest
 {

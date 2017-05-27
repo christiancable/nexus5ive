@@ -1,6 +1,6 @@
 <?php
 
-namespace Nexus\Providers;
+namespace App\Providers;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
@@ -14,7 +14,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    protected $namespace = 'Nexus\Http\Controllers';
+    protected $namespace = 'App\Http\Controllers';
     /**
      * Define your route model bindings, pattern filters, etc.
      *
@@ -24,7 +24,7 @@ class RouteServiceProvider extends ServiceProvider
     {
         //
         // @todo - 5.3 upgrade FIXME
-		//  $router->model('comment', 'Nexus\Comment');
+		//  $router->model('comment', 'App\Comment');
         parent::boot();
     }
     /**

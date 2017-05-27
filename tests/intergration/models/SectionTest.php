@@ -3,9 +3,9 @@
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Nexus\User;
-use Nexus\Section;
-use Nexus\Topic;
+use App\User;
+use App\Section;
+use App\Topic;
 
 class SectionTest extends TestCase
 {
@@ -13,22 +13,22 @@ class SectionTest extends TestCase
         
     public function test_deleting_section_soft_deletes_section_and_only_that_one()
     {
-        $user = factory(User::class, 1)->create();
+        $user = factory(App\User::class, 1)->create();
 
         // GIVEN we have a main menu with a subsection
-        $mainmenu = factory(Section::class, 1)
+        $mainmenu = factory(App\Section::class, 1)
             ->create([
                 'parent_id' => null,
                 'user_id' => $user->id,
                 ]);
-        $section = factory(Section::class, 1)
+        $section = factory(App\Section::class, 1)
             ->create([
                 'parent_id' => $mainmenu->id,
                 'user_id' => $user->id,
                 ]);
         
         // AND some other sections
-        factory(Section::class, 10)
+        factory(App\Section::class, 10)
             ->create([
                 'parent_id' => $mainmenu->id,
                 'user_id' => $user->id,
@@ -51,10 +51,10 @@ class SectionTest extends TestCase
     public function test_deleting_section_soft_deletes_its_topics()
     {
         // GIVEN we have a user
-        $user = factory(User::class, 1)->create();
+        $user = factory(App\User::class, 1)->create();
         
         // AND we have a section
-        $section = factory(Section::class, 1)
+        $section = factory(App\Section::class, 1)
             ->create([
                 'parent_id' => null,
                 'user_id' => $user->id,
@@ -84,17 +84,17 @@ class SectionTest extends TestCase
     public function test_deleting_section_soft_deletes_its_subsections()
     {
         // given we have a user with a section and that sub section
-         $user = factory(User::class, 1)->create();
+         $user = factory(App\User::class, 1)->create();
         
         // AND we have a section
-        $section = factory(Section::class, 1)
+        $section = factory(App\Section::class, 1)
             ->create([
                 'parent_id' => null,
                 'user_id' => $user->id,
                 ]);
 
         // with subsections
-        factory(Section::class, 6)
+        factory(App\Section::class, 6)
             ->create([
                 'parent_id' => $section->id,
                 'user_id' => $user->id,

@@ -3,10 +3,10 @@
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Nexus\User;
-use Nexus\Topic;
-use Nexus\Post;
-use Nexus\Section;
+use App\User;
+use App\Topic;
+use App\Post;
+use App\Section;
 
 class testMentions extends TestCase
 {
@@ -27,10 +27,10 @@ class testMentions extends TestCase
         
         $faker = \Faker\Factory::create();
 
-        $user = factory(User::class)->create();
+        $user = factory(App\User::class)->create();
         $originalUserID = $user->id;
-        $author = factory(User::class)->create();
-        $section = factory(Section::class)
+        $author = factory(App\User::class)->create();
+        $section = factory(App\Section::class)
         ->create([
             'parent_id' => null,
             'user_id' => $user->id,
@@ -39,7 +39,7 @@ class testMentions extends TestCase
         ->create([
             'section_id' => $section->id,
             ]);
-        $post = factory(Post::class)
+        $post = factory(App\Post::class)
         ->create(
             ['topic_id' => $topic->id,
             'user_id' => $author->id,
@@ -52,7 +52,7 @@ class testMentions extends TestCase
             ->dontSee('Clear All Mentions');
 
         // WHEN the user is mentioned in the topic by the other user
-        // \Nexus\Helpers\MentionHelper::addMention($user, $post);
+        // \App\Helpers\MentionHelper::addMention($user, $post);
 
         $user->addMention($post);
         

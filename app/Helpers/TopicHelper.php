@@ -1,14 +1,14 @@
 <?php
-namespace Nexus\Helpers;
+namespace App\Helpers;
 
 class TopicHelper
 {
     /**
      * returns a string of the route to a post within a topic, respects pagination
-     * @param Nexus\Post a post within a topic
+     * @param App\Post a post within a topic
      * @return string
      */
-    public static function routeToPost(\Nexus\Post $post)
+    public static function routeToPost(\App\Post $post)
     {
     
         // how many pages worth of posts are we into the topic
@@ -50,7 +50,7 @@ SQL;
 
         $allTopicIDs = array_pluck(\DB::select(\DB::raw($sql)), 'topic_id');
         $allTopicIDsString = implode(',', $allTopicIDs);
-        $topics = \Nexus\Topic::with('most_recent_post', 'most_recent_post.author', 'section')
+        $topics = \App\Topic::with('most_recent_post', 'most_recent_post.author', 'section')
             ->whereIn('id', $allTopicIDs)
             ->orderByRaw(\DB::raw("FIELD(id, $allTopicIDsString)"))
             ->get();

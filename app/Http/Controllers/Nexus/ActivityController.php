@@ -1,11 +1,11 @@
 <?php
 
-namespace Nexus\Http\Controllers\Nexus;
+namespace App\Http\Controllers\Nexus;
 
 use Illuminate\Http\Request;
 
-use Nexus\Http\Requests;
-use Nexus\Http\Controllers\Controller;
+use App\Http\Requests;
+use App\Http\Controllers\Controller;
 
 class ActivityController extends Controller
 {
@@ -20,13 +20,13 @@ class ActivityController extends Controller
      */
     public function index()
     {
-        \Nexus\Helpers\ActivityHelper::updateActivity(
+        \App\Helpers\ActivityHelper::updateActivity(
             \Auth::user()->id,
             "Checking out <em>who else is online</em>",
-            action('Nexus\ActivityController@index')
+            action('App\ActivityController@index')
         );
-        $activities = \Nexus\Helpers\ActivityHelper::recentActivities();
-        $breadcrumbs = \Nexus\Helpers\BreadcrumbHelper::breadcumbForUtility('Who is Online');
+        $activities = \App\Helpers\ActivityHelper::recentActivities();
+        $breadcrumbs = \App\Helpers\BreadcrumbHelper::breadcumbForUtility('Who is Online');
 
         $activityWindow = \Carbon\Carbon::now()->subMinutes(config('nexus.recent_activity'));
         return view('activities.index', compact('activities', 'breadcrumbs', 'activityWindow'));

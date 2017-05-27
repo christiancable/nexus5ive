@@ -3,10 +3,10 @@
 // use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Nexus\User;
-use Nexus\Topic;
-use Nexus\Post;
-use Nexus\Section;
+use App\User;
+use App\Topic;
+use App\Post;
+use App\Section;
 
 class testSubscriptions extends TestCase
 {
@@ -25,20 +25,20 @@ class testSubscriptions extends TestCase
         // a user
         // another user
         // a topic with a post
-        $user = factory(User::class)->create();
+        $user = factory(App\User::class)->create();
         $originalUserID = $user->id;
 
-        $author = factory(User::class)->create();
-        $section = factory(Section::class)
+        $author = factory(App\User::class)->create();
+        $section = factory(App\Section::class)
         ->create([
             'parent_id' => null,
             'user_id' => $user->id,
             ]);
-        $topic = factory(Topic::class)
+        $topic = factory(App\Topic::class)
         ->create([
             'section_id' => $section->id,
             ]);
-        $post = factory(Post::class)
+        $post = factory(App\Post::class)
         ->create(
             ['topic_id' => $topic->id,
             'user_id' => $author->id,
@@ -51,7 +51,7 @@ class testSubscriptions extends TestCase
             ->visit('/topic/' . $topic->id);
 
         // a new post is added to the topic
-        factory(Post::class)
+        factory(App\Post::class)
             ->create(
                 ['topic_id' => $topic->id,
                 'user_id' => $author->id,
@@ -78,7 +78,7 @@ class testSubscriptions extends TestCase
 
         sleep(1);
         // a new post is added to the topic
-        factory(Post::class)
+        factory(App\Post::class)
             ->create(
                 ['topic_id' => $topic->id,
                 'user_id' => $author->id,
@@ -102,17 +102,17 @@ class testSubscriptions extends TestCase
         */
         $faker = \Faker\Factory::create();
 
-        $user = factory(User::class)->create();
-        $section = factory(Section::class)
+        $user = factory(App\User::class)->create();
+        $section = factory(App\Section::class)
         ->create([
             'parent_id' => null,
             'user_id' => $user->id,
             ]);
-        $topic = factory(Topic::class)
+        $topic = factory(App\Topic::class)
         ->create([
             'section_id' => $section->id,
             ]);
-        $post = factory(Post::class)
+        $post = factory(App\Post::class)
         ->create(
             ['topic_id' => $topic->id,
             'user_id' => $user->id,

@@ -11,7 +11,7 @@
 |
 */
 
-$factory->define(Nexus\User::class, function ($faker) {
+$factory->define(App\User::class, function ($faker) {
     return [
         'name' => $faker->name,
         'username' => $faker->unique()->username,
@@ -23,7 +23,7 @@ $factory->define(Nexus\User::class, function ($faker) {
 
 
 
-$factory->define(Nexus\Section::class, function ($faker) {
+$factory->define(App\Section::class, function ($faker) {
     return [
         'title' => $faker->sentence,
         'intro' => $faker->paragraph,
@@ -33,7 +33,7 @@ $factory->define(Nexus\Section::class, function ($faker) {
 });
 
 
-$factory->define(Nexus\Topic::class, function ($faker) {
+$factory->define(App\Topic::class, function ($faker) {
     return [
         'title' => $faker->sentence,
         'intro' => $faker->paragraph,
@@ -41,7 +41,7 @@ $factory->define(Nexus\Topic::class, function ($faker) {
     ];
 });
 
-$factory->define(Nexus\Post::class, function ($faker) {
+$factory->define(App\Post::class, function ($faker) {
     return [
         'title' => $faker->sentence,
         'text' => $faker->paragraph,

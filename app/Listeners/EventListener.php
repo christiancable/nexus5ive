@@ -1,8 +1,8 @@
 <?php
 
-namespace Nexus\Listeners;
+namespace App\Listeners;
 
-use Nexus\Events\SomeEvent;
+use App\Events\SomeEvent;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 

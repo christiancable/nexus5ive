@@ -3,8 +3,8 @@
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Nexus\Helpers\NxCodeHelper;
-use Nexus\Helpers\MarkdownHelper;
+use App\Helpers\NxCodeHelper;
+use App\Helpers\MarkdownHelper;
 
 class NxCodeHelperTest extends TestCase
 {

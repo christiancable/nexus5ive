@@ -13,7 +13,7 @@
 <div class="container">
     <h1>{{$topic->title}}</h1>
     @if ($topic->intro) 
-        <p class="lead">{!! Nexus\Helpers\NxCodeHelper::nxDecode($topic->intro)  !!}</p>
+        <p class="lead">{!! App\Helpers\NxCodeHelper::nxDecode($topic->intro)  !!}</p>
     @endif
     @include('topics._subscribe', compact('topic','unsubscribed'))
 </div>
@@ -56,7 +56,7 @@
 
         <?php
             // @todo - I don't think this should live here
-            // \Nexus\Helpers\MentionHelper::removeMentions(\Auth::user(), $post);
+            // \App\Helpers\MentionHelper::removeMentions(\Auth::user(), $post);
         ?>
 
         @if($topic->section->moderator->id === Auth::user()->id)

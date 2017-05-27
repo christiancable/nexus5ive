@@ -1,6 +1,6 @@
 <?php
 
-namespace Nexus;
+namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -14,11 +14,11 @@ class View extends Model
 
     public function user()
     {
-        return $this->belongsTo('Nexus\User');
+        return $this->belongsTo('App\User');
     }
 
     public function topic()
     {
-        return $this->belongsTo('Nexus\Topic');
+        return $this->belongsTo('App\Topic');
     }
 }

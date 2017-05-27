@@ -1,11 +1,11 @@
 <?php
 
-namespace Nexus\Http\Controllers\Nexus;
+namespace App\Http\Controllers\Nexus;
 
 use Illuminate\Http\Request;
 
-use Nexus\Http\Requests;
-use Nexus\Http\Controllers\Controller;
+use App\Http\Requests;
+use App\Http\Controllers\Controller;
 
 class SearchController extends Controller
 {
@@ -27,7 +27,7 @@ class SearchController extends Controller
     {
         $text = 'Search';
         $results = null;
-        $breadcrumbs = \Nexus\Helpers\BreadcrumbHelper::breadcumbForUtility('Search');
+        $breadcrumbs = \App\Helpers\BreadcrumbHelper::breadcumbForUtility('Search');
 
         return view(
             'search.results',
@@ -45,7 +45,7 @@ class SearchController extends Controller
         $input = $request->all();
         $searchText = $input['text'];
         
-        $redirect = action('Nexus\SearchController@find', ['text' => $searchText]);
+        $redirect = action('App\SearchController@find', ['text' => $searchText]);
         return redirect($redirect);
     }
 
@@ -98,26 +98,26 @@ pattern;
                         $results = $results->where('text', 'like', "%$word%");
                     } else {
                         // first where
-                        $results = \Nexus\Post::where('text', 'like', "%$word%");
+                        $results = \App\Post::where('text', 'like', "%$word%");
                     }
                 }
             }
         } else {
             $phrase = trim($matches[1]);
-            $results = \Nexus\Post::where('text', 'like', "%$phrase%");
+            $results = \App\Post::where('text', 'like', "%$phrase%");
         }
 
         if ($results) {
             $results->orderBy('time', 'desc');
         }
 
-        \Nexus\Helpers\ActivityHelper::updateActivity(
+        \App\Helpers\ActivityHelper::updateActivity(
             \Auth::user()->id,
             "Searching",
-            action('Nexus\SearchController@index')
+            action('App\SearchController@index')
         );
 
-        $breadcrumbs = \Nexus\Helpers\BreadcrumbHelper::breadcumbForUtility('Search');
+        $breadcrumbs = \App\Helpers\BreadcrumbHelper::breadcumbForUtility('Search');
 
         return view(
             'search.results',

@@ -1,9 +1,9 @@
 <?php
 
-namespace Nexus\Http\Requests\Section;
+namespace App\Http\Requests\Section;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Nexus\Http\Requests\Request;
+use App\Http\Requests\Request;
 
 class DestroyRequest extends FormRequest
 {
@@ -17,8 +17,8 @@ class DestroyRequest extends FormRequest
     {
         $return = false;
 
-        $section = \Nexus\Section::findOrFail($this->section);
-        $parent = \Nexus\Section::findOrFail($section->parent_id);
+        $section = \App\Section::findOrFail($this->section);
+        $parent = \App\Section::findOrFail($section->parent_id);
 
         if (\Auth::user()->id === $parent->moderator->id) {
             $return = true;

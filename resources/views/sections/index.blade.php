@@ -100,7 +100,7 @@
 
                             @todo this feels like too much logic happening in the view
                         */
-                        $allChildSections = \Nexus\Helpers\SectionHelper::allChildSections($subSection);
+                        $allChildSections = \App\Helpers\SectionHelper::allChildSections($subSection);
                         $allChildSections->push($subSection);
                         $destinations = \Auth::user()->sections->diff($allChildSections);
                     ?>

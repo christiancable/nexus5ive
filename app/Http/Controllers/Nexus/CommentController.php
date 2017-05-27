@@ -1,11 +1,11 @@
 <?php
 
-namespace Nexus\Http\Controllers\Nexus;
+namespace App\Http\Controllers\Nexus;
 
 use Illuminate\Http\Request;
 
-use Nexus\Http\Requests;
-use Nexus\Http\Controllers\Controller;
+use App\Http\Requests;
+use App\Http\Controllers\Controller;
 
 class CommentController extends Controller
 {
@@ -55,7 +55,7 @@ class CommentController extends Controller
             $input['read'] = false;
         }
    
-        \Nexus\Comment::create($input);
+        \App\Comment::create($input);
 
         return redirect("/users/" . $input['redirect_user']);
     }
@@ -100,11 +100,11 @@ class CommentController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function destroy(Request $request, \Nexus\Comment $comment)
+    public function destroy(Request $request, \App\Comment $comment)
     {
         $this->authorize('destroy', $comment);
         $comment->delete();
         
-        return redirect(action('Nexus\UserController@show', ['user_name' => \Auth::user()->username]));
+        return redirect(action('App\UserController@show', ['user_name' => \Auth::user()->username]));
     }
 }

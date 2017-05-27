@@ -3,10 +3,10 @@
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Nexus\User;
-use Nexus\Topic;
-use Nexus\Post;
-use Nexus\Section;
+use App\User;
+use App\Topic;
+use App\Post;
+use App\Section;
 
 class testSectionInfo extends TestCase
 {
@@ -28,15 +28,15 @@ class testSectionInfo extends TestCase
         */
         $faker = \Faker\Factory::create();
 
-        $user = factory(User::class)->create();
+        $user = factory(App\User::class)->create();
  
-        $section = factory(Section::class)
+        $section = factory(App\Section::class)
         ->create([
             'parent_id' => null,
             'user_id' => $user->id,
             ]);
 
-        $subSection = factory(Section::class)
+        $subSection = factory(App\Section::class)
         ->create([
             'parent_id' => $section->id,
             'user_id' => $user->id,
@@ -71,7 +71,7 @@ class testSectionInfo extends TestCase
         a Latest Post notice for topic 1
         */
 
-        $post = factory(Post::class)
+        $post = factory(App\Post::class)
         ->create(
             ['topic_id' => $topic1->id,
             'user_id' => $user->id,
@@ -90,7 +90,7 @@ class testSectionInfo extends TestCase
         not see $topic1->title
         */
 
-        $post = factory(Post::class)
+        $post = factory(App\Post::class)
         ->create(
             ['topic_id' => $topic2->id,
             'user_id' => $user->id,

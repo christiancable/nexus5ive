@@ -24,7 +24,7 @@ return [
         'secret' => env('SPARKPOST_SECRET'),
     ],
     'stripe' => [
-        'model' => Nexus\User::class,
+        'model' => App\User::class,
         'key' => env('STRIPE_KEY'),
         'secret' => env('STRIPE_SECRET'),
     ],

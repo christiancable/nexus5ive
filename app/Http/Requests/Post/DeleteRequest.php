@@ -1,9 +1,9 @@
 <?php
 
-namespace Nexus\Http\Requests\Post;
+namespace App\Http\Requests\Post;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Nexus\Http\Requests\Request;
+use App\Http\Requests\Request;
 
 class DeleteRequest extends FormRequest
 {
@@ -24,7 +24,7 @@ class DeleteRequest extends FormRequest
     {
         $return = false;
 
-        $post = \Nexus\Post::findOrFail($this->post);
+        $post = \App\Post::findOrFail($this->post);
 
         try {
             if ($post->topic->section->moderator->id == \Auth::id()) {

@@ -1,6 +1,6 @@
 <div class="container">
     <h1>{{$section->title}}</h1>
-    <span class="lead">{!! Nexus\Helpers\NxCodeHelper::nxDecode($section->intro) !!}</span>
+    <span class="lead">{!! App\Helpers\NxCodeHelper::nxDecode($section->intro) !!}</span>
     <p>Moderated by: {!! $section->moderator->present()->profileLink !!}
 </div>
     

@@ -1,9 +1,9 @@
 <?php
 
-namespace Nexus\Http\Requests\User;
+namespace App\Http\Requests\User;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Nexus\Http\Requests\Request;
+use App\Http\Requests\Request;
 
 class UpdateRequest extends FormRequest
 {

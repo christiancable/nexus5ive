@@ -1,11 +1,11 @@
 <?php
 
-namespace Nexus\Http\Controllers\Nexus;
+namespace App\Http\Controllers\Nexus;
 
 use Illuminate\Http\Request;
 use Log;
-use Nexus\Http\Requests;
-use Nexus\Http\Controllers\Controller;
+use App\Http\Requests;
+use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class UserController extends Controller
@@ -22,13 +22,13 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users =  \Nexus\User::select('username', 'name', 'popname', 'latestLogin')->orderBy('username', 'asc')->get();
-        \Nexus\Helpers\ActivityHelper::updateActivity(
+        $users =  \App\User::select('username', 'name', 'popname', 'latestLogin')->orderBy('username', 'asc')->get();
+        \App\Helpers\ActivityHelper::updateActivity(
             \Auth::user()->id,
             "Viewing list of Users",
-            action('Nexus\UserController@index')
+            action('App\UserController@index')
         );
-        $breadcrumbs = \Nexus\Helpers\BreadcrumbHelper::breadcumbForUtility('Users');
+        $breadcrumbs = \App\Helpers\BreadcrumbHelper::breadcumbForUtility('Users');
 
         return view('users.index', compact('users', 'breadcrumbs'));
     }
@@ -64,10 +64,10 @@ class UserController extends Controller
     {
 
         try {
-            $user = \Nexus\User::with('comments', 'comments.author')->where('username', $user_name)->firstOrFail();
+            $user = \App\User::with('comments', 'comments.author')->where('username', $user_name)->firstOrFail();
         } catch (ModelNotFoundException $ex) {
             $message = "$user_name not found. Maybe you're thinking of someone else";
-            \Nexus\Helpers\FlashHelper::showAlert($message, 'warning');
+            \App\Helpers\FlashHelper::showAlert($message, 'warning');
             return redirect('/users/');
         }
 
@@ -76,13 +76,13 @@ class UserController extends Controller
             \Auth::user()->save();
         }
 
-        \Nexus\Helpers\ActivityHelper::updateActivity(
+        \App\Helpers\ActivityHelper::updateActivity(
             \Auth::user()->id,
             "Examining <em>{$user->username}</em>",
-            action('Nexus\UserController@show', ['user_name' => $user_name])
+            action('App\UserController@show', ['user_name' => $user_name])
         );
 
-        $breadcrumbs = \Nexus\Helpers\BreadcrumbHelper::breadcrumbForUser($user);
+        $breadcrumbs = \App\Helpers\BreadcrumbHelper::breadcrumbForUser($user);
 
         return view('users.show', compact('user', 'breadcrumbs'));
     }
@@ -95,7 +95,7 @@ class UserController extends Controller
      */
     public function edit($user_name)
     {
-        $user = \Nexus\User::with('comments', 'comments.author')->where('username', $user_name)->firstOrFail();
+        $user = \App\User::with('comments', 'comments.author')->where('username', $user_name)->firstOrFail();
         return view('users.show')->with('user', $user);
     }
 
@@ -108,7 +108,7 @@ class UserController extends Controller
      */
     public function update($user_name, Requests\User\UpdateRequest $request)
     {
-        $user = \Nexus\User::where('username', $user_name)->firstOrFail();
+        $user = \App\User::where('username', $user_name)->firstOrFail();
         $input = $request->all();
         if ($input['password'] <> '') {
             // to prevent setting password to an empty string https://trello.com/c/y1WAxwfb
@@ -118,7 +118,7 @@ class UserController extends Controller
         }
         $user->update($input);
         
-        \Nexus\Helpers\FlashHelper::showAlert('Profile Updated!', 'success');
+        \App\Helpers\FlashHelper::showAlert('Profile Updated!', 'success');
         return redirect('/users/'. $user_name);
     }
 

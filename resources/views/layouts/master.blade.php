@@ -35,12 +35,12 @@
     <div class="container">
       <ul class="nav navbar-nav">
        <li class="text-center col-xs-6">
-         <a {!! Nexus\Helpers\GoogleAnalyticsHelper::onClickEvent('BottomNavigation', 'Catch-Up') !!}
+         <a {!! App\Helpers\GoogleAnalyticsHelper::onClickEvent('BottomNavigation', 'Catch-Up') !!}
          href="{{ action('Nexus\SectionController@leap')}}">
          <span class="glyphicon glyphicon-circle-arrow-right" aria-hidden="true" style="vertical-align:middle"></span> Next</a>
        </li> 
        <li class="text-center col-xs-6">
-         <a {!! Nexus\Helpers\GoogleAnalyticsHelper::onClickEvent('BottomNavigation', 'Latest') !!}
+         <a {!! App\Helpers\GoogleAnalyticsHelper::onClickEvent('BottomNavigation', 'Latest') !!}
          href="{{ action('Nexus\SectionController@latest')}}">
          <span class="glyphicon glyphicon-time" aria-hidden="true" style="vertical-align:middle"></span> Latest</a>
        </li> 

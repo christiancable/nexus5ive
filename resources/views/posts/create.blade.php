@@ -24,7 +24,7 @@
 </div>
 
 <?php
-  $formattingHelp = Nexus\Helpers\BoilerplateHelper::formattingHelp();
+  $formattingHelp = App\Helpers\BoilerplateHelper::formattingHelp();
 ?>
 <div class="row">
     

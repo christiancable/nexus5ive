@@ -1,6 +1,5 @@
 <?php
-
-namespace Nexus\ViewModels;
+namespace App\ViewModels;
 
 use Exception;
 
@@ -18,7 +17,7 @@ class UserPresenter
      *
      * @param User $user
      */
-    public function __construct(\Nexus\User $user)
+    public function __construct(\App\User $user)
     {
         $this->user = $user;
     }

@@ -1,10 +1,10 @@
 <?php
 
-namespace Nexus\Http\Requests\Topic;
+namespace App\Http\Requests\Topic;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Nexus\Http\Requests\Request;
-use Nexus\Section;
+use App\Http\Requests\Request;
+use App\Section;
 
 class SubscriptionRequest extends FormRequest
 {
