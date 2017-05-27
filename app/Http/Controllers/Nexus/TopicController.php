@@ -53,7 +53,7 @@ class TopicController extends Controller
         $input['weight'] = $input['form'][$formName]['weight'];
 
         $topic = \App\Topic::create($input);
-        $redirect = action('App\SectionController@show', ['id' => $topic->section_id]);
+        $redirect = action('Nexus\SectionController@show', ['id' => $topic->section_id]);
         return redirect($redirect);
     }
 
@@ -173,7 +173,7 @@ class TopicController extends Controller
         $topic = \App\Topic::findOrFail($id);
         $section_id = $topic->section->id;
         $topic->delete();
-        $redirect = action('App\SectionController@show', ['id' => $section_id]);
+        $redirect = action('Nexus\SectionController@show', ['id' => $section_id]);
         return redirect($redirect);
     }
 

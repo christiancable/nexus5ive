@@ -45,7 +45,7 @@ class SearchController extends Controller
         $input = $request->all();
         $searchText = $input['text'];
         
-        $redirect = action('App\SearchController@find', ['text' => $searchText]);
+        $redirect = action('Nexus\SearchController@find', ['text' => $searchText]);
         return redirect($redirect);
     }
 
@@ -114,7 +114,7 @@ pattern;
         \App\Helpers\ActivityHelper::updateActivity(
             \Auth::user()->id,
             "Searching",
-            action('App\SearchController@index')
+            action('Nexus\SearchController@index')
         );
 
         $breadcrumbs = \App\Helpers\BreadcrumbHelper::breadcumbForUtility('Search');

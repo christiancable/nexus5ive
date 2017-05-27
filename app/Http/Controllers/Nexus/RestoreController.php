@@ -121,7 +121,7 @@ class RestoreController extends Controller
      
         \App\Helpers\RestoreHelper::restoreSectionToSection($trashedSection, $destinationSection);
      
-        $redirect = action('App\SectionController@show', ['id' => $trashedSection->id]);
+        $redirect = action('Nexus\SectionController@show', ['id' => $trashedSection->id]);
         return redirect($redirect);
     }
     
@@ -132,7 +132,7 @@ class RestoreController extends Controller
         
         \App\Helpers\RestoreHelper::restoreTopicToSection($trashedTopic, $destinationSection);
         
-        $redirect = action('App\SectionController@show', ['id' => $destinationSection->id]);
+        $redirect = action('Nexus\SectionController@show', ['id' => $destinationSection->id]);
         return redirect($redirect);
     }
 }

@@ -26,7 +26,7 @@ class UserController extends Controller
         \App\Helpers\ActivityHelper::updateActivity(
             \Auth::user()->id,
             "Viewing list of Users",
-            action('App\UserController@index')
+            action('Nexus\UserController@index')
         );
         $breadcrumbs = \App\Helpers\BreadcrumbHelper::breadcumbForUtility('Users');
 
@@ -79,7 +79,7 @@ class UserController extends Controller
         \App\Helpers\ActivityHelper::updateActivity(
             \Auth::user()->id,
             "Examining <em>{$user->username}</em>",
-            action('App\UserController@show', ['user_name' => $user_name])
+            action('Nexus\UserController@show', ['user_name' => $user_name])
         );
 
         $breadcrumbs = \App\Helpers\BreadcrumbHelper::breadcrumbForUser($user);

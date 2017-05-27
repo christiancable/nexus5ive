@@ -23,7 +23,7 @@ class ActivityController extends Controller
         \App\Helpers\ActivityHelper::updateActivity(
             \Auth::user()->id,
             "Checking out <em>who else is online</em>",
-            action('App\ActivityController@index')
+            action('Nexus\ActivityController@index')
         );
         $activities = \App\Helpers\ActivityHelper::recentActivities();
         $breadcrumbs = \App\Helpers\BreadcrumbHelper::breadcumbForUtility('Who is Online');

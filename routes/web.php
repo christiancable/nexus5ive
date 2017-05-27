@@ -33,7 +33,7 @@ Route::get('api/notifications', ['middleware' => 'auth',  function () {
 Route::post('api/users', function (Request $request) {
     $input = $request->all();
     $username = $input['query'];
-    $data = \Nexus\User::select('username')->where('username', "LIKE", "%$username%")->orderBy('username', 'asc')->get()->toArray();
+    $data = \App\User::select('username')->where('username', "LIKE", "%$username%")->orderBy('username', 'asc')->get()->toArray();
     return response()->json($data);
 })->name('api.users');
 

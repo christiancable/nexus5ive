@@ -44,7 +44,7 @@ class MessageController extends Controller
         \App\Helpers\ActivityHelper::updateActivity(
             \Auth::user()->id,
             "Viewing <em>Inbox</em>",
-            action('App\MessageController@index')
+            action('Nexus\MessageController@index')
         );
 
         $breadcrumbs = \App\Helpers\BreadcrumbHelper::breadcumbForUtility('Inbox');
@@ -79,7 +79,7 @@ class MessageController extends Controller
 
         \App\Message::create($input);
 
-        return redirect(action('App\MessageController@index'));
+        return redirect(action('Nexus\MessageController@index'));
     }
 
     /**

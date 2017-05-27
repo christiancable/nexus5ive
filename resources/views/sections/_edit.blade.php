@@ -60,7 +60,7 @@
                 <label>
                     Moderator {!!
                         Form::select("form[$formName][user_id]",
-                            \Nexus\User::all()->pluck('username', 'id')->toArray(),
+                            \App\User::all()->pluck('username', 'id')->toArray(),
                             $subSection->moderator->id,                    
                             ['class' => 'form-control'])
                     !!} 

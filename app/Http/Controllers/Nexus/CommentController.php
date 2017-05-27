@@ -105,6 +105,6 @@ class CommentController extends Controller
         $this->authorize('destroy', $comment);
         $comment->delete();
         
-        return redirect(action('App\UserController@show', ['user_name' => \Auth::user()->username]));
+        return redirect(action('Nexus\UserController@show', ['user_name' => \Auth::user()->username]));
     }
 }
