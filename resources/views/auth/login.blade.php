@@ -40,30 +40,52 @@
 
      @endif
 
+
      <div class="form-group">
-       {!! Form::label('username', 'Username') !!}
-       {!! Form::text('username', null, 
-       array('class'=>'form-control', 'placeholder'=>'username')) !!}
+       {!! Form::label('username', 'Username', ['class' => 'sr-only']) !!}
+       <div class="input-group">
+         <div class="input-group-addon">
+           <i class="glyphicon glyphicon-user"></i>
+         </div>
+         {!! Form::text('sername', null, 
+         array('class'=>'form-control', 'placeholder'=>'Username')) !!}
+       </div>
      </div>
 
      <div class="form-group">
-       {!! Form::label('Password') !!}
+       {!! Form::label('Password', 'password', ['class' => 'sr-only']) !!}
+       <div class="input-group">
+         <div class="input-group-addon">
+           <i class="glyphicon glyphicon-lock"></i>
+         </div>
        {!! Form::password('password', 
        array('class'=>'form-control', 'placeholder'=>'Password')) !!}
+       </div>
      </div>
 
      <div class="form-group">
+       {!! Form::submit('Sign In', array('class'=>'btn btn-primary col-xs-12')) !!}
+     </div>
+
+
+      <div class="row">
+     <div class="form-group">
+
+      <div class="checkbox col-xs-12">
        <label>
-         {!! Form::checkbox('remember', 'remember') !!} Remember Me
+         {!! Form::checkbox('remember', 'remember') !!} Keep me signed in
        </label>
+       </div>
      </div>
 
-     <div class="form-group">
-       {!! Form::submit('Login', array('class'=>'btn btn-primary')) !!}
-     </div>
-
-     
+      </div>
      {!! Form::close() !!}
+
+     <div class="text-center">    
+       <p><a href="{{ url('/password/reset') }}">Forgot Your Password?</a></p>
+     </div> 
+
+
    </div>
 
    <div class="col-md-6">
@@ -77,7 +99,6 @@
 @endif
   </div>
 </div> <!-- .row -->
- <a href="{{ url('/password/reset') }}">Forgot Your Password?</a>
 <hr/>
 
 </div> <!-- .container -->
