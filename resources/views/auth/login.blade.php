@@ -47,7 +47,7 @@
          <div class="input-group-addon">
            <i class="glyphicon glyphicon-user"></i>
          </div>
-         {!! Form::text('sername', null, 
+         {!! Form::text('username', null, 
          array('class'=>'form-control', 'placeholder'=>'Username')) !!}
        </div>
      </div>
