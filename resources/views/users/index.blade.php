@@ -21,9 +21,8 @@
 <div id="app" v-cloak>
 <userlist :users="{{json_encode($users)}}"></userlist>
 </div>
-{{-- @include('users.index_vue') --}}
 
-<div class="hidden-from-vueNOT">
+<div class="replace-with-vue">
 <?php
 $previousLetter = '';
 $currentLetter = '';
@@ -45,8 +44,3 @@ $currentLetter = '';
     </div>
 </div>        
 @endsection
-
-
-{{-- @section('javascript') --}}
-{{-- @include('users._panel_vue', $users) --}}
-{{-- @endsection --}}
