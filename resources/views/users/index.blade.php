@@ -18,9 +18,12 @@
 <hr>
 <div class="container" id="users-list">
 
-@include('users.index_vue')
+<div id="app" v-cloak>
+<userlist :users="{{json_encode($users)}}"></userlist>
+</div>
+{{-- @include('users.index_vue') --}}
 
-<div class="hidden-from-vue">
+<div class="hidden-from-vueNOT">
 <?php
 $previousLetter = '';
 $currentLetter = '';
@@ -44,6 +47,6 @@ $currentLetter = '';
 @endsection
 
 
-@section('javascript')
-@include('users._panel_vue', $users)
-@endsection
+{{-- @section('javascript') --}}
+{{-- @include('users._panel_vue', $users) --}}
+{{-- @endsection --}}
