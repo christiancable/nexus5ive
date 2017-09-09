@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('meta')
-<title>Unread Posts</title>
+<title>Latest Posts</title>
 @endsection
 
 @section('breadcrumbs')

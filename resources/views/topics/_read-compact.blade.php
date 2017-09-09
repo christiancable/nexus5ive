@@ -22,32 +22,31 @@ if ($status['unsubscribed']) {
 
 <div class="panel {{$panelClass}}">
   <!-- Default panel contents -->
-        <a href="{{ action('Nexus\TopicController@show', ['topic_id' => $topic->id])}}" class="{{$textClass}}">
-  <div class="panel-heading">
+  <a href="{{ action('Nexus\TopicController@show', ['topic_id' => $topic->id])}}" class="{{$textClass}}">
+      <div class="panel-heading">
         <h2 class="{{$textClass}}">
-        <span class="glyphicon {{$icon}} {{$textClass}}" aria-hidden="true"></span>
-        {{$topic->title}}
+            <span class="glyphicon {{$icon}} {{$textClass}}" aria-hidden="true"></span>
+            {{$topic->title}}
         </h2>
-  </div>
-        </a>
-  
-  <!-- List group -->
-  <ul class="list-group">
+    </div>
+</a>
+
+<!-- List group -->
+<ul class="list-group">
     <li class="list-group-item">Latest post {{$topic->most_recent_post->time->diffForHumans()}} by 
         @if($topic->secret == true)
         <strong>Anonymous</strong>
         @else 
         {!! $topic->most_recent_post->author->present()->profileLink !!}
         @endif 
-
-         in 
-      <a href="{{ action('Nexus\SectionController@show', ['section_id' => $topic->section->id])}}">{{$topic->section->title}}</a>
-
-        </li>
-
-    </ul>
-    <div class="panel-body">
-        <p><a href="{{ action('Nexus\TopicController@show', ['topic_id' => $topic->id])}}" class="text-muted">{!! substr(strip_tags(App\Helpers\NxCodeHelper::nxDecode($topic->most_recent_post->text)), 0, 140) !!}&hellip;</a></p>
-    </div>
+        in 
+        <a href="{{ action('Nexus\SectionController@show', ['section_id' => $topic->section->id])}}">{{$topic->section->title}}</a>
+    </li>
+</ul>
+@if($status['unsubscribed'] != true)
+<div class="panel-body">
+    <p><a href="{{ action('Nexus\TopicController@show', ['topic_id' => $topic->id])}}" class="text-muted">{!! substr(strip_tags(App\Helpers\NxCodeHelper::nxDecode($topic->most_recent_post->text)), 0, 140) !!}&hellip;</a></p>
+</div>
+@endif
 
 </div>

@@ -52,9 +52,13 @@ SQL;
         $allTopicIDsString = implode(',', $allTopicIDs);
         $topics = \App\Topic::with('most_recent_post', 'most_recent_post.author', 'section')
             ->whereIn('id', $allTopicIDs)
-            ->orderByRaw(\DB::raw("FIELD(id, $allTopicIDsString)"))
             ->get();
-    
-        return $topics;
+
+        // sorting here rather than in SQL because FIELD is MySQL only and so fails tests   
+        $sortedTopics = $topics->sortBy(function($model) use ($allTopicIDs) {
+            return array_search($model->id, $allTopicIDs);
+        });
+
+        return $sortedTopics;
     }
 }
