@@ -107,4 +107,16 @@ class CommentController extends Controller
         
         return redirect(action('Nexus\UserController@show', ['user_name' => \Auth::user()->username]));
     }
+
+    /**
+     * removes all comments belonging to the logged in user
+     *
+     * @param Request $request
+     * @return Response - redirection to the calling page
+     */
+    public function destroyAll(Request $request)
+    {
+        \Auth::user()->clearComments();
+        return back();
+    }
 }

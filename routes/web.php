@@ -75,6 +75,7 @@ Route::post('/topic/{topic}/subscribe', 'Nexus\TopicController@updateSubscriptio
 Route::resource('topic', 'Nexus\TopicController');
 
 // comments
+Route::delete('comments', 'Nexus\CommentController@destroyAll');
 Route::delete('comments/{comment}', 'Nexus\CommentController@destroy');
 Route::resource('comments', 'Nexus\CommentController');
 

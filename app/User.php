@@ -176,6 +176,11 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         Comment::where('user_id', $this->id)->update(['read' => true]);
     }
 
+    public function clearComments()
+    {
+        $this->comments()->delete();
+    }
+
     public function newMessageCount()
     {
         return $this->messages->where('read', false)->count();
@@ -210,7 +215,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         return $count;
     }
 
-    /**
+       /**
      * Present the user model.
      *
      * @return ViewModels/UserPresenter

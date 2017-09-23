@@ -25,7 +25,6 @@
                 @if (count($user->comments))
                     <table class="table table-striped table-condensed">
                     <tbody>
-
                     @if (Auth::user()->id == $user->id)
                         @foreach ($user->comments as $comment)
                             @include('comments._edit', $comment)
@@ -37,6 +36,9 @@
                     @endif
                     </tbody>
                     </table>
+                    @if (Auth::user()->id == $user->id)
+                        @include('comments._clear', $user)
+                    @endif
                 @endif
             </div>
         </div>
