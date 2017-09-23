@@ -51,3 +51,12 @@ $factory->define(App\Post::class, function ($faker) {
         'topic_id' => $faker->randomDigitNotNull,
     ];
 });
+
+$factory->define(App\Comment::class, function ($faker) {
+    return [
+        'user_id' => $faker->randomDigitNotNull,
+        'author_id' => $faker->randomDigitNotNull,
+        'text' => $faker->sentence,
+        'read' => false,
+    ];
+});
