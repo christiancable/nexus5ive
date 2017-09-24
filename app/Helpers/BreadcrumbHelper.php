@@ -58,7 +58,7 @@ class BreadcrumbHelper
 
     /**
      * generates a fake breadcrumb trail for a page which isn't
-     * a topic of a section
+     * a topic or a section
      *
      * @param string
      * @return an array of links to go in a breadcrumb trail
