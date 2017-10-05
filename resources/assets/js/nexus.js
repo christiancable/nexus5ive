@@ -21,7 +21,7 @@ function postPreview(tab) {
             }
             $('#preview-view').html(data.text);
         }
-    })
+    });
 }
 
 /* export functions we went to be global */
