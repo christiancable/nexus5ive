@@ -11,7 +11,7 @@ use App\Post;
  @todo: unsubscribe status - once we have an unsubscribe method
 
 */
-class ViewHelperTest extends TestCase
+class ViewHelperTest extends BrowserKitTestCase
 {
     use DatabaseTransactions;
     
@@ -20,10 +20,10 @@ class ViewHelperTest extends TestCase
         $faker = \Faker\Factory::create();
 
         // GIVEN  we have a user
-        $user = factory(App\User::class, 1)->create();
+        $user = factory(App\User::class)->create();
 
         // AND we have a topic with posts
-        $topic = factory(Topic::class, 1)->create();
+        $topic = factory(Topic::class)->create();
         factory(App\Post::class, 20)
             ->create(
                 ['topic_id' => $topic->id,
@@ -31,7 +31,7 @@ class ViewHelperTest extends TestCase
             );
             
         // AND the most recent post being from yesterday
-        $newPost = factory(App\Post::class, 1)
+        $newPost = factory(App\Post::class)
             ->create(
                 ['topic_id' => $topic->id,
                 'time' => $faker->dateTimeThisMonth('-1 days')]
@@ -48,7 +48,7 @@ class ViewHelperTest extends TestCase
         );
 
         // WHEN a new post is added now
-        $anotherPost = factory(App\Post::class, 1)
+        $anotherPost = factory(App\Post::class)
             ->create(
                 ['topic_id' => $topic->id,
                 'time' => new \DateTime('now')]
@@ -67,11 +67,11 @@ class ViewHelperTest extends TestCase
         $faker = \Faker\Factory::create();
 
         // GIVEN we have a user
-         $user = factory(App\User::class, 1)->create();
+         $user = factory(App\User::class)->create();
         // AND we have a topic
         // with posts
         // AND we have a topic with posts
-        $topic = factory(Topic::class, 1)->create();
+        $topic = factory(Topic::class)->create();
         factory(App\Post::class, 20)
             ->create(
                 ['topic_id' => $topic->id,
@@ -82,7 +82,7 @@ class ViewHelperTest extends TestCase
         \App\Helpers\ViewHelper::updateReadProgress($user, $topic);
 
         // WHEN a new post is added
-        $anotherPost = factory(App\Post::class, 1)
+        $anotherPost = factory(App\Post::class)
             ->create(
                 ['topic_id' => $topic->id,
                 'time' => new \DateTime('now')]
@@ -99,11 +99,11 @@ class ViewHelperTest extends TestCase
         $faker = \Faker\Factory::create();
 
         // GIVEN we have a user
-         $user = factory(App\User::class, 1)->create();
+         $user = factory(App\User::class)->create();
         // AND we have a topic
         // with posts
         // AND we have a topic with posts
-        $topic = factory(Topic::class, 1)->create();
+        $topic = factory(Topic::class)->create();
         factory(App\Post::class, 20)
             ->create(
                 ['topic_id' => $topic->id,
@@ -124,10 +124,10 @@ class ViewHelperTest extends TestCase
         $faker = \Faker\Factory::create();
 
         // GIVEN we have a user
-         $user = factory(App\User::class, 1)->create();
+         $user = factory(App\User::class)->create();
         
         // WHEN we add a topic
-        $topic = factory(Topic::class, 1)->create();
+        $topic = factory(Topic::class)->create();
         
         // THEN the topic appears to have new to the user
         $topicStatus = \App\Helpers\ViewHelper::getTopicStatus($user, $topic);
@@ -140,10 +140,10 @@ class ViewHelperTest extends TestCase
         $faker = \Faker\Factory::create();
 
         // GIVEN we have a user
-         $user = factory(App\User::class, 1)->create();
+         $user = factory(App\User::class)->create();
         
         // AND we add a topic
-        $topic = factory(Topic::class, 1)->create();
+        $topic = factory(Topic::class)->create();
         
         // WHEN the user has read the topic
         \App\Helpers\ViewHelper::updateReadProgress($user, $topic);
@@ -159,10 +159,10 @@ class ViewHelperTest extends TestCase
         $faker = \Faker\Factory::create();
 
         // GIVEN we have a user
-         $user = factory(App\User::class, 1)->create();
+         $user = factory(App\User::class)->create();
         
         // AND we add a topic
-        $topic = factory(Topic::class, 1)->create();
+        $topic = factory(Topic::class)->create();
 
         // WHEN the user is unsubscribed from the topic
         \App\Helpers\ViewHelper::unsubscribeFromTopic($user, $topic);
@@ -178,10 +178,10 @@ class ViewHelperTest extends TestCase
         $faker = \Faker\Factory::create();
 
         // GIVEN we have a user
-         $user = factory(App\User::class, 1)->create();
+         $user = factory(App\User::class)->create();
         
         // AND we add a topic
-        $topic = factory(Topic::class, 1)->create();
+        $topic = factory(Topic::class)->create();
 
         // WHEN the user is unsubscribed from the topic
         \App\Helpers\ViewHelper::unsubscribeFromTopic($user, $topic);

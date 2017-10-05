@@ -7,28 +7,28 @@ use App\User;
 use App\Section;
 use App\Topic;
 
-class SectionTest extends TestCase
+class SectionTest extends BrowserKitTestCase
 {
     use DatabaseTransactions;
         
     public function test_deleting_section_soft_deletes_section_and_only_that_one()
     {
-        $user = factory(App\User::class, 1)->create();
+        $user = factory(App\User::class)->create();
 
         // GIVEN we have a main menu with a subsection
-        $mainmenu = factory(App\Section::class, 1)
+        $mainmenu = factory(App\Section::class)
             ->create([
                 'parent_id' => null,
                 'user_id' => $user->id,
                 ]);
-        $section = factory(App\Section::class, 1)
+        $section = factory(App\Section::class)
             ->create([
                 'parent_id' => $mainmenu->id,
                 'user_id' => $user->id,
                 ]);
         
         // AND some other sections
-        factory(App\Section::class, 10)
+        factory(App\Section::class)
             ->create([
                 'parent_id' => $mainmenu->id,
                 'user_id' => $user->id,
@@ -51,17 +51,17 @@ class SectionTest extends TestCase
     public function test_deleting_section_soft_deletes_its_topics()
     {
         // GIVEN we have a user
-        $user = factory(App\User::class, 1)->create();
+        $user = factory(App\User::class)->create();
         
         // AND we have a section
-        $section = factory(App\Section::class, 1)
+        $section = factory(App\Section::class)
             ->create([
                 'parent_id' => null,
                 'user_id' => $user->id,
                 ]);
 
         // AND that section has topics
-        factory(Topic::class, 10)->create(['section_id' => $section->id]);
+        factory(Topic::class)->create(['section_id' => $section->id]);
         $topicsInSectionCount = $section->topics->count();
                 
         $topicCount = Topic::all()->count();
@@ -84,10 +84,10 @@ class SectionTest extends TestCase
     public function test_deleting_section_soft_deletes_its_subsections()
     {
         // given we have a user with a section and that sub section
-         $user = factory(App\User::class, 1)->create();
+         $user = factory(App\User::class)->create();
         
         // AND we have a section
-        $section = factory(App\Section::class, 1)
+        $section = factory(App\Section::class)
             ->create([
                 'parent_id' => null,
                 'user_id' => $user->id,

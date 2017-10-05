@@ -9,7 +9,7 @@ use App\Post;
 use App\Section;
 use App\Comment;
 
-class testComments extends TestCase
+class testComments extends BrowserKitTestCase
 {
     use DatabaseTransactions;
 

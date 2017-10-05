@@ -23,7 +23,8 @@
         "phpunit/phpunit": "~5.7",
         "phpspec/phpspec": "~2.1",
         "symfony/dom-crawler": "3.1.*",
-        "symfony/css-selector": "3.1.*"
+        "symfony/css-selector": "3.1.*",
+        "laravel/browser-kit-testing": "1.*"
     },
     "autoload": {
         "classmap": [
@@ -35,8 +36,12 @@
     },
     "autoload-dev": {
         "classmap": [
-            "tests/TestCase.php"
-        ]
+            "tests/TestCase.php",
+            "tests/BrowserKitTestCase.php"
+        ],
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
     },
     "scripts": {
         "post-install-cmd": [

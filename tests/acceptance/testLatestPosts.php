@@ -8,7 +8,7 @@ use App\Topic;
 use App\Post;
 use App\Section;
 
-class testLatestPosts extends TestCase
+class testLatestPosts extends BrowserKitTestCase
 {
     use DatabaseTransactions;
 

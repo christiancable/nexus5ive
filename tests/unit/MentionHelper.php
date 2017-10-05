@@ -5,7 +5,7 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Helpers\MentionHelper;
 
-class MentionHelperTest extends TestCase
+class MentionHelperTest extends BrowserKitTestCase
 {
     
     /**

@@ -6,7 +6,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Helpers\NxCodeHelper;
 use App\Helpers\MarkdownHelper;
 
-class NxCodeHelperTest extends TestCase
+class NxCodeHelperTest extends BrowserKitTestCase
 {
     
     private $youTubeHTMLStart = <<< 'HTML'

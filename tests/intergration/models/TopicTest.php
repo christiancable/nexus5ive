@@ -7,14 +7,14 @@ use App\Topic;
 use App\Post;
 use App\User;
 
-class TopicTest extends TestCase
+class TopicTest extends BrowserKitTestCase
 {
     use DatabaseTransactions;
     
     public function test_deleting_topic_soft_deletes_its_posts()
     {
         // GIVEN we have a topic with post
-        $topic = factory(App\Topic::class, 1)->create();
+        $topic = factory(App\Topic::class)->create();
         factory(App\Post::class, 20)->create(['topic_id' => $topic->id]);
     
         // we have 1 topic with 20 posts
@@ -38,7 +38,7 @@ class TopicTest extends TestCase
         $faker = \Faker\Factory::create();
 
         // GIVEN we have a topic with posts
-        $topic = factory(App\Topic::class, 1)->create();
+        $topic = factory(App\Topic::class)->create();
 
         // posts from the last month but not today
         factory(App\Post::class, 20)
@@ -48,7 +48,7 @@ class TopicTest extends TestCase
             );
 
         // the most recent post being from today
-        $newPost = factory(App\Post::class, 1)
+        $newPost = factory(App\Post::class)
             ->create(
                 ['topic_id' => $topic->id,
                 'time' => new \DateTime('now')]
