@@ -11,39 +11,15 @@
 @section('content')
 <div class="container section">
 
+{{-- Section Heading --}}
 @if (Auth::user()->id === $section->user_id )
-
-    <ul class="nav nav-tabs" id="section{{$section->id}}">
-        <li class="active"><a href="#view">View</a></li>
-        <li><a href="#settings">Settings</a></li>
-    </ul>
-
-    <div class="tab-content">
-    <br/>
-      <div role="tabpanel" class="tab-pane active" id="view">
-        @include('sections._header_view', $section)
-        <?php  $tabGroups[] = "section{$section->id}" ?>
-      </div>
-
-      <div role="tabpanel" class="tab-pane" id="settings">
-        <div class="content">
-        @include('sections._header_edit', $section)
-        </div>
-     </div>
-    </div>
-
+    @include('sections._header_modify', $section)
 @else
     @include('sections._header_view', $section)
 @endif 
 
-
-
-
-    {{-- if you moderate the current section then show edit controls --}}
-    
-    
-        
-    <hr>
+{{-- Topics --}}
+<hr>
 
     <div class="content">
         @if (count($section->topics))
@@ -82,6 +58,7 @@
         </div>
         @endif
 
+        {{-- Sub Sections --}}
         @if (count($section->sections))
         <?php
             $subSectionCount = 0;
