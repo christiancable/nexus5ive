@@ -75,16 +75,8 @@
     @if (!Auth::user()->viewLatestPostFirst) 
         @include('topics._addpost', compact('postsChunk', 'readOnly'))
     @endif
-
-
     {!! $postsChunk->render() !!}
     </div>
 </div>
 
-@endsection
-
-@section('javascript')
-    @if (isset($tabGroups))
-        @include('javascript._jqueryTabs', $tabGroups)
-    @endif
 @endsection
