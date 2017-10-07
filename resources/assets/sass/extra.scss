@@ -4,10 +4,17 @@ img {
 } 
 
 
-/* remove double line for the tab nav on a topic */
+/*
+post settings dropdown menu 
+*/
+.nav-tabs.nexus-topic-nav > li > .post-settings {
+  border: 0;
+  background-color: transparent;
 
-.nexus-topic-nav {
-	border-bottom: 0;	
+  &:hover, &:focus {
+    background-color: #eeeeee;
+    border: 0;
+  }
 }
 
 /* ranimated spinny thing - very inspired by http://www.bootply.com/128062 */
@@ -26,7 +33,7 @@ img {
     to { transform: scale(1) rotate(360deg);}
 }
 
-/* make bloke quotes tell terrible */
+/* make bloke quotes lell terrible */
 
 blockquote {
   font-size: unset;
