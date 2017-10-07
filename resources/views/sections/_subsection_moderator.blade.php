@@ -1,7 +1,7 @@
 <div class="col-md-12">
 
 
-<ul class="nav nav-tabs nexus-topic-nav" id="section{{$subSection->id}}">
+<ul class="nav nav-tabs settings-menu" id="section{{$subSection->id}}">
   <li role="presentation" class="dropdown pull-right">
     <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Settings</a>
     <ul class="dropdown-menu">      

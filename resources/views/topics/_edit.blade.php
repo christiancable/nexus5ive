@@ -1,20 +1,23 @@
-<ul class="nav nav-tabs nexus-topic-nav" id="topic{{$topic->id}}">
-  <li role="presentation" class="dropdown pull-right">
-    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Settings</a>
-    <ul class="dropdown-menu">      
-      <li role="presentation" class="active"><a href="#topic-view{{$topic->id}}">View</a></li>
-      <li role="presentation"><a href="#topic-edit{{$topic->id}}">Edit</a></li>
-      <li role="separator" class="divider"></li>
-      @include('topics._delete', $topic)
-    </ul>
-  </li>
+<ul class="nav nav-tabs settings-menu" id="topic{{$topic->id}}" role="tablist"> 
+  <li role="presentation" class="dropdown active pull-right"> 
+      <a href="#" class="dropdown-toggle topic-settings" id="topicTabDrop{{$topic->id}}" data-toggle="dropdown" aria-controls="topicTabDrop{{$topic->id}}-contents" aria-expanded="false">
+          <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Settings <span class="caret"></span>
+      </a> 
+      <ul class="dropdown-menu" aria-labelledby="topicTabDrop{{$topic->id}}" id="topicTabDrop{{$topic->id}}-contents"> 
+          <li class=""><a href="#dropDown{{$topic->id}}-view" role="tab" id="dropDown{{$topic->id}}-view-tab" data-toggle="tab" aria-controls="dropDown{{$topic->id}}-view" aria-expanded="false">View</a></li>
+          <li class="active"><a href="#dropDown{{$topic->id}}-edit" role="tab" id="dropDown{{$topic->id}}-edit-tab" data-toggle="tab" aria-controls="dropDown{{$topic->id}}-edit" aria-expanded="true">Edit</a></li>   
+          <li role="separator" class="divider"></li>
+            @include('topics._delete', $topic)
+      </ul>
+  </li> 
 </ul>
 
-<div class="tab-content">
-  <div role="tabpanel" class="tab-pane active" id="topic-view{{$topic->id}}">
-    @include('topics._read', $topic)
-  </div>
-  <div role="tabpanel" class="tab-pane" id="topic-edit{{$topic->id}}">
-   @include('topics._update', $topic)
- </div>
-</div>
+<div class="tab-content" id="topicTabsContent{{$topic->id}}"> 
+    <div class="tab-pane fade active in" role="tabpanel" id="dropDown{{$topic->id}}-view" aria-labelledby="dropDown{{$topic->id}}-view-tab">
+        @include('topics._read', $topic)
+    </div>
+
+    <div class="tab-pane fade " role="tabpanel" id="dropDown{{$topic->id}}-edit" aria-labelledby="dropDown{{$topic->id}}-edit-tab"> 
+        @include('topics._update', $topic)
+    </div> 
+</div> 

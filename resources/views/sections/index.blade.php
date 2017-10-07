@@ -20,43 +20,42 @@
 
 {{-- Topics --}}
 <hr>
-
-    <div class="content">
-        @if (count($section->topics))
+<div class="content">
+    @if (count($section->topics))
         <?php
-            $moderatedSections = Auth::user()->sections->pluck('title', 'id')->toArray();
+        $moderatedSections = Auth::user()->sections->pluck('title', 'id')->toArray();
         ?>
         @foreach ($section->topics as $topic)
             @if(Auth::user()->id === $section->user_id) 
-                 @include('topics._edit', compact('topic', 'moderatedSections'))
-                <?php $tabGroups[] ='topic'.$topic->id ?>
+                @include('topics._edit', compact('topic', 'moderatedSections'))
             @else
                 @include('topics._read', $topic)
             @endif
         @endforeach
-        @endif
+    @endif
 
-        <?php unset($topic); ?>
-        @if(Auth::user()->id === $section->user_id)
-        <div class="panel-group" id="newTopicAccordion" role="tablist" aria-multiselectable="true">
-            <div class="panel panel-success">
-                <div class="panel-heading" role="tab" id="addNewTopic">
-                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#addTopic" aria-expanded="false" aria-controls="addTopic">
-                        <h4 class="panel-title">
-                            <span class='glyphicon glyphicon-comment'></span>&nbsp; Add New Topic
-                            <i class="indicator glyphicon glyphicon-chevron-down  pull-right"></i>
-                        </h4>
-                    </a>
-                </div>
+    {{-- Topics - add new topic --}}
+    <?php unset($topic); ?>
+    @if(Auth::user()->id === $section->user_id)
+    <div class="panel-group" id="newTopicAccordion" role="tablist" aria-multiselectable="true">
+        <div class="panel panel-success">
+            <div class="panel-heading" role="tab" id="addNewTopic">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#addTopic" aria-expanded="false" aria-controls="addTopic">
+                    <h4 class="panel-title">
+                        <span class='glyphicon glyphicon-comment'></span>&nbsp; Add New Topic
+                        <i class="indicator glyphicon glyphicon-chevron-down  pull-right"></i>
+                    </h4>
+                </a>
+            </div>
 
-                <div id="addTopic" class="panel-collapse collapse" role="tabpanel" aria-labelledby="addNewTopic">
-                    <div class="panel-body">
-                        @include('topics._create', $section)
-                    </div>
+            <div id="addTopic" class="panel-collapse collapse" role="tabpanel" aria-labelledby="addNewTopic">
+                <div class="panel-body">
+                    @include('topics._create', $section)
                 </div>
             </div>
         </div>
-        @endif
+    </div>
+    @endif
 
         {{-- Sub Sections --}}
         @if (count($section->sections))

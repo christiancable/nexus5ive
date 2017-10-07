@@ -1,4 +1,4 @@
-<ul class="nav nav-tabs nexus-topic-nav" id="post{{$post->id}}" role="tablist"> 
+<ul class="nav nav-tabs settings-menu" id="post{{$post->id}}" role="tablist"> 
     <li role="presentation" class="dropdown active pull-right"> 
         <a href="#" class="dropdown-toggle post-settings" id="postTabDrop{{$post->id}}" data-toggle="dropdown" aria-controls="postTabDrop{{$post->id}}-contents" aria-expanded="false">
             <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Settings <span class="caret"></span>
