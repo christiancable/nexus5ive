@@ -17,6 +17,10 @@ post settings dropdown menu
   }
 }
 
+.nav-tabs.settings-menu {
+  border-bottom: none;
+}
+
 /* ranimated spinny thing - very inspired by http://www.bootply.com/128062 */
 .glyphicon-refresh-animate {
     -animation: spin .7s infinite linear;
