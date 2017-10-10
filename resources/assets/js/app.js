@@ -18,8 +18,8 @@ require('./nexus');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-// Vue.component('example', require('./components/Example.vue'));
 Vue.component('userlist', require('./components/Userlist.vue'));
+Vue.component('post-compose', require('./components/PostCompose.vue'));
 
 const app = new Vue({
     el: '#app'
