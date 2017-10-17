@@ -173,8 +173,6 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
-        'Barryvdh\Debugbar\ServiceProvider',
-
     ],
 
 /* added form class using 
@@ -229,9 +227,9 @@ http://bonyweb.com/en/notes/how-to-install-html-form-helper-in-laravel-5-1/
         'URL'       => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View'      => Illuminate\Support\Facades\View::class,
-        'Debugbar' => 'Barryvdh\Debugbar\Facade',
         'Html' => Collective\Html\HtmlFacade::class,
         'Form'      => Collective\Html\FormFacade::class,
+        'Debugbar' => Barryvdh\Debugbar\Facade::class,
     ],
 
 ];
