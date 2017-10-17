@@ -26,7 +26,7 @@
         "phpspec/phpspec": "~2.1",
         "symfony/dom-crawler": "3.1.*",
         "symfony/css-selector": "3.1.*",
-        "laravel/browser-kit-testing": "1.*"
+        "laravel/browser-kit-testing": "2.*"
     },
     "autoload": {
         "classmap": [
