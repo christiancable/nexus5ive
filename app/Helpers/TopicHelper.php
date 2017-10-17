@@ -47,15 +47,14 @@ WHERE deleted_at IS NULL
 ORDER BY tt.id desc limit $maxresults
 SQL;
     
-
         $allTopicIDs = array_pluck(\DB::select(\DB::raw($sql)), 'topic_id');
-        $allTopicIDsString = implode(',', $allTopicIDs);
-        $topics = \App\Topic::with('most_recent_post', 'most_recent_post.author', 'section')
-            ->whereIn('id', $allTopicIDs)
-            ->get();
-
+        // $topics = \App\Topic::with('most_recent_post', 'most_recent_post.author', 'section')
+        // removed most_recent_post from the eager loading here as it was killing memory in large forums
+        $topics = \App\Topic::with('section')
+        ->whereIn('id', $allTopicIDs)->get();
+           
         // sorting here rather than in SQL because FIELD is MySQL only and so fails tests   
-        $sortedTopics = $topics->sortBy(function($model) use ($allTopicIDs) {
+        $sortedTopics = $topics->sortBy(function ($model) use ($allTopicIDs) {
             return array_search($model->id, $allTopicIDs);
         });
 
