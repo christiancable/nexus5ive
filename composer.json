@@ -9,7 +9,7 @@
     "type": "project",
     "require": {
         "php": ">=7.0.0",
-        "laravelcollective/html": "^5.3",
+        "laravelcollective/html":"^5.4.0",
         "laravel/tinker": "~1.0",
         "laravel/framework": "5.5.*",
         "guzzlehttp/guzzle": "~5.3|~6.0",
