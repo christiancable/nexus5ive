@@ -4,8 +4,8 @@
             <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Settings <span class="caret"></span>
         </a> 
         <ul class="dropdown-menu" aria-labelledby="postTabDrop{{$post->id}}" id="postTabDrop{{$post->id}}-contents"> 
-            <li class=""><a href="#dropDown{{$post->id}}-view" role="tab" id="dropDown{{$post->id}}-view-tab" data-toggle="tab" aria-controls="dropDown{{$post->id}}-view" aria-expanded="false">View</a></li>
-            <li class="active"><a href="#dropDown{{$post->id}}-edit" role="tab" id="dropDown{{$post->id}}-edit-tab" data-toggle="tab" aria-controls="dropDown{{$post->id}}-edit" aria-expanded="true">Edit</a></li> 
+            <li class="active"><a href="#dropDown{{$post->id}}-view" role="tab" id="dropDown{{$post->id}}-view-tab" data-toggle="tab" aria-controls="dropDown{{$post->id}}-view" aria-expanded="false">View</a></li>
+            <li class=""><a href="#dropDown{{$post->id}}-edit" role="tab" id="dropDown{{$post->id}}-edit-tab" data-toggle="tab" aria-controls="dropDown{{$post->id}}-edit" aria-expanded="true">Edit</a></li> 
             @if(!isset($hideDelete))
               <li role="separator" class="divider"></li>
               @include('posts._delete', $post)
