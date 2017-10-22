@@ -1,0 +1,162 @@
+/* 
+Spooky Theme for Halloween 
+reference https://getbootstrap.com/docs/3.3/customize/#less-variables
+*/
+
+$spooky-purple: #7C10AD;
+$spooky-green: #1BA52C;
+$spooky-orange: #F15802;
+$spooky-black: #000000;
+$spooky-gray: #3D3D3D;
+$spooky-yellow: #ffd505;
+$spooky-red: #da0707;
+
+// fonts
+@import url('https://fonts.googleapis.com/css?family=Creepster');
+
+// Body
+$body-bg: $spooky-black;
+
+// Borders
+$laravel-border-color: darken($body-bg, 10%);
+$list-group-border: $laravel-border-color;
+$navbar-default-border: $laravel-border-color;
+$panel-default-border: $laravel-border-color;
+$panel-inner-border: $laravel-border-color;
+
+// Brands
+$brand-primary: $spooky-orange;
+$brand-info: $spooky-yellow;
+$brand-success: $spooky-green;
+$brand-warning: $spooky-yellow;
+$brand-danger: $spooky-red;
+
+// Typography
+$headings-font-family: 'Creepster', cursive;
+$font-family-sans-serif: "Raleway", sans-serif;
+$font-size-base: 14px;
+$line-height-base: 1.6;
+$text-color: $spooky-green;
+
+
+$code-color: $spooky-green;
+$pre-color: $code-color;
+$pre-bg: $spooky-purple; 
+$code-bg: $pre-bg;
+
+// misc - overrides for extras
+
+hr {
+    border-top-color: $spooky-purple !important;
+}
+
+mark {
+    background-color: black !important;
+}
+
+// Navbar
+$navbar-default-bg: $spooky-orange;
+$navbar-default-link-color:  $spooky-purple;
+$navbar-default-link-hover-color: lighten($navbar-default-link-color, 20%);
+$navbar-default-link-active-bg: $spooky-purple;
+$navbar-default-link-active-color: $spooky-green;
+
+// Dropdown
+$dropdown-bg: $spooky-green;
+$dropdown-divider-bg: darken($dropdown-bg, 20%);
+$dropdown-link-color: $spooky-purple;
+$dropdown-link-hover-color: $spooky-purple;
+$dropdown-link-hover-bg: darken($dropdown-bg, 20%);
+$dropdown-header-color: $brand-warning;
+
+
+// breadcrumb
+$breadcrumb-bg: $spooky-gray;
+$breadcrumb-color: lighten($breadcrumb-bg, 50%);
+$breadcrumb-active-color: lighten($breadcrumb-bg, 50%);
+
+
+// tabs
+$nav-tabs-border-color: $spooky-orange;
+$nav-tabs-link-hover-border-color: $spooky-orange;
+$nav-tabs-active-link-hover-border-color: $spooky-orange; 
+$nav-tabs-active-link-hover-bg: $body-bg;
+$nav-tabs-link-border-color: $spooky-purple;
+// $nav-tabs-justified-link-border-color: blue;
+// $nav-tabs-justified-active-link-border-color: blue;
+$nav-tabs-active-link-hover-color: $spooky-purple;
+
+
+// panels
+$panel-bg: $body-bg;
+$panel-footer-bg: $body-bg;
+$panel-default-border: $spooky-orange;
+
+// wells
+$well-bg: $body-bg;
+$well-border: $spooky-purple;
+
+// Buttons
+$btn-default-color: $text-color;
+$btn-default-bg: $body-bg;
+$btn-default-border: $spooky-orange;
+
+// Inputs
+$input-border: $text-color;
+$input-border-focus: $brand-primary;
+$input-color-placeholder: darken($text-color, 20%);
+$input-bg: $body-bg;
+$input-color: $spooky-orange;
+
+// popovers
+$popover-bg: $spooky-gray;
+
+// tables
+$table-bg-accent: $spooky-black;
+$table-border-color: $spooky-gray;
+
+// Pagination
+$pagination-bg: $body-bg;
+$pagination-disabled-color: $spooky-green;
+
+$pagination-disabled-bg: $spooky-orange;
+$pagination-disabled-color: $spooky-orange;
+$pagination-disabled-border: $spooky-orange;
+
+$pagination-active-bg: $spooky-green;
+$pagination-active-color: $spooky-black;
+$pagination-border: $spooky-orange;
+$pagination-active-border: $pagination-border;
+
+$pagination-hover-color: $spooky-black;
+$pagination-hover-border: $spooky-orange;
+$pagination-hover-bg: $spooky-orange;
+
+// $pagination-color: blue; - default is good
+
+// $pagination-bg:
+// $pagination-active-bg:
+
+// Alerts
+$alert-warning-text: $spooky-black;
+$alert-warning-border: $spooky-yellow;
+$alert-warning-bg: $spooky-yellow;
+
+$alert-success-text: $spooky-black;
+$alert-success-border: $spooky-green;
+$alert-success-bg: $spooky-green;
+
+$alert-info-text: $spooky-black;
+// $alert-info-border:
+// $alert-info-bg:
+
+$alert-danger-text: $spooky-black;
+$alert-danger-border: $spooky-red;
+$alert-danger-bg: $spooky-red;
+
+// List Groups
+
+$list-group-bg: $body-bg;
+
+
+
