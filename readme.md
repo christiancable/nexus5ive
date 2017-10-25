@@ -14,7 +14,7 @@ Written by [Christian Cable](http://christiancable.co.uk).
 
 This is the code that powers the _old-school style_ injoke of a BBS at [http://nexus5.org.uk](http://nexus5.org.uk). 
 
-The web version of Nexus has run in one form or another since the ultra-futuristic year of 2001. It was inspired by the UCLAN CompSoc BBS of the early 90s.  
+The web version of Nexus has run in one form or another since the ultra-futuristic year of _2001_. It was inspired by the [UCLAN](http://www.uclan.ac.uk) CompSoc BBS of the early 90s where I happily misspent much of my university days.  
 
 This current version is built using the [Laravel framework](https://laravel.com) by Taylor Otwell 
 
