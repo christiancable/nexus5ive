@@ -82,9 +82,10 @@ class UserController extends Controller
             action('Nexus\UserController@show', ['user_name' => $user_name])
         );
 
+        $themes = \App\Theme::all()->pluck('name', 'id');
         $breadcrumbs = \App\Helpers\BreadcrumbHelper::breadcrumbForUser($user);
 
-        return view('users.show', compact('user', 'breadcrumbs'));
+        return view('users.show', compact('user', 'breadcrumbs', 'themes'));
     }
 
     /**
