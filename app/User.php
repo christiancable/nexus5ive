@@ -41,7 +41,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'favouriteMovie',
         'favouriteMusic',
         'private',
-        'viewLatestPostFirst'
+        'viewLatestPostFirst',
+        'theme_id'
     ];
      
     /**
