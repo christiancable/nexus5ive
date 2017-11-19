@@ -60,3 +60,10 @@ $factory->define(App\Comment::class, function ($faker) {
         'read' => false,
     ];
 });
+
+$factory->define(App\Theme::class, function ($faker) {
+    return [
+        'path' => $faker->url,
+        'name' => $faker->unique()->word,
+    ];
+});
