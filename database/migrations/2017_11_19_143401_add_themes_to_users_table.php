@@ -15,8 +15,8 @@ class AddThemesToUsersTable extends Migration
     {
         // find the id of the default theme
         $defaultTheme = App\Theme::firstOrFail();
-        Schema::table('users', function (Blueprint $table) use ($defaultTheme){
-          $table->integer('theme_id')->unsigned()->default($defaultTheme->id);
+        Schema::table('users', function (Blueprint $table) use ($defaultTheme) {
+            $table->integer('theme_id')->unsigned()->default($defaultTheme->id);
         });
     }
 
