@@ -10,42 +10,41 @@ class ThemesTest extends BrowserKitTestCase
 {
     use DatabaseTransactions;
 
+    public $defaultTheme;
+    public $user;
+    public $home;
+
+    public function setUp() {
+        parent::setUp();
+
+        $this->defaultTheme = App\Theme::FirstOrFail();
+        $this->user = factory(User::class)->create();
+        $this->home = factory(Section::class)
+            ->create([
+                'parent_id' => null,
+                'user_id' => $this->user->id,
+            ]);
+        
+    }
     /**
      * @test
      */
     public function a_new_user_has_the_default_theme() {
         // given we have a default theme
-        $theme = App\Theme::FirstOrFail();
-
-        // when we create a new user
-        $user = factory(User::class)->create();
-
+        // and a new user
         // the new user has the default theme
-        $this->assertEquals($user->theme->id, $theme->id);
+        $this->assertEquals($this->user->theme->id, $this->defaultTheme->id);
     }
 
     /**
      * @test
      */
     public function a_user_can_see_which_theme_they_use() {
-        // given we have a default theme
-        $theme = App\Theme::FirstOrFail();
-
-        // and we have a user
-        $user = factory(User::class)->create();
-
-        // we need a default section to visit the profile page
-        factory(Section::class)
-            ->create([
-                'parent_id' => null,
-                'user_id' => $user->id,
-            ]);
-
         // when the user views their profile
         // the user can see which theme they have   
-        $this->actingAs($user)
-            ->visitRoute('users.show', $user->username)
-            ->see($theme->name);
+        $this->actingAs($this->user)
+            ->visitRoute('users.show', $this->user->username)
+            ->see($this->defaultTheme->name);
     }
 
     /**
@@ -53,8 +52,26 @@ class ThemesTest extends BrowserKitTestCase
      */
     public function a_user_can_change_their_theme() {
         // given we have a user
+        // and a default theme 
+        // and an alternative theme
+        $alternativeTheme = factory(App\Theme::class)->create();
+
         // when the user views their profile
         // and they select a different theme
-        // then their theme changes in the database
+        $this->actingAs($this->user)
+            ->visitRoute('users.show', $this->user->username)
+            ->select($alternativeTheme->id, 'theme_id')
+            ->press('Save Changes');
+
+        // they see the theme name as the selected option           
+        // $this->actingAs($this->user)
+        //     ->visitRoute('users.show', $this->user->username)
+        //     ->see($alternativeTheme->name);
+
+        // reload user to get saved info
+        $updatedUser = App\User::findOrFail($this->user->id);
+        
+        // they are are using the alternative theme
+        $this->assertEquals($updatedUser->theme->id, $alternativeTheme->id);
     }
 }
