@@ -41,7 +41,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'favouriteMovie',
         'favouriteMusic',
         'private',
-        'viewLatestPostFirst'
+        'viewLatestPostFirst',
+        'theme_id'
     ];
      
     /**
@@ -139,6 +140,11 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         return $this->hasOne('App\Activity');
     }
     
+    public function theme()
+    {
+        return $this->belongsTo('App\Theme');
+    }
+
     /*
       returns collection of trashed topics
     */

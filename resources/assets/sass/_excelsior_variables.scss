@@ -1,0 +1,97 @@
+
+// Colours
+
+$blue: #0097F2;
+$green: #00A235;
+$orange: #fb9b00;
+$red: #ff0001;
+$black: #000000;
+// $red: 
+
+// Body
+$body-bg: $black;
+
+
+//  Borders and radius
+$line-width: 5px;
+$radius: 20px;
+
+
+
+$state-success-border: $orange;
+
+// $laravel-border-color: darken($body-bg, 10%);
+// $list-group-border: $laravel-border-color;
+// $navbar-default-border: $laravel-border-color;
+
+// $panel-default-border: $laravel-border-color;
+// $panel-inner-border: $laravel-border-color;
+
+// // Brands
+// $brand-primary: #3097D1;
+// $brand-info: #8eb4cb;
+// $brand-success: #2ab27b;
+// $brand-warning: #cbb956;
+// $brand-danger: #bf5329;
+
+// // Typography
+$headings-font-family: 'Michroma', cursive;
+$headings-font-weight: 600;
+$font-family-sans-serif: "Michroma", sans-serif;
+// $font-size-base: 14px;
+// $line-height-base: 1.6;
+$text-color: $green;
+
+$headings-color: $blue;
+
+// tab
+$nav-tabs-border-color: $green;
+
+// Borders
+// $laravel-border-color: darken($blue, 10%);
+// $list-group-border: $laravel-border-color;
+// $navbar-default-border: $laravel-border-color;
+// $panel-default-border: $laravel-border-color;
+// $panel-inner-border: $laravel-border-color;
+
+//  Navbar
+$navbar-default-bg: $body-bg;
+
+
+// dropdown
+$dropdown-bg: $body-bg;
+$dropdown-border: $orange;
+
+// breadcrumbes
+$breadcrumb-bg: $body-bg;
+
+// // Buttons
+// $btn-default-color: $text-color;
+
+// lists
+$list-group-bg: $body-bg;
+$list-group-border: $body-bg;
+// // Inputs
+// $input-border: lighten($text-color, 40%);
+// $input-border-focus: lighten($brand-primary, 25%);
+// $input-color-placeholder: lighten($text-color, 30%);
+
+// panels
+// panel border 5px would be great
+$panel-bg: $body-bg;
+$panel-footer-bg: $body-bg;
+$panel-default-border: $green;
+$border-radius-base: $radius;
+
+$panel-primary-heading-bg: $body-bg;
+$panel-success-heading-bg: $body-bg;
+
+// wells
+$well-bg: $body-bg;
+$well-border: $blue;
+
+// tables
+
+$table-bg: $body-bg;
+$table-bg-accent: $body-bg;
+$table-border-color: $blue;
