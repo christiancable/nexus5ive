@@ -17,5 +17,6 @@ mix.js('resources/assets/js/app.js', 'public/js')
    // keep as an extra file too for when we use themes
    .sass('resources/assets/sass/extra.scss', 'public/css')
    .sass('resources/assets/sass/spooky.scss', 'public/css')
+   .sass('resources/assets/sass/excelsior.scss', 'public/css')
    .copy('node_modules/bootstrap-sass/assets/fonts/bootstrap','public/fonts/bootstrap');
    
