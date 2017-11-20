@@ -11,9 +11,22 @@ class ThemesTableSeeder extends Seeder
      */
     public function run()
     {
-        $defaultTheme = factory(App\Theme::class)->create();
-        $defaultTheme->name = 'default'; 
-        $defaultTheme->path = '/css/app.css'; 
-        $defaultTheme->save(); 
+        // default
+        App\Theme::firstOrCreate([
+            'name' => 'Default',
+            'path' => '/css/app.css'
+        ]);
+
+        // spooky
+        App\Theme::firstOrCreate([
+            'name' =>'Halloween',
+            'path' => '/css/spooky.css'
+        ]);
+
+        // excelsior
+          App\Theme::firstOrCreate([
+            'name' =>'Excelsior',
+            'path' => '/css/excelsior.css'
+        ]);
     }
 }
