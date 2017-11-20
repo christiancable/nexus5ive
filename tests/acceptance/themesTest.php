@@ -44,7 +44,7 @@ class ThemesTest extends BrowserKitTestCase
         // the user can see which theme they have   
         $this->actingAs($this->user)
             ->visitRoute('users.show', $this->user->username)
-            ->see($this->defaultTheme->name);
+            ->see($this->defaultTheme->url);
     }
 
     /**
@@ -63,15 +63,15 @@ class ThemesTest extends BrowserKitTestCase
             ->select($alternativeTheme->id, 'theme_id')
             ->press('Save Changes');
 
-        // they see the theme name as the selected option           
-        // $this->actingAs($this->user)
-        //     ->visitRoute('users.show', $this->user->username)
-        //     ->see($alternativeTheme->name);
+        // see the url to the newly chosen alternative theme in the page
+        $this->actingAs($this->user)
+            ->visitRoute('users.show', $this->user->username)
+            ->see($alternativeTheme->url);
 
         // reload user to get saved info
         $updatedUser = App\User::findOrFail($this->user->id);
         
-        // they are are using the alternative theme
+        // see the newly chosen alternative theme in their profile in the db
         $this->assertEquals($updatedUser->theme->id, $alternativeTheme->id);
     }
 }
