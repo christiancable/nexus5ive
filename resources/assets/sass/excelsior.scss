@@ -1,0 +1,66 @@
+
+// Fonts
+// @import url(https://fonts.googleapis.com/css?family=Raleway:300,400,600);
+@import url('https://fonts.googleapis.com/css?family=Michroma');
+
+// Variables
+@import "_excelsior_variables";
+
+// Bootstrap
+@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+
+// extras
+@import "extra.scss";
+
+
+// theme additions
+// make headings uppercase
+
+h1, h2, h3, h4 {
+    text-transform: uppercase;
+}
+
+h1 {
+    color: $blue;
+}
+
+h2 {
+    color: $green;
+
+    &.panel-title {
+        color: $orange;
+    }
+}
+
+.panel {
+    border-width: $line-width;
+    
+    .panel-heading {
+        border-width: 0;
+        border-bottom-left-radius: $radius;
+        border-bottom-right-radius: $radius;
+    }
+}
+
+.topic, .panel-title {
+    .glyphicon-comment, .glyphicon-folder-open {
+        display: none;
+    }
+}
+
+.well {
+    border-width: $line-width;
+}
+
+hr {
+    border-top-color: darken($blue, 20%) !important;    
+    border-top-width: $line-width !important;
+}
+
+#top-toolbar .navbar {
+    border-bottom-color: $orange;
+}
+
+mark {
+    background-color: $body-bg;
+}
