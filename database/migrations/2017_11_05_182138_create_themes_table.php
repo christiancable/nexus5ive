@@ -27,9 +27,9 @@ class CreateThemesTable extends Migration
         ]);
 
         // add any other themes 
-       Artisan::call('db:seed', [
-            '--class' => 'ThemesTableSeeder',
-        ]);
+       // Artisan::call('db:seed', [
+       //      '--class' => 'ThemesTableSeeder',
+       //  ]);
     }
 
     /**
