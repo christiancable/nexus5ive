@@ -20,8 +20,14 @@ class CreateThemesTable extends Migration
             $table->timestamps();
         });
 
-        // seed with the default theme
-        Artisan::call('db:seed', [
+        // create a default theme
+         App\Theme::firstOrCreate([
+            'name' => 'Default',
+            'path' => '/css/app.css'
+        ]);
+
+        // add any other themes 
+       Artisan::call('db:seed', [
             '--class' => 'ThemesTableSeeder',
         ]);
     }

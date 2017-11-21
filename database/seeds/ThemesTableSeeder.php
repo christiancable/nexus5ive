@@ -11,12 +11,6 @@ class ThemesTableSeeder extends Seeder
      */
     public function run()
     {
-        // default
-        App\Theme::firstOrCreate([
-            'name' => 'Default',
-            'path' => '/css/app.css'
-        ]);
-
         // spooky
         App\Theme::firstOrCreate([
             'name' =>'Halloween',
