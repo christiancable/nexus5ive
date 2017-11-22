@@ -22,5 +22,11 @@ class ThemesTableSeeder extends Seeder
             'name' =>'Excelsior',
             'path' => '/css/excelsior.css'
         ]);
+
+        // spectrum
+          App\Theme::firstOrCreate([
+            'name' =>'8 Bit',
+            'path' => '/css/8bit.css'
+        ]);
     }
 }
