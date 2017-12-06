@@ -1,0 +1,300 @@
+// Bootstrap theme 
+// based on the default theme for nexus 2 which was in turn based on mono.org
+// cfcable
+
+// Fonts
+@import url(https://fonts.googleapis.com/css?family=Press+Start+2P);
+
+// nexus 2 colours
+$black: #000000; 
+$green:  #3EAA00;
+$off-white: #AAAAA9;
+$blue: #020EAA;
+$white: #FFFFFF;
+$red: #AA0F06;
+$yellow: #FFFE56;
+
+// Body
+$body-bg: $black;
+
+// Borders
+$laravel-border-color: darken($body-bg, 10%);
+// $list-group-border: $laravel-border-color;
+// $navbar-default-border: $laravel-border-color;
+// $panel-default-border: $laravel-border-color;
+// $panel-inner-border: $laravel-border-color;
+$list-group-border: $white;
+$navbar-default-border: $white;
+$panel-default-border: $white;
+$panel-inner-border: $white;
+
+// Brands
+$brand-primary: $green;
+$brand-info:    $blue;
+$brand-success: $green;
+$brand-warning: $yellow;
+$brand-danger:  $red;
+
+
+// border radius
+$border-radius-base:    0;
+$border-radius-large:   0;
+$border-radius-small:   0;
+// Typography
+// $font-family-sans-serif: "Raleway", sans-serif;
+
+// $font-family-sans-serif: 'VT323',monospace;
+$font-family-sans-serif: 'Press Start 2P',monospace;
+$font-family-monospace: $font-family-sans-serif;
+$font-size-base: 12px;
+$line-height-base: 1.6;
+$font-size-base: $font-size-base;
+$font-size-large: $font-size-base;
+$font-size-small: $font-size-base;
+$font-size-h1: $font-size-base;
+$font-size-h2: $font-size-base;
+$font-size-h3: $font-size-base;
+$font-size-h4: $font-size-base;
+$font-size-h5: $font-size-base;
+$font-size-h6: $font-size-base;
+$text-color: $off-white;
+
+
+
+// nexus2 only had highlighting as a formatting option
+em, strong {
+    text-decoration: none;
+    font-style: normal;
+    font-weight: normal;
+    color: $yellow;
+}
+
+// username
+mark {
+    background-color: black !important;
+    a {
+     color: $yellow;   
+    }
+}
+
+// wells
+$well-bg: $black;
+$well-border: $black;
+
+// Navbar
+$navbar-default-bg: $white;
+$nav-default-color: $black;
+
+// top toolbar
+#top-toolbar .navbar {
+    li::first-letter {
+        color: $red; 
+    }
+}
+
+$list-group-bg: $body-bg;
+
+// breadcrumbs
+// $breadcrumb-padding-vertical
+// $breadcrumb-padding-horizontal
+$breadcrumb-bg: $blue;
+$breadcrumb-color: $white;
+$breadcrumb-active-color: $white; 
+$breadcrumb-separator: '->';
+
+
+// Buttons
+$btn-default-color: $text-color;
+// Inputs
+// $input-border: lighten($text-color, 40%);
+// $input-border-focus: lighten($brand-primary, 25%);
+$input-border: $white;
+$input-border-focus: $white;
+$input-color-placeholder: lighten($text-color, 30%);
+
+// Panels
+$panel-bg: $black;
+$panel-footer-bg: $black;
+$panel-default-heading-bg: $black;
+
+$panel-primary-heading-bg: $black;
+$panel-primary-border: $black;
+
+$panel-success-heading-bg: $black;
+$panel-success-border: $black;
+
+$panel-warning-heading-bg: $black;
+$panel-warning-border: $black;
+
+$panel-danger-heading-bg: $black;
+$panel-danger-border: $black;
+
+
+// Pagination
+$pagination-bg: $black;
+$pagination-disabled-color: $off-white;
+$pagination-disabled-bg: $black;
+$pagination-disabled-color: $off-white;
+$pagination-disabled-border: $off-white;
+$pagination-active-bg: $green;
+$pagination-active-color: $black;
+$pagination-border: $off-white;
+$pagination-active-border: $pagination-border;
+$pagination-hover-color: $black;
+$pagination-hover-border: $green;
+$pagination-hover-bg: $yellow;
+
+
+// Bootstrap
+@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+
+* {
+    font-size: $font-size-base;
+}
+
+.lead {
+    font-size: $font-size-base;
+    color: $white;
+}
+
+h1,h2,h3,h4,h5,h6 {
+    color: $yellow;
+}
+
+
+// extras
+@import "extra.scss";
+
+
+// remove glyphicons because they look too modern
+.glyphicon {
+    font-family: $font-family-sans-serif;
+}
+
+// topics
+.glyphicon-comment:before {
+    content: "[-] ";
+}
+.glyphicon-fire:before {
+    content: "[*] ";
+}
+
+.glyphicon-home:before {
+    content: "[H] ";
+}
+.glyphicon-menu-hamburger:before {
+    content: "[+] ";
+}
+.glyphicon-cog:before {
+    content: "[=] ";
+}
+
+.glyphicon-envelope:before {
+    content: "[v]";
+}
+
+.glyphicon-plus-sign:before {
+    content: " + ";
+}
+
+
+// widgets
+.glyphicon-chevron-down:before {
+    content: " v ";
+}
+
+.glyphicon-chevron-up:before {
+    content: " ^ ";
+}
+
+.glyphicon-pencil:before {
+    content: "";
+}
+
+.glyphicon-trash:before {
+    content: "";
+}
+
+.glyphicon-user:before {
+    content: "\\o/";
+}
+
+.glyphicon-open:before {
+    content: "";
+}
+
+.glyphicon-log-out:before {
+    content: "";
+}
+
+.glyphicon-save:before {
+    content: ">";
+}
+
+.glyphicon-eye-close:before {
+    content: ">- -<";
+}
+.glyphicon-eye-open:before {
+    content: "( o)( o)";
+}
+
+// add topic
+#addNewTopic .glyphicon-comment:before {
+    content: ">";
+}
+// add section
+
+#addNewSection .glyphicon-folder-open:before {
+    content: ">";
+}
+
+
+// sections
+.panel-heading .panel-title a:before {
+    content: "[M] ";
+}
+
+// userlist and comments
+.table-striped tr {
+    background-color: $black !important;
+}
+
+
+// forms
+.form-control {
+    background-color: $black;
+    color: $white;
+
+    &::placeholder {
+        color: $off-white;
+    }
+}
+
+// alerts
+.alert {
+    background-color: $black;
+    border-color: $black;
+    color: $green;
+}
+
+#users-list {
+    h2 {
+        border-radius: 0;
+        width: 1.5em;
+        height: 1.5em;
+        text-align: center;
+        // opacity: 0.25;
+        span {
+            color: $white;
+            line-height: 1.5em;
+        }
+    }
+    .bg-info {
+        background-color: $red;
+    }
+    .user-panel {
+        a:hover {
+            text-decoration: none;
+        }
+    }
+}
