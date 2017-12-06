@@ -5,7 +5,7 @@ namespace App\Http\Requests\Topic;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Http\Requests\Request;
 
-class UpdateRequest extends FormRequest
+class UpdateRequest extends TopicRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -48,23 +48,5 @@ class UpdateRequest extends FormRequest
         }
         
         return $return;
-    }
-
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
-    public function rules()
-    {
-
-        $formName = key($this::input('form'));
-        
-        return [
-            "form.{$formName}.title" => 'required',
-            "form.{$formName}.intro" => 'required',
-            "form.{$formName}.section_id" => 'required|numeric',
-            "form.{$formName}.weight" => 'required|numeric',
-        ];
     }
 }
