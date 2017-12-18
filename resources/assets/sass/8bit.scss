@@ -100,19 +100,84 @@ $panel-danger-border: $panel-danger-heading-bg;
     font-family: $font-family-sans-serif;
 }
 
+// topics
 .glyphicon-comment:before {
+    content: "[-] ";
+}
+
+.glyphicon-fire:before {
     content: "[*] ";
 }
+
 .glyphicon-home:before {
     content: "[H] ";
 }
+
 .glyphicon-menu-hamburger:before {
     content: "[+] ";
 }
+
 .glyphicon-cog:before {
     content: "[=] ";
 }
 
+.glyphicon-envelope:before {
+    content: "[v]";
+}
+
+.glyphicon-plus-sign:before {
+    content: " + ";
+}
+
+// widgets
+.glyphicon-chevron-down:before {
+    content: " v ";
+}
+
+.glyphicon-chevron-up:before {
+    content: " ^ ";
+}
+
+.glyphicon-pencil:before {
+    content: "";
+}
+
+.glyphicon-trash:before {
+    content: "";
+}
+
+.glyphicon-user:before {
+    content: "\\o/";
+}
+
+.glyphicon-open:before {
+    content: "";
+}
+
+.glyphicon-log-out:before {
+    content: "";
+}
+
+.glyphicon-save:before {
+    content: ">";
+}
+
+.glyphicon-eye-close:before {
+    content: ">- -<";
+}
+
+.glyphicon-eye-open:before {
+    content: "( o)( o)";
+}
+
+// mobile nav
+.glyphicon-circle-arrow-right:before {
+    content: "->";
+}
+
+.glyphicon-time:before {
+    content: "[*]";
+}
 
 
 
