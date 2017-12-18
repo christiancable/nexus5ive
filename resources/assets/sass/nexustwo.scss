@@ -238,6 +238,18 @@ h1,h2,h3,h4,h5,h6 {
     content: "( o)( o)";
 }
 
+// mobile nav
+.glyphicon-circle-arrow-right:before {
+    content: "->";
+}
+
+.glyphicon-time:before {
+    content: "[*]";
+}
+
+
+
+
 // add topic
 #addNewTopic .glyphicon-comment:before {
     content: ">";
