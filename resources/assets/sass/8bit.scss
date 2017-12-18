@@ -179,7 +179,15 @@ $panel-danger-border: $panel-danger-heading-bg;
     content: "[*]";
 }
 
+// add topic
+#addNewTopic .glyphicon-comment:before {
+    content: ">";
+}
 
+// add section
+#addNewSection .glyphicon-folder-open:before {
+    content: ">";
+}
 
 
 #users-list {
