@@ -28,7 +28,7 @@ Form::model($user, array(
         <dd>{!! Form::text('popname', null, ['class'=> 'form-control'])!!}</dd>      
         
         <dt>{!! Form::label('email','Email') !!}</dt>
-        <dd>{!! Form::email('email', null, ['class'=> 'form-control'])!!}</dd>
+        <dd>{!! Form::email('email', null, ['class'=> 'form-control', 'autocomplete' => 'off'])!!}</dd>
 
         {!! Form::hidden('private', false) !!}
         <dt>{!! Form::label('private','Hide Email') !!}</dt>
