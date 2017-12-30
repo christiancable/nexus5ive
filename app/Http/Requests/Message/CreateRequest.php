@@ -8,17 +8,11 @@ use App\Http\Requests\Request;
 class CreateRequest extends FormRequest
 {
     /**
-     * Only logged in users can leave comments on profiles
-     *
      * @return bool
      */
     public function authorize()
     {
-        if (\Auth::check()) {
-            return true;
-        } else {
-            return false;
-        }
+        return true;
     }
 
     /**
@@ -30,8 +24,6 @@ class CreateRequest extends FormRequest
     {
         return [
             'text' => 'required',
-
-            //
         ];
     }
 }
