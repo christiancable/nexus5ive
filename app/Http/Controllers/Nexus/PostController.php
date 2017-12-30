@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Nexus;
 
 use Illuminate\Http\Request;
 
+use App\Post;
+use App\Topic;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
@@ -42,6 +44,9 @@ class PostController extends Controller
      */
     public function store(Requests\Post\CreateRequest $request)
     {
+        $topic = Topic::findOrFail($request->topic_id);
+        $this->authorize('create', [Post::class, $topic]);
+
         $input = $request->all();
         $input['user_id'] = \Auth::user()->id;
         $input['popname'] = \Auth::user()->popname;
