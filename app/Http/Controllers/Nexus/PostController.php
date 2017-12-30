@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers\Nexus;
 
-use Illuminate\Http\Request;
-
 use App\Post;
 use App\Topic;
 use App\Http\Requests;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class PostController extends Controller
@@ -118,10 +117,12 @@ class PostController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function destroy(Requests\Post\DeleteRequest $request, $id)
+    public function destroy(Request $request, $id)
     {
-        // using forceDelete here because in this case we do not want a soft delete
         $post = \App\Post::findOrFail($id);
+        $this->authorize('delete', $post);
+
+        // using forceDelete here because in this case we do not want a soft delete
         $topicID = $post->topic_id;
         $post->forceDelete();
         return redirect()->route('topic.show', ['id' => $post->topic_id]);

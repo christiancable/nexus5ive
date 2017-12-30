@@ -46,7 +46,8 @@ class PostPolicy
         if (!$topic->readonly) {
             return true;
         }
-        
+
+        return false;
     }
 
     /**
@@ -70,6 +71,16 @@ class PostPolicy
      */
     public function delete(User $user, Post $post)
     {
-        //
+        // admins can always delete posts
+        if ($user->administrator) {
+            return true;
+        }
+
+        // moderators can always delete posts in topics they moderate
+        if ($user->id === $post->topic->section->moderator->id) {
+            return true;
+        }
+
+        return false;
     }
 }
