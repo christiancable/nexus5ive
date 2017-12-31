@@ -98,15 +98,17 @@ class PostController extends Controller
      */
     public function update(Requests\Post\UpdateRequest $request, $id)
     {
-        // update who last updated the post
-        $input = $request->all();
-
+        // get post and autheorize
+        $post = \App\Post::findOrFail($id);
+        $this->authorize('update', [Post::class, $post]);
+        
         // copy the namespaced input files back into top level input
+        $input = $request->all();
         $input['title'] = $input['form'][$id]['title'];
         $input['text'] = $input['form'][$id]['text'];
-
+        
+        // update who last updated the post
         $input['update_user_id'] = \Auth::user()->id;
-        $post = \App\Post::findOrFail($id);
         $post->update($input);
         return redirect()->route('topic.show', ['id' => $post->topic_id]);
     }
