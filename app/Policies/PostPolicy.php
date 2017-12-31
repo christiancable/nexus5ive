@@ -53,13 +53,37 @@ class PostPolicy
     /**
      * Determine whether the user can update the post.
      *
+     * a post can be edited at any time by
+     * - topic moderator
+     * - bbs administrator
+     * - the creator of the post within X seconds if that post is the most recent in the topic
+     *
      * @param  \App\User  $user
      * @param  \App\Post  $post
-     * @return mixed
+     * @return bool
      */
     public function update(User $user, Post $post)
     {
-        //
+        // admins can always edit posts
+        if ($user->administrator) {
+            return true;
+        }
+
+        // moderators can always delete posts in topics they moderate
+        if ($user->id === $post->topic->section->moderator->id) {
+            return true;
+        }
+
+        // is this the most recent post in this topic, is it by the logged in user and is it recent
+        $latestPost = $post->topic->posts->last();
+
+        if (($post['id'] === $latestPost['id']) &&
+            ($post->author->id == $user->id) &&
+            ($post->time->diffInSeconds() <= config('nexus.recent_edit'))) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -67,7 +91,7 @@ class PostPolicy
      *
      * @param  \App\User  $user
      * @param  \App\Post  $post
-     * @return mixed
+     * @return bool
      */
     public function delete(User $user, Post $post)
     {
