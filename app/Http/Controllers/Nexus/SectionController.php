@@ -143,13 +143,15 @@ class SectionController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  section id  $id
-     * @param  Section\Destroy $request
+     * @param  \Illuminate\Http\Request  $request
      * @return Response
      */
-    public function destroy(Requests\Section\DestroyRequest $request, $id)
+    public function destroy(Request $request, $id)
     {
         $section = \App\Section::findOrFail($id);
         $parent_id = $section->parent_id;
+
+        $this->authorize('delete', $section);
         $section->delete();
         $redirect = action('Nexus\SectionController@show', ['id' => $parent_id]);
         return redirect($redirect);

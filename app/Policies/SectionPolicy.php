@@ -73,13 +73,13 @@ class SectionPolicy
 
     /**
      * Determine whether the user can delete the section.
-     *
+     * - a user can delete a section if they are the moderator of the parent section
      * @param  \App\User  $user
      * @param  \App\Section  $section
      * @return mixed
      */
     public function delete(User $user, Section $section)
     {
-        //
+        return $user->id === $section->parent->moderator->id;
     }
 }
