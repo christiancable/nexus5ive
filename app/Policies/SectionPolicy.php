@@ -57,7 +57,7 @@ class SectionPolicy
         return false;
     }
 
-    /*
+    /**
     * can a user move the section into the destinationSection
     *   - only if the user moderates the sections parent and the destination section
     *
@@ -81,5 +81,22 @@ class SectionPolicy
     public function delete(User $user, Section $section)
     {
         return $user->id === $section->parent->moderator->id;
+    }
+
+    /**
+     * Determine whether the user can restore the section
+     *
+     * a section can only be restored by user who
+     * - moderates the trashed section
+     * - moderates the destination section
+     *
+     * @param  \App\User  $user
+     * @param  \App\Section  $trashedSection
+     * @param  integer\App\Section  $destinationSection
+     * @return mixed
+     */
+    public function restore(User $user, Section $trashedSection, Section $destinationSection)
+    {
+        return $user->id === $trashedSection->moderator->id && $user->id === $destinationSection->moderator->id;
     }
 }
