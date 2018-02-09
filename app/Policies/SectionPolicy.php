@@ -42,7 +42,6 @@ class SectionPolicy
     */
     public function update(User $user, Section $section)
     {
-        // dd($user, $section);
         if ($user->id === $section->moderator->id) {
             return true;
         }
