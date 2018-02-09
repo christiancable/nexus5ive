@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Nexus;
 
+use App\Topic;
 use App\Section;
 use App\Http\Requests;
 use Illuminate\Http\Request;
@@ -117,11 +118,11 @@ class RestoreController extends Controller
     /**
      * Restore a trashed section
      *
-     * @param Requests\Section\RestoreRequest $request
+     * @param  \Illuminate\Http\Request  $request
      * @param int $id - the trashed section
-     * @return void
+     * @return \Illuminate\Http\Response
      */
-    public function section(Requests\Section\RestoreRequest $request, $id)
+    public function section(Request $request, $id)
     {
         
         $trashedSection = \App\Section::onlyTrashed()->findOrFail($id);
@@ -134,7 +135,14 @@ class RestoreController extends Controller
         return redirect($redirect);
     }
     
-    public function topic(Requests\Topic\RestoreRequest $request, $id)
+    /**
+     * Restore a trashed topic
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param int $id - the trashed topic
+     * @return \Illuminate\Http\Response
+     */
+    public function topic(Request $request, $id)
     {
         $trashedTopic = \App\Topic::onlyTrashed()->findOrFail($id);
         $destinationSection = \App\Section::findOrFail($request->destination);
