@@ -23,6 +23,7 @@ class AuthServiceProvider extends ServiceProvider
         Section::class  => SectionPolicy::class,
         Comment::class  => CommentPolicy::class,
         Post::class     => PostPolicy::class,
+        Topic::class    => TopicPolicy::class,
     ];
 
     /**
