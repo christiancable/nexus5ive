@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Nexus;
 
-use Illuminate\Http\Request;
-
+use App\Section;
 use App\Http\Requests;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class RestoreController extends Controller
@@ -114,11 +114,20 @@ class RestoreController extends Controller
         //
     }
 
+    /**
+     * Restore a trashed section
+     *
+     * @param Requests\Section\RestoreRequest $request
+     * @param int $id - the trashed section
+     * @return void
+     */
     public function section(Requests\Section\RestoreRequest $request, $id)
     {
+        
         $trashedSection = \App\Section::onlyTrashed()->findOrFail($id);
         $destinationSection = \App\Section::findOrFail($request->destination);
-     
+
+        $this->authorize('restore', [Section::class, $trashedSection, $destinationSection]);
         \App\Helpers\RestoreHelper::restoreSectionToSection($trashedSection, $destinationSection);
      
         $redirect = action('Nexus\SectionController@show', ['id' => $trashedSection->id]);
