@@ -11,6 +11,15 @@ use App\Http\Requests\Request;
 class TopicRequest extends FormRequest
 {
     /**
+     * authorization is handled in the http controllers so we need this here
+     * @return bool
+     */
+    public function authorize()
+    {
+        return true;
+    }
+
+    /**
     * shared validation messages for topic requests
     * @return array the validation messages to be return to the user
     **/

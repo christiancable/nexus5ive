@@ -124,13 +124,12 @@ class RestoreController extends Controller
      */
     public function section(Request $request, $id)
     {
-        
         $trashedSection = \App\Section::onlyTrashed()->findOrFail($id);
         $destinationSection = \App\Section::findOrFail($request->destination);
 
         $this->authorize('restore', [Section::class, $trashedSection, $destinationSection]);
         \App\Helpers\RestoreHelper::restoreSectionToSection($trashedSection, $destinationSection);
-     
+        
         $redirect = action('Nexus\SectionController@show', ['id' => $trashedSection->id]);
         return redirect($redirect);
     }
@@ -147,6 +146,7 @@ class RestoreController extends Controller
         $trashedTopic = \App\Topic::onlyTrashed()->findOrFail($id);
         $destinationSection = \App\Section::findOrFail($request->destination);
         
+        $this->authorize('restore', [Topic::class, $trashedTopic, $destinationSection]);
         \App\Helpers\RestoreHelper::restoreTopicToSection($trashedTopic, $destinationSection);
         
         $redirect = action('Nexus\SectionController@show', ['id' => $destinationSection->id]);
