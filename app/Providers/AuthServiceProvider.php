@@ -3,9 +3,11 @@
 namespace App\Providers;
 
 use App\Post;
+use App\Topic;
 use App\Comment;
 use App\Section;
 use App\Policies\PostPolicy;
+use App\Policies\TopicPolicy;
 use App\Policies\CommentPolicy;
 use App\Policies\SectionPolicy;
 use Illuminate\Support\Facades\Gate;
