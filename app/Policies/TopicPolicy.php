@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\User;
 use App\Topic;
+use App\Section;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class TopicPolicy
@@ -24,13 +25,24 @@ class TopicPolicy
 
     /**
      * Determine whether the user can create topics.
+     * Topics can be created by the moderator of the current section or bbs
+     * administrators
      *
-     * @param  \App\User  $user
+     * @param   \App\User  $user
+     * @param   \App\Section $section
      * @return mixed
      */
-    public function create(User $user)
+    public function create(User $user, Section $section)
     {
-        //
+        if ($user->adminstrator) {
+            return true;
+        }
+
+        if ($user->id === $section->moderator->id) {
+            return true;
+        }
+
+        return false;
     }
 
     /**

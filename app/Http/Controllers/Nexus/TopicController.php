@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Nexus;
 
-use Illuminate\Http\Request;
-
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
 use App\Topic;
+use App\Section;
+use App\Http\Requests;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class TopicController extends Controller
 {
@@ -38,10 +38,10 @@ class TopicController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Request  $request
+     * @param  Requests\Topic\TopicRequest  $request
      * @return Response
      */
-    public function store(Requests\Topic\CreateRequest $request)
+    public function store(Requests\Topic\TopicRequest $request)
     {
         $formName = "topicCreate";
         $input = $request->all();
@@ -51,12 +51,15 @@ class TopicController extends Controller
         $input['title'] = $input['form'][$formName]['title'];
         $input['intro'] = $input['form'][$formName]['intro'];
         $input['weight'] = $input['form'][$formName]['weight'];
+        $section = Section::findOrFail($input['section_id']);
 
+        $this->authorize('create', [Topic::class, $section]);
         $topic = \App\Topic::create($input);
         $redirect = action('Nexus\SectionController@show', ['id' => $topic->section_id]);
+        
         return redirect($redirect);
     }
-
+    
     /**
      * Display the specified resource.
      *
