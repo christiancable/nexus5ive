@@ -141,15 +141,15 @@ class TopicController extends Controller
 
 
     /**
-     * Update the specified resource in storage.
+     * Update the topic
      *
-     * @param  Request  $request
-     * @param  int  $id
-     * @return Response
+     * @param Requests\Topic\TopicRequest $request
+     * @param [type] $id
+     * @return void
      */
-    public function update(Requests\Topic\UpdateRequest $request, $id)
+    public function update(Requests\Topic\TopicRequest $request, $id)
     {
-        $topic = \App\Topic::findOrFail($id);
+        $topic = Topic::findOrFail($id);
 
         $formName = "topic{$id}";
 
@@ -161,21 +161,34 @@ class TopicController extends Controller
         $input['intro'] = $input['form'][$formName]['intro'];
         $input['weight'] = $input['form'][$formName]['weight'];
 
+        // can we update this section?
+        $this->authorize('update', $topic);
+
+        if ($topic->section_id !== (int) $input['section_id']) {
+            // is the user authorized to move the topic to a different section?
+            $destinationSection = Section::findOrFail($input['section_id']);
+            $this->authorize('move', [$topic, $destinationSection]);
+        }
+
         $topic->update($input);
         return  redirect()->route('section.show', ['id' => $topic->section_id]);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * destroy the topic
      *
-     * @param  int  $id
-     * @return Response
+     * @param Request $request
+     * @param int $id
+     * @return response
      */
-    public function destroy(Requests\Topic\DestroyRequest $request, $id)
+    public function destroy(Request $request, $id)
     {
         $topic = \App\Topic::findOrFail($id);
         $section_id = $topic->section->id;
+
+        $this->authorize('delete', $topic);
         $topic->delete();
+
         $redirect = action('Nexus\SectionController@show', ['id' => $section_id]);
         return redirect($redirect);
     }
