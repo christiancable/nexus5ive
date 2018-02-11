@@ -48,17 +48,50 @@ class TopicPolicy
     /**
      * Determine whether the user can update the topic.
      *
+     * User can update the topic if they are
+     * - the moderator of the section
+     * - a bbs administrator
+     *
      * @param  \App\User  $user
      * @param  \App\Topic  $topic
      * @return mixed
      */
     public function update(User $user, Topic $topic)
     {
-        //
+        if ($user->administrator) {
+            return true;
+        }
+
+        return $user->id === $topic->section->moderator->id;
+    }
+
+    /**
+     * Determine whether the user can move the topic.
+     * User can update the topic if they are
+     * - the moderator of the topic's section
+     * - & the moderator of the destination section
+     * - or a bbs administrator
+     *
+     * @param User $user
+     * @param Topic $topic
+     * @param Secction $destinationSection
+     * @return void
+     */
+    public function move(User $user, Topic $topic, Section $destinationSection)
+    {
+        if ($user->administrator) {
+            return true;
+        }
+
+        return $user->id === $topic->section->moderator->id && $user->id === $destinationSection->moderator->id;
     }
 
     /**
      * Determine whether the user can delete the topic.
+     *
+     * User can delete the topic if
+     * - they are the topic moderator
+     * - OR they are an administrator
      *
      * @param  \App\User  $user
      * @param  \App\Topic  $topic
@@ -66,7 +99,11 @@ class TopicPolicy
      */
     public function delete(User $user, Topic $topic)
     {
-        //
+        if ($user->administrator) {
+            return true;
+        }
+
+        return $user->id === $topic->section->moderator->id;
     }
 
     /**
