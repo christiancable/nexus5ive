@@ -14,17 +14,7 @@ class UpdateRequest extends FormRequest
      */
     public function authorize()
     {
-        $return = false;
-
-        if (!\Auth::check()) {
-            $return = false;
-        }
-
-        if ($this::input('id') == \Auth::id()) {
-            $return = true;
-        }
-
-        return $return;
+        return true;
     }
 
     /**
