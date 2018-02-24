@@ -8,6 +8,13 @@ use App\Http\Requests\Request;
 class CreateRequest extends FormRequest
 {
     /**
+     * The key to be used for the view error bag.
+    *
+    * @var string
+    */
+    protected $errorBag = 'sectionCreate';
+
+    /**
      * @return bool
      */
     public function authorize()
@@ -24,9 +31,9 @@ class CreateRequest extends FormRequest
     {
         $formName = "sectionCreate";
         return [
-            "form.sectionCreate.parent_id" => 'required|numeric',
-            "form.sectionCreate.user_id" => 'required|numeric',
-            "form.sectionCreate.title" => 'required',
+            "parent_id" => 'required|numeric',
+            "parent_id" => 'exists:sections,id',
+            "title" => 'required',
         ];
     }
 }
