@@ -42,18 +42,16 @@ class SectionController extends Controller
      */
     public function store(Requests\Section\CreateRequest $request)
     {
-        $input = $request->all();
-        $formName = "sectionCreate";
-        $input['parent_id'] = $input['form'][$formName]['parent_id'];
-        $parentSection = Section::findOrFail($input['parent_id']);
-
+        $parentSection = Section::findOrFail(request('parent_id'));
         $this->authorize('create', [Section::class, $parentSection]);
 
-        $input['user_id'] = $input['form'][$formName]['user_id'];
-        $input['title'] = $input['form'][$formName]['title'];
-        $input['intro'] = $input['form'][$formName]['intro'];
-        
-        $section = Section::create($input);
+        $section = Section::create([
+            'user_id'   => auth()->id(),
+            'parent_id' => request('parent_id'),
+            'title'     => request('title'),
+            'intro'     => request('intro')
+        ]);
+
         $redirect = action('Nexus\SectionController@show', ['id' => $section->id]);
         return redirect($redirect);
     }
