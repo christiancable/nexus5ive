@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Nexus;
 
 use App\Topic;
+use Validator;
 use App\Section;
 use App\Http\Requests;
 use Illuminate\Http\Request;
@@ -38,26 +39,45 @@ class TopicController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Requests\Topic\TopicRequest  $request
+     * @param  Request  $request
      * @return Response
      */
-    public function store(Requests\Topic\TopicRequest $request)
+    public function store(Request $request)
     {
-        $formName = "topicCreate";
-        $input = $request->all();
-        $input['section_id'] = $input['form'][$formName]['section_id'];
-        $input['secret'] = $input['form'][$formName]['secret'];
-        $input['readonly'] = $input['form'][$formName]['readonly'];
-        $input['title'] = $input['form'][$formName]['title'];
-        $input['intro'] = $input['form'][$formName]['intro'];
-        $input['weight'] = $input['form'][$formName]['weight'];
-        $section = Section::findOrFail($input['section_id']);
+        $validator = Validator::make(
+            $request->all(),
+            [
+                "title" => 'required',
+                "intro" => 'required',
+                "section_id" => 'required|numeric',
+                "section_id" => 'exists:sections,id',
+                "weight" => 'required|numeric',
+            ],
+            [
+                "title.required" => 'Title is required. Think of this as the subject to be discussed',
+                "intro.required" => 'Introduction is required. Give a brief introduction to your topic'
+            ]
+        );
 
+        if ($validator->fails()) {
+            return redirect(action('Nexus\SectionController@show', ['id' => request('section_id')]))
+                ->withErrors($validator, 'topicCreate')
+                ->withInput();
+        }
+
+        $section = Section::findOrFail(request('section_id'));
         $this->authorize('create', [Topic::class, $section]);
-        $topic = \App\Topic::create($input);
-        $redirect = action('Nexus\SectionController@show', ['id' => $topic->section_id]);
+
+        $topic = Topic::create([
+            'section_id' => request('section_id'),
+            'secret'     => request('secret'),
+            'readonly'   => request('readonly'),
+            'title'      => request('title'),
+            'intro'      => request('intro'),
+            'weight'     => request('weight')
+        ]);
         
-        return redirect($redirect);
+        return redirect(action('Nexus\SectionController@show', ['id' => $topic->section_id]));
     }
     
     /**
