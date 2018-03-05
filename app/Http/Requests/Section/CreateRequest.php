@@ -29,7 +29,6 @@ class CreateRequest extends FormRequest
      */
     public function rules()
     {
-        $formName = "sectionCreate";
         return [
             "parent_id" => 'required|numeric',
             "parent_id" => 'exists:sections,id',
