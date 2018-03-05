@@ -163,35 +163,53 @@ class TopicController extends Controller
     /**
      * Update the topic
      *
-     * @param Requests\Topic\TopicRequest $request
-     * @param [type] $id
+     * @param Request $request
      * @return void
      */
-    public function update(Requests\Topic\TopicRequest $request, $id)
+    public function update(Request $request, $id)
     {
+        $formName = "topicUpdate$id";
+
+        $validator = Validator::make(
+            $request->all(),
+            [
+                $formName . ".id"          => 'required|numeric',
+                $formName . ".id"          => 'exists:topics,id',
+                $formName . ".title"       => 'required',
+                $formName . ".intro"       => 'required',
+                $formName . ".section_id"  => 'required|numeric',
+                $formName . ".section_id"  => 'exists:sections,id',
+                $formName . ".weight"      => 'required|numeric',
+            ],
+            [
+                $formName . ".title.required" => 'Title is required. Think of this as the subject to be discussed',
+                $formName . ".intro.required" => 'Introduction is required. Give a brief introduction to your topic'
+            ]
+        );
+        
+        $topicDetails = request($formName);
+
+        if ($validator->fails()) {
+            return redirect(action('Nexus\SectionController@show', ['id' => $topicDetails['section_id']]))
+            ->withErrors($validator, $formName)
+            ->withInput();
+        }
+        
         $topic = Topic::findOrFail($id);
-
-        $formName = "topic{$id}";
-
-        $input = $request->all();
-        $input['section_id'] = $input['form'][$formName]['section_id'];
-        $input['secret'] = $input['form'][$formName]['secret'];
-        $input['readonly'] = $input['form'][$formName]['readonly'];
-        $input['title'] = $input['form'][$formName]['title'];
-        $input['intro'] = $input['form'][$formName]['intro'];
-        $input['weight'] = $input['form'][$formName]['weight'];
-
-        // can we update this section?
+        
+        $section = Section::findOrFail($topicDetails['section_id']);
+        
         $this->authorize('update', $topic);
-
-        if ($topic->section_id !== (int) $input['section_id']) {
+        
+        if ($topic->section_id !== (int) $topicDetails['section_id']) {
             // is the user authorized to move the topic to a different section?
-            $destinationSection = Section::findOrFail($input['section_id']);
+            $destinationSection = Section::findOrFail($topicDetails['section_id']);
             $this->authorize('move', [$topic, $destinationSection]);
         }
+        
+        $topic->update($topicDetails);
 
-        $topic->update($input);
-        return  redirect()->route('section.show', ['id' => $topic->section_id]);
+        return redirect(action('Nexus\SectionController@show', ['id' => $topic->section_id]));
     }
 
     /**
