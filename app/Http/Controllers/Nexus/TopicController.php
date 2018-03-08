@@ -2,17 +2,24 @@
 
 namespace App\Http\Controllers\Nexus;
 
+<<<<<<< HEAD
 use Auth;
 use App\Post;
+=======
+>>>>>>> d756182a4dda081121d7e6b953d566bc845d0563
 use App\Topic;
 use Validator;
 use App\Section;
 use App\Http\Requests;
+<<<<<<< HEAD
 use App\Helpers\ViewHelper;
 use App\Helpers\FlashHelper;
 use Illuminate\Http\Request;
 use App\Helpers\ActivityHelper;
 use App\Helpers\BreadcrumbHelper;
+=======
+use Illuminate\Http\Request;
+>>>>>>> d756182a4dda081121d7e6b953d566bc845d0563
 use App\Http\Controllers\Controller;
 
 class TopicController extends Controller
@@ -175,6 +182,7 @@ class TopicController extends Controller
     public function update(Request $request, $id)
     {
         $formName = "topicUpdate$id";
+<<<<<<< HEAD
 
         $validator = Validator::make(
             $request->all(),
@@ -215,6 +223,48 @@ class TopicController extends Controller
         
         $topic->update($topicDetails);
 
+=======
+
+        $validator = Validator::make(
+            $request->all(),
+            [
+                $formName . ".id"          => 'required|numeric',
+                $formName . ".id"          => 'exists:topics,id',
+                $formName . ".title"       => 'required',
+                $formName . ".intro"       => 'required',
+                $formName . ".section_id"  => 'required|numeric',
+                $formName . ".section_id"  => 'exists:sections,id',
+                $formName . ".weight"      => 'required|numeric',
+            ],
+            [
+                $formName . ".title.required" => 'Title is required. Think of this as the subject to be discussed',
+                $formName . ".intro.required" => 'Introduction is required. Give a brief introduction to your topic'
+            ]
+        );
+        
+        $topicDetails = request($formName);
+
+        if ($validator->fails()) {
+            return redirect(action('Nexus\SectionController@show', ['id' => $topicDetails['section_id']]))
+            ->withErrors($validator, $formName)
+            ->withInput();
+        }
+        
+        $topic = Topic::findOrFail($id);
+        
+        $section = Section::findOrFail($topicDetails['section_id']);
+        
+        $this->authorize('update', $topic);
+        
+        if ($topic->section_id !== (int) $topicDetails['section_id']) {
+            // is the user authorized to move the topic to a different section?
+            $destinationSection = Section::findOrFail($topicDetails['section_id']);
+            $this->authorize('move', [$topic, $destinationSection]);
+        }
+        
+        $topic->update($topicDetails);
+
+>>>>>>> d756182a4dda081121d7e6b953d566bc845d0563
         return redirect(action('Nexus\SectionController@show', ['id' => $topic->section_id]));
     }
 
