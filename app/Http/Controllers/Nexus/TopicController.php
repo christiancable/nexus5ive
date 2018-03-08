@@ -241,8 +241,20 @@ class TopicController extends Controller
      *
      * toggles a users subscription to the topic
      */
-    public function updateSubscription(Requests\Topic\SubscriptionRequest $request, $id)
+    public function updateSubscription(Request $request, $id)
     {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                "command" => 'required'
+            ]
+        );
+        
+        if ($validator->fails()) {
+            return redirect(action('Nexus\TopicController@show', ['id' => $id]));
+        }
+
+
         $input = $request->all();
         $topic = Topic::findOrFail($id);
 
