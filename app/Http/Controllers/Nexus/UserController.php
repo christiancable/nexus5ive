@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Nexus;
 
-use Illuminate\Http\Request;
 use Log;
+use App\User;
 use App\Http\Requests;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -109,7 +110,7 @@ class UserController extends Controller
      */
     public function update($user_name, Requests\User\UpdateRequest $request)
     {
-        $user = \App\User::where('username', $user_name)->firstOrFail();
+        $user = User::where('username', $user_name)->firstOrFail();
         $input = $request->all();
         if ($input['password'] <> '') {
             // to prevent setting password to an empty string https://trello.com/c/y1WAxwfb
@@ -117,6 +118,8 @@ class UserController extends Controller
         } else {
             unset($input['password']);
         }
+
+        $this->authorize('update', $user);
         $user->update($input);
         
         \App\Helpers\FlashHelper::showAlert('Profile Updated!', 'success');

@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Nexus;
 
-use Illuminate\Http\Request;
+use App\Section;
 use App\Http\Requests;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class SectionController extends Controller
@@ -41,14 +42,16 @@ class SectionController extends Controller
      */
     public function store(Requests\Section\CreateRequest $request)
     {
-        $formName = "sectionCreate";
-        $input = $request->all();
-        $input['parent_id'] = $input['form'][$formName]['parent_id'];
-        $input['user_id'] = $input['form'][$formName]['user_id'];
-        $input['title'] = $input['form'][$formName]['title'];
-        $input['intro'] = $input['form'][$formName]['intro'];
-        
-        $section = \App\Section::create($input);
+        $parentSection = Section::findOrFail(request('parent_id'));
+        $this->authorize('create', [Section::class, $parentSection]);
+
+        $section = Section::create([
+            'user_id'   => auth()->id(),
+            'parent_id' => request('parent_id'),
+            'title'     => request('title'),
+            'intro'     => request('intro')
+        ]);
+
         $redirect = action('Nexus\SectionController@show', ['id' => $section->id]);
         return redirect($redirect);
     }
@@ -97,26 +100,39 @@ class SectionController extends Controller
      */
     public function update(Requests\Section\UpdateRequest $request, $id)
     {
+        $section = Section::findOrFail($id);
+        
         $input = $request->all();
         $formName = "section{$id}";
+        $updatedSectionDetails = [
+            "id" => $id,
+            "intro" => $input['form'][$formName]['intro'],
+            "parent_id" => $input['form'][$formName]['parent_id'],
+            "title" => $input['form'][$formName]['title'],
+            "user_id" => $input['form'][$formName]['user_id'],
+            "weight" => $input['form'][$formName]['weight']
+        ];
 
-        /*
-        main menu has no parent so gets empty string 
-        we need to explicitly set this to null
-        */
-        if (strlen($input['form'][$formName]['parent_id']) !== 0) {
-            $input['parent_id'] = $input['form'][$formName]['parent_id'];
+        // if parent_id is an empty string then we are updating the root section so set parent to null
+        if (strlen($updatedSectionDetails["parent_id"]) === 0) {
+            $updatedSectionDetails["parent_id"] = null;
+        }
+
+        if ($updatedSectionDetails['parent_id'] == $section->parent_id) {
+            $destinationSection = $section->parent;
         } else {
-            $input['parent_id'] = null;
+            $destinationSection = Section::findOrFail($updatedSectionDetails['parent_id']);
+        }
+
+        // can user update the details?
+        $this->authorize('update', $section);
+
+        if ($updatedSectionDetails['parent_id'] != $section->parent_id) {
+            // can the user move the section?
+            $this->authorize('move', [Section::class, $section, $destinationSection]);
         }
         
-        $input['title'] = $input['form'][$formName]['title'];
-        $input['intro'] = $input['form'][$formName]['intro'];
-        $input['weight'] = $input['form'][$formName]['weight'];
-        $input['user_id'] = $input['form'][$formName]['user_id'];
-
-        $section = \App\Section::findOrFail($id);
-        $section->update($input);
+        $section->update($updatedSectionDetails);
 
         return redirect()->route('section.show', ['id' => $section->id]);
     }
@@ -125,13 +141,15 @@ class SectionController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  section id  $id
-     * @param  Section\Destroy $request
+     * @param  \Illuminate\Http\Request  $request
      * @return Response
      */
-    public function destroy(Requests\Section\DestroyRequest $request, $id)
+    public function destroy(Request $request, $id)
     {
         $section = \App\Section::findOrFail($id);
         $parent_id = $section->parent_id;
+
+        $this->authorize('delete', $section);
         $section->delete();
         $redirect = action('Nexus\SectionController@show', ['id' => $parent_id]);
         return redirect($redirect);

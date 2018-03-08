@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Nexus;
 
-use Illuminate\Http\Request;
-
+use App\Post;
+use App\Topic;
 use App\Http\Requests;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class PostController extends Controller
@@ -42,6 +43,9 @@ class PostController extends Controller
      */
     public function store(Requests\Post\CreateRequest $request)
     {
+        $topic = Topic::findOrFail($request->topic_id);
+        $this->authorize('create', [Post::class, $topic]);
+
         $input = $request->all();
         $input['user_id'] = \Auth::user()->id;
         $input['popname'] = \Auth::user()->popname;
@@ -94,15 +98,17 @@ class PostController extends Controller
      */
     public function update(Requests\Post\UpdateRequest $request, $id)
     {
-        // update who last updated the post
-        $input = $request->all();
-
+        // get post and autheorize
+        $post = \App\Post::findOrFail($id);
+        $this->authorize('update', [Post::class, $post]);
+        
         // copy the namespaced input files back into top level input
+        $input = $request->all();
         $input['title'] = $input['form'][$id]['title'];
         $input['text'] = $input['form'][$id]['text'];
-
+        
+        // update who last updated the post
         $input['update_user_id'] = \Auth::user()->id;
-        $post = \App\Post::findOrFail($id);
         $post->update($input);
         return redirect()->route('topic.show', ['id' => $post->topic_id]);
     }
@@ -113,10 +119,12 @@ class PostController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function destroy(Requests\Post\DeleteRequest $request, $id)
+    public function destroy(Request $request, $id)
     {
-        // using forceDelete here because in this case we do not want a soft delete
         $post = \App\Post::findOrFail($id);
+        $this->authorize('delete', $post);
+
+        // using forceDelete here because in this case we do not want a soft delete
         $topicID = $post->topic_id;
         $post->forceDelete();
         return redirect()->route('topic.show', ['id' => $post->topic_id]);

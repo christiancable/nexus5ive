@@ -8,27 +8,18 @@ use App\Http\Requests\Request;
 class CreateRequest extends FormRequest
 {
     /**
-     * a user can create a section if they
-     * moderate the current section
-     *
+     * The key to be used for the view error bag.
+    *
+    * @var string
+    */
+    protected $errorBag = 'sectionCreate';
+
+    /**
      * @return bool
      */
     public function authorize()
     {
-        $return = false;
-
-        $formName = "sectionCreate";
-        $formValues = $this::input('form')[$formName];
-        $this->session()->flash('form', $formName);
-
-        $parentSection = \App\Section::findOrFail($formValues['parent_id']);
-        if (\Auth::user()->id == $parentSection->moderator->id) {
-            $return = true;
-        } else {
-            $return = false;
-        }
-
-        return $return;
+        return true;
     }
 
     /**
@@ -38,11 +29,10 @@ class CreateRequest extends FormRequest
      */
     public function rules()
     {
-        $formName = "sectionCreate";
         return [
-            "form.{$formName}.parent_id" => 'required|numeric',
-            "form.{$formName}.user_id" => 'required|numeric',
-            "form.{$formName}.title" => 'required',
+            "parent_id" => 'required|numeric',
+            "parent_id" => 'exists:sections,id',
+            "title" => 'required',
         ];
     }
 }

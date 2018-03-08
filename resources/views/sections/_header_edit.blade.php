@@ -13,7 +13,6 @@
 
 {!! Form::hidden("form[$formName][id]", $section->id) !!}
 {!! Form::hidden("form[$formName][parent_id]", $section->parent_id) !!}
-{!! Form::hidden("form[$formName][current_section]", $section->id) !!}
 {!! Form::hidden("form[$formName][user_id]", $section->user_id) !!}
 {!! Form::hidden("form[$formName][weight]", $section->weight) !!}
 

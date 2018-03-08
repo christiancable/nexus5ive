@@ -2,11 +2,18 @@
 
 namespace App\Http\Controllers\Nexus;
 
-use Illuminate\Http\Request;
-
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
+use Auth;
+use App\Post;
 use App\Topic;
+use Validator;
+use App\Section;
+use App\Http\Requests;
+use App\Helpers\ViewHelper;
+use App\Helpers\FlashHelper;
+use Illuminate\Http\Request;
+use App\Helpers\ActivityHelper;
+use App\Helpers\BreadcrumbHelper;
+use App\Http\Controllers\Controller;
 
 class TopicController extends Controller
 {
@@ -41,22 +48,44 @@ class TopicController extends Controller
      * @param  Request  $request
      * @return Response
      */
-    public function store(Requests\Topic\CreateRequest $request)
+    public function store(Request $request)
     {
-        $formName = "topicCreate";
-        $input = $request->all();
-        $input['section_id'] = $input['form'][$formName]['section_id'];
-        $input['secret'] = $input['form'][$formName]['secret'];
-        $input['readonly'] = $input['form'][$formName]['readonly'];
-        $input['title'] = $input['form'][$formName]['title'];
-        $input['intro'] = $input['form'][$formName]['intro'];
-        $input['weight'] = $input['form'][$formName]['weight'];
+        $validator = Validator::make(
+            $request->all(),
+            [
+                "title" => 'required',
+                "intro" => 'required',
+                "section_id" => 'required|numeric',
+                "section_id" => 'exists:sections,id',
+                "weight" => 'required|numeric',
+            ],
+            [
+                "title.required" => 'Title is required. Think of this as the subject to be discussed',
+                "intro.required" => 'Introduction is required. Give a brief introduction to your topic'
+            ]
+        );
 
-        $topic = \App\Topic::create($input);
-        $redirect = action('Nexus\SectionController@show', ['id' => $topic->section_id]);
-        return redirect($redirect);
+        if ($validator->fails()) {
+            return redirect(action('Nexus\SectionController@show', ['id' => request('section_id')]))
+                ->withErrors($validator, 'topicCreate')
+                ->withInput();
+        }
+
+        $section = Section::findOrFail(request('section_id'));
+        $this->authorize('create', [Topic::class, $section]);
+
+        $topic = Topic::create([
+            'section_id' => request('section_id'),
+            'secret'     => request('secret'),
+            'readonly'   => request('readonly'),
+            'title'      => request('title'),
+            'intro'      => request('intro'),
+            'weight'     => request('weight')
+        ]);
+        
+        return redirect(action('Nexus\SectionController@show', ['id' => $topic->section_id]));
     }
-
+    
     /**
      * Display the specified resource.
      *
@@ -66,8 +95,8 @@ class TopicController extends Controller
     public function show($topic_id)
     {
 
-        $posts = \App\Post::with('author')->where('topic_id', $topic_id)->orderBy('id', 'dsc');
-        $topic = \App\Topic::findOrFail($topic_id);
+        $posts = Post::with('author')->where('topic_id', $topic_id)->orderBy('id', 'dsc');
+        $topic = Topic::findOrFail($topic_id);
 
         // is this topic readonly to the authenticated user?
         $readonly = true;
@@ -76,41 +105,41 @@ class TopicController extends Controller
             $readonly = false;
         }
 
-        if ($topic->section->moderator->id === \Auth::user()->id) {
+        if ($topic->section->moderator->id === Auth::user()->id) {
             $readonly = false;
         }
 
-        if (\Auth::user()->administrator) {
+        if (Auth::user()->administrator) {
             $readonly = false;
         }
 
         // is this topic secret to the authenticated user?
         $userCanSeeSecrets = false;
 
-        if ($topic->section->moderator->id === \Auth::user()->id) {
+        if ($topic->section->moderator->id === Auth::user()->id) {
             $userCanSeeSecrets = true;
         }
 
-        if (\Auth::user()->administrator) {
+        if (Auth::user()->administrator) {
             $userCanSeeSecrets = true;
         }
 
         // get the previously read progress so we can indicate this in the view
-        $readProgress =  \App\Helpers\ViewHelper::getReadProgress(\Auth::user(), $topic);
+        $readProgress =  ViewHelper::getReadProgress(Auth::user(), $topic);
         
         // get the subscription status
-        $topicStatus = \App\Helpers\ViewHelper::getTopicStatus(\Auth::user(), $topic);
+        $topicStatus = ViewHelper::getTopicStatus(Auth::user(), $topic);
         $unsubscribed = $topicStatus['unsubscribed'];
 
-        \App\Helpers\ViewHelper::updateReadProgress(\Auth::user(), $topic);
+        ViewHelper::updateReadProgress(Auth::user(), $topic);
 
-        \App\Helpers\ActivityHelper::updateActivity(
-            \Auth::user()->id,
+        ActivityHelper::updateActivity(
+            Auth::user()->id,
             "Reading <em>{$topic->title}</em>",
             action('Nexus\TopicController@show', ['id' => $topic->id])
         );
 
-        $breadcrumbs = \App\Helpers\BreadcrumbHelper::breadcrumbForTopic($topic);
+        $breadcrumbs = BreadcrumbHelper::breadcrumbForTopic($topic);
         return view(
             'topics.index',
             compact(
@@ -138,41 +167,72 @@ class TopicController extends Controller
 
 
     /**
-     * Update the specified resource in storage.
+     * Update the topic
      *
-     * @param  Request  $request
-     * @param  int  $id
-     * @return Response
+     * @param Request $request
+     * @return void
      */
-    public function update(Requests\Topic\UpdateRequest $request, $id)
+    public function update(Request $request, $id)
     {
-        $topic = \App\Topic::findOrFail($id);
+        $formName = "topicUpdate$id";
 
-        $formName = "topic{$id}";
+        $validator = Validator::make(
+            $request->all(),
+            [
+                $formName . ".id"          => 'required|numeric',
+                $formName . ".id"          => 'exists:topics,id',
+                $formName . ".title"       => 'required',
+                $formName . ".intro"       => 'required',
+                $formName . ".section_id"  => 'required|numeric',
+                $formName . ".section_id"  => 'exists:sections,id',
+                $formName . ".weight"      => 'required|numeric',
+            ],
+            [
+                $formName . ".title.required" => 'Title is required. Think of this as the subject to be discussed',
+                $formName . ".intro.required" => 'Introduction is required. Give a brief introduction to your topic'
+            ]
+        );
+        
+        $topicDetails = request($formName);
 
-        $input = $request->all();
-        $input['section_id'] = $input['form'][$formName]['section_id'];
-        $input['secret'] = $input['form'][$formName]['secret'];
-        $input['readonly'] = $input['form'][$formName]['readonly'];
-        $input['title'] = $input['form'][$formName]['title'];
-        $input['intro'] = $input['form'][$formName]['intro'];
-        $input['weight'] = $input['form'][$formName]['weight'];
+        if ($validator->fails()) {
+            return redirect(action('Nexus\SectionController@show', ['id' => $topicDetails['section_id']]))
+            ->withErrors($validator, $formName)
+            ->withInput();
+        }
+        
+        $topic = Topic::findOrFail($id);
+        
+        $section = Section::findOrFail($topicDetails['section_id']);
+        
+        $this->authorize('update', $topic);
+        
+        if ($topic->section_id !== (int) $topicDetails['section_id']) {
+            // is the user authorized to move the topic to a different section?
+            $destinationSection = Section::findOrFail($topicDetails['section_id']);
+            $this->authorize('move', [$topic, $destinationSection]);
+        }
+        
+        $topic->update($topicDetails);
 
-        $topic->update($input);
-        return  redirect()->route('section.show', ['id' => $topic->section_id]);
+        return redirect(action('Nexus\SectionController@show', ['id' => $topic->section_id]));
     }
 
     /**
-     * Remove the specified resource from storage.
+     * destroy the topic
      *
-     * @param  int  $id
-     * @return Response
+     * @param Request $request
+     * @param int $id
+     * @return response
      */
-    public function destroy(Requests\Topic\DestroyRequest $request, $id)
+    public function destroy(Request $request, $id)
     {
-        $topic = \App\Topic::findOrFail($id);
+        $topic = Topic::findOrFail($id);
         $section_id = $topic->section->id;
+
+        $this->authorize('delete', $topic);
         $topic->delete();
+
         $redirect = action('Nexus\SectionController@show', ['id' => $section_id]);
         return redirect($redirect);
     }
@@ -181,20 +241,32 @@ class TopicController extends Controller
      *
      * toggles a users subscription to the topic
      */
-    public function updateSubscription(Requests\Topic\SubscriptionRequest $request, $id)
+    public function updateSubscription(Request $request, $id)
     {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                "command" => 'required'
+            ]
+        );
+        
+        if ($validator->fails()) {
+            return redirect(action('Nexus\TopicController@show', ['id' => $id]));
+        }
+
+
         $input = $request->all();
-        $topic = \App\Topic::findOrFail($id);
+        $topic = Topic::findOrFail($id);
 
         if ($input['command'] === 'subscribe') {
-            \App\Helpers\ViewHelper::subscribeToTopic(\Auth::user(), $topic);
+            ViewHelper::subscribeToTopic(Auth::user(), $topic);
             $message = '**Subscribed!** _Catch-up_ will return you here when new comments are added.';
         } else {
-            \App\Helpers\ViewHelper::unsubscribeFromTopic(\Auth::user(), $topic);
+            ViewHelper::unsubscribeFromTopic(Auth::user(), $topic);
             $message = '**Unsubscribed!** New comments here will be hidden from _Catch-up_.';
         }
 
-        \App\Helpers\FlashHelper::showAlert($message, 'success');
+        FlashHelper::showAlert($message, 'success');
         return  redirect()->route('topic.show', ['id' => $topic->id]);
     }
     
@@ -203,10 +275,10 @@ class TopicController extends Controller
     */
     public function markAllSubscribedTopicsAsRead()
     {
-        \App\Helpers\ViewHelper::catchUpCatchUp(\Auth::user());
+        ViewHelper::catchUpCatchUp(Auth::user());
         
         $message = '**Success!** all subscribed topics are now marked as read';
-        \App\Helpers\FlashHelper::showAlert($message, 'success');
+        FlashHelper::showAlert($message, 'success');
         
         return redirect('/');
     }
