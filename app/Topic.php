@@ -39,10 +39,14 @@ class Topic extends Model
             }
         });
     }
+    /**
+     * returns the time of the most recent post
+     * if the topic has no posts then return the created time of the topic
+     *
+     * @return timestamp
+     */
     public function getMostRecentPostTimeAttribute()
     {
-         $result = false;
-
         $latestPost =  Post::select('time')
             ->where('topic_id', $this->id)
             ->orderBy('time', 'dec')
@@ -50,9 +54,10 @@ class Topic extends Model
 
         if ($latestPost) {
             $result = $latestPost->time;
+        } else {
+            $result = $this->created_at;
         }
 
-//         $result = $this->most_recent_post->time;
         return $result;
     }
 
