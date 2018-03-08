@@ -1,39 +1,46 @@
 <?php
 namespace App\Helpers;
 
+use App\View;
+use App\User;
+use App\Topic;
+
 class ViewHelper
 {
     /**
      * records a users read progress within a topic
      */
-    public static function updateReadProgress(\App\User $user, \App\Topic $topic)
+    public static function updateReadProgress(User $user, Topic $topic)
     {
-
-        $lastestView = \App\View::where('topic_id', $topic->id)->where('user_id', $user->id)->first();
-
-        if ($lastestView) {
-            $lastestView->latest_view_date = $topic->most_recent_post_time;
-            $lastestView->update();
+        $progress = View::where('topic_id', $topic->id)->where('user_id', $user->id)->first();
+        
+        if (!$progress) {
+            // first time viewing this topic
+            $progress = new View;
+            $progress->user_id = $user->id;
+            $progress->topic_id = $topic->id;
+            $progress->latest_view_date = $topic->most_recent_post_time;
+            $progress->save();
         } else {
-            $view = new \App\View;
-            $view->user_id = $user->id;
-            $view->topic_id = $topic->id;
-            $view->latest_view_date = $topic->most_recent_post_time;
-            $view->save();
+            // if there's a newer post then update the progress
+            if ($topic->most_recent_post_time !== $progress->latest_view_date) {
+                $progress->latest_view_date = $topic->most_recent_post_time;
+                $progress->save();
+            }
         }
     }
 
-    public static function getReadProgress(\App\User $user, \App\Topic $topic)
+    public static function getReadProgress(User $user, Topic $topic)
     {
         $result = false;
 
-        $latestView = \App\View::select('latest_view_date')
+        $progress = View::select('latest_view_date')
             ->where('topic_id', $topic->id)
             ->where('user_id', $user->id)
             ->first();
 
-        if ($latestView) {
-            $result = $latestView->latest_view_date;
+        if ($progress) {
+            $result = $progress->latest_view_date;
         }
 
         return $result;
@@ -43,11 +50,11 @@ class ViewHelper
     /**
      * reports if a given topic has been updated since the a user last read
      *
-     * @param  \App\User $user - the user
-     * @param  \App\Topic $topic - a topic
+     * @param  User $user - the user
+     * @param  Topic $topic - a topic
      * @return boolean has the topic being updated or not
      */
-    public static function topicHasUnreadPosts(\App\User $user, \App\Topic $topic)
+    public static function topicHasUnreadPosts(User $user, Topic $topic)
     {
         $return = true;
         $mostRecentlyReadPostDate =  \App\Helpers\ViewHelper::getReadProgress($user, $topic);
@@ -72,11 +79,11 @@ class ViewHelper
     /**
      * reports on the status of a given topic for a user
      *
-     * @param  \App\User $user - the user
-     * @param  \App\Topic $topic - a topic
+     * @param  User $user - the user
+     * @param  Topic $topic - a topic
      * @return array - of status values
      */
-    public static function getTopicStatus(\App\User $user, \App\Topic $topic)
+    public static function getTopicStatus(User $user, Topic $topic)
     {
         $status = [
             'new_posts' => false,
@@ -87,7 +94,7 @@ class ViewHelper
         $mostRecentlyReadPostDate =  \App\Helpers\ViewHelper::getReadProgress($user, $topic);
         $mostRecentPostDate = $topic->most_recent_post_time;
 
-        $view = \App\View::where('topic_id', $topic->id)->where('user_id', $user->id)->first();
+        $view = View::where('topic_id', $topic->id)->where('user_id', $user->id)->first();
 
         if ($view !== null) {
             if ($view->unsubscribed != 0) {
@@ -109,40 +116,40 @@ class ViewHelper
     /**
      * unsubscribes the user from the topic
      **/
-    public static function unsubscribeFromTopic(\App\User $user, \App\Topic $topic)
+    public static function unsubscribeFromTopic(User $user, Topic $topic)
     {
-        $lastestView = \App\View::where('topic_id', $topic->id)->where('user_id', $user->id)->first();
+        $progress = View::where('topic_id', $topic->id)->where('user_id', $user->id)->first();
 
-        if ($lastestView) {
-            $lastestView->unsubscribed = true;
-            $lastestView->update();
+        if ($progress) {
+            $progress->unsubscribed = true;
+            $progress->update();
         } else {
-            $view = new \App\View;
-            $view->user_id = $user->id;
-            $view->topic_id = $topic->id;
-            $view->latest_view_date = $topic->most_recent_post_time;
-            $view->unsubscribed = true;
-            $view->save();
+            $progress = new View;
+            $progress->user_id = $user->id;
+            $progress->topic_id = $topic->id;
+            $progress->latest_view_date = $topic->most_recent_post_time;
+            $progress->unsubscribed = true;
+            $progress->save();
         }
     }
 
     /**
      * subscribes the user from the topic
      **/
-    public static function subscribeToTopic(\App\User $user, \App\Topic $topic)
+    public static function subscribeToTopic(User $user, Topic $topic)
     {
-        $lastestView = \App\View::where('topic_id', $topic->id)->where('user_id', $user->id)->first();
+        $progress = View::where('topic_id', $topic->id)->where('user_id', $user->id)->first();
 
-        if ($lastestView) {
-            $lastestView->unsubscribed = false;
-            $lastestView->update();
+        if ($progress) {
+            $progress->unsubscribed = false;
+            $progress->update();
         } else {
-            $view = new \App\View;
-            $view->user_id = $user->id;
-            $view->topic_id = $topic->id;
-            $view->latest_view_date = $topic->most_recent_post_time;
-            $view->unsubscribed = false;
-            $view->save();
+            $progress = new View;
+            $progress->user_id = $user->id;
+            $progress->topic_id = $topic->id;
+            $progress->latest_view_date = $topic->most_recent_post_time;
+            $progress->unsubscribed = false;
+            $progress->save();
         }
     }
     
@@ -150,7 +157,7 @@ class ViewHelper
         updates the read progress of all previously read topics
         with the latest post of those topics
     */
-    public static function catchUpCatchUp(\App\User $user)
+    public static function catchUpCatchUp(User $user)
     {
         $views = $user->views;
         
