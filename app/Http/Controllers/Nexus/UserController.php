@@ -3,9 +3,13 @@
 namespace App\Http\Controllers\Nexus;
 
 use Log;
+use Auth;
+use Hash;
 use App\User;
+use Validator;
 use App\Http\Requests;
 use Illuminate\Http\Request;
+use App\Helpers\FlashHelper;
 use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -25,7 +29,7 @@ class UserController extends Controller
     {
         $users =  \App\User::select('username', 'name', 'popname', 'latestLogin')->orderBy('username', 'asc')->get();
         \App\Helpers\ActivityHelper::updateActivity(
-            \Auth::user()->id,
+            Auth::user()->id,
             "Viewing list of Users",
             action('Nexus\UserController@index')
         );
@@ -68,17 +72,17 @@ class UserController extends Controller
             $user = \App\User::with('comments', 'comments.author')->where('username', $user_name)->firstOrFail();
         } catch (ModelNotFoundException $ex) {
             $message = "$user_name not found. Maybe you're thinking of someone else";
-            \App\Helpers\FlashHelper::showAlert($message, 'warning');
+            FlashHelper::showAlert($message, 'warning');
             return redirect('/users/');
         }
 
-        if ($user->id === \Auth::user()->id) {
-            \Auth::user()->markCommentsAsRead();
-            \Auth::user()->save();
+        if ($user->id === Auth::user()->id) {
+            Auth::user()->markCommentsAsRead();
+            Auth::user()->save();
         }
 
         \App\Helpers\ActivityHelper::updateActivity(
-            \Auth::user()->id,
+            Auth::user()->id,
             "Examining <em>{$user->username}</em>",
             action('Nexus\UserController@show', ['user_name' => $user_name])
         );
@@ -102,28 +106,45 @@ class UserController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the user
      *
+     * @param  String $username
      * @param  Request  $request
-     * @param  int  $id
      * @return Response
      */
-    public function update($user_name, Requests\User\UpdateRequest $request)
+    public function update($user_name, Request $request)
     {
-        $user = User::where('username', $user_name)->firstOrFail();
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'id'    => 'required|exists:users,id',
+                'email' => 'required|unique:users,email',
+                'password' => 'confirmed',
+            ]
+        );
+
+        if ($validator->fails()) {
+            return redirect(action('Nexus\UserController@show', ['user_name' => $user_name]))
+                ->withErrors($validator, 'userUpdate')
+                ->withInput();
+        }
+
+        
         $input = $request->all();
+        
+        // to prevent setting password to an empty string https://trello.com/c/y1WAxwfb
         if ($input['password'] <> '') {
-            // to prevent setting password to an empty string https://trello.com/c/y1WAxwfb
-            $input['password'] = \Hash::make($input['password']);
+            $input['password'] = Hash::make($input['password']);
         } else {
             unset($input['password']);
         }
-
+        
+        $user = User::findOrFail(request('id'));
         $this->authorize('update', $user);
         $user->update($input);
         
-        \App\Helpers\FlashHelper::showAlert('Profile Updated!', 'success');
-        return redirect('/users/'. $user_name);
+        FlashHelper::showAlert('Profile Updated!', 'success');
+        return redirect(action('Nexus\UserController@show', ['user_name' => $user_name]));
     }
 
     /**

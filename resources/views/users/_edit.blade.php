@@ -1,7 +1,7 @@
-@if ($errors->all())
+@if ($errors->userUpdate->all())
     <div class="alert alert-warning" role="alert">
     <ul>
-        @foreach($errors->all() as $error)
+        @foreach($errors->userUpdate->all() as $error)
             <li>{{ $error }}</li>
          @endforeach
      </ul>
