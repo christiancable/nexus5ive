@@ -118,7 +118,7 @@ class UserController extends Controller
             $request->all(),
             [
                 'id'    => 'required|exists:users,id',
-                'email' => 'required|unique:users,email',
+                'email' => 'required|unique:users,email,' . request('id'),
                 'password' => 'confirmed',
             ]
         );
