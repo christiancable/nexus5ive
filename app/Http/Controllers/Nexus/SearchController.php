@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers\Nexus;
 
-use Illuminate\Http\Request;
-
+use Auth;
+use App\Post;
+use Validator;
 use App\Http\Requests;
+use Illuminate\Http\Request;
+use App\Helpers\ActivityHelper;
+use App\Helpers\BreadcrumbHelper;
 use App\Http\Controllers\Controller;
 
 class SearchController extends Controller
@@ -27,7 +31,7 @@ class SearchController extends Controller
     {
         $text = 'Search';
         $results = null;
-        $breadcrumbs = \App\Helpers\BreadcrumbHelper::breadcumbForUtility('Search');
+        $breadcrumbs = BreadcrumbHelper::breadcumbForUtility('Search');
 
         return view(
             'search.results',
@@ -36,17 +40,28 @@ class SearchController extends Controller
     }
 
     /**
-     *
-     * @todo validation of search via request
-     *
+     * submit the search request
      */
-    public function submitSearch(Requests\Search\SearchRequest $request)
+    public function submitSearch(Request $request)
     {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'text' => 'required'
+            ]
+        );
+
+        if ($validator->fails()) {
+            return redirect(action('Nexus\SearchController@index'))
+                ->withErrors($validator, 'submitSearch')
+                ->withInput();
+        }
+
+
         $input = $request->all();
         $searchText = $input['text'];
         
-        $redirect = action('Nexus\SearchController@find', ['text' => $searchText]);
-        return redirect($redirect);
+        return redirect(action('Nexus\SearchController@find', ['text' => $searchText]));
     }
 
 
@@ -98,26 +113,26 @@ pattern;
                         $results = $results->where('text', 'like', "%$word%");
                     } else {
                         // first where
-                        $results = \App\Post::where('text', 'like', "%$word%");
+                        $results = Post::where('text', 'like', "%$word%");
                     }
                 }
             }
         } else {
             $phrase = trim($matches[1]);
-            $results = \App\Post::where('text', 'like', "%$phrase%");
+            $results = Post::where('text', 'like', "%$phrase%");
         }
 
         if ($results) {
             $results->orderBy('time', 'desc');
         }
 
-        \App\Helpers\ActivityHelper::updateActivity(
-            \Auth::user()->id,
+        ActivityHelper::updateActivity(
+            Auth::user()->id,
             "Searching",
             action('Nexus\SearchController@index')
         );
 
-        $breadcrumbs = \App\Helpers\BreadcrumbHelper::breadcumbForUtility('Search');
+        $breadcrumbs = BreadcrumbHelper::breadcumbForUtility('Search');
 
         return view(
             'search.results',
