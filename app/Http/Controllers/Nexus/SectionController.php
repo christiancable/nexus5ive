@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Nexus;
 
+use Validator;
 use App\Section;
 use App\Http\Requests;
 use Illuminate\Http\Request;
@@ -40,11 +41,26 @@ class SectionController extends Controller
      * @param  Request  $request
      * @return Response
      */
-    public function store(Requests\Section\CreateRequest $request)
+    public function store(Request $request)
     {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                "parent_id" => 'required|numeric',
+                "parent_id" => 'exists:sections,id',
+                "title" => 'required',
+            ]
+        );
+        
+        if ($validator->fails()) {
+            return redirect(action('Nexus\SectionController@show', ['id' => request('parent_id')]))
+                ->withErrors($validator, 'sectionCreate')
+                ->withInput();
+        }
+        
         $parentSection = Section::findOrFail(request('parent_id'));
         $this->authorize('create', [Section::class, $parentSection]);
-
+        
         $section = Section::create([
             'user_id'   => auth()->id(),
             'parent_id' => request('parent_id'),
