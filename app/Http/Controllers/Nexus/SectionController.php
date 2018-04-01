@@ -6,6 +6,7 @@ use Validator;
 use App\Section;
 use App\Http\Requests;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
 
 class SectionController extends Controller
@@ -114,12 +115,46 @@ class SectionController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update(Requests\Section\UpdateRequest $request, $id)
+    // public function update(Requests\Section\UpdateRequest $request, $id)
+    public function update(Request $request, $id)
     {
         $section = Section::findOrFail($id);
+        $formName = "section{$id}";
+
+        // it not valid to move a section into a descendant
+        $descendants = \App\Helpers\SectionHelper::allChildSections($section);
+        $descendantsIDs = array_flatten($descendants->pluck('id')->toArray());
+        
+        // if parents exists then it much be a valid section id
+        $allSectionIDs = \App\Section::all('id')->pluck('id')->toArray();
+        
+        $validator = Validator::make(
+            $request->all(),
+            [
+                "form.{$formName}.parent_id" => [
+                    'required',
+                    'numeric',
+                    Rule::notIn($descendantsIDs),
+                    Rule::notIn([$id]),
+                    Rule::In($allSectionIDs),
+                ],
+                "form.{$formName}.title" => 'required',
+                "form.{$formName}.user_id" => 'required|numeric',
+            ],
+            [
+                "form.{$formName}.title.required" => 'Section Title is required'
+            ]
+        );
+        
+        if ($validator->fails()) {
+            return redirect(action('Nexus\SectionController@show', [
+                    'id' => $request->input("form.$formName.parent_id")
+                ]))
+                ->withErrors($validator, "sectionUpdate$id")
+                ->withInput();
+        }
         
         $input = $request->all();
-        $formName = "section{$id}";
         $updatedSectionDetails = [
             "id" => $id,
             "intro" => $input['form'][$formName]['intro'],
@@ -128,21 +163,21 @@ class SectionController extends Controller
             "user_id" => $input['form'][$formName]['user_id'],
             "weight" => $input['form'][$formName]['weight']
         ];
-
+        
         // if parent_id is an empty string then we are updating the root section so set parent to null
         if (strlen($updatedSectionDetails["parent_id"]) === 0) {
             $updatedSectionDetails["parent_id"] = null;
         }
-
+        
         if ($updatedSectionDetails['parent_id'] == $section->parent_id) {
             $destinationSection = $section->parent;
         } else {
             $destinationSection = Section::findOrFail($updatedSectionDetails['parent_id']);
         }
-
+        
         // can user update the details?
         $this->authorize('update', $section);
-
+        
         if ($updatedSectionDetails['parent_id'] != $section->parent_id) {
             // can the user move the section?
             $this->authorize('move', [Section::class, $section, $destinationSection]);
