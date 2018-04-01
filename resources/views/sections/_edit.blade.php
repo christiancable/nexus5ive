@@ -1,19 +1,23 @@
 {{-- this is for moderators to edit sub sections --}}
 <div class="panel panel-primary">
     <div class="well">
-        <?php
-            $formName = 'section'.$subSection->id;
-        ?>
-        {!! Form::open(
-            array(
-                'route'     => ['section.update', $subSection->id],
-                'class'     => 'form',
-                'method'    => 'PATCH',
-                'name'      => $formName,
-                )
-            ) 
-        !!}
-        
+
+    <?php
+    $errorBag = 'sectionUpdate' . $subSection->id;
+    $formName = 'section'.$subSection->id;
+    $submitLabel = 'Save Changes';
+    $submitIcon = 'glyphicon-pencil';
+    $submitType = 'btn-info';
+    ?>
+
+    {!! Form::open(
+        array(
+        'route'     => ['section.update', $subSection->id],
+        'class'     => 'form',
+        'method'    => 'PATCH',
+        'name'      => $formName,
+    )) !!}
+
         {!! Form::hidden("form[$formName][id]", $subSection->id) !!}
 
         <div class="form-group">
@@ -23,80 +27,77 @@
         <div class="form-group">
             {!! Form::textarea("form[$formName][intro]", $subSection->intro, ['class'=> 'form-control']) !!}
         </div>
-        <?php
-            $submitLabel = 'Save Changes';
-            $submitIcon = 'glyphicon-pencil';
-            $submitType = 'btn-info';
-        ?>
 
         <div class="row form-inline">
-            <div class="col-md-6 form-group">
-                <label>
-                    Parent Section {!! 
-                    Form::select("form[$formName][parent_id]",
+
+            <div class="col-xs-8 col-sm-4 col-lg-3 form-group">
+                <label>Section 
+                {!! 
+                    Form::select(
+                        "form[$formName][parent_id]",
                         $destinations->pluck('title','id')->toArray(),
                         $subSection->parent->id,
-                        ['class' => 'form-control'])
-                    !!}
+                        ['class' => 'form-control']
+                    )
+                !!}
                 </label>
             </div>
 
-            <div class="col-md-6 form-group">
-                <label>
-                    Display Order {!!
-                        Form::selectRange("form[$formName][weight]",
+            <div class="col-xs-12  col-sm-4 col-lg-3 form-group">
+                <label> Moderator 
+                {!!
+                    Form::select(
+                        "form[$formName][user_id]",
+                        \App\User::all()->pluck('username', 'id')->toArray(),
+                        $subSection->moderator->id,                    
+                        ['class' => 'form-control']
+                    )
+                !!}
+                </label>
+            </div>
+
+            <div class="col-sx-4 col-sm-4 col-lg-3 form-group">
+                <label>Order
+                {!!
+                    Form::selectRange(
+                        "form[$formName][weight]",
                         0,
                         10,
                         $subSection->weight,
-                        ['class' => 'form-control'])
-                    !!} 
+                        ['class' => 'form-control']
+                    )
+                !!}
                 </label>
             </div>
-        </div>
 
-        <div class="row">
-            <div class="col-md-6 form-group">
-                <label>
-                    Moderator {!!
-                        Form::select("form[$formName][user_id]",
-                            \App\User::all()->pluck('username', 'id')->toArray(),
-                            $subSection->moderator->id,                    
-                            ['class' => 'form-control'])
-                    !!} 
-                </label>
-            </div>
-        </div>
-
-        <div class="row">    
-            <div class="col-sm-12">
-                <div class="form-group">          
-                {!! 
-                    Form::button("<span class='glyphicon glyphicon-pencil'></span>&nbsp;&nbsp;Save Changes",
+            <div class="col-xs-12 col-lg-3">
+                {!!
+                    Form::button(
+                        "<span class='glyphicon glyphicon-pencil'></span>&nbsp;&nbsp;Save Changes",
                         array(
                             'type'  => 'submit',
-                            'class' => "btn pull-right btn-info col-xs-12 col-sm-3", 
+                            'class' => "btn pull-right col-xs-12 btn-info", 
                             'value' => $formName
-                            )
-                        ) 
+                        )
+                    ) 
                 !!}
-                </div>
+                
             </div>
+        
         </div>
 
-        {!! Form::close() !!}
+    {!! Form::close() !!}
 
-
-    </div>
- @if (Session::get('form') == $formName)
-    @if ($errors->any())
-        <div class="row">
-        <div class="col-sm-12">
-            <p class="alert alert-danger">
-            You need to <strong>give your section a title</strong>. Otherwise; <em>chaos</em>.
-            </p>
-            </div>
+    @if ($errors->$errorBag->all())
+        <br/>
+        <div class="alert alert-danger" role="alert">
+            <ul>
+            @foreach($errors->$errorBag->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+            </ul>
         </div>
     @endif 
-@endif
-</div>
 
+    </div> <!-- well -->
+</div> <!-- panel panel-primary -->
