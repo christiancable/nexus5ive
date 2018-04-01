@@ -18,6 +18,9 @@ The web version of Nexus has run in one form or another since the ultra-futurist
 
 This current version is built using the [Laravel framework](https://laravel.com) by Taylor Otwell 
 
+## Build Status
+
+[![Build Status](https://travis-ci.org/christiancable/nexus5ive.svg?branch=master)](https://travis-ci.org/christiancable/nexus5ive.svg?branch=master)
 
 ## Install Steps
 
@@ -27,3 +30,4 @@ This current version is built using the [Laravel framework](https://laravel.com)
 * `php artisan migrate`
 
 [View the Roadmap](https://trello.com/b/yyIvw9fp/nexus)
+
