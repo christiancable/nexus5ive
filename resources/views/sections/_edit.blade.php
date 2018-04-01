@@ -30,8 +30,8 @@
 
         <div class="row form-inline">
 
-            <div class="col-md-6 form-group">
-                <label> Parent Section 
+            <div class="col-xs-8 col-sm-4 col-lg-3 form-group">
+                <label>Section 
                 {!! 
                     Form::select(
                         "form[$formName][parent_id]",
@@ -43,8 +43,21 @@
                 </label>
             </div>
 
-            <div class="col-md-6 form-group">
-                <label> Display Order
+            <div class="col-xs-12  col-sm-4 col-lg-3 form-group">
+                <label> Moderator 
+                {!!
+                    Form::select(
+                        "form[$formName][user_id]",
+                        \App\User::all()->pluck('username', 'id')->toArray(),
+                        $subSection->moderator->id,                    
+                        ['class' => 'form-control']
+                    )
+                !!}
+                </label>
+            </div>
+
+            <div class="col-sx-4 col-sm-4 col-lg-3 form-group">
+                <label>Order
                 {!!
                     Form::selectRange(
                         "form[$formName][weight]",
@@ -57,38 +70,20 @@
                 </label>
             </div>
 
-        </div>
-
-        <div class="row">
-            <div class="col-md-6 form-group">
-                <label> Moderator 
-                {!!
-                    Form::select(
-                        "form[$formName][user_id]",
-                        \App\User::all()->pluck('username', 'id')->toArray(),
-                        $subSection->moderator->id,                    
-                        ['class' => 'form-control']
-                    )
-                !!}
-                </label>
-            </div>
-        </div>
-
-        <div class="row">    
-            <div class="col-sm-12">
-                <div class="form-group">          
+            <div class="col-xs-12 col-lg-3">
                 {!!
                     Form::button(
                         "<span class='glyphicon glyphicon-pencil'></span>&nbsp;&nbsp;Save Changes",
                         array(
                             'type'  => 'submit',
-                            'class' => "btn pull-right btn-info col-xs-12 col-sm-3", 
+                            'class' => "btn pull-right col-xs-12 btn-info", 
                             'value' => $formName
                         )
                     ) 
                 !!}
-                </div>
+                
             </div>
+        
         </div>
 
     {!! Form::close() !!}
