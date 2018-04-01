@@ -29,5 +29,5 @@ This current version is built using the [Laravel framework](https://laravel.com)
 * Edit .env; add your datbase info and sensible values for the NEXUS_* 
 * `php artisan migrate`
 
-[View the Roadmap](https://trello.com/b/yyIvw9fp/nexus)
+[View the Roadmap](https://github.com/christiancable/nexus5ive/projects/2)
 
