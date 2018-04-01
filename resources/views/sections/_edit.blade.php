@@ -43,7 +43,7 @@
                 </label>
             </div>
 
-            <div class="col-xs-12  col-sm-4 col-lg-3 form-group">
+            <div class="col-xs-12  col-sm-4 col-lg-4 form-group">
                 <label> Moderator 
                 {!!
                     Form::select(
@@ -56,7 +56,7 @@
                 </label>
             </div>
 
-            <div class="col-sx-4 col-sm-4 col-lg-3 form-group">
+            <div class="col-sx-4 col-sm-4 col-lg-2 form-group">
                 <label>Order
                 {!!
                     Form::selectRange(
