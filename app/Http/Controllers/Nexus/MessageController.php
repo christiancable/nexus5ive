@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers\Nexus;
 
-use Illuminate\Http\Request;
-
+use Auth;
+use Validator;
+use App\Message;
 use App\Http\Requests;
+use Illuminate\Http\Request;
+use App\Helpers\ActivityHelper;
+use App\Helpers\BreadcrumbHelper;
 use App\Http\Controllers\Controller;
 
 class MessageController extends Controller
@@ -21,109 +25,74 @@ class MessageController extends Controller
      */
     public function index($selected = null)
     {
-        $allMessages = \App\Message::with('user')
+        $allMessages = Message::with('user')
             ->with('author')
-            ->where('user_id', \Auth::user()->id)
+            ->where('user_id', Auth::user()->id)
             ->orderBy('id', 'desc')
             ->get()
             ->all();
         $messages = array_slice($allMessages, 5);
         $recentMessages = array_reverse(array_slice($allMessages, 0, 5));
-        $recentActivities = \App\Helpers\ActivityHelper::recentActivities();
+        $recentActivities = ActivityHelper::recentActivities();
 
         $activeUsers = [];
         foreach ($recentActivities as $activity) {
-            if (\Auth::user()->id != $activity['user_id']) {
+            if (Auth::user()->id != $activity['user_id']) {
                 $activeUsers[$activity['user_id']] = $activity->user->username;
             }
         }
 
         // mark all messages as read
-        \App\Message::where('user_id', \Auth::user()->id)->update(['read' => true]);
+        Message::where('user_id', Auth::user()->id)->update(['read' => true]);
 
-        \App\Helpers\ActivityHelper::updateActivity(
-            \Auth::user()->id,
+        ActivityHelper::updateActivity(
+            Auth::user()->id,
             "Viewing <em>Inbox</em>",
             action('Nexus\MessageController@index')
         );
 
-        $breadcrumbs = \App\Helpers\BreadcrumbHelper::breadcumbForUtility('Inbox');
+        $breadcrumbs = BreadcrumbHelper::breadcumbForUtility('Inbox');
 
         return view('messages.index')
             ->with(compact('messages', 'recentMessages', 'activeUsers', 'selected', 'breadcrumbs'));
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
-     * @param  Requests\Message\CreateRequest $request
+     * @param  Request $request
      * @return Response
      */
-    public function store(Requests\Message\CreateRequest $request)
+    public function store(Request $request)
     {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'text' => 'required',
+                'user_id' => 'required|numeric',
+                'user_id' => 'exists:users,id',
+                'author_id' => 'required|numeric',
+                'author_id' => 'exists:users,id'
+            ],
+            [
+                "text.required" => 'Sending empty messages is a little creepy!'
+            ]
+        );
+
+        if ($validator->fails()) {
+            return redirect(action('Nexus\MessageController@index'))
+                ->withErrors($validator, 'messageStore')
+                ->withInput();
+        }
+
         $input = $request->all();
         $input['read'] = false;
         $input['user_id'] = $input['user_id'];
         $input['time'] = time();
-        $input['author_id'] = \Auth::user()->id;
+        $input['author_id'] = Auth::user()->id;
 
-        \App\Message::create($input);
+        Message::create($input);
 
         return redirect(action('Nexus\MessageController@index'));
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  Request  $request
-     * @param  int  $id
-     * @return Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }

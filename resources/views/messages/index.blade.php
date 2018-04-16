@@ -51,11 +51,13 @@
         You can't send a message because it looks like you're the only one here! *sadface*
     </p>
     @endif 
-    @if ($errors->any())
-    <p class="alert alert-danger">
-        Everytime someone sends an empty message an angel loses their wings! 
-    </p>
-@endif 
+    @if ($errors->messageStore->any())
+        @foreach($errors->messageStore->all() as $error)
+        <p class="alert alert-danger">
+            {{ $error }}
+        </p>
+        @endforeach
+    @endif 
 <hr>
     @if (count($messages))
    <div class="content">
