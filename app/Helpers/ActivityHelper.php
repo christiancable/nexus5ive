@@ -3,8 +3,8 @@ namespace App\Helpers;
 
 use Carbon\Carbon;
 
-/* 
-   helper methods for dealing with activities 
+/*
+   helper methods for dealing with activities
 */
 
 class ActivityHelper

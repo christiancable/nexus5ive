@@ -2,9 +2,9 @@
 
 namespace App;
 
+use Log;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Log;
 
 class Topic extends Model
 {
@@ -61,15 +61,20 @@ class Topic extends Model
         return $result;
     }
 
+    // phpcs:disable PSR1.Methods.CamelCapsMethodName
     public function most_recent_post()
     {
+    // phpcs:enable
         return $this->hasOne('App\Post')->latest();
     }
     
+    // phpcs:disable PSR1.Methods.CamelCapsMethodName
     public function most_recent_post_id()
     {
+    // phpcs:enable
         return $this->hasOne('App\Post')->latest()->select(['id as post_id','topic_id']);
     }
+    
     // sections
      
     public function section()

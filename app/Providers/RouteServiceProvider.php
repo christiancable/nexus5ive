@@ -22,9 +22,8 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
         // @todo - 5.3 upgrade FIXME
-		//  $router->model('comment', 'App\Comment');
+        //  $router->model('comment', 'App\Comment');
         parent::boot();
     }
     /**

@@ -1,7 +1,7 @@
 <?php
 namespace App\Helpers;
 
-/* 
+/*
     send flash messages to the session
 */
 

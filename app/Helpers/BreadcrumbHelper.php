@@ -1,7 +1,7 @@
 <?php
 namespace App\Helpers;
 
-/* 
+/*
    helper methods for dealing with breadcrumbs
 */
 

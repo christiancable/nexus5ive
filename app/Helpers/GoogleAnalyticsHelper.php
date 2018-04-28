@@ -1,7 +1,7 @@
 <?php
 namespace App\Helpers;
 
-/* 
+/*
     google analytics methods
 */
 
