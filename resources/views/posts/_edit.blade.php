@@ -1,5 +1,8 @@
+<?php 
+    $formName = $post->id;
+    $errorBag = 'postUpdate' . $post->id;
+ ?>
 <div class="well">
-<?php $formName = $post->id ?>
 {!! Form::open(
     array(
         'route'     => ['posts.update', $post->id],
@@ -32,13 +35,16 @@
     </div>
 </div>
 {!! Form::close() !!}
+ 
+@if ($errors->$errorBag->any())
+<br/>
+<div class="alert alert-danger" role="alert">
+    <ul>
+    @foreach($errors->$errorBag->all() as $error)
+    <li>{{ $error }}</li>
+    @endforeach
+    </ul>
+</div>
+@endif 
 
-{{-- the only error we have is if the user tries to leave a blank comment --}}
- @if (Session::get('postForm') == $post->id)
-    @if ($errors->any())
-        <p class="alert alert-danger">
-            Comments cannot be empty. Please delete the comment instead. 
-        </p>
-    @endif 
-@endif
 </div>
