@@ -29,7 +29,7 @@ class TopicHelper
     public static function recentTopics($maxresults = 10)
     {
         /*
-        inspired by 
+        inspired by
         http://stackoverflow.com/questions/612231/how-can-i-select-rows-with-maxcolumn-value-distinct-by-another-column-in-sql
         */
 
@@ -53,7 +53,7 @@ SQL;
         $topics = \App\Topic::with('section')
         ->whereIn('id', $allTopicIDs)->get();
            
-        // sorting here rather than in SQL because FIELD is MySQL only and so fails tests   
+        // sorting here rather than in SQL because FIELD is MySQL only and so fails tests
         $sortedTopics = $topics->sortBy(function ($model) use ($allTopicIDs) {
             return array_search($model->id, $allTopicIDs);
         });
