@@ -135,7 +135,7 @@
             },
 
             generatePreview() {
-                // if we have a preview already then don't call the fucking api
+                // if we have a preview already then don't call the api
                 if (!this.previewLoaded) {
                     window.axios.post('/api/nxcode', this.post)
                     .then((response) => {

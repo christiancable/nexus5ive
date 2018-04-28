@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Nexus;
 
+use Auth;
 use App\Post;
 use App\Topic;
+use Validator;
 use App\Http\Requests;
 use Illuminate\Http\Request;
+use App\Helpers\MentionHelper;
 use App\Http\Controllers\Controller;
 
 class PostController extends Controller
@@ -41,25 +44,38 @@ class PostController extends Controller
      * @param  Request  $request
      * @return Response
      */
-    public function store(Requests\Post\CreateRequest $request)
+    public function store(Request $request)
     {
+        // validate - errors are passed back to the vue form automatically
+        Validator::make(
+            $request->all(),
+            [
+                'text' => 'required',
+                'topic_id' => 'required',
+                'topic_id' => 'exists:topics,id'
+            ],
+            [
+                "text.required" => 'Text is required. You cannot leave empty posts',
+            ]
+        )->validate();
+
         $topic = Topic::findOrFail($request->topic_id);
         $this->authorize('create', [Post::class, $topic]);
 
         $input = $request->all();
-        $input['user_id'] = \Auth::user()->id;
-        $input['popname'] = \Auth::user()->popname;
+        $input['user_id'] = Auth::user()->id;
+        $input['popname'] = Auth::user()->popname;
         $input['time'] = time();
-        $post = \App\Post::create($input);
-        \Auth::user()->incrementTotalPosts();
+        $post = Post::create($input);
+        Auth::user()->incrementTotalPosts();
 
         // scan post for mentions
-        \App\Helpers\MentionHelper::makeMentions($post);
+        MentionHelper::makeMentions($post);
         
         
         // if we are viewing the topic with the most recent post at the bottom then
         // redirect to that point in the page
-        if (\Auth::user()->viewLatestPostFirst) {
+        if (Auth::user()->viewLatestPostFirst) {
             $redirect = action('Nexus\TopicController@show', ['id' => $post->topic_id]);
         } else {
             $redirect = action('Nexus\TopicController@show', ['id' => $post->topic_id]) . '#'  . $post->id;
@@ -96,21 +112,36 @@ class PostController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update(Requests\Post\UpdateRequest $request, $id)
+    public function update(Request $request, $id)
     {
-        // get post and autheorize
-        $post = \App\Post::findOrFail($id);
+        
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'id' => 'required:in' . $id,
+                'id' => 'exists:posts,id',
+                'form.'.$request->input('id').'.text' => 'required',
+            ],
+            [
+                'form.'.$request->input('id').'.text.required' => 'Posts cannot be empty',
+                'id.required' => 'Post does not exist'
+            ]
+        );
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator, "postUpdate$id")->withInput();
+        }
+
+        // get post and auth
+        $post = Post::findOrFail($id);
         $this->authorize('update', [Post::class, $post]);
         
-        // copy the namespaced input files back into top level input
         $input = $request->all();
-        $input['title'] = $input['form'][$id]['title'];
-        $input['text'] = $input['form'][$id]['text'];
+        $updatedPost = $input['form']["$id"];
+        $updatedPost['update_user_id'] = Auth::user()->id;
         
-        // update who last updated the post
-        $input['update_user_id'] = \Auth::user()->id;
-        $post->update($input);
-        return redirect()->route('topic.show', ['id' => $post->topic_id]);
+        $post->update($updatedPost);
+        return back();
     }
 
     /**
@@ -121,7 +152,7 @@ class PostController extends Controller
      */
     public function destroy(Request $request, $id)
     {
-        $post = \App\Post::findOrFail($id);
+        $post = Post::findOrFail($id);
         $this->authorize('delete', $post);
 
         // using forceDelete here because in this case we do not want a soft delete
