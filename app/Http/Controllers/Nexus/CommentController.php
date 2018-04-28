@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Nexus;
 
 use Auth;
+use Validator;
 use App\Comment;
 use App\Http\Requests;
 use Illuminate\Http\Request;
@@ -41,8 +42,28 @@ class CommentController extends Controller
      * @param  Requests\Comment\Create  $request
      * @return Response
      */
-    public function store(Requests\Comment\CreateRequest $request)
+    public function store(Request $request)
     {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'text' => 'required',
+                'user_id' => 'required|numeric',
+                'user_id' => 'exists:users,id',
+            ],
+            [
+                'text.required' => 'Comment Text required',
+                'user_id.required' => 'User ID required',
+                'user_id.exists' => 'Unknown user',
+            ]
+        );
+            
+        if ($validator->fails()) {
+            return redirect(action('Nexus\UserController@show', ['id' => request('redirect_user')]))
+            ->withErrors($validator, 'commentCreate')
+            ->withInput();
+        }
+            
         $input = $request->all();
         $input['author_id'] = Auth::user()->id;
         
