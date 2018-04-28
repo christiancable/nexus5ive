@@ -66,7 +66,7 @@ class PostController extends Controller
         $input['user_id'] = Auth::user()->id;
         $input['popname'] = Auth::user()->popname;
         $input['time'] = time();
-        $post = \App\Post::create($input);
+        $post = Post::create($input);
         Auth::user()->incrementTotalPosts();
 
         // scan post for mentions
@@ -112,21 +112,36 @@ class PostController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update(Requests\Post\UpdateRequest $request, $id)
+    public function update(Request $request, $id)
     {
-        // get post and autheorize
-        $post = \App\Post::findOrFail($id);
+        
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'id' => 'required:in' . $id,
+                'id' => 'exists:posts,id',
+                'form.'.$request->input('id').'.text' => 'required',
+            ],
+            [
+                'form.'.$request->input('id').'.text.required' => 'Posts cannot be empty',
+                'id.required' => 'Post does not exist'
+            ]
+        );
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator, "postUpdate$id")->withInput();
+        }
+
+        // get post and auth
+        $post = Post::findOrFail($id);
         $this->authorize('update', [Post::class, $post]);
         
-        // copy the namespaced input files back into top level input
         $input = $request->all();
-        $input['title'] = $input['form'][$id]['title'];
-        $input['text'] = $input['form'][$id]['text'];
+        $updatedPost = $input['form']["$id"];
+        $updatedPost['update_user_id'] = Auth::user()->id;
         
-        // update who last updated the post
-        $input['update_user_id'] = Auth::user()->id;
-        $post->update($input);
-        return redirect()->route('topic.show', ['id' => $post->topic_id]);
+        $post->update($updatedPost);
+        return back();
     }
 
     /**
@@ -137,7 +152,7 @@ class PostController extends Controller
      */
     public function destroy(Request $request, $id)
     {
-        $post = \App\Post::findOrFail($id);
+        $post = Post::findOrFail($id);
         $this->authorize('delete', $post);
 
         // using forceDelete here because in this case we do not want a soft delete
