@@ -18,6 +18,10 @@ if ($status['unsubscribed']) {
     $panelClass = 'panel-default';
     $icon = 'glyphicon-comment';
 }
+
+// remove the spoilers
+$pattern = '/\[spoiler-\](.*)\[-spoiler\]/iU';
+$unspoiled = preg_replace($pattern, 'XXXXXX', $topic->most_recent_post->text);  
 ?>
 
 <div class="panel {{$panelClass}}">
@@ -45,7 +49,9 @@ if ($status['unsubscribed']) {
 </ul>
 @if($status['unsubscribed'] != true)
 <div class="panel-body">
-    <p><a href="{{ action('Nexus\TopicController@show', ['topic_id' => $topic->id])}}" class="text-muted">{!! substr(strip_tags(App\Helpers\NxCodeHelper::nxDecode($topic->most_recent_post->text)), 0, 140) !!}&hellip;</a></p>
+    <p><a href="{{ action('Nexus\TopicController@show', ['topic_id' => $topic->id])}}" class="text-muted">
+    <em>{!! substr(strip_tags(App\Helpers\NxCodeHelper::nxDecode($unspoiled)), 0, 140) !!}</em>
+    &hellip;</a></p>
 </div>
 @endif
 
