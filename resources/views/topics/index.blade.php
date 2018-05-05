@@ -26,12 +26,12 @@
         $postsChunk = $posts->paginate(config('nexus.pagination'));
         Auth::user()->removeMentions($postsChunk->items());
         $postsArray = [];
-        foreach ($postsChunk as $post) {
-            $postsArray[] = $post;
-        }
-        if (!Auth::user()->viewLatestPostFirst) {
-            $postsArray = array_reverse($postsArray);
-        }
+    foreach ($postsChunk as $post) {
+        $postsArray[] = $post;
+    }
+    if (!Auth::user()->viewLatestPostFirst) {
+        $postsArray = array_reverse($postsArray);
+    }
     ?>
 
     {{-- show post box --}}
@@ -59,12 +59,12 @@
         @else 
         {{-- if we are on the last post and we  are the author and it is recent
         the display the moderate view so a user can edit their post --}}
-	    @if (($post['id'] == $latestPost['id']) && ($post->author->id == Auth::user()->id) && ($post->time->diffInSeconds() <= config('nexus.recent_edit') )) 
+        @if (($post['id'] == $latestPost['id']) && ($post->author->id == Auth::user()->id) && ($post->time->diffInSeconds() <= config('nexus.recent_edit') )) 
                 <?php $hideDelete = true ?>
                 @include('posts.moderate', compact('post', 'readProgress', 'noDelete'))
-	    @else
-	        @include('posts.show', compact('post', 'readProgress', 'userCanSeeSecrets'))
-	    @endif
+        @else
+            @include('posts.show', compact('post', 'readProgress', 'userCanSeeSecrets'))
+        @endif
         @endif 
 
         @empty

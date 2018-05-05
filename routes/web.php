@@ -25,7 +25,7 @@ use Illuminate\Http\Request;
 
 Auth::routes();
 
-// API 
+// API
 Route::get('api/notifications', ['middleware' => 'auth',  function () {
     return Auth::user()->notificationCount();
 }])->name('api.notificationCount');
@@ -87,7 +87,7 @@ Route::resource('posts', 'Nexus\PostController');
 Route::get('messages/{id}', 'Nexus\MessageController@index');
 Route::resource('messages', 'Nexus\MessageController');
 
-// activities 
+// activities
 Route::resource('here', 'Nexus\ActivityController');
 
 // search

@@ -5,25 +5,25 @@ $status = \App\Helpers\ViewHelper::getTopicStatus(Auth::user(), $topic);
     <div class="row">
         <div class="col-sm-9">
             <h2>
-            	@if ($status['unsubscribed'])
-            		<?php $textClass = 'text-muted' ?>
-            		<a href="{{ action('Nexus\TopicController@show', ['topic_id' => $topic->id])}}" class="{{$textClass}}"> 
-            		<span class="glyphicon glyphicon-eye-close {{$textClass}}" aria-hidden="true"></span>
+                @if ($status['unsubscribed'])
+                    <?php $textClass = 'text-muted' ?>
+                    <a href="{{ action('Nexus\TopicController@show', ['topic_id' => $topic->id])}}" class="{{$textClass}}"> 
+                    <span class="glyphicon glyphicon-eye-close {{$textClass}}" aria-hidden="true"></span>
 
                 @elseif ($status['new_posts'])
-            	    <?php $textClass = 'text-danger' ?>
-            	    <a href="{{ action('Nexus\TopicController@show', ['topic_id' => $topic->id])}}" class="{{$textClass}}"> 
-            	    <span class="glyphicon glyphicon-fire {{$textClass}}" aria-hidden="true"></span>
+                    <?php $textClass = 'text-danger' ?>
+                    <a href="{{ action('Nexus\TopicController@show', ['topic_id' => $topic->id])}}" class="{{$textClass}}"> 
+                    <span class="glyphicon glyphicon-fire {{$textClass}}" aria-hidden="true"></span>
 
                 @elseif ($status['never_read'])
-            	    <?php $textClass = 'text-warning' ?>
-            	    <a href="{{ action('Nexus\TopicController@show', ['topic_id' => $topic->id])}}" class="{{$textClass}}"> 
-            	    <span class="glyphicon glyphicon-asterisk {{$textClass}}" aria-hidden="true"></span>
-            	    
+                    <?php $textClass = 'text-warning' ?>
+                    <a href="{{ action('Nexus\TopicController@show', ['topic_id' => $topic->id])}}" class="{{$textClass}}"> 
+                    <span class="glyphicon glyphicon-asterisk {{$textClass}}" aria-hidden="true"></span>
+                    
                 @else 
-                	<?php $textClass = '' ?>
-                	<a href="{{ action('Nexus\TopicController@show', ['topic_id' => $topic->id])}}" class="{{$textClass}}"> 
-            	    <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
+                    <?php $textClass = '' ?>
+                    <a href="{{ action('Nexus\TopicController@show', ['topic_id' => $topic->id])}}" class="{{$textClass}}"> 
+                    <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
                 @endif  
                 {{$topic->title}}</a>
             </h2>

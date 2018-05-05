@@ -1,6 +1,6 @@
- <?php 
+ <?php
  $errorBag = 'topicUpdate' . $topic->id;
- ?>
+    ?>
         
 
 <ul class="nav nav-tabs settings-menu" id="topic{{$topic->id}}" role="tablist"> 

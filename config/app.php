@@ -175,7 +175,7 @@ return [
 
     ],
 
-/* added form class using 
+/* added form class using
 http://bonyweb.com/en/notes/how-to-install-html-form-helper-in-laravel-5-1/
 /*
 

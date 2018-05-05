@@ -19,7 +19,7 @@ class testComments extends BrowserKitTestCase
      */
     public function userCanClearTheirOwnComments()
     {
-        /* 
+        /*
         GIVEN THAT WE HAVE
         - a logged in user
         -  with comments
@@ -55,7 +55,7 @@ class testComments extends BrowserKitTestCase
             ->visitRoute('users.show', $user->username)
             ->press('Clear All Comments');
 
-        // dont see button 
+        // dont see button
         $this->actingAs($user)
             ->visitRoute('users.show', $user->username)
             ->dontSee('Clear All Comments');
@@ -64,7 +64,5 @@ class testComments extends BrowserKitTestCase
         $this->actingAs($user)
             ->visitRoute('users.show', $user->username)
             ->dontSee($comment->text);
-
     }
-
 }

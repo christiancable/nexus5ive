@@ -64,7 +64,7 @@ class testSectionInfo extends BrowserKitTestCase
             ->dontSee('Latest Post in');
 
         /* WHEN
-         a post is added to topic1 
+         a post is added to topic1
         */
 
         /* THEN we should see

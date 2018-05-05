@@ -14,7 +14,7 @@ class RestoreHelperTest extends BrowserKitTestCase
     
  /*
         // note this will be protected at the http layer by a request
-        
+
         test restoreTopicToSection restores a topic to an existing section
         test restoreTopicToSection restores a topic to another existing section
         test restoreTopicToSection restores a topic along with its posts and views

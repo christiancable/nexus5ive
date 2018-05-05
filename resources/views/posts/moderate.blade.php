@@ -1,7 +1,7 @@
- <?php 
+ <?php
     $errorBag = 'postUpdate' . $post->id;
     $showErrors = count($errors->$errorBag->all());
- ?>
+    ?>
 
 <ul class="nav nav-tabs settings-menu" id="post{{$post->id}}" role="tablist"> 
     <li role="presentation" class="dropdown active pull-right"> 

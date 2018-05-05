@@ -71,7 +71,7 @@
                     <?php
                     /*
                         this section could be moved to anywhere owned by the moderator
-                        minus itself and it's subsections 
+                        minus itself and it's subsections
 
                         @todo this feels like too much logic happening in the view
                     */
