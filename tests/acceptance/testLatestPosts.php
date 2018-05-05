@@ -17,7 +17,7 @@ class testLatestPosts extends BrowserKitTestCase
      */
     public function user_sees_post_preview_for_topic_with_posts()
     {
-        /* 
+        /*
         GIVEN we have a topic with posts
         WHEN we visit the latest posts page
         THEN should see the text of the latest post
@@ -38,9 +38,10 @@ class testLatestPosts extends BrowserKitTestCase
 
         $post = factory(Post::class)
             ->create(
-            ['topic_id' => $topic->id,
-            'user_id' => $user->id,
-            ]);
+                ['topic_id' => $topic->id,
+                'user_id' => $user->id,
+                ]
+            );
 
         $previewText = substr(strip_tags(App\Helpers\NxCodeHelper::nxDecode($post->text)), 0, 140);
         $this->actingAs($user)
@@ -53,7 +54,7 @@ class testLatestPosts extends BrowserKitTestCase
      */
     public function user_does_not_see_post_preview_for_unsubscribed_topic_with_posts()
     {
-         /* 
+         /*
         GIVEN we have a topic with posts
         WHEN the user unsubscribes from the topic
         AND we visit the latest posts page
@@ -75,9 +76,10 @@ class testLatestPosts extends BrowserKitTestCase
 
         $post = factory(Post::class)
             ->create(
-            ['topic_id' => $topic->id,
-            'user_id' => $user->id,
-            ]);
+                ['topic_id' => $topic->id,
+                'user_id' => $user->id,
+                ]
+            );
 
         $previewText = substr(strip_tags(App\Helpers\NxCodeHelper::nxDecode($post->text)), 0, 140);
 
@@ -89,6 +91,4 @@ class testLatestPosts extends BrowserKitTestCase
             ->visit('/section/latest')
             ->dontSee($previewText);
     }
-
-    
 }

@@ -21,7 +21,7 @@ if ($status['unsubscribed']) {
 
 // remove the spoilers
 $pattern = '/\[spoiler-\](.*)\[-spoiler\]/iU';
-$unspoiled = preg_replace($pattern, 'XXXXXX', $topic->most_recent_post->text);  
+$unspoiled = preg_replace($pattern, 'XXXXXX', $topic->most_recent_post->text);
 ?>
 
 <div class="panel {{$panelClass}}">

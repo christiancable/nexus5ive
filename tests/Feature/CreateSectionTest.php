@@ -37,7 +37,7 @@ class CreateSectionTest extends TestCase
         
         /*
         WHEN
-        - the moderator creates a new section within the sub section 
+        - the moderator creates a new section within the sub section
         */
         
         $newSection = factory(Section::class)->make(['parent_id' => $section->id]);
@@ -49,7 +49,7 @@ class CreateSectionTest extends TestCase
         THEN
         - we have no errors
         - we are redirected to the new section
-        - the new section contains the title and into 
+        - the new section contains the title and into
         */
         $response->assertSessionMissing('errors');
         $response->assertStatus(302);
@@ -86,7 +86,7 @@ class CreateSectionTest extends TestCase
         
         /*
         WHEN
-        - a normal user tries to create a new section within the sub section 
+        - a normal user tries to create a new section within the sub section
         */
         $newSection = factory(Section::class)->make(['parent_id' => $section->id]);
         
@@ -125,7 +125,7 @@ class CreateSectionTest extends TestCase
         
         /*
         WHEN
-        - the moderator creates a new section within the sub section 
+        - the moderator creates a new section within the sub section
         */
         
         $newSection = factory(Section::class)

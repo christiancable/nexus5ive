@@ -24,9 +24,9 @@ class CreateThemesTable extends Migration
          App\Theme::firstOrCreate([
             'name' => 'Default',
             'path' => '/css/app.css'
-        ]);
+         ]);
 
-        // add any other themes 
+        // add any other themes
        // Artisan::call('db:seed', [
        //      '--class' => 'ThemesTableSeeder',
        //  ]);

@@ -13,7 +13,7 @@
 
 $factory->define(App\User::class, function ($faker) {
 
-   $defaultTheme = App\Theme::firstOrFail();
+    $defaultTheme = App\Theme::firstOrFail();
 
     return [
         'name' => $faker->name,

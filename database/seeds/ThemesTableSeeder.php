@@ -21,19 +21,18 @@ class ThemesTableSeeder extends Seeder
           App\Theme::firstOrCreate([
             'name' =>'Excelsior',
             'path' => '/css/excelsior.css'
-        ]);
+          ]);
 
         // 8-bit
           App\Theme::firstOrCreate([
             'name' =>'8 Bit',
             'path' => '/css/8bit.css'
-        ]);
+          ]);
         
         // nexus 2
           App\Theme::firstOrCreate([
             'name' =>'Nexus 2',
             'path' => '/css/nexustwo.css'
-        ]);
-
+          ]);
     }
 }

@@ -1,7 +1,7 @@
-<?php 
+<?php
     $formName = $post->id;
     $errorBag = 'postUpdate' . $post->id;
- ?>
+    ?>
 <div class="well">
 {!! Form::open(
     array(

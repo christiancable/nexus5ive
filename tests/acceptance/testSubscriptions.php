@@ -130,7 +130,7 @@ class testSubscriptions extends BrowserKitTestCase
             ->press('Unsubscribe from this topic');
 
         /* THEN
-        the user visits the topic 
+        the user visits the topic
         sees Resubscribe to this topic */
         $this->actingAs($user)
             ->visit('/topic/' . $topic->id)
