@@ -125,6 +125,7 @@
 
             sendPost() {
                 const data = this.post;
+                this.$refs.postText.disabled = true;
                 data.topic_id = this.topic.id;
 
                 // send post
@@ -139,6 +140,7 @@
                     window.location.reload();
                 })
                 .catch(error => {
+                    this.$refs.postText.disabled = false;
                     this.errors = error.response.data;
                 });
             },
