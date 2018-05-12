@@ -2,8 +2,7 @@
 {!! Form::hidden('user_id', $user->id) !!}
 {!! Form::hidden('redirect_user', $user->username) !!}
     <div class="form-group">
-        {!! Form::label('text', 'Leave Comment') !!}
-        {!! Form::text('text', null, ['class'=> 'form-control']) !!}
+        {!! Form::text('text', null, ['class'=> 'form-control', 'autofocus', 'placeholder' => 'Leave a comment']) !!}
     </div>
 
      <div class="form-group">

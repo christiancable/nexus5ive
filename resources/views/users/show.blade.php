@@ -20,25 +20,24 @@
                     @include('users._read', $user)
                 @endif
 
-                <h2>Comments</h2>
+                <h2 id="comments">Comments</h2>
                 @include('comments.create', $user)
-                @if (count($user->comments))
+                @if (count($comments))
                     <table class="table table-striped table-condensed">
-                    <tbody>
-                    @if (Auth::user()->id == $user->id)
-                        @foreach ($user->comments as $comment)
-                            @include('comments._edit', $comment)
+                    <tbody>           
+                        @foreach ($comments as $comment)
+                            @if (Auth::user()->id == $user->id)
+                                @include('comments._edit', $comment)
+                            @else 
+                                @include('comments._read', $comment)
+                            @endif 
                         @endforeach
-                    @else
-                        @foreach ($user->comments as $comment)
-                            @include('comments._read', $comment)
-                        @endforeach
-                    @endif
                     </tbody>
                     </table>
                     @if (Auth::user()->id == $user->id)
                         @include('comments._clear', $user)
                     @endif
+                    {{ $comments->links() }}
                 @endif
             </div>
         </div>
