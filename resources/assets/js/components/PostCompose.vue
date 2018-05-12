@@ -17,7 +17,15 @@
             </div>
 
             <div class="form-group">
-                <textarea class="form-control" id="postText" name="text" cols="50" rows="10" v-model="post.text" v-on:keydown="clearPreview"></textarea>
+                <textarea 
+                    class="form-control" 
+                    id="postText"
+                    name="text" cols="50" rows="10" 
+                    v-model="post.text" 
+                    ref="postText" 
+                    @keydown="clearPreview" 
+                    @keydown.meta.enter="sendPost"
+                    @keydown.ctrl.enter="sendPost"></textarea>
             </div>
 
             <div v-if="errors" class="alert alert-danger">
@@ -109,13 +117,15 @@
         },
 
         mounted() {
-            $('[data-toggle="popover"]').popover();
+            $('[data-toggle="popover"]').popover(); 
+            this.$refs.postText.focus();
         }, 
 
         methods: {
 
             sendPost() {
                 const data = this.post;
+                this.$refs.postText.disabled = true;
                 data.topic_id = this.topic.id;
 
                 // send post
@@ -130,6 +140,7 @@
                     window.location.reload();
                 })
                 .catch(error => {
+                    this.$refs.postText.disabled = false;
                     this.errors = error.response.data;
                 });
             },
