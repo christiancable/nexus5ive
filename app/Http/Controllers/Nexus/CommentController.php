@@ -76,7 +76,7 @@ class CommentController extends Controller
    
         Comment::create($input);
 
-        return redirect("/users/" . $input['redirect_user']);
+        return redirect("/users/" . $input['redirect_user'] . '#comments');
     }
 
     /**
