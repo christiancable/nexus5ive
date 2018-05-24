@@ -6,7 +6,7 @@
 <ul class="nav nav-tabs settings-menu" id="topic{{$topic->id}}" role="tablist"> 
   <li role="presentation" class="dropdown active pull-right"> 
       <a href="#" class="dropdown-toggle topic-settings" id="topicTabDrop{{$topic->id}}" data-toggle="dropdown" aria-controls="topicTabDrop{{$topic->id}}-contents" aria-expanded="false">
-          <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Settings <span class="caret"></span>
+          <span class="glyphicon glyphicon-cog" aria-hidden="true"></span><span class="sr-only">Settings</span><span class="caret"></span>
       </a> 
       <ul class="dropdown-menu" aria-labelledby="topicTabDrop{{$topic->id}}" id="topicTabDrop{{$topic->id}}-contents"> 
         @if ($errors->$errorBag->all())    

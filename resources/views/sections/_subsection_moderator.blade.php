@@ -7,7 +7,7 @@ $showErrors = count($errors->$errorBag->all());
   <ul class="nav nav-tabs settings-menu" id="subSection{{$subSection->id}}" role="tablist"> 
     <li role="presentation" class="dropdown active pull-right"> 
         <a href="#" class="dropdown-toggle topic-settings" id="subSectionTabDrop{{$subSection->id}}" data-toggle="dropdown" aria-controls="subSectionTabDrop{{$subSection->id}}-contents" aria-expanded="false">
-            <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Settings <span class="caret"></span>
+            <span class="glyphicon glyphicon-cog" aria-hidden="true"></span><span class="sr-only">Settings</span><span class="caret"></span>
         </a> 
         <ul class="dropdown-menu" aria-labelledby="subSectionTabDrop{{$subSection->id}}" id="subSectionTabDrop{{$subSection->id}}-contents"> 
             
