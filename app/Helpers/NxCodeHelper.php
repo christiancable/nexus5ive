@@ -160,7 +160,6 @@ HTML;
 
         $text = preg_replace($pattern, $subst, $text);
 
-        // dd($text);
         return $text;
     }
 
@@ -178,8 +177,8 @@ HTML;
         $text = strip_tags($text);
         $text = self::embedYouTube($text);
         $text = self::spoilerTags($text);
-        $text = self::lazyloadClass($text);
         $text = MarkdownHelper::markdown($text);
+        $text = self::lazyloadClass($text);
         $text = MentionHelper::highlightMentions($text);
 
         return $text;
