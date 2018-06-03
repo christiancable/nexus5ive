@@ -152,6 +152,18 @@ HTML;
 
         return $text;
     }
+
+    public static function lazyLoadClass($text)
+    {
+        $pattern = '/(<img .*)()(\/?>)/mU';
+        $subst = '$1 class="b-lazy"$3';
+
+        $text = preg_replace($pattern, $subst, $text);
+
+        // dd($text);
+        return $text;
+    }
+
     /**
      * decode text so that it is suitable for display
      * for use in blade templates.
@@ -166,6 +178,7 @@ HTML;
         $text = strip_tags($text);
         $text = self::embedYouTube($text);
         $text = self::spoilerTags($text);
+        $text = self::lazyloadClass($text);
         $text = MarkdownHelper::markdown($text);
         $text = MentionHelper::highlightMentions($text);
 

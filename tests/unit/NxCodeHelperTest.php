@@ -111,18 +111,18 @@ HTML
     }
 
 
-        /**
+    /**
      * test custom markdown extensions
      *
-     * @dataProvider providerNxCode
+     * @dataProvider providerNxCodeSpoilers
      */
-    public function testNxCode($input, $expectedOutput)
+    public function testNxCodeSpoiler($input, $expectedOutput)
     {
         $output = NxCodeHelper::spoilerTags($input);
         $this->assertEquals($output, $expectedOutput);
     }
 
-    public function providerNxCode()
+    public function providerNxCodeSpoilers()
     {
         return [
             'spoiler tag' => [
@@ -132,6 +132,31 @@ HTML
             'multiple spoiler tags' => [
                 $input = 'Oh my [spoiler-]Brad Pitt is Edward Norton![-spoiler] and [spoiler-]it was Earth all along[-spoiler]',
                 $expectedOutput = 'Oh my <span class="spoiler">Brad Pitt is Edward Norton!</span> and <span class="spoiler">it was Earth all along</span>',
+            ],
+        ];
+    }
+
+    /**
+     * test addition of lazy load class
+     *
+     * @dataProvider providerNxCodeLazyLoad
+     */
+    public function testNxLazyLoad($input, $expectedOutput)
+    {
+        $output = NxCodeHelper::lazyLoadClass($input);
+        $this->assertEquals($output, $expectedOutput);
+    }
+
+    public function providerNxCodeLazyLoad()
+    {
+        return [
+            'img tag' => [
+                $input = '<img src="http://imageshack.com/a/img923/5082/NdPfqk.png" alt="image" target="_blank" />',
+                $expectedOutput = '<img src="http://imageshack.com/a/img923/5082/NdPfqk.png" alt="image" target="_blank"  class="b-lazy"/>',
+            ],
+            'multiple img tags' => [
+                $input = '<img src="http://imageshack.com/a/img923/5082/NdPfqk.png" alt="image" target="_blank"/> and then this happened <img src="http://imageshack.com/a/img923/5082/NdPfqk.png" alt="image" target="_blank"/>',
+                $expectedOutput = '<img src="http://imageshack.com/a/img923/5082/NdPfqk.png" alt="image" target="_blank" class="b-lazy"/> and then this happened <img src="http://imageshack.com/a/img923/5082/NdPfqk.png" alt="image" target="_blank" class="b-lazy"/>',
             ],
         ];
     }
