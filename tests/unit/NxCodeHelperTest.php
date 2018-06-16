@@ -143,19 +143,10 @@ HTML
      */
     public function testNxLazyLoad($input, $expectedOutput)
     {
-        $output = NxCodeHelper::lazyLoadClass($input);
+        $output = NxCodeHelper::lazyLoadClass($input, 'placeholder.jpg');
         $this->assertEquals($output, $expectedOutput);
     }
 
-/*
-blazy markup example
- <img class="b-lazy"
-	 src="placeholder-image.jpg"
-	 data-src="image.jpg"
-	 data-src-small="small-image.jpg"
-	 alt="Image description" />
-
-*/
     public function providerNxCodeLazyLoad()
     {
         return [
