@@ -147,16 +147,25 @@ HTML
         $this->assertEquals($output, $expectedOutput);
     }
 
+/*
+blazy markup example
+ <img class="b-lazy"
+	 src="placeholder-image.jpg"
+	 data-src="image.jpg"
+	 data-src-small="small-image.jpg"
+	 alt="Image description" />
+
+*/
     public function providerNxCodeLazyLoad()
     {
         return [
             'img tag' => [
                 $input = '<img src="http://imageshack.com/a/img923/5082/NdPfqk.png" alt="image" target="_blank" />',
-                $expectedOutput = '<img src="http://imageshack.com/a/img923/5082/NdPfqk.png" alt="image" target="_blank"  class="b-lazy"/>',
+                $expectedOutput = '<img class="b-lazy" src="placeholder.jpg" data-src="http://imageshack.com/a/img923/5082/NdPfqk.png" alt="image" target="_blank" />',
             ],
             'multiple img tags' => [
                 $input = '<img src="http://imageshack.com/a/img923/5082/NdPfqk.png" alt="image" target="_blank"/> and then this happened <img src="http://imageshack.com/a/img923/5082/NdPfqk.png" alt="image" target="_blank"/>',
-                $expectedOutput = '<img src="http://imageshack.com/a/img923/5082/NdPfqk.png" alt="image" target="_blank" class="b-lazy"/> and then this happened <img src="http://imageshack.com/a/img923/5082/NdPfqk.png" alt="image" target="_blank" class="b-lazy"/>',
+                $expectedOutput = '<img class="b-lazy" src="placeholder.jpg" data-src="http://imageshack.com/a/img923/5082/NdPfqk.png" alt="image" target="_blank"/> and then this happened <img class="b-lazy" src="placeholder.jpg" data-src="http://imageshack.com/a/img923/5082/NdPfqk.png" alt="image" target="_blank"/>',
             ],
         ];
     }

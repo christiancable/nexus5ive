@@ -155,11 +155,10 @@ HTML;
 
     public static function lazyLoadClass($text)
     {
-        $pattern = '/(<img .*)()(\/?>)/mU';
-        $subst = '$1 class="b-lazy"$3';
-
-        $text = preg_replace($pattern, $subst, $text);
-
+        $re = '/<img src="(.*?)"/m';
+        $subst = '<img class="b-lazy" src="placeholder.jpg" data-src="$1"';
+        $text = preg_replace($re, $subst, $text);
+        
         return $text;
     }
 
