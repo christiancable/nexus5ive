@@ -27,5 +27,5 @@ return [
     'notification_check_interval' => env('NEXUS_NOTIFICATION_CHECK_INTERVAL', 2000),
     'google_anaytics_activate' => env('GOOGLE_ANAYTICS_ACTIVATE', false),
     'google_analytics_id' => env('GOOGLE_ANALYTICS_ID'),
-    'placeholder_image' => env('NEXUS_PLACEHOLDER_IMAGE', 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='),
+    'placeholder_image' => env('NEXUS_PLACEHOLDER_IMAGE', false),
 ];
