@@ -185,7 +185,7 @@ HTML;
         $text = self::embedYouTube($text);
         $text = self::spoilerTags($text);
         $text = MarkdownHelper::markdown($text);
-        if (config('placeholder_image')) {
+        if (false !== config('placeholder_image')) {
             $text = self::lazyloadClass($text, config('placeholder_image'));
         }
         $text = MentionHelper::highlightMentions($text);
