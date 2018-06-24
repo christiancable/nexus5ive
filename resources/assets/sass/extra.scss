@@ -140,3 +140,13 @@ body { padding-bottom: 80px; }
 .section .topic h2 {
   margin-top: 0;
 }
+
+/* lazy loading */
+.b-lazy {
+  &.b-error {
+     filter: blur(2px) grayscale(100);
+     opacity: 0.1;
+     transform: rotate(-10deg);
+     transition: .3s ease-in-out;
+  }
+}
