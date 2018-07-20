@@ -14,11 +14,11 @@ class Comment extends Model
 
     public function author()
     {
-        return $this->belongsTo('App\User', 'author_id');
+        return $this->belongsTo(\App\User::class, 'author_id');
     }
 
     public function user()
     {
-        return $this->belongsTo('App\User', 'user_id');
+        return $this->belongsTo(\App\User::class, 'user_id');
     }
 }

@@ -14,11 +14,11 @@ class View extends Model
 
     public function user()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo(\App\User::class);
     }
 
     public function topic()
     {
-        return $this->belongsTo('App\Topic');
+        return $this->belongsTo(\App\Topic::class);
     }
 }
