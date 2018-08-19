@@ -1,5 +1,6 @@
 <?php
     $formName = 'section'.$section->id;
+    $errorBag = 'sectionUpdate' . $section->id;
 ?>
 {!! Form::open(
     array(
@@ -48,18 +49,13 @@
 
 {!! Form::close() !!}
 
-@if (Session::get('form') == $formName)
-@if ($errors->any())
+@if ($errors->$errorBag->all())
     <br/>
-    <div class="row">
-    <div class="col-sm-12">
-        <p class="alert alert-danger">
-       
-        You need to <strong>give your section a title</strong>. Otherwise; <em>chaos</em>.
-        </p>
-        </div>
+    <div class="alert alert-danger" role="alert">
+        <ul>
+        @foreach($errors->$errorBag->all() as $error)
+            <li>{{ $error }}</li>
+        @endforeach
+        </ul>
     </div>
 @endif 
-@endif
-
-
