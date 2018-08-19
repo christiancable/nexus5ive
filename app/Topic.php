@@ -65,21 +65,21 @@ class Topic extends Model
     public function most_recent_post()
     {
     // phpcs:enable
-        return $this->hasOne('App\Post')->latest();
+        return $this->hasOne(\App\Post::class)->latest();
     }
     
     // phpcs:disable PSR1.Methods.CamelCapsMethodName
     public function most_recent_post_id()
     {
     // phpcs:enable
-        return $this->hasOne('App\Post')->latest()->select(['id as post_id','topic_id']);
+        return $this->hasOne(\App\Post::class)->latest()->select(['id as post_id','topic_id']);
     }
     
     // sections
      
     public function section()
     {
-        return $this->belongsTo('App\Section');
+        return $this->belongsTo(\App\Section::class);
     }
 
 
@@ -87,13 +87,13 @@ class Topic extends Model
     
     public function posts()
     {
-        return $this->hasMany('App\Post')->orderBy('id', 'asc');
+        return $this->hasMany(\App\Post::class)->orderBy('id', 'asc');
     }
 
     // views
 
     public function views()
     {
-        return $this->hasMany('App\View')->orderBy('latest_view_date', 'dec');
+        return $this->hasMany(\App\View::class)->orderBy('latest_view_date', 'dec');
     }
 }

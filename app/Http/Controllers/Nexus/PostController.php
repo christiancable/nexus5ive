@@ -171,7 +171,7 @@ class PostController extends Controller
             $data = \Input::all();
             $response = [];
             $response['text'] = \App\Helpers\NxCodeHelper::nxDecode($data['text']);
-            return \Response::json($response);
+            return \response()->json($response);
         }
     }
 }

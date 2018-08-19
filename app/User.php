@@ -97,52 +97,52 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
     public function mentions()
     {
-        return $this->hasMany('App\Mention')->orderBy('id', 'dec');
+        return $this->hasMany(\App\Mention::class)->orderBy('id', 'dec');
     }
     
     public function comments()
     {
-        return $this->hasMany('App\Comment', 'user_id', 'id')->orderBy('id', 'dec');
+        return $this->hasMany(\App\Comment::class, 'user_id', 'id')->orderBy('id', 'dec');
     }
 
     public function givenComments()
     {
-        return $this->hasMany('App\Comment', 'author_id', 'id')->orderBy('id', 'dec');
+        return $this->hasMany(\App\Comment::class, 'author_id', 'id')->orderBy('id', 'dec');
     }
 
     public function sections()
     {
-        return $this->hasMany('App\Section');
+        return $this->hasMany(\App\Section::class);
     }
 
     public function views()
     {
-        return $this->hasMany('App\View')->orderBy('latest_view_date', 'dec');
+        return $this->hasMany(\App\View::class)->orderBy('latest_view_date', 'dec');
     }
 
     public function modifiedPosts()
     {
-        return $this->hasMany('App\Post', 'update_user_id', 'id');
+        return $this->hasMany(\App\Post::class, 'update_user_id', 'id');
     }
 
     public function messages()
     {
-        return $this->hasMany('App\Message');
+        return $this->hasMany(\App\Message::class);
     }
 
     public function sentMessages()
     {
-        return $this->hasMany('App\Message', 'author_id');
+        return $this->hasMany(\App\Message::class, 'author_id');
     }
 
     public function activity()
     {
-        return $this->hasOne('App\Activity');
+        return $this->hasOne(\App\Activity::class);
     }
     
     public function theme()
     {
-        return $this->belongsTo('App\Theme');
+        return $this->belongsTo(\App\Theme::class);
     }
 
     /*

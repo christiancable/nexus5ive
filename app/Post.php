@@ -13,16 +13,16 @@ class Post extends Model
     
     public function topic()
     {
-        return $this->belongsTo('App\Topic');
+        return $this->belongsTo(\App\Topic::class);
     }
     
     public function author()
     {
-        return $this->belongsTo('App\User', 'user_id');
+        return $this->belongsTo(\App\User::class, 'user_id');
     }
 
     public function editor()
     {
-        return $this->belongsTo('App\User', 'update_user_id');
+        return $this->belongsTo(\App\User::class, 'update_user_id');
     }
 }

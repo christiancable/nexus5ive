@@ -48,7 +48,7 @@
                 {!!
                     Form::select(
                         "form[$formName][user_id]",
-                        \App\User::all()->pluck('username', 'id')->toArray(),
+                        $potentialModerators,
                         $subSection->moderator->id,                    
                         ['class' => 'form-control']
                     )
