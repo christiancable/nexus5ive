@@ -82,8 +82,12 @@ class Section extends Model
         return $children;
     }
     
+    public function getIsHomeAttribute()
+    {
+        return null === $this->parent_id;
+    }
+
     // topics
-    
     public function topics()
     {
         // return $this->hasMany('App\Topic', 'topic_id', 'id')->orderBy('topic_weight', 'asc');
