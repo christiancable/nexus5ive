@@ -153,7 +153,6 @@ class SectionController extends Controller
             ];
         }
         
-        // @TODO - the form within the section heading should display errors
         $validator = Validator::make($request->all(), $rules, $messages);
 
         if ($validator->fails()) {
