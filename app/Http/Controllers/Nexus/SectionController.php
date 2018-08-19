@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Nexus;
 
+use App\User;
 use Validator;
 use App\Section;
 use App\Http\Requests;
@@ -92,9 +93,12 @@ class SectionController extends Controller
             "Browsing <em>{$section->title}</em>",
             action('Nexus\SectionController@show', ['id' => $section->id])
         );
-
+        
+        // for selecting section moderators
+        $potentialModerators = User::all()->pluck('username', 'id')->toArray();
         $breadcrumbs = \App\Helpers\BreadcrumbHelper::breadcrumbForSection($section);
-        return view('sections.index', compact('section', 'breadcrumbs'));
+
+        return view('sections.index', compact('section', 'breadcrumbs', 'potentialModerators'));
     }
 
     /**
@@ -115,14 +119,13 @@ class SectionController extends Controller
      * @param  int  $id
      * @return Response
      */
-    // public function update(Requests\Section\UpdateRequest $request, $id)
     public function update(Request $request, $id)
     {
         $section = Section::findOrFail($id);
         $formName = "section{$id}";
 
         // it not valid to move a section into a descendant
-        $descendants = \App\Helpers\SectionHelper::allChildSections($section);
+        $descendants = $section->allChildSections();
         $descendantsIDs = array_flatten($descendants->pluck('id')->toArray());
         
         // if parents exists then it much be a valid section id
