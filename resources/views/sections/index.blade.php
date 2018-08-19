@@ -75,11 +75,13 @@
 
                         @todo this feels like too much logic happening in the view
                     */
-                    $allChildSections = \App\Helpers\SectionHelper::allChildSections($subSection);
+                    $allChildSections = $subSection->allChildSections();
                     $allChildSections->push($subSection);
                     $destinations = \Auth::user()->sections->diff($allChildSections);
+                    $potentialModerators = \App\User::all()->pluck('username', 'id')->toArray();
                     ?>
-                    @include('sections._subsection_moderator', compact('subSection','destinations'))
+                    @include('sections._subsection_moderator', 
+                        compact('subSection', 'destinations', 'potentialModerators'))
                 @else
                     @include('sections._subsection_view', $subSection)
                 @endif 
