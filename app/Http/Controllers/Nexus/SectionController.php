@@ -128,49 +128,36 @@ class SectionController extends Controller
         $descendants = $section->allChildSections();
         $descendantsIDs = array_flatten($descendants->pluck('id')->toArray());
         
-        // if parents exists then it much be a valid section id
+        // if parents exists then it must be a valid section id
         $allSectionIDs = \App\Section::all('id')->pluck('id')->toArray();
         
-        // updating the home section has different validation rules and redirection desitination
-        if ($section->is_home) {
-            $validationRedirect = $section->id;
+        // updating the home section has different validation rules to other sections
 
-            $validator = Validator::make(
-                $request->all(),
-                [
-                    "form.{$formName}.title" => 'required',
-                    "form.{$formName}.user_id" => 'required|numeric',
-                ],
-                [
-                    "form.{$formName}.title.required" => 'Section Title is required'
-                ]
-            );
-        } else {
-            $validationRedirect = $section->parent_id;
+        $messages = [
+            "form.{$formName}.title.required" => 'Section Title is required'
+        ];
+        
+        $rules = [
+            "form.{$formName}.title" => 'required',
+            "form.{$formName}.user_id" => 'required|numeric',
+            "form.{$formName}.title" => 'required'
+        ];
 
-            $validator = Validator::make(
-                $request->all(),
-                [
-                    "form.{$formName}.parent_id" => [
-                        'required',
-                        'numeric',
-                        Rule::notIn($descendantsIDs),
-                        Rule::notIn([$id]),
-                        Rule::In($allSectionIDs),
-                    ],
-                    "form.{$formName}.title" => 'required',
-                    "form.{$formName}.user_id" => 'required|numeric',
-                ],
-                [
-                    "form.{$formName}.title.required" => 'Section Title is required'
-                ]
-            );
+        if (!$section->is_home) {
+            $rules["form.{$formName}.parent_id"] = [
+                    'required',
+                    'numeric',
+                    Rule::notIn($descendantsIDs),
+                    Rule::notIn([$id]),
+                    Rule::In($allSectionIDs)
+            ];
         }
         
+        // @TODO - the form within the section heading should display errors
+        $validator = Validator::make($request->all(), $rules, $messages);
+
         if ($validator->fails()) {
-            return redirect(action('Nexus\SectionController@show', [
-                    'id' => $validationRedirect
-                ]))
+            return back()
                 ->withErrors($validator, "sectionUpdate$id")
                 ->withInput();
         }
