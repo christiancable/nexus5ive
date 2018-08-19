@@ -56,6 +56,31 @@ class Section extends Model
     {
         return $this->hasMany(\App\Section::class, 'parent_id', 'id')->orderBy('weight', 'asc');
     }
+
+    
+    /**
+    * @return collection of all descendant sections
+    */
+    public function allChildSections()
+    {
+        $allChildSections = new \Illuminate\Support\Collection;
+        foreach ($this->sections as $child) {
+            $allChildSections->prepend($child);
+            $allChildSections = self::listChildren($child, $allChildSections);
+        }
+
+        return $allChildSections;
+    }
+
+
+    private static function listChildren(Section $section, $children)
+    {
+        foreach ($section->sections as $child) {
+            $children->prepend($child);
+            $children = self::listChildren($child, $children);
+        }
+        return $children;
+    }
     
     // topics
     
