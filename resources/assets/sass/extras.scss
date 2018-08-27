@@ -1,0 +1,480 @@
+
+// Bootstrap
+@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+
+/* to fix overly large images used in topic intros */
+img {
+    max-width: 100%;
+} 
+
+/*
+post settings dropdown menu 
+*/
+.nav-tabs.settings-menu > li > .dropdown-toggle {
+border: 0;
+background-color: transparent;
+
+&:hover, &:focus {
+background-color: transparent;
+border: 0;
+}
+}
+
+.nav-tabs.settings-menu {
+border-bottom: none;
+}
+
+/* ranimated spinny thing - very inspired by http://www.bootply.com/128062 */
+.glyphicon-refresh-animate {
+-animation: spin .7s infinite linear;
+-webkit-animation: spin2 .7s infinite linear;
+}
+
+@-webkit-keyframes spin2 {
+from { -webkit-transform: rotate(0deg);}
+to { -webkit-transform: rotate(360deg);}
+}
+
+@keyframes spin {
+from { transform: scale(1) rotate(0deg);}
+to { transform: scale(1) rotate(360deg);}
+}
+
+/* make bloke quotes less terrible */
+
+blockquote {
+font-size: unset;
+}
+
+
+/* make overly long words break */
+.break-long-words {
+-ms-word-break: break-all;
+word-break: break-all;
+
+/* Non standard for webkit */
+word-break: break-word;
+
+-webkit-hyphens: auto;
+-moz-hyphens: auto;
+hyphens: auto;
+}
+
+/* youtube embed */
+
+.video-wrapper {
+display: block;
+width: 100%;
+padding-bottom: 56.25%;
+overflow: hidden;
+position: relative;
+}
+
+#youtube-player {
+width: 100%;
+height: 100%;
+position: absolute;
+top: 0;
+left:0;
+}
+
+/* bottom nav */
+
+/* 
+add spacing at bottom so the navbar doesn't cover up the formatting help 
+http://getbootstrap.com/components/#navbar-fixed-bottom
+// */
+body { padding-bottom: 80px; }
+
+.navbar-fixed-bottom {
+.glyphicon {
+font-size: x-large;
+}
+}
+/* spoiler text */
+.spoiler {
+background: black;
+color: black;
+}
+
+/* keep button links in sentence case */
+.btn-link {
+text-transform: initial;
+}
+
+#users-list {
+h2 {
+border-radius: 1em;
+width: 1.5em;
+height: 1.5em;
+text-align: center;
+opacity: 0.25;
+span {
+  color: white;
+  line-height: 1.5em;
+}
+}
+.bg-info {
+background-color: #3097d1;
+}
+.user-panel {
+a:hover {
+  text-decoration: none;
+}
+} 
+}
+
+/* hide cloaked vue components */
+[v-cloak] {
+display: none;
+}
+
+.hidden-from-vue {
+display: none;
+}
+
+/* dropdown menus */
+.dropdown-menu .btn-link{
+padding-left: 20px;
+
+}
+
+/* section */
+.section .topic h2 {
+margin-top: 0;
+}
+
+/* lazy loading */
+.b-lazy {
+&.b-error {
+ filter: blur(2px) grayscale(100);
+ opacity: 0.1;
+ transform: rotate(-10deg);
+ transition: .3s ease-in-out;
+}
+}
+
+/* stop ios zooming into form inputs on small screens */
+@media (max-width: $screen-sm-min) { 
+    textarea.form-control,  input.form-control {
+        font-size: 16px;
+    }
+}
+
+/* to fix overly large images used in topic intros */
+img {
+    max-width: 100%;
+} 
+
+/*
+post settings dropdown menu 
+*/
+.nav-tabs.settings-menu > li > .dropdown-toggle {
+border: 0;
+background-color: transparent;
+
+&:hover, &:focus {
+background-color: transparent;
+border: 0;
+}
+}
+
+.nav-tabs.settings-menu {
+border-bottom: none;
+}
+
+/* ranimated spinny thing - very inspired by http://www.bootply.com/128062 */
+.glyphicon-refresh-animate {
+-animation: spin .7s infinite linear;
+-webkit-animation: spin2 .7s infinite linear;
+}
+
+@-webkit-keyframes spin2 {
+from { -webkit-transform: rotate(0deg);}
+to { -webkit-transform: rotate(360deg);}
+}
+
+@keyframes spin {
+from { transform: scale(1) rotate(0deg);}
+to { transform: scale(1) rotate(360deg);}
+}
+
+/* make bloke quotes less terrible */
+
+blockquote {
+font-size: unset;
+}
+
+
+/* make overly long words break */
+.break-long-words {
+-ms-word-break: break-all;
+word-break: break-all;
+
+/* Non standard for webkit */
+word-break: break-word;
+
+-webkit-hyphens: auto;
+-moz-hyphens: auto;
+hyphens: auto;
+}
+
+/* youtube embed */
+
+.video-wrapper {
+display: block;
+width: 100%;
+padding-bottom: 56.25%;
+overflow: hidden;
+position: relative;
+}
+
+#youtube-player {
+width: 100%;
+height: 100%;
+position: absolute;
+top: 0;
+left:0;
+}
+
+/* bottom nav */
+
+/* 
+add spacing at bottom so the navbar doesn't cover up the formatting help 
+http://getbootstrap.com/components/#navbar-fixed-bottom
+// */
+body { padding-bottom: 80px; }
+
+.navbar-fixed-bottom {
+.glyphicon {
+font-size: x-large;
+}
+}
+/* spoiler text */
+.spoiler {
+background: black;
+color: black;
+}
+
+/* keep button links in sentence case */
+.btn-link {
+text-transform: initial;
+}
+
+#users-list {
+h2 {
+border-radius: 1em;
+width: 1.5em;
+height: 1.5em;
+text-align: center;
+opacity: 0.25;
+span {
+  color: white;
+  line-height: 1.5em;
+}
+}
+.bg-info {
+background-color: #3097d1;
+}
+.user-panel {
+a:hover {
+  text-decoration: none;
+}
+} 
+}
+
+/* hide cloaked vue components */
+[v-cloak] {
+display: none;
+}
+
+.hidden-from-vue {
+display: none;
+}
+
+/* dropdown menus */
+.dropdown-menu .btn-link{
+padding-left: 20px;
+
+}
+
+/* section */
+.section .topic h2 {
+margin-top: 0;
+}
+
+/* lazy loading */
+.b-lazy {
+&.b-error {
+ filter: blur(2px) grayscale(100);
+ opacity: 0.1;
+ transform: rotate(-10deg);
+ transition: .3s ease-in-out;
+}
+}
+
+/* stop ios zooming into form inputs on small screens */
+@media (max-width: $screen-sm-min) { 
+    textarea.form-control,  input.form-control {
+        font-size: 16px;
+    }
+}
+
+/* to fix overly large images used in topic intros */
+img {
+    max-width: 100%;
+} 
+
+/*
+post settings dropdown menu 
+*/
+.nav-tabs.settings-menu > li > .dropdown-toggle {
+border: 0;
+background-color: transparent;
+
+&:hover, &:focus {
+background-color: transparent;
+border: 0;
+}
+}
+
+.nav-tabs.settings-menu {
+border-bottom: none;
+}
+
+/* ranimated spinny thing - very inspired by http://www.bootply.com/128062 */
+.glyphicon-refresh-animate {
+-animation: spin .7s infinite linear;
+-webkit-animation: spin2 .7s infinite linear;
+}
+
+@-webkit-keyframes spin2 {
+from { -webkit-transform: rotate(0deg);}
+to { -webkit-transform: rotate(360deg);}
+}
+
+@keyframes spin {
+from { transform: scale(1) rotate(0deg);}
+to { transform: scale(1) rotate(360deg);}
+}
+
+/* make bloke quotes less terrible */
+
+blockquote {
+font-size: unset;
+}
+
+
+/* make overly long words break */
+.break-long-words {
+-ms-word-break: break-all;
+word-break: break-all;
+
+/* Non standard for webkit */
+word-break: break-word;
+
+-webkit-hyphens: auto;
+-moz-hyphens: auto;
+hyphens: auto;
+}
+
+/* youtube embed */
+
+.video-wrapper {
+display: block;
+width: 100%;
+padding-bottom: 56.25%;
+overflow: hidden;
+position: relative;
+}
+
+#youtube-player {
+width: 100%;
+height: 100%;
+position: absolute;
+top: 0;
+left:0;
+}
+
+/* bottom nav */
+
+/* 
+add spacing at bottom so the navbar doesn't cover up the formatting help 
+http://getbootstrap.com/components/#navbar-fixed-bottom
+// */
+body { padding-bottom: 80px; }
+
+.navbar-fixed-bottom {
+.glyphicon {
+font-size: x-large;
+}
+}
+/* spoiler text */
+.spoiler {
+background: black;
+color: black;
+}
+
+/* keep button links in sentence case */
+.btn-link {
+text-transform: initial;
+}
+
+#users-list {
+h2 {
+border-radius: 1em;
+width: 1.5em;
+height: 1.5em;
+text-align: center;
+opacity: 0.25;
+span {
+  color: white;
+  line-height: 1.5em;
+}
+}
+.bg-info {
+background-color: #3097d1;
+}
+.user-panel {
+a:hover {
+  text-decoration: none;
+}
+} 
+}
+
+/* hide cloaked vue components */
+[v-cloak] {
+display: none;
+}
+
+.hidden-from-vue {
+display: none;
+}
+
+/* dropdown menus */
+.dropdown-menu .btn-link{
+padding-left: 20px;
+
+}
+
+/* section */
+.section .topic h2 {
+margin-top: 0;
+}
+
+/* lazy loading */
+.b-lazy {
+&.b-error {
+ filter: blur(2px) grayscale(100);
+ opacity: 0.1;
+ transform: rotate(-10deg);
+ transition: .3s ease-in-out;
+}
+}
+
+/* stop ios zooming into form inputs on small screens */
+@media (max-width: $screen-sm-min) { 
+    textarea.form-control,  input.form-control {
+        font-size: 16px;
+    }
+}
