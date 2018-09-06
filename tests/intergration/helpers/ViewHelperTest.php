@@ -1,54 +1,58 @@
 <?php
 
+namespace Tests\Intergration\Helpers;
+
+use App\User;
+use App\Post;
+use App\Topic;
+use Faker\Factory;
+use App\Helpers\ViewHelper;
+use Tests\BrowserKitTestCase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\User;
-use App\Topic;
-use App\Post;
 
-/*
- @todo: unsubscribe status - once we have an unsubscribe method
-
-*/
 class ViewHelperTest extends BrowserKitTestCase
 {
     use DatabaseTransactions;
     
-    public function test_getReadProgress_returns_time_of_most_recently_read_post_time()
+    /**
+     * @test
+     */
+    public function getReadProgressReturnsTimeOfMostRecentlyReadPost()
     {
-        $faker = \Faker\Factory::create();
+        $faker = Factory::create();
 
         // GIVEN  we have a user
-        $user = factory(App\User::class)->create();
+        $user = factory(User::class)->create();
 
         // AND we have a topic with posts
         $topic = factory(Topic::class)->create();
-        factory(App\Post::class, 20)
+        factory(Post::class, 20)
             ->create(
                 ['topic_id' => $topic->id,
                 'time' => $faker->dateTimeThisMonth('-2 days')]
             );
             
         // AND the most recent post being from yesterday
-        $newPost = factory(App\Post::class)
+        $newPost = factory(Post::class)
             ->create(
                 ['topic_id' => $topic->id,
                 'time' => $faker->dateTimeThisMonth('-1 days')]
             );
           
         // WHEN the user reads the topic
-        \App\Helpers\ViewHelper::updateReadProgress($user, $topic);
+        ViewHelper::updateReadProgress($user, $topic);
 
         // THEN the date of the most recent post in the topic matches
         // the one most recently read by the user
         $this->assertEquals(
             $topic->most_recent_post_time,
-            \App\Helpers\ViewHelper::getReadProgress($user, $topic)
+            ViewHelper::getReadProgress($user, $topic)
         );
 
         // WHEN a new post is added now
-        $anotherPost = factory(App\Post::class)
+        $anotherPost = factory(Post::class)
             ->create(
                 ['topic_id' => $topic->id,
                 'time' => new \DateTime('now')]
@@ -58,144 +62,162 @@ class ViewHelperTest extends BrowserKitTestCase
         // the one most recently read by the user
         $this->assertNotEquals(
             $topic->most_recent_post_time,
-            \App\Helpers\ViewHelper::getReadProgress($user, $topic)
+            ViewHelper::getReadProgress($user, $topic)
         );
     }
 
-    public function test_getTopicStatus_indicates_new_posts_for_a_topic_with_new_posts()
+    /**
+     * @test
+     */
+    public function getTopicStatusIndicatesNewPostsForTopicWithNewPosts()
     {
-        $faker = \Faker\Factory::create();
+        $faker = Factory::create();
 
         // GIVEN we have a user
-         $user = factory(App\User::class)->create();
+         $user = factory(User::class)->create();
         // AND we have a topic
         // with posts
         // AND we have a topic with posts
         $topic = factory(Topic::class)->create();
-        factory(App\Post::class, 20)
+        factory(Post::class, 20)
             ->create(
                 ['topic_id' => $topic->id,
                 'time' => $faker->dateTimeThisMonth('-2 days')]
             );
             
         // AND the user has read the topic
-        \App\Helpers\ViewHelper::updateReadProgress($user, $topic);
+        ViewHelper::updateReadProgress($user, $topic);
 
         // WHEN a new post is added
-        $anotherPost = factory(App\Post::class)
+        $anotherPost = factory(Post::class)
             ->create(
                 ['topic_id' => $topic->id,
                 'time' => new \DateTime('now')]
             );
 
         // THEN the topic appears to have new posts to the user
-        $topicStatus = \App\Helpers\ViewHelper::getTopicStatus($user, $topic);
+        $topicStatus = ViewHelper::getTopicStatus($user, $topic);
 
         $this->assertTrue($topicStatus['new_posts']);
     }
 
-    public function test_getTopicStatus_indicates_no_new_posts_for_a_topic_with_no_new_posts()
+    /**
+     * @test
+     */
+    public function getTopicStatusIndicatesNoNewPostsForTopicWithNoNewPosts()
     {
-        $faker = \Faker\Factory::create();
+        $faker = Factory::create();
 
         // GIVEN we have a user
-         $user = factory(App\User::class)->create();
+         $user = factory(User::class)->create();
         // AND we have a topic
         // with posts
         // AND we have a topic with posts
         $topic = factory(Topic::class)->create();
-        factory(App\Post::class, 20)
+        factory(Post::class, 20)
             ->create(
                 ['topic_id' => $topic->id,
                 'time' => $faker->dateTimeThisMonth('-2 days')]
             );
             
         // AND the user has read the topic
-        \App\Helpers\ViewHelper::updateReadProgress($user, $topic);
+        ViewHelper::updateReadProgress($user, $topic);
 
         // THEN the topic appears to have no new posts to the user
-        $topicStatus = \App\Helpers\ViewHelper::getTopicStatus($user, $topic);
+        $topicStatus = ViewHelper::getTopicStatus($user, $topic);
 
         $this->assertFalse($topicStatus['new_posts']);
     }
 
-    public function test_getTopicStatus_indicates_never_read_for_a_never_viewed_topic()
+    /**
+     * @test
+     */
+    public function getTopicStatusIndicatesNeverReadForANeverViewedTopic()
     {
-        $faker = \Faker\Factory::create();
+        $faker = Factory::create();
 
         // GIVEN we have a user
-         $user = factory(App\User::class)->create();
+         $user = factory(User::class)->create();
         
         // WHEN we add a topic
         $topic = factory(Topic::class)->create();
         
         // THEN the topic appears to have new to the user
-        $topicStatus = \App\Helpers\ViewHelper::getTopicStatus($user, $topic);
+        $topicStatus = ViewHelper::getTopicStatus($user, $topic);
 
         $this->assertTrue($topicStatus['never_read']);
     }
 
-    public function test_getTopicStatus_does_not_indicate_never_read_for_a_viewed_topic()
+    /**
+     * @test
+     */
+    public function getTopicStatusDoesNotIndicateNeverReadForViewedTopic()
     {
-        $faker = \Faker\Factory::create();
+        $faker = Factory::create();
 
         // GIVEN we have a user
-         $user = factory(App\User::class)->create();
+         $user = factory(User::class)->create();
         
         // AND we add a topic
         $topic = factory(Topic::class)->create();
         
         // WHEN the user has read the topic
-        \App\Helpers\ViewHelper::updateReadProgress($user, $topic);
+        ViewHelper::updateReadProgress($user, $topic);
 
         // THEN the topic does not appear new to the user
-        $topicStatus = \App\Helpers\ViewHelper::getTopicStatus($user, $topic);
+        $topicStatus = ViewHelper::getTopicStatus($user, $topic);
 
         $this->assertFalse($topicStatus['never_read']);
     }
 
-    public function test_getTopicStatus_returns_unsubscribed_when_a_user_unsubscribes()
+    /**
+     * @test
+     */
+    public function getTopicStatusReturnsUnsubscribedWhenUserUnsubscribes()
     {
-        $faker = \Faker\Factory::create();
+        $faker = Factory::create();
 
         // GIVEN we have a user
-         $user = factory(App\User::class)->create();
+         $user = factory(User::class)->create();
         
         // AND we add a topic
         $topic = factory(Topic::class)->create();
 
         // WHEN the user is unsubscribed from the topic
-        \App\Helpers\ViewHelper::unsubscribeFromTopic($user, $topic);
+        ViewHelper::unsubscribeFromTopic($user, $topic);
 
         // THEN the topic does not appear new to the user
-        $topicStatus = \App\Helpers\ViewHelper::getTopicStatus($user, $topic);
+        $topicStatus = ViewHelper::getTopicStatus($user, $topic);
 
         $this->assertTrue($topicStatus['unsubscribed']);
     }
 
-    public function test_getTopicStatus_returns_subscribed_when_a_user_resubscribes()
+    /**
+     * @test
+     */
+    public function getTopicStatusReturnsSubscribedWhenUserResubscribes()
     {
-        $faker = \Faker\Factory::create();
+        $faker = Factory::create();
 
         // GIVEN we have a user
-         $user = factory(App\User::class)->create();
+         $user = factory(User::class)->create();
         
         // AND we add a topic
         $topic = factory(Topic::class)->create();
 
         // WHEN the user is unsubscribed from the topic
-        \App\Helpers\ViewHelper::unsubscribeFromTopic($user, $topic);
+        ViewHelper::unsubscribeFromTopic($user, $topic);
 
         // THEN the topic does not appear new to the user
-        $topicStatus = \App\Helpers\ViewHelper::getTopicStatus($user, $topic);
+        $topicStatus = ViewHelper::getTopicStatus($user, $topic);
 
         $this->assertTrue($topicStatus['unsubscribed']);
 
         // WHEN the user is unsubscribed from the topic
-        \App\Helpers\ViewHelper::subscribeToTopic($user, $topic);
+        ViewHelper::subscribeToTopic($user, $topic);
 
         // THEN the topic does not appear new to the user
-        $topicStatus = \App\Helpers\ViewHelper::getTopicStatus($user, $topic);
+        $topicStatus = ViewHelper::getTopicStatus($user, $topic);
 
         $this->assertFalse($topicStatus['unsubscribed']);
     }

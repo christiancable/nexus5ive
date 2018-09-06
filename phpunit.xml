@@ -13,7 +13,7 @@
         
         <testsuite name="Application Test Suite">
             <directory suffix=".php">./tests/acceptance/</directory>
-            <directory suffix=".php">./tests/intergration/</directory>
+            <directory suffix=".php">./tests/Feature/</directory>
             <directory suffix=".php">./tests/intergration/helpers/</directory>
             <directory suffix=".php">./tests/intergration/models/</directory>
             <directory suffix=".php">./tests/unit/</directory>
