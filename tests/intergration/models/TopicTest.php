@@ -1,21 +1,27 @@
 <?php
 
+namespace Tests\Intergration\Models;
+
+use App\Post;
+use App\User;
+use App\Topic;
+use Tests\BrowserKitTestCase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\Topic;
-use App\Post;
-use App\User;
 
 class TopicTest extends BrowserKitTestCase
 {
     use DatabaseTransactions;
     
-    public function test_deleting_topic_soft_deletes_its_posts()
+    /**
+     * @test
+     */
+    public function deletingTopicSoftDeletesItsPosts()
     {
         // GIVEN we have a topic with post
-        $topic = factory(App\Topic::class)->create();
-        factory(App\Post::class, 20)->create(['topic_id' => $topic->id]);
+        $topic = factory(Topic::class)->create();
+        factory(Post::class, 20)->create(['topic_id' => $topic->id]);
     
         // we have 1 topic with 20 posts
         $this->assertEquals(Topic::all()->count(), 1);
@@ -33,22 +39,22 @@ class TopicTest extends BrowserKitTestCase
         $this->assertEquals(Post::withTrashed()->where('topic_id', $topic->id)->count(), 20);
     }
 
-    public function test_MostRecentPostTime_returns_time_of_latest_post()
+    public function mostRecentPostTimeReturnsTimeOfLatestPost()
     {
         $faker = \Faker\Factory::create();
 
         // GIVEN we have a topic with posts
-        $topic = factory(App\Topic::class)->create();
+        $topic = factory(Topic::class)->create();
 
         // posts from the last month but not today
-        factory(App\Post::class, 20)
+        factory(Post::class, 20)
             ->create(
                 ['topic_id' => $topic->id,
                 'time' => $faker->dateTimeThisMonth('-1 days')]
             );
 
         // the most recent post being from today
-        $newPost = factory(App\Post::class)
+        $newPost = factory(Post::class)
             ->create(
                 ['topic_id' => $topic->id,
                 'time' => new \DateTime('now')]

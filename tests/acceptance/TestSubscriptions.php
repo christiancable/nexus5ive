@@ -1,44 +1,46 @@
 <?php
 
-// use Illuminate\Foundation\Testing\WithoutMiddleware;
+namespace Tests\Acceptance;
+
+use DateTime;
+use App\User;
+use App\Post;
+use App\Topic;
+use App\Section;
+use Faker\Factory;
+use Tests\BrowserKitTestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\User;
-use App\Topic;
-use App\Post;
-use App\Section;
 
-class testSubscriptions extends BrowserKitTestCase
+class TestSubscriptions extends BrowserKitTestCase
 {
     use DatabaseTransactions;
     
     /**
-     * A basic test example.
-     *
-     * @return void
+     * @test
      */
-    public function testUserCanMarkAllSubscribedTopicsAsRead()
+    public function userCanMarkAllSubscribedTopicsAsRead()
     {
-        $faker = \Faker\Factory::create();
+        $faker = Factory::create();
 
         /* given we have */
         // a user
         // another user
         // a topic with a post
-        $user = factory(App\User::class)->create();
+        $user = factory(User::class)->create();
         $originalUserID = $user->id;
 
-        $author = factory(App\User::class)->create();
-        $section = factory(App\Section::class)
+        $author = factory(User::class)->create();
+        $section = factory(Section::class)
         ->create([
             'parent_id' => null,
             'user_id' => $user->id,
             ]);
-        $topic = factory(App\Topic::class)
+        $topic = factory(Topic::class)
         ->create([
             'section_id' => $section->id,
             ]);
-        $post = factory(App\Post::class)
+        $post = factory(Post::class)
         ->create(
             ['topic_id' => $topic->id,
             'user_id' => $author->id,
@@ -51,7 +53,7 @@ class testSubscriptions extends BrowserKitTestCase
             ->visit('/topic/' . $topic->id);
 
         // a new post is added to the topic
-        factory(App\Post::class)
+        factory(Post::class)
             ->create(
                 ['topic_id' => $topic->id,
                 'user_id' => $author->id,
@@ -78,7 +80,7 @@ class testSubscriptions extends BrowserKitTestCase
 
         sleep(1);
         // a new post is added to the topic
-        factory(App\Post::class)
+        factory(Post::class)
             ->create(
                 ['topic_id' => $topic->id,
                 'user_id' => $author->id,
@@ -100,27 +102,26 @@ class testSubscriptions extends BrowserKitTestCase
         we have a section
         we have posts in that section
         */
-        $faker = \Faker\Factory::create();
+        $faker = Factory::create();
 
-        $user = factory(App\User::class)->create();
-        $section = factory(App\Section::class)
+        $user = factory(User::class)->create();
+        $section = factory(Section::class)
         ->create([
             'parent_id' => null,
             'user_id' => $user->id,
             ]);
-        $topic = factory(App\Topic::class)
+        $topic = factory(Topic::class)
         ->create([
-            'section_id' => $section->id,
-            ]);
-        $post = factory(App\Post::class)
+        'section_id' => $section->id,
+        ]);
+        $post = factory(Post::class)
         ->create(
             ['topic_id' => $topic->id,
             'user_id' => $user->id,
             'time' => $faker->dateTimeThisMonth('-1 days'),
             ]
         );
-
-        /* WHEN
+     /* WHEN
         the user visits the topic
         and clicks Unsubscribe from this topic
         */

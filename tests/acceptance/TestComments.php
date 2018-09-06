@@ -1,21 +1,23 @@
 <?php
 
+namespace Tests\Acceptance;
+
+use App\User;
+use App\Post;
+use App\Topic;
+use App\Section;
+use App\Comment;
+use Tests\BrowserKitTestCase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\User;
-use App\Topic;
-use App\Post;
-use App\Section;
-use App\Comment;
 
-class testComments extends BrowserKitTestCase
+class TestComments extends BrowserKitTestCase
 {
     use DatabaseTransactions;
 
     /**
      * @test
-     * @return void
      */
     public function userCanClearTheirOwnComments()
     {
@@ -31,7 +33,7 @@ class testComments extends BrowserKitTestCase
 
         $sysop = factory(User::class)->create();
         $user = factory(User::class)->create();
-        $anotherUser = factory(App\User::class)->create();
+        $anotherUser = factory(User::class)->create();
 
         $home = factory(Section::class)
             ->create([

@@ -1,10 +1,14 @@
 <?php
-// @codingStandardsIgnoreFile
+
+namespace Tests\Acceptance;
+
+use App\User;
+use App\Theme;
+use App\Section;
+use Tests\BrowserKitTestCase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\User;
-use App\Section;
 
 class ThemesTest extends BrowserKitTestCase
 {
@@ -14,22 +18,24 @@ class ThemesTest extends BrowserKitTestCase
     public $user;
     public $home;
 
-    public function setUp() {
+    public function setUp()
+    {
         parent::setUp();
 
-        $this->defaultTheme = App\Theme::FirstOrFail();
+        $this->defaultTheme = Theme::FirstOrFail();
         $this->user = factory(User::class)->create();
         $this->home = factory(Section::class)
             ->create([
                 'parent_id' => null,
                 'user_id' => $this->user->id,
             ]);
-        
     }
+
     /**
      * @test
      */
-    public function a_new_user_has_the_default_theme() {
+    public function newUserHasDefaultTheme()
+    {
         // given we have a default theme
         // and a new user
         // the new user has the default theme
@@ -39,9 +45,10 @@ class ThemesTest extends BrowserKitTestCase
     /**
      * @test
      */
-    public function a_user_can_see_which_theme_they_use() {
+    public function userCanSeeWhichThemeTheyUse()
+    {
         // when the user views their profile
-        // the user can see which theme they have   
+        // the user can see which theme they have
         $this->actingAs($this->user)
             ->visitRoute('users.show', $this->user->username)
             ->see($this->defaultTheme->url);
@@ -50,11 +57,12 @@ class ThemesTest extends BrowserKitTestCase
     /**
      * @test
      */
-    public function a_user_can_change_their_theme() {
+    public function userCanChangeTheme()
+    {
         // given we have a user
-        // and a default theme 
+        // and a default theme
         // and an alternative theme
-        $alternativeTheme = factory(App\Theme::class)->create();
+        $alternativeTheme = factory(Theme::class)->create();
 
         // when the user views their profile
         // and they select a different theme
@@ -69,7 +77,7 @@ class ThemesTest extends BrowserKitTestCase
             ->see($alternativeTheme->url);
 
         // reload user to get saved info
-        $updatedUser = App\User::findOrFail($this->user->id);
+        $updatedUser = User::findOrFail($this->user->id);
         
         // see the newly chosen alternative theme in their profile in the db
         $this->assertEquals($updatedUser->theme->id, $alternativeTheme->id);

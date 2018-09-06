@@ -1,21 +1,25 @@
 <?php
 
+namespace Tests\Acceptance;
+
+use App\User;
+use App\Post;
+use App\Topic;
+use App\Section;
+use Tests\BrowserKitTestCase;
+use App\Helpers\NxCodeHelper;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\User;
-use App\Topic;
-use App\Post;
-use App\Section;
 
-class testLatestPosts extends BrowserKitTestCase
+class TestLatestPosts extends BrowserKitTestCase
 {
     use DatabaseTransactions;
 
     /**
      * @test
      */
-    public function user_sees_post_preview_for_topic_with_posts()
+    public function userSeesPostPreviewForTopicWithPosts()
     {
         /*
         GIVEN we have a topic with posts
@@ -43,7 +47,7 @@ class testLatestPosts extends BrowserKitTestCase
                 ]
             );
 
-        $previewText = substr(strip_tags(App\Helpers\NxCodeHelper::nxDecode($post->text)), 0, 140);
+        $previewText = substr(strip_tags(NxCodeHelper::nxDecode($post->text)), 0, 140);
         $this->actingAs($user)
             ->visit('/section/latest')
             ->see($previewText);
@@ -52,7 +56,7 @@ class testLatestPosts extends BrowserKitTestCase
     /**
      * @test
      */
-    public function user_does_not_see_post_preview_for_unsubscribed_topic_with_posts()
+    public function userDoesNotSeePostPreviewForUnsubscribedTopicWithPosts()
     {
          /*
         GIVEN we have a topic with posts
@@ -81,7 +85,7 @@ class testLatestPosts extends BrowserKitTestCase
                 ]
             );
 
-        $previewText = substr(strip_tags(App\Helpers\NxCodeHelper::nxDecode($post->text)), 0, 140);
+        $previewText = substr(strip_tags(NxCodeHelper::nxDecode($post->text)), 0, 140);
 
         $this->actingAs($user)
             ->visit('/topic/' . $topic->id)

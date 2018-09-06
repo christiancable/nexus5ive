@@ -15,7 +15,7 @@ class CreateSectionTest extends TestCase
     /**
     * @test
     */
-    public function moderator_can_create_new_subsection()
+    public function moderatorCanCreateNewSubsection()
     {
         /*
         GIVEN we have
@@ -61,7 +61,7 @@ class CreateSectionTest extends TestCase
     /**
     * @test
     */
-    public function user_cannot_create_subsection()
+    public function userCannotCreateSubsection()
     {
         /*
         GIVEN we have
@@ -103,7 +103,7 @@ class CreateSectionTest extends TestCase
     /**
     * @test
     */
-    public function moderator_cannot_create_invalid_subsection()
+    public function moderatorCannotCreateInvalidSubsection()
     {
          /*
         GIVEN we have
