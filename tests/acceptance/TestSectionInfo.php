@@ -1,23 +1,25 @@
 <?php
 
+namespace Tests\Acceptance;
+
+use App\User;
+use App\Post;
+use App\Topic;
+use App\Section;
+use Faker\Factory;
+use Tests\BrowserKitTestCase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\User;
-use App\Topic;
-use App\Post;
-use App\Section;
 
-class testSectionInfo extends BrowserKitTestCase
+class TestSectionInfo extends BrowserKitTestCase
 {
     use DatabaseTransactions;
     
     /**
-     * A basic test example.
-     *
-     * @return void
+     * @test
      */
-    public function testUserCanSeeLatestPostTopic()
+    public function userCanSeeLatestPostTopic()
     {
         /* GIVEN that we have
 
@@ -26,17 +28,17 @@ class testSectionInfo extends BrowserKitTestCase
         a subsction with a number of topics
         no posts
         */
-        $faker = \Faker\Factory::create();
+        $faker = Factory::create();
 
-        $user = factory(App\User::class)->create();
+        $user = factory(User::class)->create();
  
-        $section = factory(App\Section::class)
+        $section = factory(Section::class)
         ->create([
             'parent_id' => null,
             'user_id' => $user->id,
             ]);
 
-        $subSection = factory(App\Section::class)
+        $subSection = factory(Section::class)
         ->create([
             'parent_id' => $section->id,
             'user_id' => $user->id,
@@ -71,7 +73,7 @@ class testSectionInfo extends BrowserKitTestCase
         a Latest Post notice for topic 1
         */
 
-        $post = factory(App\Post::class)
+        $post = factory(Post::class)
         ->create(
             ['topic_id' => $topic1->id,
             'user_id' => $user->id,
@@ -90,7 +92,7 @@ class testSectionInfo extends BrowserKitTestCase
         not see $topic1->title
         */
 
-        $post = factory(App\Post::class)
+        $post = factory(Post::class)
         ->create(
             ['topic_id' => $topic2->id,
             'user_id' => $user->id,

@@ -10,14 +10,10 @@
          stopOnFailure="false"
          syntaxCheck="false">
     <testsuites>
-<!--          <testsuite name="Feature Tests">
-            <directory suffix="Test.php">./tests/Feature</directory>
-        </testsuite> -->
         
         <testsuite name="Application Test Suite">
-            <!-- <directory suffix=".php">./tests/</directory> -->
             <directory suffix=".php">./tests/acceptance/</directory>
-            <directory suffix=".php">./tests/intergration/</directory>
+            <directory suffix=".php">./tests/Feature/</directory>
             <directory suffix=".php">./tests/intergration/helpers/</directory>
             <directory suffix=".php">./tests/intergration/models/</directory>
             <directory suffix=".php">./tests/unit/</directory>

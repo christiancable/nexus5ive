@@ -1,34 +1,40 @@
 <?php
 
+namespace Tests\Intergration\Models;
+
+use App\User;
+use App\Topic;
+use App\Section;
+use Tests\BrowserKitTestCase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\User;
-use App\Section;
-use App\Topic;
 
 class SectionTest extends BrowserKitTestCase
 {
     use DatabaseTransactions;
         
-    public function test_deleting_section_soft_deletes_section_and_only_that_one()
+    /**
+     * @test
+     */
+    public function deletingSectionSoftDeletesSectionAndOnlyThatOne()
     {
-        $user = factory(App\User::class)->create();
+        $user = factory(User::class)->create();
 
         // GIVEN we have a main menu with a subsection
-        $mainmenu = factory(App\Section::class)
+        $mainmenu = factory(Section::class)
             ->create([
                 'parent_id' => null,
                 'user_id' => $user->id,
                 ]);
-        $section = factory(App\Section::class)
+        $section = factory(Section::class)
             ->create([
                 'parent_id' => $mainmenu->id,
                 'user_id' => $user->id,
                 ]);
         
         // AND some other sections
-        factory(App\Section::class)
+        factory(Section::class)
             ->create([
                 'parent_id' => $mainmenu->id,
                 'user_id' => $user->id,
@@ -48,13 +54,13 @@ class SectionTest extends BrowserKitTestCase
     }
     
     
-    public function test_deleting_section_soft_deletes_its_topics()
+    public function deletingSectionSoftDeletesItsTopics()
     {
         // GIVEN we have a user
-        $user = factory(App\User::class)->create();
+        $user = factory(User::class)->create();
         
         // AND we have a section
-        $section = factory(App\Section::class)
+        $section = factory(Section::class)
             ->create([
                 'parent_id' => null,
                 'user_id' => $user->id,
@@ -81,20 +87,20 @@ class SectionTest extends BrowserKitTestCase
         $this->assertEquals(Topic::withTrashed()->where('section_id', $section->id)->count(), $topicsInSectionCount);
     }
 
-    public function test_deleting_section_soft_deletes_its_subsections()
+    public function deletingSectionSoftDeletesItsSubsections()
     {
         // given we have a user with a section and that sub section
-         $user = factory(App\User::class)->create();
+         $user = factory(User::class)->create();
         
         // AND we have a section
-        $section = factory(App\Section::class)
+        $section = factory(Section::class)
             ->create([
                 'parent_id' => null,
                 'user_id' => $user->id,
                 ]);
 
         // with subsections
-        factory(App\Section::class, 6)
+        factory(Section::class, 6)
             ->create([
                 'parent_id' => $section->id,
                 'user_id' => $user->id,

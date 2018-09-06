@@ -1,10 +1,14 @@
 <?php
 
+namespace Tests\Unit;
+
+use Tests\BrowserKitTestCase;
+use App\Helpers\MentionHelper;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\Helpers\MentionHelper;
 
+// phpcs:disable Generic.Files.LineLength
 class MentionHelperTest extends BrowserKitTestCase
 {
     
@@ -59,15 +63,22 @@ class MentionHelperTest extends BrowserKitTestCase
             ],
             'single mention' => [
                 $input = 'hey @christiancable how are you?',
-                $expectedOutput = 'hey <span class="text-muted">@</span><mark><strong><a href="/users/christiancable">christiancable</a></strong></mark> how are you?',
+                $expectedOutput = <<< HTML
+hey <span class="text-muted">@</span><mark><strong><a href="/users/christiancable">christiancable</a></strong></mark> how are you?
+HTML
+            ,
             ],
             'multiple mentions' => [
                 $input = 'hey @christiancable have you seen @AgentOrange',
-                $expectedOutput = 'hey <span class="text-muted">@</span><mark><strong><a href="/users/christiancable">christiancable</a></strong></mark> have you seen <span class="text-muted">@</span><mark><strong><a href="/users/AgentOrange">AgentOrange</a></strong></mark>',
+                $expectedOutput = <<< HTML
+hey <span class="text-muted">@</span><mark><strong><a href="/users/christiancable">christiancable</a></strong></mark> have you seen <span class="text-muted">@</span><mark><strong><a href="/users/AgentOrange">AgentOrange</a></strong></mark>
+HTML
             ],
             'mention with html' => [
                 $input = '<p>@christiancable</p>',
-                $expectedOutput = '<p><span class="text-muted">@</span><mark><strong><a href="/users/christiancable">christiancable</a></strong></mark></p>',
+                $expectedOutput = <<< HTML
+<p><span class="text-muted">@</span><mark><strong><a href="/users/christiancable">christiancable</a></strong></mark></p>
+HTML
             ],
         ];
     }

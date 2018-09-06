@@ -1,23 +1,26 @@
 <?php
 
+namespace Tests\Acceptance;
+
+use App\User;
+use App\Post;
+use App\Topic;
+use App\Section;
+use Faker\Factory;
+use Tests\BrowserKitTestCase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\User;
-use App\Topic;
-use App\Post;
-use App\Section;
 
-class testMentions extends BrowserKitTestCase
+class TestMentions extends BrowserKitTestCase
 {
     use DatabaseTransactions;
     
     /**
-     * A basic test example.
-     *
+     * @test
      * @return void
      */
-    public function testUserCanClearMentions()
+    public function userCanClearMentions()
     {
         /* GIVEN that we have
         a logged in user
@@ -25,12 +28,12 @@ class testMentions extends BrowserKitTestCase
         a post in the topic made by another user
         */
         
-        $faker = \Faker\Factory::create();
+        $faker = Factory::create();
 
-        $user = factory(App\User::class)->create();
+        $user = factory(User::class)->create();
         $originalUserID = $user->id;
-        $author = factory(App\User::class)->create();
-        $section = factory(App\Section::class)
+        $author = factory(User::class)->create();
+        $section = factory(Section::class)
         ->create([
             'parent_id' => null,
             'user_id' => $user->id,
@@ -39,7 +42,7 @@ class testMentions extends BrowserKitTestCase
         ->create([
             'section_id' => $section->id,
             ]);
-        $post = factory(App\Post::class)
+        $post = factory(Post::class)
         ->create(
             ['topic_id' => $topic->id,
             'user_id' => $author->id,

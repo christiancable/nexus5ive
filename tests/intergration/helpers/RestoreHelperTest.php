@@ -1,140 +1,142 @@
 <?php
 
+namespace Tests\Intergration\Helpers;
+
+use App\User;
+use App\Post;
+use App\Topic;
+use App\Section;
+use App\Helpers\ViewHelper;
+use Tests\BrowserKitTestCase;
+use App\Helpers\RestoreHelper;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\User;
-use App\Topic;
-use App\Post;
-use App\Section;
 
 class RestoreHelperTest extends BrowserKitTestCase
 {
     use DatabaseTransactions;
     
- /*
-        // note this will be protected at the http layer by a request
-
-        test restoreTopicToSection restores a topic to an existing section
-        test restoreTopicToSection restores a topic to another existing section
-        test restoreTopicToSection restores a topic along with its posts and views
- */
-
-    public function test_restoreTopicToSection_restores_a_topic_to_a_section()
+    /**
+    * @test
+    */
+    public function restoreTopicToSectionDoesRestoresTopicToSection()
     {
-        // GIVEN I have a topic in a section
-        // and then that topic is deleted
-        $section = factory(App\Section::class)->create();
+        // GIVEN I have a topic in a section and then that topic is deleted
+        $section = factory(Section::class)->create();
         $topic = factory(Topic::class)->create(['section_id' => $section->id]);
         $topic->delete();
         $this->assertTrue($topic->trashed());
         
         // WHEN the topic is restored to the section
-        \App\Helpers\RestoreHelper::restoreTopicToSection($topic, $section);
-
+        RestoreHelper::restoreTopicToSection($topic, $section);
+        
         // THEN the topic is restored
         $this->assertFalse($topic->trashed());
     }
-
-
-    public function test_restoreTopicToSection_restores_a_topic_and_posts()
+    
+    /**
+    * @test
+    */
+    public function restoreTopicToSectionDoesRestoresTopicAndPosts()
     {
         // GIVEN I have a topic with posts in a section
-        $section = factory(App\Section::class)->create();
+        $section = factory(Section::class)->create();
         $topic = factory(Topic::class)->create(['section_id' => $section->id]);
-        factory(App\Post::class, 20)->create(['topic_id' => $topic->id]);
+        factory(Post::class, 20)->create(['topic_id' => $topic->id]);
         $topic_id = $topic->id;
-
-        // and a user reads that topic
-        $user = factory(App\User::class)->create();
-        \App\Helpers\ViewHelper::updateReadProgress($user, $topic);
-
+        
+        // AND a user reads that topic
+        $user = factory(User::class)->create();
+        ViewHelper::updateReadProgress($user, $topic);
+        
         $postsCount = $topic->posts->count();
         $this->assertNotEquals($postsCount, 0);
-
-        // and then that topic is deleted
+        
+        // WHEN that topic is deleted
         $topic->delete();
-            
-        // check topic deleted
+        
+        // THEN the topic is trashed and it has no posts
         $this->assertTrue($topic->trashed());
-
-        // and that we have no posts - need to use trashed here
         $this->assertEquals(Topic::withTrashed()->find($topic_id)->posts->count(), 0);
-            
+        
         // WHEN the topic is restored to the section
-        \App\Helpers\RestoreHelper::restoreTopicToSection($topic, $section);
-
-        // check posts and views are restored
+        RestoreHelper::restoreTopicToSection($topic, $section);
+        
+        // THE the posts and views are restored
         $this->assertEquals($topic->posts->count(), $postsCount);
-
-        // THEN the topic is restored
+        
+        // AND the topic is restored
         $this->assertFalse($topic->trashed());
     }
-
-
-    public function test_restoreTopicToSection_restores_a_topic_and_views()
+    
+    /**
+    * @test
+    */
+    public function restoreTopicToSectionDoesRestoresTopicAndViews()
     {
         // GIVEN I have a topic with posts in a section
-        $section = factory(App\Section::class)->create();
+        $section = factory(Section::class)->create();
         $topic = factory(Topic::class)->create(['section_id' => $section->id]);
-        factory(App\Post::class, 20)->create(['topic_id' => $topic->id]);
+        factory(Post::class, 20)->create(['topic_id' => $topic->id]);
         $topic_id = $topic->id;
-
-        // and a user reads that topic
-        $user = factory(App\User::class)->create();
-        \App\Helpers\ViewHelper::updateReadProgress($user, $topic);
-
+        
+        // AND a user reads that topic
+        $user = factory(User::class)->create();
+        ViewHelper::updateReadProgress($user, $topic);
+        
         $viewsCount = $topic->views->count();
         $this->assertNotEquals($viewsCount, 0);
-
-        // and then that topic is deleted
+        
+        // WHEN that topic is deleted
         $topic->delete();
-
-        // check topic deleted
+        
+        // THEN the topic is trashed and it has no posts
         $this->assertTrue($topic->trashed());
-
-        // and that we have no views - need to use trashed here
         $this->assertEquals(Topic::withTrashed()->find($topic_id)->views->count(), 0);
-            
+        
         // WHEN the topic is restored to the section
-        \App\Helpers\RestoreHelper::restoreTopicToSection($topic, $section);
-
-        // check posts and views are restored
+        RestoreHelper::restoreTopicToSection($topic, $section);
+        
+        // THEN the posts and views are restored
         $this->assertEquals($topic->views->count(), $viewsCount);
-
-        // THEN the topic is restored
+        
+        // AND the topic is restored
         $this->assertFalse($topic->trashed());
     }
-
-    public function test_restoreSectionToSection_restores_a_section()
+    
+    /**
+    * @test
+    */
+    public function restoreSectionToSectionDoesRestoreSection()
     {
-        // given we have a section with topics
+        // GIVEN we have a section with topics
         $number_of_topics = 10;
-        $section = factory(App\Section::class)->create();
+        $section = factory(Section::class)->create();
         $section_id = $section->id;
         factory(Topic::class, $number_of_topics)->create(['section_id' => $section_id]);
-
-        // and we have another section
-        $anotherSection = factory(App\Section::class)->create();
-                        
-        // and we delete the section
+        
+        // AND another section
+        $anotherSection = factory(Section::class)->create();
+        
+        // WHEN we delete the section
         $section->delete();
-        // the section is deleted
+        
+        // THEN the section is trashed and it has no topics
         $this->assertTrue($section->trashed());
-        // and so are the topics
         $this->assertEquals(Section::withTrashed()->find($section_id)->topics->count(), 0);
         $this->assertEquals(Section::withTrashed()->find($section_id)->trashedTopics->count(), $number_of_topics);
-
-        // when the section is restored to another section
-        \App\Helpers\RestoreHelper::restoreSectionToSection($section, $anotherSection);
-            
-        // then the section is not trashed
+        
+        // WHEN the section is restored to another section
+        RestoreHelper::restoreSectionToSection($section, $anotherSection);
+        
+        // THEN its parent is the other section
+        $this->assertEquals($section->parent_id, $anotherSection->id);
+        
+        // AND the section is nolonger trashed
         $this->assertFalse($section->trashed());
-        // and neither are the topics
+        // AND the topics are also restored
         $this->assertEquals(Section::find($section_id)->topics->count(), $number_of_topics);
         $this->assertEquals(Section::find($section_id)->trashedTopics->count(), 0);
-            
-        // and its parent is the other section
-        $this->assertEquals($section->parent_id, $anotherSection->id);
     }
 }
