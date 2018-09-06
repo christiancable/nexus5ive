@@ -1,11 +1,15 @@
 <?php
 
+namespace Tests\Unit;
+
+use Tests\BrowserKitTestCase;
+use App\Helpers\NxCodeHelper;
+use App\Helpers\MarkdownHelper;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\Helpers\NxCodeHelper;
-use App\Helpers\MarkdownHelper;
 
+// phpcs:disable Generic.Files.LineLength
 class NxCodeHelperTest extends BrowserKitTestCase
 {
     
@@ -130,8 +134,13 @@ HTML
                 $expectedOutput = 'Oh my <span class="spoiler">Brad Pitt is Edward Norton!</span>',
             ],
             'multiple spoiler tags' => [
-                $input = 'Oh my [spoiler-]Brad Pitt is Edward Norton![-spoiler] and [spoiler-]it was Earth all along[-spoiler]',
-                $expectedOutput = 'Oh my <span class="spoiler">Brad Pitt is Edward Norton!</span> and <span class="spoiler">it was Earth all along</span>',
+                $input = <<< TEXT
+Oh my [spoiler-]Brad Pitt is Edward Norton![-spoiler] and [spoiler-]it was Earth all along[-spoiler]
+TEXT
+            ,
+                $expectedOutput = <<< HTML
+Oh my <span class="spoiler">Brad Pitt is Edward Norton!</span> and <span class="spoiler">it was Earth all along</span>
+HTML
             ],
         ];
     }
@@ -152,11 +161,18 @@ HTML
         return [
             'img tag' => [
                 $input = '<img src="http://imageshack.com/a/img923/5082/NdPfqk.png" alt="image" target="_blank" />',
-                $expectedOutput = '<img class="b-lazy" src="placeholder.jpg" data-src="http://imageshack.com/a/img923/5082/NdPfqk.png" alt="image" target="_blank" />',
+                $expectedOutput = <<< HTML
+<img class="b-lazy" src="placeholder.jpg" data-src="http://imageshack.com/a/img923/5082/NdPfqk.png" alt="image" target="_blank" />
+HTML
             ],
             'multiple img tags' => [
-                $input = '<img src="http://imageshack.com/a/img923/5082/NdPfqk.png" alt="image" target="_blank"/> and then this happened <img src="http://imageshack.com/a/img923/5082/NdPfqk.png" alt="image" target="_blank"/>',
-                $expectedOutput = '<img class="b-lazy" src="placeholder.jpg" data-src="http://imageshack.com/a/img923/5082/NdPfqk.png" alt="image" target="_blank"/> and then this happened <img class="b-lazy" src="placeholder.jpg" data-src="http://imageshack.com/a/img923/5082/NdPfqk.png" alt="image" target="_blank"/>',
+                $input = <<< HTML
+<img src="http://imageshack.com/a/img923/5082/NdPfqk.png" alt="image" target="_blank"/> and then this happened <img src="http://imageshack.com/a/img923/5082/NdPfqk.png" alt="image" target="_blank"/>
+HTML
+                ,
+                $expectedOutput = <<< HTML
+<img class="b-lazy" src="placeholder.jpg" data-src="http://imageshack.com/a/img923/5082/NdPfqk.png" alt="image" target="_blank"/> and then this happened <img class="b-lazy" src="placeholder.jpg" data-src="http://imageshack.com/a/img923/5082/NdPfqk.png" alt="image" target="_blank"/>
+HTML
             ],
         ];
     }
