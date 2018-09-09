@@ -3,8 +3,7 @@
   <!-- Nav tabs -->
   <ul class="nav nav-tabs" role="tablist">
     <li role="presentation" class="active"><a href="#postEdit" aria-controls="postEdit" role="tab" data-toggle="tab">Compose</a></li>
-    <li role="presentation"><a href="#postPreview" aria-controls="postPreview" role="tab" data-toggle="tab" 
-    v-on:click=generatePreview>Preview</a></li>
+    <li role="presentation"><a href="#postPreview" aria-controls="postPreview" role="tab" data-toggle="tab" >Preview</a></li>
   </ul>
  <br/>
   <!-- Tab panes -->
@@ -22,10 +21,7 @@
                     id="postText"
                     name="text" cols="50" rows="10" 
                     v-model="post.text" 
-                    ref="postText" 
-                    @keydown="clearPreview" 
-                    @keydown.meta.enter="sendPost"
-                    @keydown.ctrl.enter="sendPost"></textarea>
+                    ref="postText"></textarea>
             </div>
 
             <div v-if="errors" class="alert alert-danger">
@@ -35,23 +31,8 @@
     </div>
 
     <div role="tabpanel" class="tab-pane" id="postPreview">
-        <div class="panel panel-info">
-            <div class="panel-heading" v-if="post.title">
-                <h3 class="panel-title" id="preview-title">{{post.title}}</h3>
-            </div>
-
-            <div class="panel-body">
-                <p id="preview-view">
-                    <template v-if="previewLoaded">
-                        <post-preview :post="preview"></post-preview>
-                    </template>
-                    <template v-else>
-                        <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> <em>Loading…</em>
-                    </template>
-                </p>
-            </div>
-        </div>
-  </div>
+        <post-preview :post="this.post"></post-preview>
+    </div>
 
 </div>
 
@@ -94,77 +75,49 @@
 </template>
 
 <script>
- export default {
-        props: ['topic', 'help'],
+export default {
+  props: ["topic", "help"],
 
-        data() {
-            return {
-                post: {
-                    title: '',
-                    text: '',
-                },
-                
-                errors: null,
+  data() {
+    return {
+      post: {
+        title: "",
+        text: ""
+      },
+      errors: null
+    };
+  },
 
-                preview: '',
+  computed: {},
 
-                previewLoaded: false
-            }
-        },
+  mounted() {
+    $('[data-toggle="popover"]').popover();
+    this.$refs.postText.focus();
+  },
 
-        computed: {
-        
-        },
+  methods: {
+    sendPost() {
+      const data = this.post;
+      this.$refs.postText.disabled = true;
+      data.topic_id = this.topic.id;
 
-        mounted() {
-            $('[data-toggle="popover"]').popover(); 
-            this.$refs.postText.focus();
-        }, 
+      // send post
+      window.axios
+        .post("/posts", data)
+        .then(response => {
+          // clear form
+          this.post.title = "";
+          this.post.text = "";
 
-        methods: {
-
-            sendPost() {
-                const data = this.post;
-                this.$refs.postText.disabled = true;
-                data.topic_id = this.topic.id;
-
-                // send post
-                window.axios.post('/posts', data)
-				.then((response) => {
-                    // clear form 
-                    this.post.title = '';
-                    this.post.text = '';
-
-                    // reload the page
-                    // @TODO inject this into the page when this is built from vue
-                    window.location.reload();
-                })
-                .catch(error => {
-                    this.$refs.postText.disabled = false;
-                    this.errors = error.response.data;
-                });
-            },
-
-            generatePreview() {
-                // if we have a preview already then don't call the api
-                if (!this.previewLoaded) {
-                    window.axios.post('/api/nxcode', this.post)
-                    .then((response) => {
-                        this.preview = response.data.text;
-                        this.previewLoaded = true;
-                    })
-                    .catch(error => {      
-                        console.dir(error);
-                    });
-                }
-            },
-
-            clearPreview() {
-                this.errors = null;
-                this.preview = '';
-                this.previewLoaded = false;
-            }
-
-        }
+          // reload the page
+          // @TODO inject this into the page when this is built from vue
+          window.location.reload();
+        })
+        .catch(error => {
+          this.$refs.postText.disabled = false;
+          this.errors = error.response.data;
+        });
     }
+  }
+};
 </script>
