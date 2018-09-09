@@ -20,6 +20,7 @@ require('./nexus');
 
 Vue.component('userlist', require('./components/Userlist.vue'));
 Vue.component('post-compose', require('./components/PostCompose.vue'));
+Vue.component('post-preview', require('./components/PostPreview.vue'));
 
 const app = new Vue({
     el: '#app'
