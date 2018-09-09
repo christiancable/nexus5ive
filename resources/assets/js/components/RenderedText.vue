@@ -5,12 +5,13 @@
 
 <script>
 import marked from "marked";
+import nxCode from "../nxcode";
 
 export default {
   props: ["text"],
   computed: {
     renderedText() {
-      return marked(this.text, { sanitize: true });
+      return marked(nxCode.formatText(this.text), { sanitize: true });
     }
   }
 };
