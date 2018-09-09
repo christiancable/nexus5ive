@@ -43,7 +43,7 @@
             <div class="panel-body">
                 <p id="preview-view">
                     <template v-if="previewLoaded">
-                        <span v-html="preview"></span>
+                        <post-preview :post="preview"></post-preview>
                     </template>
                     <template v-else>
                         <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> <em>Loading…</em>
