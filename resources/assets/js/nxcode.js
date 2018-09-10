@@ -1,3 +1,8 @@
+// @TODO
+// 1. tests
+// 2. implementation
+// 3. removal of nxcode route
+
 export default class nxCode {
   // @TODO
   static nxToMarkdown(text) {
