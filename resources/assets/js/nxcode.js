@@ -20,18 +20,22 @@ export default class nxCode {
   }
 
   // https://regex101.com/r/8hiMAA/2
-  static addSpoilers(text) 
-  {
-    const regex = /(?:\[spoiler-\])(.*?)(?:\[-spoiler])/gmi;
+  static addSpoilers(text) {
+    const regex = /(?:\[spoiler-\])(.*?)(?:\[-spoiler])/gim;
     const subst = `<span class="spoiler">$1</span>`;
     const result = text.replace(regex, subst);
 
     return result;
   }
 
-  // @TODO
-  static addLazyLoadClass(text, placeholder) {
-    return text;
+  // https://regex101.com/r/YzSZVi/2
+  static addLazyLoadClass(text, lazyclass, placeholder) {
+    const regex = /<img src="(.*?)"/gm;
+    const subst =
+      `<img class="` + lazyclass + `" src="` + placeholder + `" data-src="$1"`;
+    const result = text.replace(regex, subst);
+
+    return result;
   }
 
   static formatText(text) {
