@@ -19,9 +19,14 @@ export default class nxCode {
     return text;
   }
 
-  // @TODO
-  static addSpoilers(text) {
-    return text;
+  // https://regex101.com/r/8hiMAA/2
+  static addSpoilers(text) 
+  {
+    const regex = /(?:\[spoiler-\])(.*?)(?:\[-spoiler])/gmi;
+    const subst = `<span class="spoiler">$1</span>`;
+    const result = text.replace(regex, subst);
+
+    return result;
   }
 
   // @TODO
