@@ -11,7 +11,7 @@ export default {
   props: ["text"],
   computed: {
     renderedText() {
-      return marked(nxCode.formatText(this.text), { sanitize: true });
+      return marked(nxCode.formatText(this.text), { sanitize: false });
     }
   }
 };

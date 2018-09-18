@@ -78,4 +78,43 @@ describe("nxCode", function() {
       });
     });
   });
+
+  describe("addUserMentions", function() {
+    fixtures = {
+      addUserMentions: [
+        {
+          info: "blank post",
+          input: "",
+          expected: ""
+        },
+        {
+          info: "single mention",
+          input: "hey @christiancable how are you?",
+          expected:
+            'hey <span class="text-muted">@</span><mark><strong><a href="/users/christiancable">christiancable</a></strong></mark> how are you?'
+        },
+        {
+          info: "multiple mentions",
+          input: "hey @christiancable have you seen @AgentOrange",
+          expected:
+            'hey <span class="text-muted">@</span><mark><strong><a href="/users/christiancable">christiancable</a></strong></mark> have you seen <span class="text-muted">@</span><mark><strong><a href="/users/AgentOrange">AgentOrange</a></strong></mark>'
+        },
+        {
+          info: "mention with html",
+          input: "<p>@christiancable</p>",
+          expected:
+            '<p><span class="text-muted">@</span><mark><strong><a href="/users/christiancable">christiancable</a></strong></mark></p>'
+        }
+      ]
+    };
+
+    fixtures.addUserMentions.map(function(test) {
+      it(test.info, function() {
+        let text = test.input;
+        let expectedText = test.expected;
+        const result = nxcode.addUserMentions(text);
+        assert.equal(result, expectedText);
+      });
+    });
+  });
 });
