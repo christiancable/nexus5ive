@@ -117,4 +117,40 @@ describe("nxCode", function() {
       });
     });
   });
+
+  describe("nxToMarkdown", function() {
+    fixtures = {
+      nxToMarkdown: [
+        {
+          info: "blank post",
+          input: "",
+          expected: ""
+        },
+        {
+          info: "nxcode becomes markdown",
+          input: "german [b-]bold[-b] [i-]italic[-i]",
+          expected: "german __bold__ _italic_"
+        },
+        {
+          info: "picture tags are converted",
+          input: "[picture-]xiondion.jpg[-picture]",
+          expected: "![image](xiondion.jpg)"
+        },
+        {
+          info: "unknown tags are ignored",
+          input: "[hudson-]Yo![-hudson]",
+          expected: "[hudson-]Yo![-hudson]"
+        }
+      ]
+    };
+
+    fixtures.nxToMarkdown.map(function(test) {
+      it(test.info, function() {
+        let text = test.input;
+        let expectedText = test.expected;
+        const result = nxcode.nxToMarkdown(text);
+        assert.equal(result, expectedText);
+      });
+    });
+  });
 });
