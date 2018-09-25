@@ -164,15 +164,16 @@ describe("nxCode", function() {
         },
         {
           info: "single valid youtube tag",
-          input: "[youtube-]https://www.youtube.com/watch?v=dQw4w9WgXcQ[-youtube]",
+          input:
+            "[youtube-]https://www.youtube.com/watch?v=dQw4w9WgXcQ[-youtube]",
           expected: `<div class="video-wrapper">
           <iframe id="youtube-player" src="//www.youtube.com/embed/dQw4w9WgXcQ?rel=0&showinfo=0&autohide=1" frameborder="0" allowfullscreen></iframe>
         </div>`
-         },
+        },
         {
           info: "youtube tag with invalid content is removed",
           input: "[youtube-]https://vimeo.com/87031388[-youtube]",
-          expected: "",
+          expected: ""
         },
         {
           info: "Red Hot Chili Peppers - Give It Away - ID with an underscore",
@@ -183,18 +184,7 @@ describe("nxCode", function() {
         }
       ]
     };
-
-    const youTubeStart = `
-    <div class="video-wrapper">
-          <iframe id="youtube-player" src="//www.youtube.com/embed/
-    `
-
-    const youTubeStop = `    
-    ?rel=0&showinfo=0&autohide=1" frameborder="0" allowfullscreen></iframe>
-        </div>
-    `
-
-
+    
     fixtures.addYouTubeEmbed.map(function(test) {
       it(test.info, function() {
         let text = test.input;
@@ -204,5 +194,4 @@ describe("nxCode", function() {
       });
     });
   });
-
 });
