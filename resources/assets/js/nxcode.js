@@ -1,6 +1,3 @@
-// @TODO
-// 3. removal of nxcode route
-
 export default class nxCode {
   // this replaces nx code tags with the nearest markdown tag
   static nxToMarkdown(text) {
@@ -72,7 +69,7 @@ export default class nxCode {
     return result;
   }
 
-  // @TODO
+  // https://regex101.com/r/OY96XI/1
   static addYouTubeEmbed(text) {
     const regex = /(?:\[youtube-\])(?:https?:)?(?:\/\/)?(?:[0-9A-Z-]+\.)?(?:youtu\.be\/|youtube(?:-nocookie)?\.com\S*?[^\w\s-])([\w-]{11})(?=[^\w-]|$)(?![?=&+%\w.-]*(?:['"][^<>]*>|<\/a>))[?=&+%\w.-]*(?:\[-youtube\])/gim;
 
