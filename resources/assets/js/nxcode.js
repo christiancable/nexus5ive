@@ -1,6 +1,4 @@
 // @TODO
-// 1. tests
-// 2. implementation
 // 3. removal of nxcode route
 
 export default class nxCode {
@@ -76,7 +74,15 @@ export default class nxCode {
 
   // @TODO
   static addYouTubeEmbed(text) {
-    return text;
+    const regex = /(?:\[youtube-\])(?:https?:)?(?:\/\/)?(?:[0-9A-Z-]+\.)?(?:youtu\.be\/|youtube(?:-nocookie)?\.com\S*?[^\w\s-])([\w-]{11})(?=[^\w-]|$)(?![?=&+%\w.-]*(?:['"][^<>]*>|<\/a>))[?=&+%\w.-]*(?:\[-youtube\])/gim;
+
+    const subst = `<div class="video-wrapper">
+    <iframe id="youtube-player" src="//www.youtube.com/embed/$1?rel=0&showinfo=0&autohide=1" frameborder="0" allowfullscreen></iframe>
+</div>`;
+
+    const result = text.replace(regex, subst);
+
+    return result;
   }
 
   // https://regex101.com/r/8hiMAA/2
