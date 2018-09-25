@@ -37,8 +37,6 @@ Route::post('api/users', function (Request $request) {
     return response()->json($data);
 })->name('api.users');
 
-Route::post('api/nxcode', 'Nexus\PostController@previewPost');
-
 // Interface partials
 Route::get('interface/toolbar', ['middleware' => 'auth',  function () {
     return response()->view('_toolbar');
