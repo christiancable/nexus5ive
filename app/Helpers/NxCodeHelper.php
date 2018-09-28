@@ -31,7 +31,6 @@ HTML;
         [i-][-i]
         [b-][-b]
         [picture-][-picture]
-        [youtube-][-youtube] @todo - add embed code
         [ascii-][-ascii]
         [quote-][-quote]
 
