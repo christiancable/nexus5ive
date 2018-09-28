@@ -24,4 +24,4 @@ before_install: # if "install" is overridden
 
 script:
   - "$TRAVIS_BUILD_DIR/vendor/bin/phpunit"
-  - "$TRAVIS_BUILD_DIR/yarn test"
+  - "yarn test"
