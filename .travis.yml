@@ -3,6 +3,9 @@ language: php
 php:
  - '7.2'
 
+cache:
+  yarn: true
+
 before_script:
  - composer install
  - cp .env.example .env
@@ -17,7 +20,8 @@ before_install: # if "install" is overridden
   - echo "deb http://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
   - sudo apt-get update -qq
   - sudo apt-get install -y -qq yarn
-cache:
-  yarn: true
+  - yarn install
 
-script: "yarn test"
+script:
+  "phpunit"
+  "yarn test"
