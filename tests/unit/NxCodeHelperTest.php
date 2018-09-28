@@ -24,18 +24,18 @@ HTML;
 HTML;
 
     /**
-     * test to see if [youtube-] [-youtube] tags
+     * test to see if youtube links
      * are replaced with suitable youtube embed HTML
      *
-     * @dataProvider providerYouTubeTagsAddEmbedCode
+     * @dataProvider providerYouTubeLinksAddEmbedCode
      */
-    public function testYouTubeTagsAddEmbedCode($input, $expectedOutput)
+    public function testYouTubeLinksAddEmbedCode($input, $expectedOutput)
     {
         $output = NxCodeHelper::embedYouTube($input);
         $this->assertEquals($output, $expectedOutput);
     }
 
-    public function providerYouTubeTagsAddEmbedCode()
+    public function providerYouTubeLinksAddEmbedCode()
     {
         return [
         'blank text' => [
@@ -43,15 +43,15 @@ HTML;
           $expectedOutput = '',
         ],
 
-        'single valid youtube tag' => [
-          $input = '[youtube-]https://www.youtube.com/watch?v=dQw4w9WgXcQ[-youtube]',
+        'single valid youtube link' => [
+          $input = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
           $expectedOutput = "{$this->youTubeHTMLStart}dQw4w9WgXcQ{$this->youTubeHTMLStop}",
         ],
 
-        'text with 2 valid youtube tags' => [
+        'text with 2 valid youtube links' => [
           $input = <<< 'HTML'
-look here is a video [youtube-]https://www.youtube.com/watch?v=bDOZbvE01Fk[-youtube] and here is another 
-[youtube-]https://www.youtube.com/watch?v=dQw4w9WgXcQ[-youtube]
+look here is a video https://www.youtube.com/watch?v=bDOZbvE01Fk and here is another 
+https://www.youtube.com/watch?v=dQw4w9WgXcQ
 HTML
         ,
           $expectedOutput = <<< HTML
@@ -61,18 +61,18 @@ HTML
         ,
         ],
 
-        'youtube tag with no content' => [
-          $input = '[youtube-][-youtube]',
+        'no content' => [
+          $input = '',
           $expectedOutput = '',
         ],
 
-        'youtube tag with invalid content' => [
-          $input = '[youtube-]https://vimeo.com/87031388[-youtube]',
-          $expectedOutput = '',
+        'not a youtube link' => [
+          $input = 'this is a video https://vimeo.com/87031388',
+          $expectedOutput = 'this is a video https://vimeo.com/87031388',
           ],
 
         'Red Hot Chili Peppers - Give It Away - ID with an underscore' => [
-          $input = '[youtube-]https://youtu.be/Mr_uHJPUlO8[-youtube]',
+          $input = 'https://youtu.be/Mr_uHJPUlO8',
          $expectedOutput = <<< HTML
 {$this->youTubeHTMLStart}Mr_uHJPUlO8{$this->youTubeHTMLStop}
 HTML
