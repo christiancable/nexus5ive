@@ -16,7 +16,8 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\Inspire::class,
         \App\Console\Commands\NexusUpgrade::class,
         \App\Console\Commands\NexusInstall::class,
-         \App\Console\Commands\NexusFixDuplicateViews::class,
+        \App\Console\Commands\NexusFixDuplicateViews::class,
+        \App\Console\Commands\NexusRemoveYouTubeTags::class
     ];
 
     /**
