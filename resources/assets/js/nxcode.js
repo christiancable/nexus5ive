@@ -71,7 +71,7 @@ export default class nxCode {
 
   // https://regex101.com/r/OY96XI/1
   static addYouTubeEmbed(text) {
-    const regex = /(?:\[youtube-\])(?:https?:)?(?:\/\/)?(?:[0-9A-Z-]+\.)?(?:youtu\.be\/|youtube(?:-nocookie)?\.com\S*?[^\w\s-])([\w-]{11})(?=[^\w-]|$)(?![?=&+%\w.-]*(?:['"][^<>]*>|<\/a>))[?=&+%\w.-]*(?:\[-youtube\])/gim;
+    const regex = /(?:https?:)?(?:\/\/)?(?:[0-9A-Z-]+\.)?(?:youtu\.be\/|youtube(?:-nocookie)?\.com\S*?[^\w\s-])([\w-]{11})(?=[^\w-]|$)(?![?=&+%\w.-]*(?:['"][^<>]*>|<\/a>))[?=&+%\w.-]*/gim;
     const subst = `<div class="video-wrapper">
     <iframe id="youtube-player" src="//www.youtube.com/embed/$1?rel=0&showinfo=0&autohide=1" frameborder="0" allowfullscreen></iframe>
 </div>`;
