@@ -20,4 +20,4 @@ before_install: # if "install" is overridden
 cache:
   yarn: true
 
-  script: "yarn test"
+script: "yarn test"
