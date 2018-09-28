@@ -165,19 +165,19 @@ describe("nxCode", function() {
         {
           info: "single valid youtube tag",
           input:
-            "[youtube-]https://www.youtube.com/watch?v=dQw4w9WgXcQ[-youtube]",
+            "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
           expected: `<div class="video-wrapper">
     <iframe id="youtube-player" src="//www.youtube.com/embed/dQw4w9WgXcQ?rel=0&showinfo=0&autohide=1" frameborder="0" allowfullscreen></iframe>
 </div>`
         },
         {
           info: "youtube tag with invalid content is ignored",
-          input: "[youtube-]https://vimeo.com/87031388[-youtube]",
-          expected: "[youtube-]https://vimeo.com/87031388[-youtube]"
+          input: "https://vimeo.com/87031388",
+          expected: "https://vimeo.com/87031388"
         },
         {
           info: "Red Hot Chili Peppers - Give It Away - ID with an underscore",
-          input: "[youtube-]https://youtu.be/Mr_uHJPUlO8[-youtube]",
+          input: "https://youtu.be/Mr_uHJPUlO8",
           expected: `<div class="video-wrapper">
     <iframe id="youtube-player" src="//www.youtube.com/embed/Mr_uHJPUlO8?rel=0&showinfo=0&autohide=1" frameborder="0" allowfullscreen></iframe>
 </div>`

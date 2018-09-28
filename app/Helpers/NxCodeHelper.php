@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+// phpcs:disable Generic.Files.LineLength
 class NxCodeHelper
 {
     private static $youTubeHTMLStart = <<< 'HTML'
@@ -13,24 +14,6 @@ HTML;
 ?rel=0&showinfo=0&autohide=1" frameborder="0" allowfullscreen></iframe>
 </div>
 HTML;
-
-    // based on http://stackoverflow.com/questions/6556559/youtube-api-extract-video-id#
-    private static $youTubePattern =
-        '%^# Match any youtube URL
-        (?:https?://)?  # Optional scheme. Either http or https
-        (?:www\.)?      # Optional www subdomain
-        (?:             # Group host alternatives
-          youtu\.be/    # Either youtu.be,
-        | youtube\.com  # or youtube.com
-          (?:           # Group path alternatives
-            /embed/     # Either /embed/
-          | /v/         # or /v/
-          | /watch\?v=  # or /watch\?v=
-          )             # End path alternatives.
-        )               # End host alternatives.
-        ([\w-]{10,12})  # Allow 10-12 for 11 char youtube id.
-        $%x'
-    ;
 
     /**
      * converts a string with NXCode tags into
@@ -48,7 +31,6 @@ HTML;
         [i-][-i]
         [b-][-b]
         [picture-][-picture]
-        [youtube-][-youtube] @todo - add embed code
         [ascii-][-ascii]
         [quote-][-quote]
 
@@ -94,39 +76,19 @@ HTML;
         return $mdText;
     }
 
+
     /**
-     * converts a string with NXCode YouTube tags into
-     * text with youtueb embed code.
+     * adds embed code around youtube video links
+     * based on https://regex101.com/r/OY96XI/1
      **/
     public static function embedYouTube($text)
     {
-        $matches = [];
-        $videoTags = [];
-        $embedCodes = [];
+        $re = '/(?:https?:)?(?:\/\/)?(?:[0-9A-Z-]+\.)?(?:youtu\.be\/|youtube(?:-nocookie)?\.com\S*?[^\w\s-])([\w-]{11})(?=[^\w-]|$)(?![?=&+%\w.-]*(?:[\'"][^<>]*>|<\/a>))[?=&+%\w.-]*/im';
 
-        $pattern = '/\[youtube-\](.*)\[-youtube\]/im';
-        // grab all youtube matches and populate array
-        preg_match_all($pattern, $text, $matches);
-        // echo "\n\n";
-        // var_dump($matches);
-        foreach ($matches[1] as $match) {
-            preg_match(self::$youTubePattern, $match, $videoIDs);
+        $subst = self::$youTubeHTMLStart.'$1'.self::$youTubeHTMLStop;
+        $result = preg_replace($re, $subst, $text);
 
-            $currentVideoID = end($videoIDs);
-            // if match is a valid you tube then
-            if (strlen($currentVideoID)) {
-                // make the valid embed code
-                $videoTags[] = '[youtube-]'.$match.'[-youtube]';
-                $embedCodes[] = self::$youTubeHTMLStart.$currentVideoID.self::$youTubeHTMLStop;
-            } else {
-                // replace invalid youtube tag with empty string
-                $videoTags[] = '[youtube-]'.$match.'[-youtube]';
-                $embedCodes[] = '';
-            }
-        }
-        $text = str_ireplace($videoTags, $embedCodes, $text);
-
-        return $text;
+        return $result;
     }
 
     public static function spoilerTags($text)
