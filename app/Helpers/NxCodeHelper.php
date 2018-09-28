@@ -11,7 +11,7 @@ HTML;
 
     private static $youTubeHTMLStop = <<< 'HTML'
 ?rel=0&showinfo=0&autohide=1" frameborder="0" allowfullscreen></iframe>
-    </div>
+</div>
 HTML;
 
     // based on http://stackoverflow.com/questions/6556559/youtube-api-extract-video-id#

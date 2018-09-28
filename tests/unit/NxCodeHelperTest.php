@@ -20,7 +20,7 @@ HTML;
 
     private $youTubeHTMLStop = <<< 'HTML'
 ?rel=0&showinfo=0&autohide=1" frameborder="0" allowfullscreen></iframe>
-    </div>
+</div>
 HTML;
 
     /**
