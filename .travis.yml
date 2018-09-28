@@ -23,5 +23,5 @@ before_install: # if "install" is overridden
   - yarn install
 
 script:
-  "phpunit"
-  "yarn test"
+  - "phpunit"
+  - "yarn test"
