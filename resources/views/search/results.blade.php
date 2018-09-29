@@ -20,7 +20,7 @@
 <div class="container">
 {!! Form::open(['url' => 'search']) !!}
     <div class="form-group">
-        {!! Form::text('text', null, ['class'=> 'form-control', 'placeholder'=>"$text"]) !!}
+        {!! Form::text('text', null, ['class'=> 'form-control', 'placeholder'=>"$text", 'autofocus']) !!}
     </div>
 
     <div class="row">    
