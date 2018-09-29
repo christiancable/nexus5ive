@@ -2,6 +2,7 @@
 /node_modules
 Homestead.yaml
 .env
+/public/mix.*.js
 /public/css/*
 /public/js/*
 /public/fonts/*
@@ -13,7 +14,4 @@ Homestead.yaml
 /untracked
 nexus.sublime*
 composer.lock
-package-lock.json
-yarn.lock
-public/mix-manifest.json
 .vscode/*
