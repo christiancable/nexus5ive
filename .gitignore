@@ -14,7 +14,4 @@ Homestead.yaml
 /untracked
 nexus.sublime*
 composer.lock
-package-lock.json
-yarn.lock
-public/mix-manifest.json
 .vscode/*
