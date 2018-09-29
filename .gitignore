@@ -2,6 +2,7 @@
 /node_modules
 Homestead.yaml
 .env
+/public/mix.*.js
 /public/css/*
 /public/js/*
 /public/fonts/*

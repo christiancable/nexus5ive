@@ -10,13 +10,13 @@
 
     @if (config('nexus.bootstrap_theme'))
       <link rel="stylesheet" href="{{config('nexus.bootstrap_theme')}}">
-      <link href="/css/extra.css" rel="stylesheet">
+      <link href="{{ mix('/css/extra.css') }}" rel="stylesheet">
     @else
 
       @if (Auth::check())
-          <link href="{{ Auth::User()->theme->path}}" rel="stylesheet">
+          <link rel="stylesheet" href="{{ mix(Auth::User()->theme->path) }}">
       @else
-          <link href="/css/app.css" rel="stylesheet">
+          <link rel="stylesheet" href="{{ mix('/css/app.css') }}">
       @endif
 
     @endif
@@ -63,7 +63,7 @@
   @endif
 
   <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-  <script src="/js/app.js"></script>
+  <script src="{{ mix('/js/app.js') }}"></script>
   @yield('javascript')
   <!-- Include all compiled plugins (below), or include individual files as needed -->
   
