@@ -28,6 +28,14 @@ This current version is built using the [Laravel framework](https://laravel.com)
 * `cp .evn.example .env`
 * Edit .env; add your datbase info and sensible values for the NEXUS_* 
 * `php artisan migrate`
+* `yarn`
+* `yarn run production`
 
 [View the Roadmap](https://github.com/christiancable/nexus5ive/projects/2)
 
+## Themes
+
+Nexus comes with a number of different colour schemes. 
+Install these with the command
+
+`php artisan db:seed --class=ThemesTableSeeder`

@@ -10,6 +10,7 @@ $spooky-black: #000000;
 $spooky-gray: #3D3D3D;
 $spooky-yellow: #ffd505;
 $spooky-red: #da0707;
+$spooky-plutonium: #87aef6;
 
 // fonts
 @import url('https://fonts.googleapis.com/css?family=Creepster');
@@ -34,15 +35,19 @@ $brand-danger: $spooky-red;
 // Typography
 $headings-font-family: 'Creepster', cursive;
 $font-family-sans-serif: "Raleway", sans-serif;
+$font-family-monospace: 'VT323', monospace;
 $font-size-base: 14px;
 $line-height-base: 1.6;
 $text-color: $spooky-green;
 
 
-$code-color: $spooky-green;
+$code-color: $spooky-plutonium;
+$code-bg: $spooky-black;
+
 $pre-color: $code-color;
 $pre-bg: $spooky-purple; 
-$code-bg: $pre-bg;
+
+
 
 // misc - overrides for extras
 
@@ -158,5 +163,11 @@ $alert-danger-bg: $spooky-red;
 
 $list-group-bg: $body-bg;
 
-
-
+// prince of darkness login text
+.plutonium  {
+    font-family: $font-family-monospace;
+    color: $spooky-plutonium;
+    text-align: center;
+    font-size: 1.5em;
+    line-height: 1;
+}
