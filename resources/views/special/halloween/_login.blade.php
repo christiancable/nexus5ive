@@ -6,18 +6,17 @@
 @if ($isItTime)
     <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/W7-uC0LDllM?rel=0" frameborder="0" allowfullscreen></iframe>
 @else 
-    <code>
-    You will not be saved by <br/>
-    the Holy Ghost.
-    </code>
-    <br/><br/>
-    <code>
-    You will not be saved by<br/>
-    the god Plutonium.
-    </code>
-    <br/><br/>
-    <code>
-    In fact,<br/>
-    <strong>YOU WILL NOT BE SAVED!</strong>
-    </code>
+    <span class="plutonium">
+    
+    <p>You will not be saved by</p>
+    
+    <p>the Holy Ghost.<br>
+    You will not be saved by</p>
+    
+    <p>the god Plutonium.<br/>
+    In fact,</p>
+    
+    <p>YOU WILL NOT BE SAVED!</p>
+    
+    <span>
 @endif 
