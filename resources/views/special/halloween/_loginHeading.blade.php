@@ -8,13 +8,13 @@
     <p class="lead">Hurry up it's Halloween, Halloween, Halloween... Silver Shamrock!</p>
 @else     
     @if ($daysToHalloween > 0)
-      <p class="lead">{{$daysToHalloween}} more 
+      <p class="lead"><span class="spooky">{{$daysToHalloween}}</span> more 
         @if ($daysToHalloween == 1)
            day
         @else
           days 
         @endif 
-      to Halloween, Halloween, Halloween... Silver Shamrock!</p>
+      to Halloween, Halloween, Halloween... <span class="spooky">Silver Shamrock!</span></p>
     @else
         <p class="lead">Silver Shamrock!!</p>
     @endif
