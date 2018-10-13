@@ -40,6 +40,15 @@ from { transform: scale(1) rotate(0deg);}
 to { transform: scale(1) rotate(360deg);}
 }
 
+.glyphicon-flip-horizontal {
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=0, mirror=1);
+    -webkit-transform: scale(-1, 1);
+    -moz-transform: scale(-1, 1);
+    -ms-transform: scale(-1, 1);
+    -o-transform: scale(-1, 1);
+    transform: scale(-1, 1);
+}
+
 /* make bloke quotes less terrible */
 
 blockquote {

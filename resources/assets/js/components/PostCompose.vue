@@ -76,7 +76,7 @@
 
 <script>
 export default {
-  props: ["topic", "help"],
+  props: ["topic", "reply", "help"],
 
   data() {
     return {
@@ -93,6 +93,10 @@ export default {
   mounted() {
     $('[data-toggle="popover"]').popover();
     this.$refs.postText.focus();
+
+    if (this.reply) {
+      this.post.text = this.quoteReply(this.reply) + this.post.text;
+    }
   },
 
   methods: {
@@ -109,14 +113,26 @@ export default {
           this.post.title = "";
           this.post.text = "";
 
-          // reload the page
-          // @TODO inject this into the page when this is built from vue
-          window.location.reload();
+          // reload the page without any query parms to avoid always replying
+          window.location = window.location.href.split("?")[0];
         })
         .catch(error => {
           this.$refs.postText.disabled = false;
           this.errors = error.response.data;
         });
+    },
+
+    quoteReply(reply) {
+      const regex = /(^)/gm;
+      const subst = `> `;
+      const quotedText = reply.text.replace(regex, subst) + "\n\n";
+
+      let authorText = "";
+      if (reply.username) {
+        authorText = "@" + reply.username + "\n";
+      }
+
+      return authorText + quotedText;
     }
   }
 };
