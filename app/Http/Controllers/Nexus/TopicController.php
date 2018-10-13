@@ -89,22 +89,23 @@ class TopicController extends Controller
     /**
      * Display the specified resource.
      *
+     * @param Request $request
      * @param  int  $id
      * @return Response
      */
-    public function show($topic_id)
-    {
-
+    public function show(Request $request, $topic_id)
+    { 
+        
         $posts = Post::with('author')->where('topic_id', $topic_id)->orderBy('id', 'dsc');
         $topic = Topic::findOrFail($topic_id);
-
+        
         // is this topic readonly to the authenticated user?
         $readonly = true;
-
+        
         if ($topic->readonly == false) {
             $readonly = false;
         }
-
+        
         if ($topic->section->moderator->id === Auth::user()->id) {
             $readonly = false;
         }
@@ -138,6 +139,19 @@ class TopicController extends Controller
             "Reading <em>{$topic->title}</em>",
             action('Nexus\TopicController@show', ['id' => $topic->id])
         );
+            
+        
+        // if replying then include a copy of what we are replying to 
+        $replyingTo = null;
+        if ($request->reply && $topic->most_recent_post) {
+            $replyingTo['text'] = $topic->most_recent_post->text;
+            if ($topic->secret) {
+                $replyingTo['username'] = null;
+            } else {
+                $replyingTo['username'] = $topic->most_recent_post->author->username;
+            }
+        }
+
 
         $breadcrumbs = BreadcrumbHelper::breadcrumbForTopic($topic);
         return view(
@@ -149,7 +163,8 @@ class TopicController extends Controller
                 'userCanSeeSecrets',
                 'readProgress',
                 'breadcrumbs',
-                'unsubscribed'
+                'unsubscribed',
+                'replyingTo'
             )
         );
     }

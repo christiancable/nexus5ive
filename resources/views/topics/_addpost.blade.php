@@ -6,6 +6,6 @@
     @else 
         {{-- only show the post box if we are on the first page --}}
         @if ($postsChunk->currentPage() === 1)
-        	  @include('posts.create', $topic)
+        	  @include('posts.create', compact('topic', 'replyingTo'))
         @endif
     @endif 

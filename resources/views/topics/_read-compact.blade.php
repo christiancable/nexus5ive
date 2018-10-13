@@ -52,6 +52,14 @@ $unspoiled = preg_replace($pattern, 'XXXXXX', $topic->most_recent_post->text);
     <p><a href="{{ action('Nexus\TopicController@show', ['topic_id' => $topic->id])}}" class="text-muted">
     <em>{!! substr(strip_tags(App\Helpers\NxCodeHelper::nxDecode($unspoiled)), 0, 140) !!}</em>
     &hellip;</a></p>
+    <a class="btn btn-primary pull-right" href="{{ 
+            action('Nexus\TopicController@show', 
+            [
+                'topic_id' => $topic->id,
+                'reply' => true
+            ])
+        }}" role="button">
+        <span class="glyphicon glyphicon-share-alt glyphicon-flip-horizontal" aria-hidden="true"></span>  Reply</a>
 </div>
 @endif
 

@@ -9,7 +9,6 @@
 @endsection 
 
 @section('content')
-
 <div class="container">
     <h1>{{$topic->title}}</h1>
     @if ($topic->intro) 
@@ -36,7 +35,7 @@
 
     {{-- show post box --}}
     @if (Auth::user()->viewLatestPostFirst) 
-        @include('topics._addpost', compact('postsChunk', 'readOnly'))
+    @include('topics._addpost', compact('postsChunk', 'readOnly', 'replyingTo'))
     @endif
 
     {{-- render posts --}}
@@ -73,7 +72,7 @@
 
     {{-- show post box --}}
     @if (!Auth::user()->viewLatestPostFirst) 
-        @include('topics._addpost', compact('postsChunk', 'readOnly'))
+        @include('topics._addpost', compact('postsChunk', 'readOnly', 'reply'))
     @endif
     {!! $postsChunk->render() !!}
     </div>

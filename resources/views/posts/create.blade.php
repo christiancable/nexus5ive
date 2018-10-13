@@ -8,6 +8,7 @@
 <div id="app" v-cloak>
   <post-compose
     :topic="{{json_encode($topic)}}"
+    :reply="{{json_encode($replyingTo)}}"
     help="{{$help}}"
     >
   </post-compose>

@@ -2,12 +2,18 @@
 
 namespace App\Http\Controllers\Nexus;
 
+use Auth;
 use App\User;
+use App\View;
 use Validator;
 use App\Section;
 use App\Http\Requests;
 use Illuminate\Http\Request;
+use App\Helpers\FlashHelper;
+use App\Helpers\TopicHelper;
+use App\Helpers\ActivityHelper;
 use Illuminate\Validation\Rule;
+use App\Helpers\BreadcrumbHelper;
 use App\Http\Controllers\Controller;
 
 class SectionController extends Controller
@@ -83,20 +89,20 @@ class SectionController extends Controller
     public function show($section_id = null)
     {
         if (!$section_id) {
-            $section = \App\Section::with('sections', 'topics')->first();
+            $section = Section::with('sections', 'topics')->first();
         } else {
-            $section = \App\Section::with('sections', 'topics')->where('id', $section_id)->first();
+            $section = Section::with('sections', 'topics')->where('id', $section_id)->first();
         }
 
-        \App\Helpers\ActivityHelper::updateActivity(
-            \Auth::user()->id,
+        ActivityHelper::updateActivity(
+            Auth::user()->id,
             "Browsing <em>{$section->title}</em>",
             action('Nexus\SectionController@show', ['id' => $section->id])
         );
         
         // for selecting section moderators
         $potentialModerators = User::all()->pluck('username', 'id')->toArray();
-        $breadcrumbs = \App\Helpers\BreadcrumbHelper::breadcrumbForSection($section);
+        $breadcrumbs = BreadcrumbHelper::breadcrumbForSection($section);
 
         return view('sections.index', compact('section', 'breadcrumbs', 'potentialModerators'));
     }
@@ -129,7 +135,7 @@ class SectionController extends Controller
         $descendantsIDs = array_flatten($descendants->pluck('id')->toArray());
         
         // if parents exists then it must be a valid section id
-        $allSectionIDs = \App\Section::all('id')->pluck('id')->toArray();
+        $allSectionIDs = Section::all('id')->pluck('id')->toArray();
         
         // updating the home section has different validation rules to other sections
 
@@ -204,7 +210,7 @@ class SectionController extends Controller
      */
     public function destroy(Request $request, $id)
     {
-        $section = \App\Section::findOrFail($id);
+        $section = Section::findOrFail($id);
         $parent_id = $section->parent_id;
 
         $this->authorize('delete', $section);
@@ -213,12 +219,18 @@ class SectionController extends Controller
         return redirect($redirect);
     }
 
+
+    /**
+     * Shows the Latest Posts screen
+     *
+     * @return View
+     */
     public function latest()
     {
         $heading = 'Latest Posts';
-        $lead = "The most recent posts from across Nexus";
-        $topics = \App\Helpers\TopicHelper::recentTopics();
-        $breadcrumbs = \App\Helpers\BreadcrumbHelper::breadcumbForUtility($heading);
+        $lead = "The most recent posts from across " . config('nexus.name');
+        $topics = TopicHelper::recentTopics();
+        $breadcrumbs = BreadcrumbHelper::breadcumbForUtility($heading);
 
         return view('topics.unread', compact('topics', 'heading', 'lead', 'breadcrumbs'));
     }
@@ -229,8 +241,8 @@ class SectionController extends Controller
     public function leap()
     {
          // should we be passing the user_id into this method?
-        $views = \App\View::with('topic')
-            ->where('user_id', \Auth::user()->id)
+        $views = View::with('topic')
+            ->where('user_id', Auth::user()->id)
             ->where('latest_view_date', '!=', "0000-00-00 00:00:00")
             ->where('unsubscribed', 0)->get();
     
@@ -259,14 +271,14 @@ People have been talking! New posts found in **[$topicTitle]($topicURL)**
 
 Seeing too many old topics then **[mark all subscribed topics as read]($subscribeAllURL)**
 Markdown;
-            \App\Helpers\FlashHelper::showAlert($message, 'success');
+            FlashHelper::showAlert($message, 'success');
             
             // redirect to the parent section of the unread topic
             return redirect()->action('Nexus\SectionController@show', [$destinationTopic->section->id]);
         } else {
             // set alert
             $message = 'No updated topics found. Why not start a new conversation or read more sections?';
-            \App\Helpers\FlashHelper::showAlert($message, 'warning');
+            FlashHelper::showAlert($message, 'warning');
             
             // redirect to main menu
             return redirect('/');
