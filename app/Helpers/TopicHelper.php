@@ -1,14 +1,16 @@
 <?php
 namespace App\Helpers;
 
+use App\Post;
+
 class TopicHelper
 {
     /**
      * returns a string of the route to a post within a topic, respects pagination
-     * @param App\Post a post within a topic
+     * @param Post $post - a post within a topic
      * @return string
      */
-    public static function routeToPost(\App\Post $post)
+    public static function routeToPost(Post $post)
     {
     
         // how many pages worth of posts are we into the topic

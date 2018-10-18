@@ -2,12 +2,13 @@
 
 namespace App\Listeners;
 
-use App\Events;
+use Auth;
 use App\User;
+use App\Events;
+use Carbon\Carbon;
 use App\Helpers\ActivityHelper;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Carbon\Carbon;
 
 class UserRemoveActivity
 {
@@ -24,12 +25,11 @@ class UserRemoveActivity
     /**
      * wwhen a user logs out then remove their current activity
      *
-     * @param  Event  $event
      * @return void
      */
-    public function handle($user)
+    public function handle()
     {
-        $user = \Auth::user();
+        $user = Auth::user();
         ActivityHelper::removeActivity($user->id);
     }
 }

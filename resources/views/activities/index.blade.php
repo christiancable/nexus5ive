@@ -27,7 +27,7 @@
                 <tr>
                     <th></th>
                     <th>Name</th>
-                    <th class="hidden-xs">Status</th>
+                    <th class="hidden-xs">Popname</th>
                     <th>Current Action</th>
                     <th>Last Active</th>
                 </tr>

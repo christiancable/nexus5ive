@@ -1,10 +1,8 @@
 <?php
-
 namespace App\Http\Controllers\Nexus;
 
-use Illuminate\Http\Request;
-
 use App\Http\Requests;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class ActivityController extends Controller
@@ -16,7 +14,7 @@ class ActivityController extends Controller
     
     /**
      * Display a listing of the resource.
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function index()
     {

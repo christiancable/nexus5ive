@@ -270,7 +270,7 @@ class NexusUpgrade extends Command
             $count = \DB::select('select count(message_id) as count from messagetable')[0]->count;
             $this->line("Found $count posts");
             $bar = $this->output->createProgressBar($count);
-            \DB::table('messagetable')->chunk(1000, function ($posts) use (&$errorCount, &$count, &$bar) {
+            \DB::table('messagetable')->chunk(1000, function ($posts) use (&$errorCount, &$bar) {
                 foreach ($posts as $classicPost) {
                     $newPost = new \App\Post;
                     $newPost->id                = $classicPost->message_id;
@@ -318,7 +318,7 @@ class NexusUpgrade extends Command
             $count = \DB::select('select count(topicview_id) as count from topicview')[0]->count;
             $this->line("Found $count views");
             $bar = $this->output->createProgressBar($count);
-            \DB::table('topicview')->chunk(1000, function ($views) use (&$errorCount, &$count, &$bar) {
+            \DB::table('topicview')->chunk(1000, function ($views) use (&$errorCount, &$bar) {
 
                 foreach ($views as $classicView) {
                     $newView = new \App\View;
@@ -362,7 +362,7 @@ class NexusUpgrade extends Command
             $count = \DB::select('select count(nexusmessage_id) as count from nexusmessagetable')[0]->count;
             $this->line("Found $count messages");
             $bar = $this->output->createProgressBar($count);
-            \DB::table('nexusmessagetable')->chunk(1000, function ($messages) use (&$errorCount, &$count, &$bar) {
+            \DB::table('nexusmessagetable')->chunk(1000, function ($messages) use (&$errorCount, &$bar) {
 
                 foreach ($messages as $classicMessage) {
                     $newMessage = new \App\Message;

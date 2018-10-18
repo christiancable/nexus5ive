@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\theme;
+use App\Theme;
 use Illuminate\Http\Request;
 
 class ThemeController extends Controller
@@ -41,7 +41,7 @@ class ThemeController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\theme  $theme
+     * @param  \App\Theme  $theme
      * @return \Illuminate\Http\Response
      */
     public function show(theme $theme)
@@ -52,7 +52,7 @@ class ThemeController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\theme  $theme
+     * @param  \App\Theme  $theme
      * @return \Illuminate\Http\Response
      */
     public function edit(theme $theme)
@@ -64,7 +64,7 @@ class ThemeController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\theme  $theme
+     * @param  \App\Theme  $theme
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, theme $theme)
@@ -75,7 +75,7 @@ class ThemeController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\theme  $theme
+     * @param  \App\Theme  $theme
      * @return \Illuminate\Http\Response
      */
     public function destroy(theme $theme)

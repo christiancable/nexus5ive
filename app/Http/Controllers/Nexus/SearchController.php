@@ -6,6 +6,7 @@ use Auth;
 use App\Post;
 use Validator;
 use App\Http\Requests;
+use Illuminate\View\View;
 use Illuminate\Http\Request;
 use App\Helpers\ActivityHelper;
 use App\Helpers\BreadcrumbHelper;
@@ -25,7 +26,7 @@ class SearchController extends Controller
     /**
      * Display a search page
      *
-     * @return \Illuminate\Http\Response
+     * @return View
      */
     public function index()
     {
