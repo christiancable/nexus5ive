@@ -7,7 +7,9 @@ use Validator;
 use App\Comment;
 use App\Http\Requests;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\RedirectResponse;
 
 class CommentController extends Controller
 {
@@ -39,8 +41,8 @@ class CommentController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Requests\Comment\Create  $request
-     * @return Response
+     * @param  Request $request
+     * @return RedirectResponse
      */
     public function store(Request $request)
     {
@@ -48,8 +50,7 @@ class CommentController extends Controller
             $request->all(),
             [
                 'text' => 'required',
-                'user_id' => 'required|numeric',
-                'user_id' => 'exists:users,id',
+                'user_id' => 'required|numeric|exists:users,id',
             ],
             [
                 'text.required' => 'Comment Text required',
@@ -80,46 +81,13 @@ class CommentController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  Request  $request
-     * @param  int  $id
-     * @return Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return Response
+     * @param Request $request
+     * @param Comment $comment
+     * @return RedirectResponse
      */
-    public function destroy(Request $request, \App\Comment $comment)
+    public function destroy(Request $request, Comment $comment)
     {
         $this->authorize('destroy', $comment);
         $comment->delete();
@@ -131,7 +99,7 @@ class CommentController extends Controller
      * removes all comments belonging to the logged in user
      *
      * @param Request $request
-     * @return Response - redirection to the calling page
+     * @return RedirectResponse - redirection to the calling page
      */
     public function destroyAll(Request $request)
     {

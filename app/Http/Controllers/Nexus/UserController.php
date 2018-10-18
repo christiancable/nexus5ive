@@ -9,6 +9,7 @@ use App\User;
 use Validator;
 use App\Http\Requests;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Helpers\FlashHelper;
 use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -23,11 +24,11 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return Response
+     * @return \Illuminate\View\View
      */
     public function index()
     {
-        $users =  \App\User::select('username', 'name', 'popname', 'latestLogin')->orderBy('username', 'asc')->get();
+        $users =  User::select('username', 'name', 'popname', 'latestLogin')->orderBy('username', 'asc')->get();
         \App\Helpers\ActivityHelper::updateActivity(
             Auth::user()->id,
             "Viewing list of Users",
@@ -63,13 +64,13 @@ class UserController extends Controller
      * Display the specified resource.
      *
      * @param  string  $user_name - the name of the user
-     * @return Response
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
      */
     public function show($user_name)
     {
 
         try {
-            $user = \App\User::with('comments', 'comments.author')->where('username', $user_name)->firstOrFail();
+            $user = User::with('comments', 'comments.author')->where('username', $user_name)->firstOrFail();
         } catch (ModelNotFoundException $ex) {
             $message = "$user_name not found. Maybe you're thinking of someone else";
             FlashHelper::showAlert($message, 'warning');
@@ -96,21 +97,21 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
-     * @return Response
+     * @param  String  $user_name
+     * @return \Illuminate\View\View
      */
     public function edit($user_name)
     {
-        $user = \App\User::with('comments', 'comments.author')->where('username', $user_name)->firstOrFail();
+        $user = User::with('comments', 'comments.author')->where('username', $user_name)->firstOrFail();
         return view('users.show')->with('user', $user);
     }
 
     /**
      * Update the user
      *
-     * @param  String $username
+     * @param  String $user_name
      * @param  Request  $request
-     * @return Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update($user_name, Request $request)
     {

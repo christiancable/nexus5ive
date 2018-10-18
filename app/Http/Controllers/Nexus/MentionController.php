@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Nexus;
 
-use Illuminate\Http\Request;
 
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
 use Auth;
 use Redirect;
+use App\Http\Requests;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Http\RedirectResponse;
 
 class MentionController extends Controller
 {
@@ -20,9 +21,8 @@ class MentionController extends Controller
     /**
      * Remove all mentions for the logged-in user
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  Request  $request
+     * @return RedirectResponse
      */
     public function destroyAll(Request $request)
     {

@@ -3,6 +3,7 @@
 namespace App;
 
 use Log;
+use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -43,7 +44,7 @@ class Topic extends Model
      * returns the time of the most recent post
      * if the topic has no posts then return the created time of the topic
      *
-     * @return timestamp
+     * @return Carbon|null
      */
     public function getMostRecentPostTimeAttribute()
     {

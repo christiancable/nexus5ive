@@ -2,7 +2,7 @@
 namespace App\Helpers;
 
 use Carbon\Carbon;
-
+use Illuminate\Support\Collection;
 /*
    helper methods for dealing with activities
 */
@@ -12,7 +12,7 @@ class ActivityHelper
 
     /**
      * returns a collection of activities within the last NEXUS_RECENT_ACTIVITY minutes
-     * @return EloquentCollection of recent activities
+     * @return Collection of recent activities
      */
     public static function recentActivities()
     {

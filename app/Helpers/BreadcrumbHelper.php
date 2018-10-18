@@ -1,6 +1,10 @@
 <?php
 namespace App\Helpers;
 
+use App\User;
+use App\Topic;
+use App\Section;
+
 /*
    helper methods for dealing with breadcrumbs
 */
@@ -8,11 +12,12 @@ namespace App\Helpers;
 class BreadcrumbHelper
 {
     /**
-     * @param App\Topic
-     * @return an array of links to go in a breadcrumb trail
+     * breadcrumbForTopic
      *
+     * @param Topic $topic
+     * @return array
      */
-    public static function breadcrumbForTopic(\App\Topic $topic)
+    public static function breadcrumbForTopic(Topic $topic)
     {
         $breadcrumbs = [];
         $crumb = [];
@@ -33,11 +38,10 @@ class BreadcrumbHelper
     }
 
     /**
-     * @param App\Section
-     * @return an array of links to go in a breadcrumb trail
-     *
+     * @param Section $section
+     * @return array
      */
-    public static function breadcrumbForSection(\App\Section $section)
+    public static function breadcrumbForSection(Section $section)
     {
         $breadcrumbs = [];
         $crumb = [];
@@ -60,8 +64,8 @@ class BreadcrumbHelper
      * generates a fake breadcrumb trail for a page which isn't
      * a topic or a section
      *
-     * @param string
-     * @return an array of links to go in a breadcrumb trail
+     * @param string $location
+     * @return array
      */
     public static function breadcumbForUtility($location)
     {
@@ -82,10 +86,10 @@ class BreadcrumbHelper
     /**
      * generates a breadcrumb trail for a user profile
      *
-     * @param App\User
-     * @return an array of links to go in a breadcrumb trail
+     * @param User $user
+     * @return array
      */
-    public static function breadcrumbForUser(\App\User $user)
+    public static function breadcrumbForUser(User $user)
     {
         $breadcrumbs = [];
         $crumb['title'] = $user->username;

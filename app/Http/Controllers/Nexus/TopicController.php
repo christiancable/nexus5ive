@@ -8,12 +8,15 @@ use App\Topic;
 use Validator;
 use App\Section;
 use App\Http\Requests;
+use Illuminate\View\View;
 use App\Helpers\ViewHelper;
 use App\Helpers\FlashHelper;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Helpers\ActivityHelper;
 use App\Helpers\BreadcrumbHelper;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\RedirectResponse;
 
 class TopicController extends Controller
 {
@@ -46,7 +49,7 @@ class TopicController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  Request  $request
-     * @return Response
+     * @return RedirectResponse
      */
     public function store(Request $request)
     {
@@ -55,8 +58,7 @@ class TopicController extends Controller
             [
                 "title" => 'required',
                 "intro" => 'required',
-                "section_id" => 'required|numeric',
-                "section_id" => 'exists:sections,id',
+                "section_id" => 'required|numeric|exists:sections,id',
                 "weight" => 'required|numeric',
             ],
             [
@@ -90,8 +92,8 @@ class TopicController extends Controller
      * Display the specified resource.
      *
      * @param Request $request
-     * @param  int  $id
-     * @return Response
+     * @param  int  $topic_id
+     * @return View
      */
     public function show(Request $request, $topic_id)
     { 
@@ -185,7 +187,8 @@ class TopicController extends Controller
      * Update the topic
      *
      * @param Request $request
-     * @return void
+     * @param int $id
+     * @return RedirectResponse
      */
     public function update(Request $request, $id)
     {
@@ -238,7 +241,7 @@ class TopicController extends Controller
      *
      * @param Request $request
      * @param int $id
-     * @return response
+     * @return RedirectResponse
      */
     public function destroy(Request $request, $id)
     {

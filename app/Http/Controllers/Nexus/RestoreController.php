@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Nexus;
 use App\Topic;
 use App\Section;
 use App\Http\Requests;
+use Illuminate\View\View;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\RedirectResponse;
 
 class RestoreController extends Controller
 {
@@ -18,7 +20,7 @@ class RestoreController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return View
      */
     public function index()
     {
@@ -62,7 +64,7 @@ class RestoreController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -95,7 +97,7 @@ class RestoreController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
@@ -118,9 +120,9 @@ class RestoreController extends Controller
     /**
      * Restore a trashed section
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      * @param int $id - the trashed section
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse
      */
     public function section(Request $request, $id)
     {
@@ -137,9 +139,9 @@ class RestoreController extends Controller
     /**
      * Restore a trashed topic
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      * @param int $id - the trashed topic
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse
      */
     public function topic(Request $request, $id)
     {
