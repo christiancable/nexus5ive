@@ -3,6 +3,7 @@ namespace App\Helpers;
 
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
+
 /*
    helper methods for dealing with activities
 */

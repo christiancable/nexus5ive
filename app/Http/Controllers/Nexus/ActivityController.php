@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Http\Controllers\Nexus;
-
 
 use App\Http\Requests;
 use Illuminate\Http\Request;

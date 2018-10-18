@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Http\Controllers\Nexus;
-
 
 use Auth;
 use Redirect;

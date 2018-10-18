@@ -96,8 +96,7 @@ class TopicController extends Controller
      * @return View
      */
     public function show(Request $request, $topic_id)
-    { 
-        
+    {
         $posts = Post::with('author')->where('topic_id', $topic_id)->orderBy('id', 'dsc');
         $topic = Topic::findOrFail($topic_id);
         
@@ -143,7 +142,7 @@ class TopicController extends Controller
         );
             
         
-        // if replying then include a copy of what we are replying to 
+        // if replying then include a copy of what we are replying to
         $replyingTo = null;
         if ($request->reply && $topic->most_recent_post) {
             $replyingTo['text'] = $topic->most_recent_post->text;

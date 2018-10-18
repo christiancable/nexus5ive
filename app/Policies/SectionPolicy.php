@@ -23,7 +23,7 @@ class SectionPolicy
     }
 
     /**
-     * a user can create a section if they moderate the current section     
+     * a user can create a section if they moderate the current section
      *
      * @param User $user
      * @param Section $currentSection
