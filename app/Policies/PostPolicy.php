@@ -14,8 +14,8 @@ class PostPolicy
     /**
      * Determine whether the user can view the post.
      *
-     * @param  \App\User  $user
-     * @param  \App\Post  $post
+     * @param  User  $user
+     * @param  Post  $post
      * @return mixed
      */
     public function view(User $user, Post $post)
@@ -26,8 +26,8 @@ class PostPolicy
     /**
      * Determine whether the user can create posts.
      *
-     * @param  App\User  $user
-     * @param  App\Topic  $topic
+     * @param  User  $user
+     * @param  Topic  $topic
      * @return bool
      */
     public function create(User $user, Topic $topic)
@@ -58,8 +58,8 @@ class PostPolicy
      * - bbs administrator
      * - the creator of the post within X seconds if that post is the most recent in the topic
      *
-     * @param  \App\User  $user
-     * @param  \App\Post  $post
+     * @param  User  $user
+     * @param  Post  $post
      * @return bool
      */
     public function update(User $user, Post $post)
@@ -89,8 +89,8 @@ class PostPolicy
     /**
      * Determine whether the user can delete the post.
      *
-     * @param  \App\User  $user
-     * @param  \App\Post  $post
+     * @param  User  $user
+     * @param  Post  $post
      * @return bool
      */
     public function delete(User $user, Post $post)

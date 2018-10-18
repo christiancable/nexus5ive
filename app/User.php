@@ -2,16 +2,17 @@
 
 namespace App;
 
-use Illuminate\Notifications\Notifiable;
+use Log;
+use App\ViewModels\UserPresenter;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Log;
 
 class User extends Model implements AuthenticatableContract, AuthorizableContract, CanResetPasswordContract
 {
@@ -224,10 +225,10 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
        /**
      * Present the user model.
      *
-     * @return ViewModels/UserPresenter
+     * @return ViewModels\UserPresenter
      */
     public function present()
     {
-        return new \App\ViewModels\UserPresenter($this);
+        return new UserPresenter($this);
     }
 }

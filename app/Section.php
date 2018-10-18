@@ -2,9 +2,10 @@
 
 namespace App;
 
+use Log;
+use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Log;
 
 class Section extends Model
 {
@@ -59,11 +60,11 @@ class Section extends Model
 
     
     /**
-    * @return collection of all descendant sections
+    * @return Collection - all descendant sections
     */
     public function allChildSections()
     {
-        $allChildSections = new \Illuminate\Support\Collection;
+        $allChildSections = new Collection;
         foreach ($this->sections as $child) {
             $allChildSections->prepend($child);
             $allChildSections = self::listChildren($child, $allChildSections);
@@ -90,7 +91,6 @@ class Section extends Model
     // topics
     public function topics()
     {
-        // return $this->hasMany('App\Topic', 'topic_id', 'id')->orderBy('topic_weight', 'asc');
         return $this->hasMany(\App\Topic::class)->orderBy('weight', 'asc');
     }
     
@@ -107,7 +107,7 @@ class Section extends Model
     
     public function trashedTopics()
     {
-        return $this->hasMany(\App\Topic::class)->onlyTrashed()->orderBy('weight', 'asc');
+        return $this->topics()->onlyTrashed()->orderBy('weight', 'asc');
     }
     
     

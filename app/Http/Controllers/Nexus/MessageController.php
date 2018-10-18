@@ -6,10 +6,13 @@ use Auth;
 use Validator;
 use App\Message;
 use App\Http\Requests;
+use Illuminate\View\View;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Helpers\ActivityHelper;
 use App\Helpers\BreadcrumbHelper;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\RedirectResponse;
 
 class MessageController extends Controller
 {
@@ -21,7 +24,7 @@ class MessageController extends Controller
     /**
      * Displays a list of messages sent to the logged in user
      * @todo - generate $activeUsers array from a list of active users
-     * @return Response
+     * @return View
      */
     public function index($selected = null)
     {
@@ -61,7 +64,7 @@ class MessageController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  Request $request
-     * @return Response
+     * @return RedirectResponse
      */
     public function store(Request $request)
     {
@@ -69,10 +72,8 @@ class MessageController extends Controller
             $request->all(),
             [
                 'text' => 'required',
-                'user_id' => 'required|numeric',
-                'user_id' => 'exists:users,id',
-                'author_id' => 'required|numeric',
-                'author_id' => 'exists:users,id'
+                'user_id' => 'required|numeric|exists:users,id',
+                'author_id' => 'required|numeric|exists:users,id'
             ],
             [
                 "text.required" => 'Sending empty messages is a little creepy!'

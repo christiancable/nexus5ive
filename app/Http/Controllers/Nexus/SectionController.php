@@ -9,6 +9,7 @@ use Validator;
 use App\Section;
 use App\Http\Requests;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Helpers\FlashHelper;
 use App\Helpers\TopicHelper;
 use App\Helpers\ActivityHelper;
@@ -54,8 +55,7 @@ class SectionController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-                "parent_id" => 'required|numeric',
-                "parent_id" => 'exists:sections,id',
+                "parent_id" => 'required|numeric|exists:sections,id',
                 "title" => 'required',
             ]
         );
@@ -84,7 +84,7 @@ class SectionController extends Controller
      * Display the specified resource.
      *
      * @param  int  $section_id - default to the first section
-     * @return Response
+     * @return \Illuminate\View\View
      */
     public function show($section_id = null)
     {
@@ -204,8 +204,8 @@ class SectionController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  section id  $id
-     * @param  \Illuminate\Http\Request  $request
+     * @param  int $id
+     * @param  Request  $request
      * @return Response
      */
     public function destroy(Request $request, $id)
@@ -223,7 +223,7 @@ class SectionController extends Controller
     /**
      * Shows the Latest Posts screen
      *
-     * @return View
+     * @return \Illuminate\View\View
      */
     public function latest()
     {

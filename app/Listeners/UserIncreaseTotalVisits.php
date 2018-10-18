@@ -2,11 +2,12 @@
 
 namespace App\Listeners;
 
-use App\Events;
+use Auth;
 use App\User;
+use App\Events;
+use Carbon\Carbon;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Carbon\Carbon;
 
 class UserIncreaseTotalVisits
 {
@@ -23,16 +24,12 @@ class UserIncreaseTotalVisits
     /**
      * Handle the event.
      *
-     * @param  Event  $event
      * @return void
      */
-    public function handle($event)
+    public function handle()
     {
-
-        $user = \Auth::user();
+        $user = Auth::user();
         $user->latestLogin = Carbon::now();
-
-        // incrememt the total number of visits
         $user->totalVisits = $user->totalVisits + 1;
 
         $user->save();

@@ -8,7 +8,9 @@ use App\Topic;
 use Validator;
 use App\Http\Requests;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Helpers\MentionHelper;
+use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 
 class PostController extends Controller
@@ -42,7 +44,7 @@ class PostController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  Request  $request
-     * @return Response
+     * @return RedirectResponse
      */
     public function store(Request $request)
     {
@@ -51,8 +53,7 @@ class PostController extends Controller
             $request->all(),
             [
                 'text' => 'required',
-                'topic_id' => 'required',
-                'topic_id' => 'exists:topics,id'
+                'topic_id' => 'required|exists:topics,id'
             ],
             [
                 "text.required" => 'Text is required. You cannot leave empty posts',
@@ -110,7 +111,7 @@ class PostController extends Controller
      *
      * @param  Request  $request
      * @param  int  $id
-     * @return Response
+     * @return RedirectResponse
      */
     public function update(Request $request, $id)
     {
@@ -118,8 +119,7 @@ class PostController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-                'id' => 'required:in' . $id,
-                'id' => 'exists:posts,id',
+                'id' => 'required:in' . $id . '|exists:posts,id',
                 'form.'.$request->input('id').'.text' => 'required',
             ],
             [
@@ -148,7 +148,7 @@ class PostController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return Response
+     * @return RedirectResponse
      */
     public function destroy(Request $request, $id)
     {
@@ -162,8 +162,8 @@ class PostController extends Controller
     }
 
     /**
-     * @param request
-     * @return json - including markdown rendered version of the text field from the request
+     * @param Request $request
+     * @return string - json including markdown rendered version of the text field from the request
      */
     public function previewPost(Request $request)
     {

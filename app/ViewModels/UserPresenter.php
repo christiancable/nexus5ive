@@ -1,6 +1,7 @@
 <?php
 namespace App\ViewModels;
 
+use App\User;
 use Exception;
 
 class UserPresenter
@@ -17,7 +18,7 @@ class UserPresenter
      *
      * @param User $user
      */
-    public function __construct(\App\User $user)
+    public function __construct(User $user)
     {
         $this->user = $user;
     }
