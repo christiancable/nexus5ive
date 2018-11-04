@@ -238,7 +238,7 @@ class SectionController extends Controller
 
     /**
      * redirects a visitor to a section  with an updated topic
-     * 
+     *
      * @return RedirectResponse
      */
     public function leap()
