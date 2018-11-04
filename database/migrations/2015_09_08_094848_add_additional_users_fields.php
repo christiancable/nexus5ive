@@ -37,7 +37,7 @@ class AddAdditionalUsersFields extends Migration
     
     /**
     * Reverse the migrations.
-    *
+    * SQLite requires that each dropped column is a separate operation
     * @return void
     */
     public function down()
