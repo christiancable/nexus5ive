@@ -6,10 +6,10 @@ use Illuminate\Database\Migrations\Migration;
 class AddAdditionalUsersFields extends Migration
 {
     /**
-     * Run the migrations.
-     *
-     * @return void
-     */
+    * Run the migrations.
+    *
+    * @return void
+    */
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
@@ -34,31 +34,58 @@ class AddAdditionalUsersFields extends Migration
             //
         });
     }
-
+    
     /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
+    * Reverse the migrations.
+    *
+    * @return void
+    */
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('username');
+        });        
+        Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('popname');
+        });
+        Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('about');
+        });
+        Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('location');
+        });
+        Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('administrator');
+        });
+        Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('banned');
+        });
+        Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('deleted');
+        });
+        Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('totalVisits');
+        });
+        Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('totalPosts');
+        });
+        Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('favouriteMusic');
+        });
+        Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('favouriteMovie');
+        });
+        Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('private');
+        });
+        Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('ipaddress');
+        });
+        Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('currentActivity');
+        });
+        Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('latestLogin');
-            //
         });
     }
 }
