@@ -9,7 +9,9 @@ class Theme extends Model
     protected $table = 'themes';
     protected $fillable = [
         'name',
-        'path'
+        'path',
+        'created_at',
+        'updated_at'
     ];
 
     public function users()
