@@ -20,6 +20,7 @@
         "nunomaduro/collision": "~1.1",
         "nunomaduro/larastan": "^0.3.4",
         "phpunit/phpunit": "~7.0",
+        "squizlabs/php_codesniffer": "*",
         "symfony/thanks": "^1.0"
     },
     "autoload": {
