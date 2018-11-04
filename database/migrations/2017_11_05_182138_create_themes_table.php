@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -20,16 +21,16 @@ class CreateThemesTable extends Migration
             $table->timestamps();
         });
 
+        // want a known timestamp so tests do not change the database each run
+        $themeTimestamp = new Carbon('last day of October 1975', 'Europe/London');
+        
         // create a default theme
-         App\Theme::firstOrCreate([
+        $theme = App\Theme::firstOrCreate([
             'name' => 'Default',
-            'path' => '/css/app.css'
+            'path' => '/css/app.css',
+            'created_at' => $themeTimestamp->format('Y-m-d H:i:s'),
+            'updated_at' => $themeTimestamp->format('Y-m-d H:i:s'),
          ]);
-
-        // add any other themes
-       // Artisan::call('db:seed', [
-       //      '--class' => 'ThemesTableSeeder',
-       //  ]);
     }
 
     /**
