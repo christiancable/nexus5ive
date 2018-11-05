@@ -21,9 +21,9 @@
     "eslint-config-google": "^0.9.1",
     "jquery": "^3.2",
     "laravel-mix": "^2.0",
-    "lodash": "^4.17.5",
-    "mocha-webpack": "^1.1.0",
+    "lodash": "^4.17.4",
     "mocha": "^5.2.0",
+    "mocha-webpack": "^1.1.0",
     "popper.js": "^1.12",
     "prettier": "^1.14.3",
     "vue": "^2.5.17"
