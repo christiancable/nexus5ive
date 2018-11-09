@@ -6,7 +6,8 @@
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
 
     <?php
     // if we have a special event then any theme it has should override the others
@@ -40,9 +41,7 @@
   <body>
 
   @if (Auth::check())
-    <span id="top-toolbar">
       @include('_toolbar')
-    </span>
   @endif 
 
   @yield('breadcrumbs')
@@ -52,27 +51,7 @@
   @yield('content')
 
   @if (Auth::check())
-    <nav class="navbar navbar-default navbar-fixed-bottom visible-xs">
-      <div class="container">
-        <ul class="nav navbar-nav">
-          
-          <li class="text-center col-xs-6">
-            <a {!! App\Helpers\GoogleAnalyticsHelper::onClickEvent('BottomNavigation', 'Catch-Up') !!}
-              href="{{ action('Nexus\SectionController@leap')}}">
-              <span class="glyphicon glyphicon-circle-arrow-right" aria-hidden="true" style="vertical-align:middle"></span> Next
-            </a>
-          </li>
-
-          <li class="text-center col-xs-6">
-            <a {!! App\Helpers\GoogleAnalyticsHelper::onClickEvent('BottomNavigation', 'Latest') !!}
-              href="{{ action('Nexus\SectionController@latest')}}">
-              <span class="glyphicon glyphicon-time" aria-hidden="true" style="vertical-align:middle"></span> Latest
-            </a>
-          </li> 
-
-        </ul>
-      </div>
-    </nav>
+      @include('_footer-navigation')
   @endif
 
   <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
