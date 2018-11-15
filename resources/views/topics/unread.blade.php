@@ -24,12 +24,9 @@
     <div class="content">
 
         @if (count($topics))
-
-        
-        @foreach ($topics as $topic)
-         @include('topics._read-compact', $topic)
-        @endforeach
-        
+            @foreach ($topics as $topic)
+            @include('topics._latest', $topic)
+            @endforeach
         @endif
     </div>
 
