@@ -10,21 +10,13 @@
 
 @section('content')
 <div class="container">
-
-    <div class="content">
-        <h1 class="display-4">{{$heading}}</h1>
-        <p class="lead">{{$lead}}</p>
-    </div>
-
+    <h1 class="display-4">{{$heading}}</h1>
+    <p class="lead">{{$lead}}</p>
     <hr>
-
-    <div class="content">
-        @if (count($topics))
-            @foreach ($topics as $topic)
+    @if (count($topics))
+        @foreach ($topics as $topic)
             @include('topics._latest', $topic)
-            @endforeach
-        @endif
-    </div>
-
+        @endforeach
+    @endif
 </div>
 @endsection
