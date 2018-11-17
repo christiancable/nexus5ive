@@ -14,8 +14,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // use Bootsrap 3 pagination - Upgrade Laravel 5.6
-        Paginator::useBootstrapThree();
+        //
     }
 
     /**
