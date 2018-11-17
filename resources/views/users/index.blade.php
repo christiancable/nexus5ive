@@ -12,10 +12,9 @@
         
 
 <div class="container">
-    <h1>Users</h1>
-    <span class="lead">"I fight for the Users"</span>
+    @include('_heading', [$heading = 'Users', $lead = '"I fight for the Users"'])    
 </div>
-<hr>
+
 <div class="container" id="users-list">
 
 <div id="app" v-cloak>
