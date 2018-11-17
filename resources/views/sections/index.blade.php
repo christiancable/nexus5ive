@@ -15,7 +15,11 @@
 @if (Auth::user()->id === $section->user_id )
     @include('sections._header_modify', $section)
 @else
-    @include('sections._header_view', $section)
+    @include('_heading', [
+        $heading = $section->title,
+        $lead = $section->intro,
+        $introduction = "Moderated by: {$section->moderator->present()->profileLink}"
+    ])
 @endif 
 
 <hr>

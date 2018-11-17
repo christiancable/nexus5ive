@@ -1,6 +1,10 @@
 <h1 class="display-4">{{$heading}}</h1>
-<p class="lead">{{$lead}}</p>
+
+@if(!empty($lead))
+    <span class="lead">{!! App\Helpers\NxCodeHelper::nxDecode($lead) !!}</span>
+@endif 
+
 @if(!empty($introduction))
-    <p>{{$introduction}}</p>
+    {!! App\Helpers\NxCodeHelper::nxDecode($introduction) !!}
 @endif 
 <hr>

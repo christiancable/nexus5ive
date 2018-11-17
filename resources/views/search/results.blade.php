@@ -10,11 +10,13 @@
 
 @section('content')
 
-
 <div class="container">
-    <h1>Search</h1>
+@include('_heading', [
+    $heading = 'Search', 
+    $lead = 'Find old posts and half remembered dreams',
+    $introduction = 'Tip: surround phrases in quotes like this _"that was no dream"_'
+])
 </div>
-<hr>
 
 
 <div class="container">
