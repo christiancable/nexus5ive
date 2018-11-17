@@ -1,56 +1,53 @@
-<div class="panel panel-primary" id="{{$post->id}}">
+<?php 
+
+$authorLink = "{$post->author->present()->profileLink} &ndash; {$post->popname}";
+if ($post->topic->secret && $userCanSeeSecrets == false) {
+    $authorLink = "<span><strong>Unknown User &ndash; Unknown User</span>";
+}
+
+$postTime = $post->time;
+$formattedTime = date('D, F jS Y - H:i', strtotime($post->time));
+if ($post->topic->secret && $userCanSeeSecrets == false) {
+    var_dump($postTime, $formattedTime);
+    // if we are anonymous them we want to see fuzzy times
+    $formattedTime = $post->time->diffForHumans();
+}
+
+$timeClass = 'text-muted';
+if ($readProgress < $postTime) {
+    $timeClass = 'text-info';
+}
+
+$editedByInfo = null;
+if ($post->editor) {
+    // if we are anonymous them we want to see fuzzy times
+    if ($post->topic->secret && $userCanSeeSecrets == false) {
+        $editedByInfo = "Edited by <strong>Anonymous</strong> around {$post->updated_at->diffForHumans()}";
+    } else {
+        $editedByInfo = "Edited by <strong>{$post->editor->username}</strong> at {$post->updated_at->format('D, F jS Y - H:i')}";
+    }
+}
+?>
+<div class="card mb-3" id="{{$post->id}}">
     @if (!str_is($post->title, ""))
-    <div class="panel-heading">
-        <h3 class="panel-title">{{$post->title}}</h3>
-    </div>
-    @endif
-
-    <div class="panel-body break-long-words">
-        <div class="row">
-
-            {{-- display author --}}
-            <div class="col-sm-12 col-md-6">       
-            @if($post->topic->secret && $userCanSeeSecrets == false)
-                 <span><strong>Anonymous</strong> (Hidden User)</span>
-            @else 
-                @if (isset($post->author))
-                {!! $post->author->present()->profileLink !!} &ndash; {{$post->popname}}
-                @else
-                    <span><strong>Unknown User &ndash; Unknown User</span>
-                @endif
-            @endif 
-            </div>
-
-            {{-- post time --}}
-            <div class="col-sm-12 col-md-6">
-                <?php
-                $postTime = $post->time;
-                // if we are anonymous them we want to see fuzzy times
-                if ($post->topic->secret && $userCanSeeSecrets == false) {
-                    $formattedTime = $post->time->diffForHumans();
-                } else {
-                    $formattedTime = date('D, F jS Y - H:i', strtotime($post->time));
-                }
-                ?>  
-                @if ($readProgress < $postTime)
-                    <span class="pull-right text-info visible-lg visible-md">{{ $formattedTime }}</span>
-                    <span class="visible-sm visible-xs text-info">{{ $formattedTime }}</span>
-                @else 
-                    <span class="pull-right text-muted visible-lg visible-md">{{ $formattedTime }}</span>   
-                    <span class="visible-sm visible-xs text-muted">{{ $formattedTime }}</span>  
-                @endif     
-            </div>
+        <div class="card-header bg-primary text-white">
+            <span class="card-title">{{$post->title}}</span>
         </div>
-        <hr>
-        <p>{!! App\Helpers\NxCodeHelper::nxDecode($post->text) !!}</p>
-
-        @if ($post->editor)
-              {{-- if we are anonymous them we want to see fuzzy times  --}}
-              @if($post->topic->secret && $userCanSeeSecrets == false)
-                  <small class="pull-right text-muted">Edited by <strong>Anonymous</strong> around {{$post->updated_at->diffForHumans()}}</small>
-              @else 
-                <small class="pull-right text-muted">Edited by <strong>{{$post->editor->username}}</strong> at {{$post->updated_at->format('D, F jS Y - H:i')}}</small>
-              @endif
-        @endif 
+    @endif
+    
+    <div class="card-body">
+        <div class="d-flex justify-content-between">
+        <span>{!! $authorLink !!}</span>
+        <small class="{{$timeClass}}">{{$formattedTime}}</small>
+        </div>
+        <p class="card-text">
+            <hr>
+            {!! App\Helpers\NxCodeHelper::nxDecode($post->text) !!}
+        </p>
+        @if ($editedByInfo)         
+            <footer class="d-flex justify-content-end">
+                <small class="text-muted">{!! $editedByInfo !!}</small>
+            </footer>
+        @endif
     </div>
 </div>
