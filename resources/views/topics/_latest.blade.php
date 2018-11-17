@@ -55,9 +55,7 @@ $topicLink = action('Nexus\TopicController@show', ['topic_id' => $topic->id]);
                         <em>{!! substr(strip_tags(App\Helpers\NxCodeHelper::nxDecode($unspoiled)), 0, 140) !!}</em>&hellip;
                     </p>
                     <footer class="d-flex justify-content-end">
-                    <a href="{{$replyLink}}" class="btn btn-primary">
-                        <span class="glyphicon glyphicon-share-alt glyphicon-flip-horizontal" aria-hidden="true"></span> Reply
-                    </a>
+                    <a href="{{$replyLink}}" class="btn btn-primary"> Reply </a>
                     </footer>
             </div>
         @endif 
