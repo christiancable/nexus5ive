@@ -26,21 +26,20 @@
     </div>
 
     <div class="row">    
-    <div class="col-sm-12">
-        <div class="form-group">          
-            {!! Form::button("<span class='glyphicon glyphicon-search'></span>&nbsp;&nbsp;Search",
-                array(
-                    'type'  => 'submit',
-                    'class' => "btn pull-right btn-primary col-xs-12 col-sm-3"
-                    )
-            ) !!}
+        <div class="col-sm-12">
+            <div class="form-group">          
+                {!! Form::button("<span class='oi oi-magnifying-glass'></span>&nbsp;&nbsp;Search",
+                    array(
+                        'type'  => 'submit',
+                        'class' => "btn pull-right btn-primary col-xs-12 col-sm-3"
+                        )
+                ) !!}
+            </div>
         </div>
     </div>
-</div>
+    <hr/>
 {!! Form::close() !!}
-
 </div>
-<hr/>
 
 @if ($errors->any())
 <div class="container">
@@ -53,37 +52,23 @@
     @if($results)        
         @if($results->count() == 0)
             <div class="container">
-            <p class="alert alert-info">
-                No results for <strong>{{$text}}</strong>
-            </p>
+                <p class="alert alert-info">
+                    No results for <strong>{{$text}}</strong>
+                </p>
             </div>
         @endif
 
         <?php
-        $paginatedResults = $results->paginate(config('nexus.pagination'));
+            $paginatedResults = $results->paginate(config('nexus.pagination'));
         ?>
-        <div class="container">
-            <div class="content">
-            @foreach($paginatedResults as $result) 
-                <div class="panel panel-default">
-                  <div class="panel-body break-long-words">
-                    <p><a href="{!! App\Helpers\TopicHelper::routeToPost($result) !!}">
-                     @if($result->topic->secret)
-                         <strong>Anonymous</strong>
-                    @else 
-                        <strong>{{ $result->author->username }}</strong>
-                    @endif
-                    @if(!empty($result->title))
-                        wrote about <em>{{$result->title}}</em>
 
-                    @endif
-                    in <strong>{{ $result->topic->title}}</strong></a><span class="text-muted"> {{ $result->time->diffForHumans() }}</span></p>
-                    <p>{!! App\Helpers\NxCodeHelper::nxDecode($result->text) !!}</p>
-                  </div>
-                </div>
+        <div class="container">
+            
+            @foreach($paginatedResults as $result) 
+                @include('search._result', $result)
             @endforeach
             {!! $paginatedResults->render() !!}
-            </div>
+            
         </div>
     @else
         @if (isset($displaySearchResults)) 
