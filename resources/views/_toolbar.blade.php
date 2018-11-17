@@ -7,7 +7,8 @@ $mentionCount = count($mentions);
 $profileNotificationCount = $commentsCount + $messagesCount;
 $notificationCount = $profileNotificationCount + $mentionCount;
 ?>
-<div id="top-toolbar" class="container">
+<div id="top-toolbar" class="border-bottom mb-3">
+  <div class="container">
   <nav class="navbar navbar-light bg-light navbar-expand-lg">
       <a class="navbar-brand" {!! App\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Home') !!} href="/">
         <span class="oi oi-home" title="icon home" aria-hidden="true"></span>
@@ -112,4 +113,5 @@ $notificationCount = $profileNotificationCount + $mentionCount;
         </ul>
       </div>
   </nav>
+  </div>
 </div>
