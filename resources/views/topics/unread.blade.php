@@ -10,7 +10,7 @@
 
 @section('content')
 <div class="container">
-    @include('_heading', [$heading, $lead])
+    @include('shared._heading', [$heading, $lead])
     @if (count($topics))
         @foreach ($topics as $topic)
             @include('topics._latest', $topic)

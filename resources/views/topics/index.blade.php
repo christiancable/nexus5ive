@@ -10,7 +10,7 @@
 
 @section('content')
 <div class="container">
-    @include('_heading',
+    @include('shared._heading',
     [
         $heading = $topic->title,
         $lead = $topic->intro
@@ -54,14 +54,14 @@
     @forelse($postsArray as $post) 
         <?php $allowDelete = true ?>
         @if($topic->section->moderator->id === Auth::user()->id)
-            @include('posts.moderate', compact('post', 'readProgress'))
+            @include('post._moderate', compact('post', 'readProgress'))
         @else 
         {{-- if we are on the last post and we  are the author and it is recent then display the moderate view so a user can edit their post --}}
         @if (($post['id'] == $latestPost['id']) && ($post->author->id == Auth::user()->id) && ($post->time->diffInSeconds() <= config('nexus.recent_edit') )) 
                 <?php $allowDelete = false ?>
-                @include('posts.moderate', compact('post', 'readProgress', 'allowDelete'))
+                @include('post._moderate', compact('post', 'readProgress', 'allowDelete'))
         @else
-            @include('posts.show', compact('post', 'readProgress', 'userCanSeeSecrets'))
+            @include('post._view', compact('post', 'readProgress', 'userCanSeeSecrets'))
         @endif
         @endif 
 

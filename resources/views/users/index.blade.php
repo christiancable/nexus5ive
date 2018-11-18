@@ -12,7 +12,7 @@
         
 
 <div class="container">
-    @include('_heading', [$heading = 'Users', $lead = '"I fight for the Users"'])    
+    @include('shared._heading', [$heading = 'Users', $lead = '"I fight for the Users"'])    
 </div>
 
 <div class="container" id="users-list">

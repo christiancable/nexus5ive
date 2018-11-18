@@ -12,7 +12,7 @@
 
 <div class="container">
 
-    @include('_heading', [$heading = 'Who is Online', $lead = 'Hell is other people'])
+    @include('shared._heading', [$heading = 'Who is Online', $lead = 'Hell is other people'])
 
     <div>
         @if (count($activities))

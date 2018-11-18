@@ -11,7 +11,7 @@
 @section('content')
 
 <div class="container">
-@include('_heading', [
+@include('shared._heading', [
     $heading = 'Search', 
     $lead = 'Find old posts and half remembered dreams',
     $introduction = 'Tip: surround phrases in quotes like this _"that was no dream"_'

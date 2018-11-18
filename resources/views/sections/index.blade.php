@@ -9,21 +9,21 @@
 @endsection 
 
 @section('content')
-<div class="container section">
+
+<div class="container">
 
 {{-- Section Heading --}}
 @if (Auth::user()->id === $section->user_id )
-    @include('sections._header_modify', $section)
+    @include('section-heading._moderate', $section)
 @else
-    @include('_heading', [
+    @include('shared._heading', [
         $heading = $section->title,
         $lead = $section->intro,
         $introduction = "Moderated by: {$section->moderator->present()->profileLink}"
     ])
 @endif 
 
-<hr>
-<div class="content">
+<div>
     {{-- Topics --}}
     @if (count($section->topics))
         <?php
@@ -31,16 +31,16 @@
         ?>
         @foreach ($section->topics as $topic)
             @if(Auth::user()->id === $section->user_id) 
-                @include('topics._edit', compact('topic', 'moderatedSections'))
+                @include('topic._moderate', compact('topic', 'moderatedSections'))
             @else
-                @include('topics._read', $topic)
+                @include('topic._view', $topic)
             @endif
         @endforeach
     @endif
 
     {{-- Topics - add new topic --}}
     <?php unset($topic); ?>
-    @if(Auth::user()->id === $section->user_id)
+    {{-- @if(Auth::user()->id === $section->user_id)
         <div class="panel-group" id="newTopicAccordion" role="tablist" aria-multiselectable="true">
             <div class="panel panel-success">
                 <div class="panel-heading" role="tab" id="addNewTopic">
@@ -59,7 +59,7 @@
                 </div>
             </div>
         </div>
-    @endif
+    @endif --}}
 
     {{-- Sub Sections --}}
     @if (count($section->sections))
@@ -67,7 +67,7 @@
             $subSectionCount = 0;
         ?>
         <hr>
-        <div class="row">
+        
             @foreach ($section->sections as $subSection)
                 <?php $subSectionCount++; ?>
                 {{-- the moderator of the parent can edit the sub sections here --}}
@@ -84,21 +84,21 @@
                     $destinations = \Auth::user()->sections->diff($allChildSections);
                     $potentialModerators = \App\User::all()->pluck('username', 'id')->toArray();
                     ?>
-                    @include('sections._subsection_moderator', 
+                    @include('section._moderate', 
                         compact('subSection', 'destinations', 'potentialModerators'))
                 @else
-                    @include('sections._subsection_view', $subSection)
+                    @include('section._view', $subSection)
                 @endif 
 
-                {{-- force row to clear every 3 sections --}}
-                @if($subSectionCount % 3 === 0)
-                    <div class="clearfix"></div>
-                @endif
+        
             @endforeach
-        </div>
+        
     @endif
 
     {{-- Sub Sections - new section --}}
+   <?php
+
+   /***
     @if(Auth::user()->id === $section->user_id)
         {{-- if we have no current sections then add in the hr to separate topics and sections --}}
         @if (count($section->sections) == 0)
@@ -123,7 +123,8 @@
     </div>
 </div>  <!-- newSectionAccordion -->
    @endif
-
+   */
+?>
     </div>
 </div>
 @endsection

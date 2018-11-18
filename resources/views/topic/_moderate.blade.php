@@ -27,9 +27,9 @@ if ($showErrors) {
 {{-- tab content --}}
 <div class="tab-content" id="topic-{{$topic->id}}-tabContent">
   <div class="tab-pane fade {{$viewTabClass}}" id="view-{{$topic->id}}" role="tabpanel" aria-labelledby="view-{{$topic->id}}-tab">
-    @include('topics._read', $topic)
+    @include('topic._view', $topic)
   </div>
   <div class="tab-pane fade {{$editTabClass}}" id="edit-{{$topic->id}}" role="tabpanel" aria-labelledby="view-{{$topic->id}}-tab">
-    @include('topics._update', $topic)
+    @include('topic._edit', $topic)
   </div>
 </div>

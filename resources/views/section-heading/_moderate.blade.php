@@ -27,13 +27,13 @@ if ($showErrors) {
 {{-- tab content --}}
 <div class="tab-content" id="section-{{$section->id}}-tabContent">
   <div class="tab-pane fade {{$viewTabClass}}" id="section-view-{{$section->id}}" role="tabpanel" aria-labelledby="section-view-{{$section->id}}-tab">
-        @include('_heading', [
+        @include('shared._heading', [
             $heading = $section->title, 
             $lead = $section->intro,
             $introduction = "Moderated by: {$section->moderator->present()->profileLink}"
         ])
   </div>
   <div class="tab-pane fade {{$editTabClass}}" id="section-edit{{$section->id}}" role="tabpanel" aria-labelledby="section-view-{{$section->id}}-tab">
-      @include('sections._header_edit', $section)
+      @include('section-heading._edit', $section)
   </div>
 </div>
