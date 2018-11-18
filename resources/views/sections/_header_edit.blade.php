@@ -31,26 +31,22 @@
 ?>
 
 
-<div class="row">    
-    <div class="col-sm-12">
+<div class="d-flex justify-content-end">    
+    
         <div class="form-group">          
-        {!! 
-            Form::button("<span class='glyphicon glyphicon-pencil'></span>&nbsp;&nbsp;Save Changes",
-                array(
-                    'type'  => 'submit',
-                    'class' => "btn pull-right btn-info col-xs-12 col-sm-3", 
-                    'value' => $formName
-                    )
-                ) 
-        !!}
+            {!! Form::button("<span class='oi oi-pencil mr-2'></span>Save Changes",
+                    array(
+                        'type'  => 'submit',
+                        'class' => "btn btn-success"
+                        )
+            ) !!}
         </div>
-    </div>
+    
 </div>
 
 {!! Form::close() !!}
 
 @if ($errors->$errorBag->all())
-    <br/>
     <div class="alert alert-danger" role="alert">
         <ul>
         @foreach($errors->$errorBag->all() as $error)
