@@ -99,7 +99,7 @@ $notificationCount = $profileNotificationCount + $mentionCount;
                   <div role="separator" class="dropdown-divider"></div>              
                   <div class="dropdown-header dropdown-item">Moderator Goodies</div>
                   <a class="dropdown-item" href="{{ action('Nexus\RestoreController@index')}}">
-                    <span class="oi oi-folder" aria-hidden="true"></span> Your Archive
+                    <span class="oi oi-box" aria-hidden="true"></span> Your Archive
                   </a>
                 @endif
 
