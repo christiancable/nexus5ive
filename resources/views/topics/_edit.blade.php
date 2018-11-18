@@ -20,7 +20,7 @@ if ($showErrors) {
     <a class="nav-link {{$viewNavClass}}" id="view-{{$topic->id}}-tab" data-toggle="tab" href="#view-{{$topic->id}}" role="tab" aria-controls="view-{{$topic->id}}-tab" aria-selected="true">View</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link {{$editNavClass}}" id="view-{{$topic->id}}-tab" data-toggle="tab" href="#edit-{{$topic->id}}" role="tab" aria-controls="edit-{{$topic->id}}-tab" aria-selected="false">Edit</a>
+    <a class="nav-link {{$editNavClass}}" id="edit-{{$topic->id}}-tab" data-toggle="tab" href="#edit-{{$topic->id}}" role="tab" aria-controls="edit-{{$topic->id}}-tab" aria-selected="false">Edit</a>
   </li>
 </ul>
 
