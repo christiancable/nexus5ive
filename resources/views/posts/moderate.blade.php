@@ -1,4 +1,4 @@
- <?php
+<?php
 $errorBag = 'postUpdate' . $post->id;
 $showErrors = count($errors->$errorBag->all());
 
