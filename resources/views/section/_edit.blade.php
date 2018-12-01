@@ -7,6 +7,7 @@ $submitType = 'btn-info';
 ?>
 
 {{-- this is for moderators to edit sub sections --}}
+<div class="card border-0 bg-transparent">
 {!! Form::open(
     array(
     'route'     => ['section.update', $subSection->id],
@@ -104,3 +105,4 @@ $submitType = 'btn-info';
         </ul>
     </div>
 @endif 
+</div>

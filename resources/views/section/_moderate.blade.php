@@ -13,7 +13,8 @@ if ($showErrors) {
 }
 ?>
 
-<hr>
+
+<div class="card border-0 bg-transparent">
 {{-- tabs --}}
 <ul class="nav nav-pills d-flex justify-content-end mb-1" id="section-{{$subSection->id}}" role="tablist">
   <li class="nav-item">
@@ -32,4 +33,6 @@ if ($showErrors) {
   <div class="tab-pane fade {{$editTabClass}}" id="subsection-edit-{{$subSection->id}}" role="tabpanel" aria-labelledby="subsection-view-{{$subSection->id}}-tab">
     @include('section._edit', $subSection)
   </div>
+</div>
+
 </div>
