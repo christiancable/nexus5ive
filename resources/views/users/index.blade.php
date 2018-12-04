@@ -21,25 +21,27 @@
 <userlist :users="{{json_encode($users)}}"></userlist>
 </div>
 
-<div class="replace-with-vue">
-<?php
-$previousLetter = '';
-$currentLetter = '';
-?>
-    @foreach ($users as $user) 
-        <?php
-        $currentLetter = strtoupper($user->username[0]);
-        ?>
-        @if ($currentLetter !== $previousLetter) 
-            <h2 class="bg-info"><span>{{ $currentLetter }}</span></h2>
-            <hr/>
-        @endif 
+<div class="replace-with-vue card-deck">
+
+    @foreach ($users as $user)        
         @include('users._panel', $user)
-        <?php
-        $previousLetter = $currentLetter;
-        ?>
+
+         {{-- non-moderators get a card desk layout --}}
+        {{-- wrap sub-sections: 1 col for sm, 2 for md, 3 for lg --}}
+        <div class="w-100 d-sm-block d-md-none"></div>
+
+        @if ($loop->iteration % 2 === 0) 
+        <div class="w-100 d-none d-md-block d-lg-none"></div>
+        @endif 
+
+        @if ($loop->iteration % 3 === 0)
+        <div class="w-100 d-none d-lg-block"></div>
+        @endif  
+
+
     @endforeach
-    </ul>
-    </div>
+    
+
 </div>        
+</div>
 @endsection
