@@ -15,18 +15,18 @@ $moderator = Auth::user()->id === $section->user_id;
 
 <div class="container">
 
-{{-- Section Heading --}}
-@if (Auth::user()->id === $section->user_id )
-    @include('section-heading._moderate', $section)
-@else
-    @include('shared._heading', [
-        $heading = $section->title,
-        $lead = $section->intro,
-        $introduction = "Moderated by: {$section->moderator->present()->profileLink}"
-    ])
-@endif 
+    {{-- Section Heading --}}
+    @if (Auth::user()->id === $section->user_id )
+        @include('section-heading._moderate', $section)
+    @else
+        @include('shared._heading', [
+            $heading = $section->title,
+            $lead = $section->intro,
+            $introduction = "Moderated by: {$section->moderator->present()->profileLink}"
+        ])
+    @endif 
 
-<div>
+
     {{-- Topics --}}
     @if (count($section->topics))
         <?php
@@ -43,69 +43,20 @@ $moderator = Auth::user()->id === $section->user_id;
 
     {{-- Topics - add new topic --}}
     <?php unset($topic); ?>
-    {{-- @if(Auth::user()->id === $section->user_id)
-        <div class="panel-group" id="newTopicAccordion" role="tablist" aria-multiselectable="true">
-            <div class="panel panel-success">
-                <div class="panel-heading" role="tab" id="addNewTopic">
-                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#addTopic" aria-expanded="false" aria-controls="addTopic">
-                        <h4 class="panel-title">
-                            <span class='glyphicon glyphicon-comment'></span>&nbsp; Add New Topic
-                            <i class="indicator glyphicon glyphicon-chevron-down  pull-right"></i>
-                        </h4>
-                    </a>
-                </div>
-
-                <div id="addTopic" class="panel-collapse collapse" role="tabpanel" aria-labelledby="addNewTopic">
-                    <div class="panel-body">
-                        @include('topics._create', $section)
-                    </div>
-                </div>
-            </div>
-        </div>
-    @endif --}}
-
-</div>
+    @if(Auth::user()->id === $section->user_id)
+        @include('sections._add-topic', [$section])
+    @endif
     
     {{-- Sub Sections --}}
     @if (count($section->sections))
         @include('sections._subsections', [$section, $moderator])
     @endif
 
-    
-    {{-- Sub Sections - new section --}}
-   <?php
-
-   /***
     @if(Auth::user()->id === $section->user_id)
-        {{-- if we have no current sections then add in the hr to separate topics and sections --}}
-        @if (count($section->sections) == 0)
-            <hr/>
-        @endif
-
-        <div class="panel-group" id="newSectionAccordion" role="tablist" aria-multiselectable="true">
-            <div class="panel panel-success">
-                <div class="panel-heading" role="tab" id="addNewSection">
-                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#newSectionAccordion" href="#newSectionPanel" aria-expanded="false" aria-controls="newSectionPanel">
-                        <h4 class="panel-title">
-                            <span class='glyphicon  glyphicon-folder-open'></span>&nbsp; Add New Section
-                            <i class="indicator glyphicon glyphicon-chevron-down  pull-right"></i>
-                        </h4>
-                    </a>
-                </div>
-            <div id="newSectionPanel" class="panel-collapse collapse" role="tabpanel" aria-labelledby="addNewSection">
-            <div class="panel-body">
-                @include('sections._create', $section)
-            </div>
-        </div>
-    </div>
-</div>  <!-- newSectionAccordion -->
-   @endif
-   */
-?>
+        @include('sections._add-section', [$section])
+    @endif
+    
+    
     </div>
 </div>
-@endsection
-
-@section('javascript')
-    @include('javascript._jqueryChevronToggles')
 @endsection
