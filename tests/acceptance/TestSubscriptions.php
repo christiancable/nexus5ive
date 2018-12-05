@@ -132,10 +132,10 @@ class TestSubscriptions extends BrowserKitTestCase
 
         /* THEN
         the user visits the topic
-        sees Resubscribe to this topic */
+        sees Subscribe to this topic */
         $this->actingAs($user)
             ->visit('/topic/' . $topic->id)
             ->dontSee('Unsubscribe from this topic')
-            ->see('Resubscribe to this topic');
+            ->see('Subscribe to this topic');
     }
 }
