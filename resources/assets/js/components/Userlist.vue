@@ -49,9 +49,9 @@
               </div>
             </div>
 
-            <div class="w-100 d-sm-block d-md-none" :key="user.username"></div>
-            <div v-if="index % 2 == 0" class="w-100 d-none d-md-block d-lg-none" :key="user.username"></div>
-            <div v-if="index % 3 == 0" class="w-100 d-none d-lg-block" :key="user.username"></div>
+            <div class="w-100 d-sm-block d-md-none"></div>
+            <div v-if="index % 2 == 0" class="w-100 d-none d-md-block d-lg-none"></div>
+            <div v-if="index % 3 == 0" class="w-100 d-none d-lg-block"></div>
           </template>
         </template>
       </template>
