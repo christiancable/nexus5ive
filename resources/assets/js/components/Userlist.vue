@@ -12,7 +12,7 @@
                 
                     <template>
                         <div class="card text-center mb-3 bg-light">
-                            <div class="card-header bg-dark text-white">
+                            <div :class="'card-header text-white' + (user.totalPosts ? ' bg-info ' : ' bg-secondary')">
                                 <a :href="'/users/' + user.username" class="d-block text-white"><h3 class="card-title mb-0">{{user.username}}</h3></a>
                             </div>
 
@@ -28,11 +28,11 @@
 
                                 <div class="row text-secondary mb-3">
                                     <div class="col">
-                                        <p class="h2 mb-0 text-dark">{{user.totalPosts}}</p>
+                                        <p :class="'h2 mb-0 ' + classy(user.totalPosts)">{{user.totalPosts}}</p>
                                         Posts 
                                     </div>
                                     <div class="col">
-                                        <p class="h2 mb-0 text-dark">{{user.totalVisits}}</p>
+                                        <p :class="'h2 mb-0 ' + classy(user.totalVisits)">{{user.totalVisits}}</p>
                                         Visits
                                     </div>
                                 </div>
@@ -91,6 +91,34 @@
                 return this.users.filter(function (user) {
                     return (user.username + user.name).toLowerCase().indexOf(this.searchTerm.toLowerCase()) !== -1;
                 }, context)
+            },
+
+        },
+
+        methods: {
+            classy: function(score) {
+                
+                if (score < 10) {
+                    return 'text-secondary';
+                }
+
+                if (score < 100) {
+                    return 'text-dark';
+                }
+                
+                if (score < 1000) {
+                    return 'text-info';
+                }
+                
+                if (score < 10000) {
+                    return 'text-primary';
+                }
+
+                if (score < 100000) {
+                    return 'text-success';
+                }
+
+                return 'text-danger';
             }
         },
 
