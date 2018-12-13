@@ -1,5 +1,5 @@
 
-<div class="row">
+<div class="row mb-3">
 
     <dl class="col">        
     @if ($user->private != true)
@@ -12,19 +12,15 @@
         <dt>Favourite Band</dt><dd>{{$user->favouriteMusic}}</dd>
     </dl>
 
-    <dl class="col">        
-    @if ($user->latestLogin)
-        <dt>Latest Visit</dt><dd>{{$user->latestLogin->diffForHumans()}}</dd>
-    @else
-        <dt>Latest Visit</dt><dd>Never</dd>
-    @endif
-        <dt>Total Posts</dt><dd>{{$user->totalPosts}}</dd>
-        <dt>Total Visits</dt><dd>{{$user->totalVisits}}</dd>
-    </dl>
+    <div class="col">
+          @include('users._score', $user)
+    </div>
 
 </div>
 
 <div class="card mb-3 bg-light">
+    <div class="card-header">More about {{$user->username}}
+    </div>
     <div class="card-body border border-light rounded">
         <div class="card-text">
         {!! App\Helpers\NxCodeHelper::nxDecode($user->about) !!}
