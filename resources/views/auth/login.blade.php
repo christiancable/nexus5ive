@@ -8,11 +8,6 @@
 
 <div class="container my-3">
 
-  @include('shared._heading', [
-    $heading = config('nexus.name'),
-    $lead = 'When time becomes a loop'
-  ])
-
 <div class="row">
   <div class="col">
 
