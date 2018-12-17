@@ -6,8 +6,8 @@
       </div>
     </form>
 
-    <div class="card-deck">
-      <template v-if="matchedUsers.length !== 0">
+    <template v-if="matchedUsers.length !== 0">
+      <div class="card-deck">
         <template v-for="(user, index) in matchedUsers">
           <template>
             <div class="card text-center mb-3 bg-light" :key="user.username">
@@ -54,17 +54,19 @@
             <div v-if="index % 3 == 0" class="w-100 d-none d-lg-block"></div>
           </template>
         </template>
-      </template>
+      </div>
+      <!-- .card-deck -->
+    </template>
 
-      <template v-else>
-        <hr>
-        <div class="alert alert-info" role="alert">
-          <p>No users found found for
-            <strong>{{searchTerm}}</strong>
-          </p>
-        </div>
-      </template>
-    </div>
+    <template v-else>
+      <hr>
+      <div class="alert alert-info" role="alert">
+        <p>
+          No users found found for
+          <strong>{{searchTerm}}</strong>
+        </p>
+      </div>
+    </template>
   </div>
 </template>
 
