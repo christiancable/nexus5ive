@@ -1,13 +1,19 @@
 <!DOCTYPE html>
-<html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
   <head>
-    <meta charset="UTF-8"> 
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1"> 
     @yield('meta')
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+    <!-- Scripts -->
+    <script src="{{ mix('js/manifest.js') }}" ></script>
+    <script src="{{ mix('js/vendor.js') }}" ></script>
+    <script src="{{ mix('js/app.js') }}" defer></script>
 
     <?php
     // if we have a special event then any theme it has should override the others
@@ -26,11 +32,14 @@
             <link href="{{ mix('/css/extra.css') }}" rel="stylesheet">
             @else
 
-            @if (Auth::check())
+            @auth
                 <link rel="stylesheet" href="{{ mix(Auth::User()->theme->path) }}">
-            @else
+            @endauth
+
+            @guest
                 <link rel="stylesheet" href="{{ mix('/css/app.css') }}">
-            @endif
+            @endguest
+
         @endif
     @endif 
 
@@ -39,31 +48,35 @@
   </head>
 
   <body>
+    <div id="app">
+        @auth
+            @include('_toolbar')
+        @endauth
 
-  @if (Auth::check())
-      @include('_toolbar')
-  @endif 
+        @guest
+            @include('_toolbar-guest')
+        @endguest
 
-  @yield('breadcrumbs')
+        @yield('breadcrumbs')
 
-  @include('_alerts')
+        @include('_alerts')
 
-  @yield('content')
+        @yield('content')
 
-  @if (Auth::check())
-      @include('_footer-navigation')
-  @endif
+        @auth
+            @include('_footer-navigation')
+        @endauth
 
-  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-  <script src="{{ mix('/js/app.js') }}"></script>
-  @yield('javascript')
-  <!-- Include all compiled plugins (below), or include individual files as needed -->
-  
-  @if (Auth::check())
-    @include('javascript._toolbar')
-  @endif
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        {{-- <script src="{{ mix('/js/app.js') }}"></script> --}}
+        {{-- @yield('javascript') TODO - remove this --}} 
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        
+        @auth
+            {{-- @include('javascript._toolbar') TODO remove this --}}
+        @endauth
 
-  @include('_googleanaytics')
-
+        @include('_googleanaytics')
+    </div>
   </body>
 </html>

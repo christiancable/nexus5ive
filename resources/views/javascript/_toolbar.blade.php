@@ -1,3 +1,4 @@
+{{-- TODO remove this file when notifications are re-factored --}}
 <script type="text/javascript">
 	var refreshToolbar = function() {
 		var toolbarURL = "{{route('interface.toolbar')}}";
