@@ -72,8 +72,7 @@ class MessageController extends Controller
             $request->all(),
             [
                 'text' => 'required',
-                'user_id' => 'required|numeric|exists:users,id',
-                'author_id' => 'required|numeric|exists:users,id'
+                'user_id' => 'required|numeric|exists:users,id'
             ],
             [
                 "text.required" => 'Sending empty messages is a little creepy!'

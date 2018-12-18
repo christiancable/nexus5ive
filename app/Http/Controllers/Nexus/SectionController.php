@@ -16,6 +16,7 @@ use App\Helpers\ActivityHelper;
 use Illuminate\Validation\Rule;
 use App\Helpers\BreadcrumbHelper;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\RedirectResponse;
 
 class SectionController extends Controller
 {
@@ -48,7 +49,7 @@ class SectionController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  Request  $request
-     * @return Response
+     * @return RedirectResponse
      */
     public function store(Request $request)
     {
@@ -123,7 +124,7 @@ class SectionController extends Controller
      *
      * @param  Request  $request
      * @param  int  $id
-     * @return Response
+     * @return RedirectResponse
      */
     public function update(Request $request, $id)
     {
@@ -206,7 +207,7 @@ class SectionController extends Controller
      *
      * @param  int $id
      * @param  Request  $request
-     * @return Response
+     * @return RedirectResponse
      */
     public function destroy(Request $request, $id)
     {
@@ -237,6 +238,8 @@ class SectionController extends Controller
 
     /**
      * redirects a visitor to a section  with an updated topic
+     *
+     * @return RedirectResponse
      */
     public function leap()
     {

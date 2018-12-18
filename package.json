@@ -9,7 +9,10 @@
     "prod": "npm run production",
     "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
     "test": "mocha-webpack --webpack-config=node_modules/laravel-mix/setup/webpack.config.js tests/js/unit/\\*\\*/\\*.spec.js",
-    "coverage": "vendor/bin/phpunit --coverage-html coverage"
+    "phpunit": "vendor/bin/phpunit",
+    "coverage": "vendor/bin/phpunit --coverage-html coverage",
+    "phpcs": "vendor/bin/phpcs --standard=psr2 app",
+    "larastan": "php artisan code:analyse"
   },
   "devDependencies": {
     "axios": "^0.15.3",
