@@ -11,8 +11,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Scripts -->
-    <script src="{{ mix('js/manifest.js') }}" ></script>
-    <script src="{{ mix('js/vendor.js') }}" ></script>
+    <script>
+        window.notificationPoll = {{config('nexus.notification_check_interval')}}
+    </script>
+    {{-- <script src="{{ mix('js/manifest.js') }}" ></script> --}}
+    {{-- <script src="{{ mix('js/vendor.js') }}" ></script> --}}
     <script src="{{ mix('js/app.js') }}" defer></script>
 
     <?php
@@ -48,7 +51,7 @@
   </head>
 
   <body>
-    <div id="app">
+    <div>
         @auth
             @include('_toolbar')
         @endauth
@@ -67,13 +70,20 @@
             @include('_footer-navigation')
         @endauth
 
-        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-        {{-- <script src="{{ mix('/js/app.js') }}"></script> --}}
-        {{-- @yield('javascript') TODO - remove this --}} 
-        <!-- Include all compiled plugins (below), or include individual files as needed -->
         
         @auth
-            {{-- @include('javascript._toolbar') TODO remove this --}}
+
+        <script type="text/javascript">
+   /*          $(document).ready(window.pollForNotifications(300)); */
+           
+               
+
+     $( document ).ready(function() {
+        alert('does this appear?')
+        });
+
+               
+        </script>
         @endauth
 
         @include('_googleanaytics')
