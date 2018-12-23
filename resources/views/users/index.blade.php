@@ -16,7 +16,7 @@
 
 <div class="container" id="users-list">
 
-    <div v-cloak>
+    <div id="app" v-cloak>
         <userlist :users="{{json_encode($users)}}"></userlist>
     </div>
 
