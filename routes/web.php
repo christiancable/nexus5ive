@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 |
 */
 
-// // authentication
+// authentication
 if (config('nexus.allow_registrations') === true) {
     Auth::routes();
 } else {
@@ -23,9 +23,10 @@ if (config('nexus.allow_registrations') === true) {
 }
 
 // API
-Route::get('api/notifications', ['middleware' => 'auth',  function () {
+Route::get('api/notificationsCount', ['middleware' => 'auth',  function () {
     return Auth::user()->notificationCount();
 }])->name('api.notificationCount');
+
 
 Route::post('api/users', function (Request $request) {
     $input = $request->all();
@@ -34,7 +35,7 @@ Route::post('api/users', function (Request $request) {
     return response()->json($data);
 })->name('api.users');
 
-// Interface partials
+// // Interface partials
 Route::get('interface/toolbar', ['middleware' => 'auth',  function () {
     return response()->view('_toolbar');
 }])->name('interface.toolbar');
