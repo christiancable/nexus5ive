@@ -5,32 +5,37 @@ function toggleChevron(e) {
         .toggleClass('glyphicon-chevron-down glyphicon-chevron-up');
 }
 
+function refreshNotifications() {
 
-function postPreview(tab) {
-    $.ajax({
-        type: 'POST',
-        url: '/api/nxcode',
-        data: {
-            'text': $('#postText').val(),
-            '_token': $('input[name=_token]').val()
-        },
-        dataType: 'JSON',
-        success: function (data) {
-            if ($('input[name=title]').val()) {
-                $('#preview-title').html($('input[name=title]').val());
-            }
-            $('#preview-view').html(data.text);
-        }
+    console.log('checking for notifications');
+    var notificationsURL = '/api/notificationsCount';
+    var displayedNotificationsCount = $("#notification-count").text();
+
+    $.get(notificationsURL, function(data) {
+			updatedNotificationsCount = data;	
+			if (displayedNotificationsCount != updatedNotificationsCount) {
+                var toolbarURL = "/interface/toolbar";
+                $("#top-toolbar").load(toolbarURL);
+			}
     });
+}
+
+function pollForNotifications(time) {
+    setInterval(window.refreshNotifications, time);        
 }
 
 /* export functions we went to be global */
 window.toggleChevron = toggleChevron;
-window.postPreview = postPreview;
+window.refreshNotifications = refreshNotifications;
+window.pollForNotifications = pollForNotifications;
 
 /* event listeners */
 
 /* spoiler tag show/hide */
 $("span.spoiler").click(function() {
     $(this).toggleClass('spoiler');
+});
+
+$( document ).ready(function() {
+    window.pollForNotifications(window.notificationPoll)
 });

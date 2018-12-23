@@ -24,6 +24,7 @@ Vue.component('userlist', require('./components/Userlist.vue'));
 Vue.component('post-compose', require('./components/PostCompose.vue'));
 Vue.component('post-preview', require('./components/PostPreview.vue'));
 Vue.component('rendered-text', require('./components/RenderedText.vue'));
+// Vue.component('mentions-list', require('./components/Mentions.vue'));
 // const files = require.context('./', true, /\.vue$/i)
 
 // files.keys().map(key => {
@@ -39,4 +40,6 @@ Vue.component('rendered-text', require('./components/RenderedText.vue'));
 const app = new Vue({
     el: '#app'
 });
+
+// window.$ = window.jQuery = require('jquery');
 
