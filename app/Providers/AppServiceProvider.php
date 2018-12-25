@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use Illuminate\Pagination\Paginator; // BS3 pagination - laravel upgrade 5.6
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
