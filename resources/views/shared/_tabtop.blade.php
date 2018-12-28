@@ -1,11 +1,11 @@
-<ul class="nav nav-pills justify-content-end mb-3">
+<ul class="nav nav-pills justify-content-end mb-1">
   
   <li class="nav-item dropdown">
     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
       <span class="oi oi-cog"></span><span class="sr-only">Settings</span>
     </a>
 
-    <div class="dropdown-menu">
+    <div class="dropdown-menu dropdown-menu-right">
 
       <a class="dropdown-item" 
         href="{{$viewTabLink}}" id="{{$viewTabId}}" 
