@@ -27,7 +27,7 @@
 	
 <h2>Archived Sections</h2>
 
-  <button class="btn btn-success col-12" type="button" data-toggle="collapse" data-target="#sections" aria-expanded="false" aria-controls="sections">
+  <button class="disclose btn btn-success col-12" type="button" data-toggle="collapse" data-target="#sections" aria-expanded="false" aria-controls="sections">
     <span class="oi oi-chevron-right mr-2"></span>View Sections to Restore
   </button>
 
@@ -50,7 +50,7 @@
 
 <h2>Archived Topics</h2>
 
-  <button class="btn btn-success col-12" type="button" data-toggle="collapse" data-target="#topics" aria-expanded="false" aria-controls="topics">
+  <button class="disclose btn btn-success col-12" type="button" data-toggle="collapse" data-target="#topics" aria-expanded="false" aria-controls="topics">
     <span class="oi oi-chevron-right mr-2"></span>View Topics to Restore
   </button>
 

@@ -12,7 +12,7 @@
 
     <!-- Scripts -->
     <script>
-        window.notificationPoll = {{config('nexus.notification_check_interval')}}
+        
     </script>
     {{-- <script src="{{ mix('js/manifest.js') }}" ></script> --}}
     {{-- <script src="{{ mix('js/vendor.js') }}" ></script> --}}
@@ -70,19 +70,9 @@
             @include('_footer-navigation')
         @endauth
 
-        
         @auth
-
         <script type="text/javascript">
-   /*          $(document).ready(window.pollForNotifications(300)); */
-           
-               
-
-     $( document ).ready(function() {
-        alert('does this appear?')
-        });
-
-               
+            window.notificationPoll = {{config('nexus.notification_check_interval')}}               
         </script>
         @endauth
 

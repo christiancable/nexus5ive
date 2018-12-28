@@ -25,7 +25,7 @@ $("span.spoiler").click(function() {
 });
 
 // disclosure toggle
-$("a.disclose").click(function(e) {
+$(".disclose").click(function(e) {
   let heading = $(e.target).find("span.oi");
   if (heading) {
     heading.toggleClass("oi-chevron-right oi-chevron-bottom");
