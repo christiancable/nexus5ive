@@ -91,5 +91,5 @@ $errorBag = 'topicUpdate' . $topic->id;
     </div>
 
     @if ($errors->$errorBag->any())
-        @include('forms._createErrors', ['errors' => $errors->$errorBag->all()])
+        @include('forms._errors', ['errors' => $errors->$errorBag->all()])
     @endif

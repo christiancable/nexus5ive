@@ -28,5 +28,5 @@
 {!! Form::close() !!}
 
 @if ($errors->sectionCreate->any())
- @include('forms._createErrors', ['errors' => $errors->sectionCreate->all(), 'formContainer' => 'addSection'])
+ @include('forms._errors', ['errors' => $errors->sectionCreate->all(), 'formContainer' => 'addSection'])
 @endif 

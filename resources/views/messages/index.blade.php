@@ -51,7 +51,7 @@
     </p>
     @endif 
     @if ($errors->messageStore->any())
-        @include('forms._createErrors', ['errors' => $errors->messageStore->all()])
+        @include('forms._errors', ['errors' => $errors->messageStore->all()])
     @endif 
 <hr>
     @if (count($messages))

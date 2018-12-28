@@ -1,5 +1,5 @@
 @if ($errors->userUpdate->any())
-    @include('forms._createErrors', ['errors' => $errors->userUpdate->all()])
+    @include('forms._errors', ['errors' => $errors->userUpdate->all()])
 @endif
 {!! 
 Form::model($user, array(

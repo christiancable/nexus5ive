@@ -52,5 +52,5 @@
 
 
 @if ($errors->topicCreate->all())
-@include('forms._createErrors', ['errors' => $errors->topicCreate->all(), 'formContainer' => 'addTopic'])
+@include('forms._errors', ['errors' => $errors->topicCreate->all(), 'formContainer' => 'addTopic'])
 @endif
