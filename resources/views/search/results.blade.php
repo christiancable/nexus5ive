@@ -31,7 +31,7 @@
                 {!! Form::button("<span class='oi oi-magnifying-glass'></span>&nbsp;&nbsp;Search",
                     array(
                         'type'  => 'submit',
-                        'class' => "btn pull-right btn-primary col-xs-12 col-sm-3"
+                        'class' => "btn pull-right btn-primary col-12 col-sm-3"
                         )
                 ) !!}
             </div>
