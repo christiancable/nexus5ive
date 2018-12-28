@@ -96,13 +96,8 @@ $submitType = 'btn-info';
 </div>
         
 
-@if ($errors->$errorBag->all())
-    <div class="alert alert-danger" role="alert">
-        <ul>
-        @foreach($errors->$errorBag->all() as $error)
-            <li>{{ $error }}</li>
-        @endforeach
-        </ul>
-    </div>
+@if ($errors->$errorBag->any())
+    @include('forms._createErrors', ['errors' => $errors->$errorBag->all()])
 @endif 
+
 </div>

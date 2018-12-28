@@ -55,12 +55,6 @@
 
 
 @if ($errors->$errorBag->any())
-    <div class="alert alert-danger" role="alert">
-        <ul>
-        @foreach($errors->$errorBag->all() as $error)
-        <li>{{ $error }}</li>
-        @endforeach
-        </ul>
-    </div>
+    @include('forms._createErrors', ['errors' => $errors->$errorBag->all()])
 @endif 
 

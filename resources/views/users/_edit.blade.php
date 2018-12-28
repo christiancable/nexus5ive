@@ -1,13 +1,6 @@
-@if ($errors->userUpdate->all())
-    <div class="alert alert-warning" role="alert">
-    <ul>
-        @foreach($errors->userUpdate->all() as $error)
-            <li>{{ $error }}</li>
-         @endforeach
-     </ul>
-    </div>
+@if ($errors->userUpdate->any())
+    @include('forms._createErrors', ['errors' => $errors->userUpdate->all()])
 @endif
-
 {!! 
 Form::model($user, array(
     'route' => ['users.update', $user->username],
