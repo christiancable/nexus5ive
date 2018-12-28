@@ -1,29 +1,22 @@
 <?php
 $errorBag = 'postUpdate' . $post->id;
 $showErrors = count($errors->$errorBag->all());
-
-$editNavClass = '';
-$viewNavClass = 'active';
 $editTabClass = '';
 $viewTabClass = 'show active';
-if ($showErrors) {
-    $editNavClass = 'active';
-    $viewNavClass = '';
+if ($showErrors) {    
     $editTabClass = 'show active';
     $viewTabClass = '';
 }
 ?>
 
-{{-- tabs --}}
-<ul class="nav nav-pills d-flex justify-content-end mb-1" id="post-{{$post->id}}" role="tablist">
-
-  <li class="nav-item">
-    <a class="nav-link {{$viewNavClass}}" id="view-{{$post->id}}-tab" data-toggle="tab" href="#view-{{$post->id}}" role="tab" aria-controls="view-{{$post->id}}-tab" aria-selected="true">View</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link {{$editNavClass}}" id="view-{{$post->id}}-tab" data-toggle="tab" href="#edit-{{$post->id}}" role="tab" aria-controls="edit-{{$post->id}}-tab" aria-selected="false">Edit</a>
-  </li>
-</ul>
+{{-- tab top --}}
+@include('shared._tabtop', [
+  'id' => "post-" . $post->id,
+  'viewTabId' => "view-" . $post->id . "-tab",
+  'viewTabLink' => "#view-" . $post->id,
+  'editTabId' => "edit-" . $post->id . "-tab",
+  'editTabLink' => "#edit-" . $post->id,
+])
 
 {{-- tab content --}}
 <div class="tab-content" id="post-{{$post->id}}-tabContent">
