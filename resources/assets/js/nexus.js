@@ -1,41 +1,46 @@
-function toggleChevron(e) {
-    $(e.target)
-        .prev('.panel-heading')
-        .find("i.indicator")
-        .toggleClass('glyphicon-chevron-down glyphicon-chevron-up');
-}
-
+/* functions */
 function refreshNotifications() {
+  var notificationsURL = "/api/notificationsCount";
+  var displayedNotificationsCount = $("#notification-count").text();
 
-    console.log('checking for notifications');
-    var notificationsURL = '/api/notificationsCount';
-    var displayedNotificationsCount = $("#notification-count").text();
-
-    $.get(notificationsURL, function(data) {
-			updatedNotificationsCount = data;	
-			if (displayedNotificationsCount != updatedNotificationsCount) {
-                var toolbarURL = "/interface/toolbar";
-                $("#top-toolbar").load(toolbarURL);
-			}
-    });
+  $.get(notificationsURL, function(data) {
+    updatedNotificationsCount = data;
+    if (displayedNotificationsCount != updatedNotificationsCount) {
+      var toolbarURL = "/interface/toolbar";
+      $("#top-toolbar").load(toolbarURL);
+    }
+  });
 }
 
 function pollForNotifications(time) {
-    setInterval(window.refreshNotifications, time);        
+  setInterval(window.refreshNotifications, time);
 }
 
-/* export functions we went to be global */
-window.toggleChevron = toggleChevron;
-window.refreshNotifications = refreshNotifications;
-window.pollForNotifications = pollForNotifications;
 
 /* event listeners */
 
-/* spoiler tag show/hide */
+// spoiler tag show/hide
 $("span.spoiler").click(function() {
-    $(this).toggleClass('spoiler');
+  $(this).toggleClass("spoiler");
 });
 
-$( document ).ready(function() {
-    window.pollForNotifications(window.notificationPoll)
+// disclosure toggle
+$("a.disclose").click(function(e) {
+  let heading = $(e.target).find("span.oi");
+  if (heading) {
+    heading.toggleClass("oi-chevron-right oi-chevron-bottom");
+  }
 });
+
+/* document ready */
+
+$(document).ready(function() {
+  // notificationPoll is only defined for auth'd users
+  if (!"undefined" === window.notificationPoll) {
+    window.pollForNotifications(window.notificationPoll);
+  }
+});
+
+/* export functions we went to be global */
+window.refreshNotifications = refreshNotifications;
+window.pollForNotifications = pollForNotifications;

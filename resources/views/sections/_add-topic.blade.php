@@ -2,7 +2,7 @@
   <div class="card border-bottom">
     <div class="card-header bg-success text-white" id="addTopicHeading">
         <h2 class="h5 card-title mb-0">
-            <a class="text-white d-block" href="#" data-toggle="collapse" data-target="#addTopicForm" aria-expanded="false" aria-controls="addTopicForm">
+            <a class="disclose text-white d-block" href="#" data-toggle="collapse" data-target="#addTopicForm" aria-expanded="false" aria-controls="addTopicForm">
                 <span class="oi oi-chevron-right mr-2"></span>Add New Topic
             </a>
         </h2>
