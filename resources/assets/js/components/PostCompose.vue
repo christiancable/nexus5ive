@@ -1,11 +1,17 @@
 <template>
 <form method="POST" action="" @submit.prevent="sendPost">
   <!-- Nav tabs -->
-  <ul class="nav nav-tabs" role="tablist">
-    <li role="presentation" class="active"><a href="#postEdit" aria-controls="postEdit" role="tab" data-toggle="tab">Compose</a></li>
-    <li role="presentation"><a href="#postPreview" aria-controls="postPreview" role="tab" data-toggle="tab" >Preview</a></li>
-  </ul>
- <br/>
+
+
+<ul class="nav nav-tabs mb-3" id="myTab" role="tablist">
+  <li class="nav-item">
+    <a class="nav-link active" id="compose-tab" data-toggle="tab" href="#postEdit" role="tab" aria-controls="home" aria-selected="true">Compose</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#postPreview" role="tab" aria-controls="profile" aria-selected="false">Preview</a>
+  </li>
+</ul>
+
   <!-- Tab panes -->
   <div class="tab-content">
 
@@ -36,42 +42,41 @@
 
 </div>
 
-<div class="row">    
-    <div class="col-md-2">
-        <div class="form-group">
-            <input class="btn btn-primary form-control" type="submit" value="Add Comment" :disabled="errors!=null">
-        </div>
+  <!-- buttons and help - medium screens and above -->
+  <div class="d-none d-md-flex justify-content-between">
+    <div class="form-group">
+        <input class="btn btn-primary form-control" type="submit" value="Add Comment" :disabled="errors!=null">
     </div>
 
-    <div class="col-md-10">
-        <a tabindex="0" class="pull-right small text-muted visible-md visible-lg" role="button" 
-            data-html="true"
-            data-placement="left"
-            data-toggle="popover" data-trigger="focus" title="Formating Help" 
-            :data-content=help>
-            <u>Formatting Help</u>
-        </a>
-    
-      <div class="visible-xs visible-sm small">
-        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-          <div class="panel panel-default">
-            <div class="panel-heading" role="tab" id="formattinghelp">  
-              <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                <span class="glyphicon  glyphicon-triangle-right"></span> Formatting Help
-              </a>
-            </div>
+    <a tabindex="0" class="small text-muted" role="button" 
+        data-html="true"
+        data-placement="left"
+        data-toggle="popover" data-trigger="focus" title="Formating Help" 
+        :data-content=help>
+        <u>Formatting Help</u>
+    </a>  
+  </div>
 
-            <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="addNewTopic">
-              <div class="panel-body">
-                    <p v-html="help"></p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+  <!-- buttons and help - below medium screens -->
+  <div class="d-md-none">
+    <div class="form-group">
+      <input class="btn btn-primary form-control" type="submit" value="Add Comment" :disabled="errors!=null">
     </div>
-</div>
+  </div>
+
+  <div class="d-md-none">
+    <p>
+      <a data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+        <span class="oi oi-chevron-right mr-1"></span>Formatting Help
+      </a>
+    </p>
+    <div class="collapse" id="collapseExample">
+      <div class="card card-body mb-4" v-html="help"></div>
+    </div>
+  </div>
+
 </form>
+
 </template>
 
 <script>

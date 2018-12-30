@@ -215,6 +215,11 @@ class SectionController extends Controller
         $parent_id = $section->parent_id;
 
         $this->authorize('delete', $section);
+
+        // the deleting user takes the section into their archive
+        $section->user_id = auth()->id();
+        $section->save();
+
         $section->delete();
         $redirect = action('Nexus\SectionController@show', ['id' => $parent_id]);
         return redirect($redirect);

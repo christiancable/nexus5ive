@@ -11,7 +11,7 @@
             </div>
             <div class="col-sm-3">
                 @if($subSection->topicCount || $subSection->sectionCount)
-                    <hr class="visible-xs"/>
+
                     <p class="small text-muted">
                         @if($subSection->topicCount)
                             {{$subSection->topicCount}} 

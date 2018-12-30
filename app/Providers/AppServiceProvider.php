@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use Illuminate\Pagination\Paginator; // BS3 pagination - laravel upgrade 5.6
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -14,8 +13,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // use Bootsrap 3 pagination - Upgrade Laravel 5.6
-        Paginator::useBootstrapThree();
+        //
     }
 
     /**

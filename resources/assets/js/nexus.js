@@ -1,36 +1,49 @@
-function toggleChevron(e) {
-    $(e.target)
-        .prev('.panel-heading')
-        .find("i.indicator")
-        .toggleClass('glyphicon-chevron-down glyphicon-chevron-up');
+/* functions */
+function refreshNotifications() {
+  var notificationsURL = "/api/notificationsCount";
+  var displayedNotificationsCount = $("#notification-count").text();
+
+  $.get(notificationsURL, function(data) {
+    updatedNotificationsCount = data;
+    if (displayedNotificationsCount != updatedNotificationsCount) {
+      var toolbarURL = "/interface/toolbar";
+      $("#top-toolbar").load(toolbarURL);
+    }
+  });
 }
 
-
-function postPreview(tab) {
-    $.ajax({
-        type: 'POST',
-        url: '/api/nxcode',
-        data: {
-            'text': $('#postText').val(),
-            '_token': $('input[name=_token]').val()
-        },
-        dataType: 'JSON',
-        success: function (data) {
-            if ($('input[name=title]').val()) {
-                $('#preview-title').html($('input[name=title]').val());
-            }
-            $('#preview-view').html(data.text);
-        }
-    });
+function pollForNotifications(time) {
+  setInterval(window.refreshNotifications, time);
 }
 
-/* export functions we went to be global */
-window.toggleChevron = toggleChevron;
-window.postPreview = postPreview;
 
 /* event listeners */
 
-/* spoiler tag show/hide */
+// spoiler tag show/hide
 $("span.spoiler").click(function() {
-    $(this).toggleClass('spoiler');
+  $(this).toggleClass("spoiler");
+});
+
+// disclosure toggle
+$(".disclose").click(function(e) {
+  let heading = $(e.target).find("span.oi");
+  if (heading) {
+    heading.toggleClass("oi-chevron-right oi-chevron-bottom");
+  }
+});
+
+
+/* export functions we went to be global */
+window.refreshNotifications = refreshNotifications;
+window.pollForNotifications = pollForNotifications;
+
+/* document ready */
+
+$(document).ready(function() {
+  // notificationPoll is only defined for auth'd users
+  if (typeof window.notificationPoll === 'undefined') {
+    // we do not know how often to poll - assume not logged in
+  } else {
+    window.pollForNotifications(window.notificationPoll);
+  }
 });

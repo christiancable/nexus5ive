@@ -1,36 +1,32 @@
-<div class="well">
-    {!! 
-        Form::open(array(
-        'route' => ['section.store'],
-        'class' => 'form'
-    )) !!}
-    <?php
-        $submitLabel = 'Add Section';
-        $submitIcon = 'glyphicon-plus-sign';
-        $submitType = 'btn-primary';
-    ?>
+{!! 
+    Form::open(array(
+    'route' => ['section.store'],
+    'class' => 'form'
+)) !!}
+{!! Form::hidden("parent_id", $section->id) !!}
 
-    {!! Form::hidden("parent_id", $section->id) !!}
-
-    <div class="form-group">    
-        {!! Form::label("title",'Title', ['class' => 'hidden']) !!}
-        {!! Form::text("title", null, ['class'=> 'form-control', 'placeholder' => 'Title'])!!}
-    </div>
-    <div class="form-group">
-        {!! Form::label("intro",'Introduction', ['class' => 'hidden']) !!}
-        {!! Form::textarea("intro", null, ['class'=> 'form-control', 'rows' => '3', 'placeholder' => 'Introduction'])!!}
-    </div>
-    
-    <div class="row form-inline">
-        <div class="col-md-3 col-xs-12 pull-right">
-                {!! Form::button("<span class='glyphicon $submitIcon'></span>&nbsp;&nbsp;" . $submitLabel, array('type' => 'submit', 'class' => "btn pull-right  col-xs-12 $submitType")) !!}
-        </div>
+<div class="form-group">    
+    {!! Form::label("title",'Title', ['class' => 'sr-only']) !!}
+    {!! Form::text("title", null, ['class'=> 'form-control', 'placeholder' => 'Title'])!!}
+</div>
+<div class="form-group">
+    {!! Form::label("intro",'Introduction', ['class' => 'sr-only']) !!}
+    {!! Form::textarea("intro", null, ['class'=> 'form-control', 'rows' => '3', 'placeholder' => 'Introduction'])!!}
 </div>
 
+<div class="d-flex flex-row-reverse bd-highlight">    
+    <div class="form-group ml-2">          
+        {!! Form::button("<span class='oi oi-plus mr-2'></span>Add Section",
+            array(
+                'type'  => 'submit',
+                'class' => "btn btn-success"
+                )
+        ) !!}
+    </div>
+</div>
    
 {!! Form::close() !!}
-</div>
 
-@if ($errors->sectionCreate->all())
- @include('forms._createErrors', ['errors' => $errors->sectionCreate->all(), 'formContainer' => 'newSectionPanel'])
+@if ($errors->sectionCreate->any())
+ @include('forms._errors', ['errors' => $errors->sectionCreate->all(), 'formContainer' => 'addSection'])
 @endif 

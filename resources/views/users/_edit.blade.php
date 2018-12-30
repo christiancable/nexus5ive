@@ -1,13 +1,6 @@
-@if ($errors->userUpdate->all())
-    <div class="alert alert-warning" role="alert">
-    <ul>
-        @foreach($errors->userUpdate->all() as $error)
-            <li>{{ $error }}</li>
-         @endforeach
-     </ul>
-    </div>
+@if ($errors->userUpdate->any())
+    @include('forms._errors', ['errors' => $errors->userUpdate->all()])
 @endif
-
 {!! 
 Form::model($user, array(
     'route' => ['users.update', $user->username],
@@ -18,74 +11,89 @@ Form::model($user, array(
 
 {!! Form::hidden('id', $user->id) !!}
 
-<div class="row form-group">
+ <div class="form-row">
+    <div class="form-group col-md-6">
+        {!! Form::label('name','Name') !!}
+        {!! Form::text('name', null, ['class'=> 'form-control'])!!}
+    </div>
+    <div class="form-group col-md-6">
+        {!! Form::label('location','Location') !!}
+        {!! Form::text('location', null, ['class'=> 'form-control'])!!}
+    </div>
+  </div>
 
-    <dl class="dl-horizontal col-md-6">        
-        <dt>{!! Form::label('name','Name') !!}</dt>
-        <dd>{!! Form::text('name', null, ['class'=> 'form-control'])!!}</dd>
+ <div class="form-row">
+    <div class="form-group col-md-6">
+        {!! Form::label('popname','Popname') !!}
+        {!! Form::text('popname', null, ['class'=> 'form-control'])!!}
+    </div>
+    <div class="form-group col-md-6">
+        {!! Form::label('favouriteMovie','Favourite Film') !!}
+        {!! Form::text('favouriteMovie', null, ['class'=> 'form-control'])!!}
+    </div>
+</div>
 
-        <dt>{!! Form::label('popname','Popname') !!}</dt>
-        <dd>{!! Form::text('popname', null, ['class'=> 'form-control'])!!}</dd>      
-        
-        <dt>{!! Form::label('email','Email') !!}</dt>
-        <dd>{!! Form::email('email', null, ['class'=> 'form-control', 'autocomplete' => 'off'])!!}</dd>
+<div class="form-row">
+    <div class="form-group col-md-6">
+        {!! Form::label('email','Email') !!}
+        {!! Form::email('email', null, ['class'=> 'form-control', 'autocomplete' => 'off'])!!}
+    </div>
+    <div class="form-group col-md-6">
+        {!! Form::label('favouriteMusic','Favourite Band') !!}
+        {!! Form::text('favouriteMusic', null, ['class'=> 'form-control'])!!}
+    </div>
+</div>
 
+<div class="form-row">
+    <div class="form-check">
         {!! Form::hidden('private', false) !!}
-        <dt>{!! Form::label('private','Hide Email') !!}</dt>
-        <dd>{!! Form::checkbox('private')!!}</dd>
-    </dl>
-
-    <dl class="dl-horizontal col-md-6">        
-        <dt>Location</dt>
-        <dd>{!! Form::text('location', null, ['class'=> 'form-control'])!!}</dd>
-
-        <dt>{!! Form::label('favouriteMovie','Favourite Film') !!}</dt>
-        <dd>{!! Form::text('favouriteMovie', null, ['class'=> 'form-control'])!!}</dd>
-
-        <dt>{!! Form::label('favouriteMusic','Favourite Band') !!}</dt>
-        <dd>{!! Form::text('favouriteMusic', null, ['class'=> 'form-control'])!!}</dd>
-    </dl>
-
+        {!! Form::checkbox('private', true, $user->private, ['class' => 'form-check-input', 'id' => 'private'])!!}
+        {!! Form::label('private','Hide Email', ['class' => 'form-check-label']) !!}
+    </div>
 </div>
 
 <hr>
-<div class="row">
-    <dl class="dl-horizontal col-md-6">        
-        <dt>{!! Form::label('theme','Theme') !!}</dt>
-        <dd>{!! Form::select('theme_id', $themes, $user->theme->id, ['class'=> 'form-control'])!!}</dd>
-    </dl>
 
-    <dl class="dl-horizontal col-md-6">        
-        {!! Form::hidden('viewLatestPostFirst', false) !!}
-        <dt>{!! Form::label('viewLatestPostFirst','Show Latest Posts First') !!}</dt>
-        <dd>{!! Form::checkbox('viewLatestPostFirst')!!}</dd>
-    </dl>
+
+<div class="form-row form-inline">
+    <div class="form-group col-12 col-md-6 ">
+        {!! Form::label('theme','Theme', ['class'=>'mr-3']) !!}
+        {!! Form::select('theme_id', $themes, $user->theme->id, ['class'=> 'form-control'])!!}
+    </div>
+    <div class="form-group col-12 col-md-6">
+        <div class="form-check">
+            {!! Form::hidden('viewLatestPostFirst', false) !!}
+            {!! Form::checkbox('viewLatestPostFirst', true, $user->viewLatestPostFirst, ['class' => 'form-check-input', 'id' => 'viewLatestPostFirst'])!!}
+            {!! Form::label('viewLatestPostFirst', 'Show Latest Posts First', ['class' => 'form-check-label']) !!}
+        </div>
+    </div>
 </div>
 
+
 <hr>
-<div class="row ">
-    <div class="col-md-6">
-        <dl class="well dl-horizontal ">    
-            <dt>{!! Form::label('password','Password') !!}</dt>
-            <dd>{!! Form::password('password', null, ['class'=> 'form-control'])!!}</dd>     
-            <dt>{!! Form::label('password_confirmation','Verify Password') !!}</dt>
-            <dd>{!! Form::password('password_confirmation', null, ['class'=> 'form-control'])!!}</dd> 
-        </dl>
+
+<div class="row mb-3">
+    <div class="col">
+        <div class="form-group">
+            {!! Form::label('password','Password', ['class' => 'd-block']) !!}
+            {!! Form::password('password', null, ['class'=> 'form-control'])!!}
+        </div>
+        <div class="form-group">
+            {!! Form::label('password_confirmation','Confirm Password', ['class' => 'd-block']) !!}
+            {!! Form::password('password_confirmation', null, ['class'=> 'form-control'])!!}
+        </div>
     </div>
 
-    <dl class="dl-horizontal col-md-6 text-muted">        
-        @if ($user->latestLogin)
-        <dt>Latest Visit</dt><dd>{{$user->latestLogin->diffForHumans()}}</dd>
-        @else
-        <dt>Latest Visit</dt><dd>Never</dd>
-        @endif
-            <dt>Total Posts</dt><dd>{{$user->totalPosts}}</dd>
-        <dt>Total Visits</dt><dd>{{$user->totalVisits}}</dd>
-    </dl>
+    <div class="col">
+        @include('users._score', $user)
+    </div>
 </div>
 
+<div class="form-group">
+ {!! Form::label('about','About') !!}
 {!! Form::textarea('about', null, ['class'=> 'form-control']) !!}
-            
+</div>
+       
 <div class="form-group">
     {!! Form::submit('Save Changes', ['class'=> 'btn btn-warning form-control']) !!}
 </div>
