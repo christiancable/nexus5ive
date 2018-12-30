@@ -10,6 +10,14 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+     @auth
+        <script type="text/javascript">
+            (function() {
+                window.notificationPoll = {{config('nexus.notification_check_interval')}}
+            })();
+        </script>
+    @endauth
+
     <script src="{{ mix('js/app.js') }}" defer></script>
 
     <?php
@@ -76,12 +84,6 @@
 
         @auth
             @include('_footer-navigation')
-        @endauth
-
-        @auth
-        <script type="text/javascript">
-            window.notificationPoll = {{config('nexus.notification_check_interval')}}               
-        </script>
         @endauth
 
         @include('_googleanaytics')

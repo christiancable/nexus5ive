@@ -32,15 +32,18 @@ $(".disclose").click(function(e) {
   }
 });
 
-/* document ready */
-
-$(document).ready(function() {
-  // notificationPoll is only defined for auth'd users
-  if (!"undefined" === window.notificationPoll) {
-    window.pollForNotifications(window.notificationPoll);
-  }
-});
 
 /* export functions we went to be global */
 window.refreshNotifications = refreshNotifications;
 window.pollForNotifications = pollForNotifications;
+
+/* document ready */
+
+$(document).ready(function() {
+  // notificationPoll is only defined for auth'd users
+  if (typeof window.notificationPoll === 'undefined') {
+    // we do not know how often to poll - assume not logged in
+  } else {
+    window.pollForNotifications(window.notificationPoll);
+  }
+});
