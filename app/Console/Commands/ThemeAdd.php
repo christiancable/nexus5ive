@@ -35,6 +35,7 @@ class ThemeAdd extends Command
 
     private function addTheme()
     {
+        $arguments = $this->arguments();
         $theme = factory(Theme::class)->make([
                     'path' => $arguments['path'],
                     'name'=> $arguments['name']
