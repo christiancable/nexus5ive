@@ -21,4 +21,8 @@ mix
     // themes
     .sass('resources/assets/sass/excelsior.scss', 'public/css')
     
-    .version()
+    if (process.env.NODE_ENV === 'testing') {
+        mix.disableNotifications();
+    } else {
+        mix.version()
+    }

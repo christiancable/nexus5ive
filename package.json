@@ -8,7 +8,7 @@
     "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
     "prod": "npm run production",
     "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
-    "test": "mocha-webpack --webpack-config=node_modules/laravel-mix/setup/webpack.config.js tests/js/unit/\\*\\*/\\*.spec.js",
+    "test": "NODE_ENV=testing mocha-webpack --webpack-config=node_modules/laravel-mix/setup/webpack.config.js tests/js/unit/\\*\\*/\\*.spec.js",
     "phpunit": "vendor/bin/phpunit",
     "coverage": "vendor/bin/phpunit --coverage-html coverage",
     "phpcs": "vendor/bin/phpcs --standard=psr2 app",
