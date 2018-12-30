@@ -10,13 +10,13 @@
 
 @section('content')
 <div class="container">
-    <h1>{{$topic->title}}</h1>
-    @if ($topic->intro) 
-        <p class="lead">{!! App\Helpers\NxCodeHelper::nxDecode($topic->intro)  !!}</p>
-    @endif
+    @include('shared._heading',
+    [
+        $heading = $topic->title,
+        $lead = $topic->intro
+    ])
     @include('topics._subscribe', compact('topic','unsubscribed'))
 </div>
-<hr>
 
 <div class="container">
     <div class="content">
@@ -52,17 +52,16 @@
     @endif
 
     @forelse($postsArray as $post) 
-
+        <?php $allowDelete = true ?>
         @if($topic->section->moderator->id === Auth::user()->id)
-            @include('posts.moderate', compact('post', 'readProgress'))
+            @include('post._moderate', compact('post', 'readProgress'))
         @else 
-        {{-- if we are on the last post and we  are the author and it is recent
-        the display the moderate view so a user can edit their post --}}
+        {{-- if we are on the last post and we  are the author and it is recent then display the moderate view so a user can edit their post --}}
         @if (($post['id'] == $latestPost['id']) && ($post->author->id == Auth::user()->id) && ($post->time->diffInSeconds() <= config('nexus.recent_edit') )) 
-                <?php $hideDelete = true ?>
-                @include('posts.moderate', compact('post', 'readProgress', 'noDelete'))
+                <?php $allowDelete = false ?>
+                @include('post._moderate', compact('post', 'readProgress', 'allowDelete'))
         @else
-            @include('posts.show', compact('post', 'readProgress', 'userCanSeeSecrets'))
+            @include('post._view', compact('post', 'readProgress', 'userCanSeeSecrets'))
         @endif
         @endif 
 

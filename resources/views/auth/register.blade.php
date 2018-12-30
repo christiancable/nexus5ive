@@ -1,79 +1,81 @@
 @extends('layouts.master')
 
+@section('meta')
+<title>{{config('nexus.name')}} - Join</title>
+@endsection
+
 @section('content')
+<div class="container my-3">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header text-white bg-success">Join Us</div>
 
-<div class="container">
+                <div class="card-body">
+                    <form method="POST" action="{{ route('register') }}" aria-label="{{ __('Register') }}">
+                        @csrf
 
-<div class="content">
-  <h1>{{config('nexus.name')}}</h1>
-  <p class="lead">hell is other people</p>
-</div>
-<hr/>
+                        <div class="form-group row">
+                            <label for="username" class="col-md-4 col-form-label text-md-right">{{ __('Username') }}</label>
 
-{!! Form::open(array('url' => '/register', 
-'class' => 'form')) !!}
-<div class="row">
+                            <div class="col-md-6">
+                                <input id="username" type="text" class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}" name="username" value="{{ old('name') }}" required autofocus>
 
-<div class="col-md-6">
+                                @if ($errors->has('username'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('username') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
 
+                        <div class="form-group row">
+                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
 
-@if (count($errors) > 0)
-<div class="alert alert-danger">
- There were some problems creating an account:
- <ul>
-   @foreach ($errors->all() as $error)
-     <li>{{ $error }}</li>
-   @endforeach
- </ul>
-</div>
-@endif
+                            <div class="col-md-6">
+                                <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required>
 
-<div class="form-group">
- {!! Form::label('Username') !!}
- {!! Form::text('username', null, array('class'=>'form-control', 'placeholder'=>'Username')) !!}
-</div>
+                                @if ($errors->has('email'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('email') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
 
-<div class="form-group">
- {!! Form::label('Your E-mail Address') !!}
- {!! Form::text('email', null, 
-   array(
-   'class'=>'form-control', 
-   'placeholder'=>'Email Address')
-   ) !!}
-</div>
-<div class="form-group">
- {!! Form::label('Your Password') !!}
- {!! Form::password('password', 
-   array('class'=>'form-control', 'placeholder'=>'Password')) !!}
-</div>
-<div class="form-group">
- {!! Form::label('Confirm Password') !!}
- {!! Form::password('password_confirmation', 
-   array(
-     'class'=>'form-control', 
-     'placeholder'=>'Confirm Password')
-   ) !!}
-</div>
+                        <div class="form-group row">
+                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
 
-<div class="form-group">
- {!! Form::submit('Create My Account!', 
-   array('class'=>'btn btn-primary')) !!}
-</div>
-{!! Form::close() !!}
-</div>
+                            <div class="col-md-6">
+                                <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
 
-<div class="col-md-6">
+                                @if ($errors->has('password'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('password') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
 
-    <p class="lead">There are those who believe that <strong>spodding</strong> here began out there, far across the network, with tribes of users who may have been the forefathers of the <em>Prestoneites</em>, or the <em>Facebookers</em>, or the <em>Twitters</em>.</p>
+                        <div class="form-group row">
+                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}</label>
 
-    <p>That they may have been the architects of the great forums, or the lost civilizations of <em>Monochrome</em> or <em>anonyMUD</em>. Some believe that there may yet be brothers of man who even now fight to survive somewhere beyond the screen&hellip;</p>
+                            <div class="col-md-6">
+                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
+                            </div>
+                        </div>
 
-  </div>
-
-</div>
-
-
-
-
+                        <div class="form-group row mb-0">
+                            <div class="col-md-6 offset-md-4">
+                                <button type="submit" class="btn btn-primary">
+                                    Create My Account
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 @endsection

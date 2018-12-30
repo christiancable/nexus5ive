@@ -12,13 +12,11 @@
 
 <div class="container">
 
+@include('shared._heading', [
+            $heading = 'Messages',
+            $lead = 'Modem Talking'
+])
 
-    <div class="content">
-        <h1>Inbox</h1>
-        <p class="lead">Modem Talking</p>
-    </div>
-
-    <hr>
 
     <div class="content">
         @if (count($recentMessages))
@@ -29,22 +27,23 @@
         </ul>
         @endif
     </div>
-    
+
+
     @if ($activeUsers)
-        {!! Form::open(['url' => 'messages', 'class' => 'form-horizontal']) !!}
-        <div class="form-group">
-            <div class="col-md-2">
-                {!!
-                    Form::select('user_id', $activeUsers, $selected, ['class'=> 'form-control'])
-                !!}
+
+        {!! Form::open(['url' => 'messages', 'class' => 'form-row']) !!}
+            <div class="col">
+                {!! Form::select('user_id', $activeUsers, $selected, ['class'=> 'custom-select my-1 mr-sm-2']) !!}
             </div>
-            <div class="col-md-8">
-                {!! Form::text('text', null, ['class'=> 'form-control', 'autofocus']) !!}
+
+            <div class="col-9">
+                {!! Form::text('text', null, ['class'=> 'form-control my-1 mr-sm-2', 'autofocus']) !!}
             </div>
-            <div class="col-md-2">
-            {!! Form::submit('Send', ['class'=> 'btn btn-primary form-control col-md-12']) !!}
+
+            <div class="col">
+            {!! Form::submit('Send', ['class'=> 'btn btn-primary my-1 col-12']) !!}
             </div>
-        </div>
+           
         {!! Form::close() !!}
     @else
      <p class="alert alert-info">
@@ -52,11 +51,7 @@
     </p>
     @endif 
     @if ($errors->messageStore->any())
-        @foreach($errors->messageStore->all() as $error)
-        <p class="alert alert-danger">
-            {{ $error }}
-        </p>
-        @endforeach
+        @include('forms._errors', ['errors' => $errors->messageStore->all()])
     @endif 
 <hr>
     @if (count($messages))

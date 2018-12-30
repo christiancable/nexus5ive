@@ -1,14 +1,14 @@
-<section class="pull-right">
+<section class="d-flex flex-row-reverse">
 	{!! Form::open(array(
 		'route' => ['topic.updateSubscription', 'id' => $topic->id],
         'class' => 'form' ))
     !!}
 	    <button class="btn btn-link">
 			@if($unsubscribed)
-				<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span><span> Resubscribe to this topic</span>
+				<span class="oi oi-check text-success" aria-hidden="true"></span><span> Subscribe to this topic</span>
 				{!! Form::hidden('command', 'subscribe') !!}
 			@else
-				<span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span><span> Unsubscribe from this topic</span>
+				<span class="oi oi-x text-danger" aria-hidden="true"></span><span> Unsubscribe from this topic</span>
 				{!! Form::hidden('command', 'unsubscribe') !!}
 			@endif
 	    </button>

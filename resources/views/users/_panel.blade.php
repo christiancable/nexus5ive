@@ -1,21 +1,33 @@
-<a href="{{action('Nexus\UserController@show', ['user_name' => $user->username]) }}">
-    <div class="panel panel-primary panel-user">
-       <div class="panel-heading">
-           <h3 class="panel-title clearfix">
-               <span class="text-muted">@</span><strong>{{$user->username}}</strong> <em class="pull-right">{{$user->name}}</em>
-           </h3>
-       </div>
-       <div class="panel-body">
-          @if($user->popname)
-          {{$user->popname}}
-          @endif 
-      </div>
+<div class="card text-center mb-3 bg-light">
+    <div class="card-header bg-dark text-white">
+        <a href="{{action('Nexus\UserController@show', ['user_name' => $user->username]) }}" class="d-block text-white"><h3 class="card-title mb-0">{{$user->username}}</h3></a>
+    </div>
+    <div class="card-body">
+        @if($user->name)
+        <p class="card-subtitle">{{$user->name}}</p>
+        @endif
 
-      @if ($user->latestLogin)
-      <div class="panel-footer clearfix">
-          <span class="pull-right">Latest Visit {{$user->latestLogin->diffForHumans()}}</span>
-      </div>
-      @endif
-  </div>
-</a>
+        <p class="card-text text-secondary">
+            {!! ($user->popname) ? "<q><em>$user->popname</em></q>" : "<br>" !!}
+        </p>
 
+        <div class="row text-secondary mb-3">
+            <div class="col">
+                <p class="h2 mb-0 text-dark">{{$user->totalPosts}}</p>
+                Posts 
+            </div>
+            <div class="col">
+                <p class="h2 mb-0 text-dark">{{$user->totalVisits}}</p>
+                Visits
+            </div>
+        </div>
+
+        <p><a href="{{action('Nexus\UserController@show', ['user_name' => $user->username]) }}" class="btn btn-primary">View Profile</a></p>
+    </div>
+
+    @if ($user->latestLogin)
+    <div class="card-footer text-muted">
+        <small>Latest Visit {{$user->latestLogin->diffForHumans()}}</small>
+    </div>
+    @endif
+</div>

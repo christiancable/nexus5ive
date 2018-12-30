@@ -1,4 +1,4 @@
-const { mix } = require('laravel-mix');
+const mix = require('laravel-mix');
 
 /*
  |--------------------------------------------------------------------------
@@ -19,9 +19,10 @@ mix
     .sass('resources/assets/sass/extra.scss', 'public/css')
     
     // themes
-    .sass('resources/assets/sass/spooky.scss', 'public/css')
     .sass('resources/assets/sass/excelsior.scss', 'public/css')
-    .sass('resources/assets/sass/8bit.scss', 'public/css')
-    .sass('resources/assets/sass/nexustwo.scss', 'public/css')
-    .version()
-    .copy('node_modules/bootstrap-sass/assets/fonts/bootstrap','public/fonts/bootstrap');
+    
+    if (process.env.NODE_ENV === 'testing') {
+        mix.disableNotifications();
+    } else {
+        mix.version()
+    }

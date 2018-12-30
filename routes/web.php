@@ -12,23 +12,21 @@ use Illuminate\Http\Request;
 |
 */
 
-// // authentication
-// if (config('nexus.allow_registrations') == true) {
-//     Route::get('auth/register', 'Auth\RegisterController@register');
-//     Route::post('auth/register', 'Auth\RegisterController@register');
-// }
-
-// Route::get('auth/login', 'Auth\LoginController@login');
-// Route::post('auth/login', 'Auth\LoginController@login');
-// // Route::get('auth/logout', 'Auth\AuthController@getLogout');
-// Route::get('auth/logout', 'Auth\LoginController@logout');
-
-Auth::routes();
+// authentication
+if (config('nexus.allow_registrations') === true) {
+    Auth::routes();
+} else {
+    Auth::routes();
+    // Auth::routes(['register' => false]); = 5.7 and above!!
+    // so redirect the register route
+    Route::redirect('register', 'login', 302);
+}
 
 // API
-Route::get('api/notifications', ['middleware' => 'auth',  function () {
+Route::get('api/notificationsCount', ['middleware' => 'auth',  function () {
     return Auth::user()->notificationCount();
 }])->name('api.notificationCount');
+
 
 Route::post('api/users', function (Request $request) {
     $input = $request->all();
@@ -37,20 +35,10 @@ Route::post('api/users', function (Request $request) {
     return response()->json($data);
 })->name('api.users');
 
-// Interface partials
+// // Interface partials
 Route::get('interface/toolbar', ['middleware' => 'auth',  function () {
     return response()->view('_toolbar');
 }])->name('interface.toolbar');
-
-
-// Password reset link request routes...
-// Route::get('password/email', 'Auth\PasswordController@getEmail');
-// Route::post('password/email', 'Auth\PasswordController@postEmail');
-
-// // Password reset routes...
-// Route::get('password/reset/{token}', 'Auth\PasswordController@getReset');
-// Route::post('password/reset', 'Auth\PasswordController@postReset');
-
 
 
 // users

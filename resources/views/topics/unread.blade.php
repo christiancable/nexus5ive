@@ -10,28 +10,11 @@
 
 @section('content')
 <div class="container">
-
-    <div class="content">
-        {{-- <h1>Continue the Conversation</h1>
-        <p class="lead">Here's what you've missed&hellip;</p> --}}
-        <h1>{{$heading}}</h1>
-        <p class="lead">{{$lead}}</p>
-        
-    </div>
-
-    <hr>
-
-    <div class="content">
-
-        @if (count($topics))
-
-        
+    @include('shared._heading', [$heading, $lead])
+    @if (count($topics))
         @foreach ($topics as $topic)
-         @include('topics._read-compact', $topic)
+            @include('topics._latest', $topic)
         @endforeach
-        
-        @endif
-    </div>
-
+    @endif
 </div>
 @endsection
