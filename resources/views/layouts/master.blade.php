@@ -10,12 +10,6 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Scripts -->
-    <script>
-        
-    </script>
-    {{-- <script src="{{ mix('js/manifest.js') }}" ></script> --}}
-    {{-- <script src="{{ mix('js/vendor.js') }}" ></script> --}}
     <script src="{{ mix('js/app.js') }}" defer></script>
 
     <?php
@@ -31,12 +25,26 @@
     <link rel="stylesheet" href="{{ mix($specialTheme->path) }}">
     @else 
         @if (config('nexus.bootstrap_theme'))
-            <link rel="stylesheet" href="{{config('nexus.bootstrap_theme')}}">
-            <link href="{{ mix('/css/extra.css') }}" rel="stylesheet">
-            @else
+                <link rel="stylesheet" href="{{config('nexus.bootstrap_theme')}}">
+                <link href="{{ mix('/css/extra.css') }}" rel="stylesheet">
+        @else
 
             @auth
-                <link rel="stylesheet" href="{{ mix(Auth::User()->theme->path) }}">
+                {{-- mix throws an exception if the file is not webpacked - as in the case of external themes --}}
+                @php
+                    $externalTheme = false;
+                    try {
+                        $theme = mix(Auth::User()->theme->path);
+                    } catch (\Exception $e) {
+                        $theme = Auth::User()->theme->path;
+                        $externalTheme = true;
+                    }
+                @endphp
+                <link rel="stylesheet" href="{{ $theme }}">
+
+                @if ($externalTheme)
+                    <link href="{{ mix('/css/extra.css') }}" rel="stylesheet">
+                @endif
             @endauth
 
             @guest

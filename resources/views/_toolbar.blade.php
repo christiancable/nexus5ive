@@ -8,7 +8,7 @@ $profileNotificationCount = $commentsCount + $messagesCount;
 $notificationCount = $profileNotificationCount + $mentionCount;
 ?>
 <div id="top-toolbar" class="border-bottom mb-3">
-  <nav class="navbar navbar-expand-lg navbar-light navbar-laravel">
+  <nav class="navbar navbar-expand-lg navbar-light">
   <div class="container">
       <a class="navbar-brand" {!! App\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Home') !!} href="/">
         <span class="oi oi-home" title="icon home" aria-hidden="true"></span>
