@@ -57,7 +57,6 @@ class ThemeRemove extends Command
 
 
         if ($existingTheme) {
-            
             if ($existingTheme['name'] == 'Default') {
                 $this->error('You cannot remove the default theme');
                 return;
@@ -70,7 +69,6 @@ class ThemeRemove extends Command
             $themeUsersCount = User::where('theme_id', $existingTheme['id'])->select('id')->count();
             $this->info($existingTheme['name'] . ' is used by ' . $themeUsersCount. ' users');
             if ($this->confirm('Do you wish to continue?')) {
-
                 // move existing users of these theme to the default
                 $this->setThemeUsersToDefault($existingTheme);
                 $existingTheme->delete();

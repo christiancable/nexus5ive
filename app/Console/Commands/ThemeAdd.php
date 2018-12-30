@@ -66,7 +66,6 @@ class ThemeAdd extends Command
             if ($this->confirm('Do you wish to continue?')) {
                 $this->addTheme();
             }
-
         }
     }
 }
