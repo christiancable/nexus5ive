@@ -24,6 +24,10 @@ $info: $orange;
 
 
 // custom styles
+
+#top-toolbar {
+  border-bottom-color: $orange !important;
+}
 #top-toolbar .navbar {
   background-color: $black !important;
   color: $orange;
