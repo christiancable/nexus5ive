@@ -2,18 +2,18 @@
 /* extras */
 /* ------ */
 
-/* added by laravel */
-.navbar-laravel {
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
-}
+
+// Open Iconic icon font
+@import '~open-iconic/font/css/open-iconic-bootstrap.scss';
+
+$body-color: #f5f8fa !default;
 
 /* blockquote */
 
 blockquote {
     padding: 0.6rem 1.2rem;
-    margin: 0 0 1.2rem;
-    border-left: 0.4rem solid $body-bg
+    margin: 0 0 1.2rem;    
+    border-left: 0.4rem solid $body-color;
 }
 
 
