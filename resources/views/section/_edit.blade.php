@@ -1,9 +1,6 @@
 <?php
 $errorBag = 'sectionUpdate' . $subSection->id;
 $formName = 'section'.$subSection->id;
-$submitLabel = 'Save Changes';
-$submitIcon = 'glyphicon-pencil';
-$submitType = 'btn-info';
 ?>
 
 {{-- this is for moderators to edit sub sections --}}

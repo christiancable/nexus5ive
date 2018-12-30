@@ -24,12 +24,6 @@
 <div class="form-group">
     {!! Form::textarea("form[$formName][intro]", $section->intro, ['class'=> 'form-control']) !!}
 </div>
-<?php
-    $submitLabel = 'Save Changes';
-    $submitIcon = 'glyphicon-pencil';
-    $submitType = 'btn-info';
-?>
-
 
 <div class="d-flex justify-content-end">    
     
