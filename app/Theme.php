@@ -18,4 +18,14 @@ class Theme extends Model
     {
         return $this->hasMany(\App\User::class);
     }
+
+    /**
+     * getExternalAttribute
+     * - is the theme css internal or external
+     * @return bool
+     */
+    public function getExternalAttribute()
+    {
+        return 0 === strpos($this->path, 'http');
+    }
 }

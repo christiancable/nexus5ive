@@ -38,20 +38,12 @@
         @else
 
             @auth
-                {{-- mix throws an exception if the file is not webpacked - as in the case of external themes --}}
-                @php
-                    $externalTheme = false;
-                    try {
-                        $theme = mix(Auth::User()->theme->path);
-                    } catch (\Exception $e) {
-                        $theme = Auth::User()->theme->path;
-                        $externalTheme = true;
-                    }
-                @endphp
-                <link rel="stylesheet" href="{{ $theme }}">
-
-                @if ($externalTheme)
+                {{-- auth users can have a theme --}}
+                @if (Auth::User()->theme->external)
+                    <link href="{{ Auth::User()->theme->path }}" rel="stylesheet">
                     <link href="{{ mix('/css/extra.css') }}" rel="stylesheet">
+                @else 
+                    <link href="{{ mix(Auth::User()->theme->path) }}" rel="stylesheet">
                 @endif
             @endauth
 
