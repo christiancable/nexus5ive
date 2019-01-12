@@ -90,9 +90,11 @@ class SectionController extends Controller
     public function show($section_id = null)
     {
         if (!$section_id) {
-            $section = Section::with('sections', 'topics')->first();
+            $section = Section::with('sections', 'topics.most_recent_post.author:id,username')->first();
         } else {
-            $section = Section::with('sections', 'topics')->where('id', $section_id)->first();
+            $section = Section::with(['sections', 'topics.most_recent_post.author:id,username'])
+                ->where('id', $section_id)
+                ->first();
         }
 
         ActivityHelper::updateActivity(
@@ -101,8 +103,7 @@ class SectionController extends Controller
             action('Nexus\SectionController@show', ['id' => $section->id])
         );
         
-        // for selecting section moderators
-        $potentialModerators = User::all()->pluck('username', 'id')->toArray();
+        $potentialModerators = User::all(['id','username'])->toArray();
         $breadcrumbs = BreadcrumbHelper::breadcrumbForSection($section);
 
         return view('sections.index', compact('section', 'breadcrumbs', 'potentialModerators'));
