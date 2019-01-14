@@ -90,11 +90,17 @@ class SectionController extends Controller
     public function show($section_id = null)
     {
         if (!$section_id) {
-            $section = Section::with('sections', 'topics.most_recent_post.author:id,username')->first();
+            $section = Section::with([
+                'moderator:id,username',
+                'sections.moderator:id,username',
+                'topics.most_recent_post.author:id,username'
+            ])->firstOrFail();
         } else {
-            $section = Section::with(['sections', 'topics.most_recent_post.author:id,username'])
-                ->where('id', $section_id)
-                ->first();
+            $section = Section::with([
+                'moderator:id,username',
+                'sections.moderator:id,username',
+                'topics.most_recent_post.author:id,username'
+            ])->findOrFail($section_id);
         }
 
         ActivityHelper::updateActivity(
