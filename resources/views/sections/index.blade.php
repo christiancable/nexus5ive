@@ -28,7 +28,7 @@ $moderator = Auth::user()->id === $section->user_id;
 
 
     {{-- Topics --}}
-    @if (count($section->topics))
+    @if (count($section->topics) > 0)
         <?php
         $moderatedSections = Auth::user()->sections->pluck('title', 'id')->toArray();
         ?>
@@ -48,7 +48,7 @@ $moderator = Auth::user()->id === $section->user_id;
     @endif
     
     {{-- Sub Sections --}}
-    @if (count($section->sections))
+    @if (count($section->sections) > 0)
         @include('sections._subsections', [$section, $moderator])
     @endif
 
