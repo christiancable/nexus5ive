@@ -20,7 +20,6 @@ $subSectionCount = 0;
         $allChildSections = $subSection->allChildSections();
         $allChildSections->push($subSection);
         $destinations = \Auth::user()->sections->diff($allChildSections);
-        $potentialModerators = \App\User::all()->pluck('username', 'id')->toArray();
         ?>
         @include('section._moderate', compact('subSection', 'destinations', 'potentialModerators'))
         {{-- don't wrap sub sections for moderators  --}}

@@ -109,7 +109,7 @@ class SectionController extends Controller
             action('Nexus\SectionController@show', ['id' => $section->id])
         );
         
-        $potentialModerators = User::all(['id','username'])->toArray();
+        $potentialModerators = User::all(['id','username'])->pluck('username', 'id')->toArray();
         $breadcrumbs = BreadcrumbHelper::breadcrumbForSection($section);
 
         return view('sections.index', compact('section', 'breadcrumbs', 'potentialModerators'));

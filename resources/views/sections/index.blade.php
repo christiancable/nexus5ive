@@ -49,7 +49,7 @@ $moderator = Auth::user()->id === $section->user_id;
     
     {{-- Sub Sections --}}
     @if (count($section->sections) > 0)
-        @include('sections._subsections', [$section, $moderator])
+        @include('sections._subsections', [$section, $moderator, $potentialModerators])
     @endif
 
     @if(Auth::user()->id === $section->user_id)
