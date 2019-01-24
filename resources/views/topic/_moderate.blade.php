@@ -25,6 +25,6 @@ if ($showErrors) {
     @include('topic._view', $topic)
   </div>
   <div class="tab-pane fade {{$editTabClass}}" id="edit-{{$topic->id}}" role="tabpanel" aria-labelledby="view-{{$topic->id}}-tab">
-    @include('topic._edit', $topic)
+    @include('topic._edit', [$topic, $moderatedSections])
   </div>
 </div>

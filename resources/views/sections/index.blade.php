@@ -29,9 +29,6 @@ $moderator = Auth::user()->id === $section->user_id;
 
     {{-- Topics --}}
     @if (count($section->topics) > 0)
-        <?php
-        $moderatedSections = Auth::user()->sections->pluck('title', 'id')->toArray();
-        ?>
         @foreach ($section->topics as $topic)
             @if(Auth::user()->id === $section->user_id) 
                 @include('topic._moderate', compact('topic', 'moderatedSections'))

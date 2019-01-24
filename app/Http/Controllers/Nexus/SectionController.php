@@ -93,12 +93,14 @@ class SectionController extends Controller
             $section = Section::with([
                 'moderator:id,username',
                 'sections.moderator:id,username',
+                'sections.sections',
                 'topics.most_recent_post.author:id,username'
             ])->firstOrFail();
         } else {
             $section = Section::with([
                 'moderator:id,username',
                 'sections.moderator:id,username',
+                'sections.sections',
                 'topics.most_recent_post.author:id,username'
             ])->findOrFail($section_id);
         }
@@ -110,9 +112,10 @@ class SectionController extends Controller
         );
         
         $potentialModerators = User::all(['id','username'])->pluck('username', 'id')->toArray();
+        $moderatedSections = Auth::user()->sections()->select('title', 'id')->get()->pluck('title', 'id')->toArray();
         $breadcrumbs = BreadcrumbHelper::breadcrumbForSection($section);
 
-        return view('sections.index', compact('section', 'breadcrumbs', 'potentialModerators'));
+        return view('sections.index', compact('section', 'breadcrumbs', 'potentialModerators', 'moderatedSections'));
     }
 
     /**
