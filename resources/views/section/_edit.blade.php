@@ -43,8 +43,8 @@ $formName = 'section'.$subSection->id;
                 {!! 
                     Form::select(
                         "form[$formName][parent_id]",
-                        $destinations->pluck('title','id')->toArray(),
-                        $subSection->parent->id,
+                        $destinations,
+                        $parentSectionID,
                         ['class' => 'form-control']
                     )
                 !!}
