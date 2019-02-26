@@ -94,14 +94,16 @@ class SectionController extends Controller
                 'moderator:id,username',
                 'sections.moderator:id,username',
                 'sections.sections',
-                'topics.most_recent_post.author:id,username'
+                'topics.most_recent_post.author:id,username',
+                'sections.topics.posts:id,time'
             ])->firstOrFail();
         } else {
             $section = Section::with([
                 'moderator:id,username',
                 'sections.moderator:id,username',
                 'sections.sections',
-                'topics.most_recent_post.author:id,username'
+                'topics.most_recent_post.author:id,username',
+                'sections.topics.posts:id,time'
             ])->findOrFail($section_id);
         }
 
@@ -111,8 +113,14 @@ class SectionController extends Controller
             action('Nexus\SectionController@show', ['id' => $section->id])
         );
         
-        $potentialModerators = User::all(['id','username'])->pluck('username', 'id')->toArray();
-        $moderatedSections = Auth::user()->sections()->select('title', 'id')->get()->pluck('title', 'id')->toArray();
+        // if the user can moderate the section then they could potentially update subsections
+        if ($section->moderator->id === Auth::user()->id) {
+            $potentialModerators = User::all(['id','username'])->pluck('username', 'id')->toArray();
+            $moderatedSections = Auth::user()->sections()->select('title', 'id')->get()->pluck('title', 'id')->toArray();
+        } else {
+            $potentialModerators = [];
+            $moderatedSections = [];
+        }
         $breadcrumbs = BreadcrumbHelper::breadcrumbForSection($section);
 
         return view('sections.index', compact('section', 'breadcrumbs', 'potentialModerators', 'moderatedSections'));
