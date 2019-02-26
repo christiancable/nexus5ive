@@ -90,9 +90,21 @@ class SectionController extends Controller
     public function show($section_id = null)
     {
         if (!$section_id) {
-            $section = Section::with('sections', 'topics')->first();
+            $section = Section::with([
+                'moderator:id,username',
+                'sections.moderator:id,username',
+                'sections.sections',
+                'topics.most_recent_post.author:id,username',
+                'sections.topics.posts:id,time'
+            ])->firstOrFail();
         } else {
-            $section = Section::with('sections', 'topics')->where('id', $section_id)->first();
+            $section = Section::with([
+                'moderator:id,username',
+                'sections.moderator:id,username',
+                'sections.sections',
+                'topics.most_recent_post.author:id,username',
+                'sections.topics.posts:id,time'
+            ])->findOrFail($section_id);
         }
 
         ActivityHelper::updateActivity(
@@ -101,11 +113,17 @@ class SectionController extends Controller
             action('Nexus\SectionController@show', ['id' => $section->id])
         );
         
-        // for selecting section moderators
-        $potentialModerators = User::all()->pluck('username', 'id')->toArray();
+        // if the user can moderate the section then they could potentially update subsections
+        if ($section->moderator->id === Auth::user()->id) {
+            $potentialModerators = User::all(['id','username'])->pluck('username', 'id')->toArray();
+            $moderatedSections = Auth::user()->sections()->select('title', 'id')->get()->pluck('title', 'id')->toArray();
+        } else {
+            $potentialModerators = [];
+            $moderatedSections = [];
+        }
         $breadcrumbs = BreadcrumbHelper::breadcrumbForSection($section);
 
-        return view('sections.index', compact('section', 'breadcrumbs', 'potentialModerators'));
+        return view('sections.index', compact('section', 'breadcrumbs', 'potentialModerators', 'moderatedSections'));
     }
 
     /**

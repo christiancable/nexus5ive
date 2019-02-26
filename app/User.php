@@ -175,7 +175,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     /* returns number of unread comments */
     public function newCommentCount()
     {
-        return $this->comments->where('read', false)->count();
+        return $this->comments(['id','read'])->where('read', false)->count();
     }
 
     public function markCommentsAsRead()
@@ -190,7 +190,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
     public function newMessageCount()
     {
-        return $this->messages->where('read', false)->count();
+        return $this->messages(['id', 'read'])->where('read', false)->count();
     }
 
     // dealing with @ mentions

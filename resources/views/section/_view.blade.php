@@ -39,6 +39,7 @@
 @if($subSection->most_recent_post)
 	<br>Latest Post in <a href="{{ 
 		action('Nexus\TopicController@show', ['id' => $subSection->most_recent_post->topic->id])}}">
+		{{-- @todo egear load the most_recent_post->topic --}}
 		{{$subSection->most_recent_post->topic->title}}</a>, {{$subSection->most_recent_post->time->diffForHumans()}}</p> 
 @endif
 </footer>

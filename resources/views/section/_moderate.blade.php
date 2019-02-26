@@ -20,13 +20,14 @@ if ($showErrors) {
   'editTabLink' => "#subsection-edit-" . $subSection->id
 ])
 
+<?php // var_dump($destinations) ?>
 {{-- tab content --}}
 <div class="tab-content" id="subsection-{{$subSection->id}}-tabContent">
   <div class="tab-pane fade {{$viewTabClass}}" id="subsection-view-{{$subSection->id}}" role="tabpanel" aria-labelledby="subsection-view-{{$subSection->id}}-tab">
     @include('section._view', $subSection)
   </div>
   <div class="tab-pane fade {{$editTabClass}}" id="subsection-edit-{{$subSection->id}}" role="tabpanel" aria-labelledby="subsection-view-{{$subSection->id}}-tab">
-    @include('section._edit', $subSection)
+    @include('section._edit', [$subSection, $destinations, $parentSectionID])
   </div>
 </div>
 

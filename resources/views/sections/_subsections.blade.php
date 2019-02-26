@@ -19,10 +19,11 @@ $subSectionCount = 0;
         */
         $allChildSections = $subSection->allChildSections();
         $allChildSections->push($subSection);
-        $destinations = \Auth::user()->sections->diff($allChildSections);
-        $potentialModerators = \App\User::all()->pluck('username', 'id')->toArray();
+        // $destinations = \Auth::user()->sections->diff($allChildSections);
+        $destinations = \Auth::user()->sections->diff($allChildSections)->pluck('title','id')->toArray();
+        $parentSectionID = $section->id;
         ?>
-        @include('section._moderate', compact('subSection', 'destinations', 'potentialModerators'))
+        @include('section._moderate', compact('subSection', 'destinations', 'potentialModerators', 'parentSectionID'))
         {{-- don't wrap sub sections for moderators  --}}
     @else
         @include('section._view', $subSection)
