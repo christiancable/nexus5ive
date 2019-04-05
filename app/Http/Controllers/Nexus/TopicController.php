@@ -32,9 +32,9 @@ class TopicController extends Controller
      */
     public function index()
     {
-        //
+        return Topic::all(['id', 'title','intro']);
     }
-
+    
     /**
      * Show the form for creating a new resource.
      *
