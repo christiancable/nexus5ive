@@ -13,10 +13,6 @@ $moderator = Auth::user()->id === $section->user_id;
 
 @section('content')
 
-<div class="container" id="app">
-    <topic-jump></topic-jump>
-</div>
-
 <div class="container">
 
     {{-- Section Heading --}}

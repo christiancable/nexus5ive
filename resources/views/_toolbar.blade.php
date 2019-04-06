@@ -23,7 +23,13 @@ $notificationCount = $profileNotificationCount + $mentionCount;
         @endif
       </button>
 
+       
       <div id="navbar" class="navbar-collapse collapse" style="">
+       
+       <span id="navigationApp" class="nav navbar-nav mr-auto">
+         <topic-jump></topic-jump>
+       </span>
+       
         <ul class="nav navbar-nav mr-auto">
           <li class="nav-item">
             <a {!! App\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Users') !!} href="{{ action('Nexus\UserController@index')}}" class="nav-link">Users</a>
@@ -41,6 +47,8 @@ $notificationCount = $profileNotificationCount + $mentionCount;
             <a {!! App\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Search') !!} href="{{ action('Nexus\SearchController@index')}}" class="nav-link">Search</a>
           </li>
         </ul>
+
+
 
         @if ($mentionCount > 0 )
         <ul class="nav navbar-nav ml-auto">
@@ -69,8 +77,8 @@ $notificationCount = $profileNotificationCount + $mentionCount;
         </ul>
         @endif 
 
+
         <ul class="nav navbar-nav">
-            <mentions-list></mentions-list>
           <li class="dropdown nav-item">
             
             <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
@@ -116,3 +124,4 @@ $notificationCount = $profileNotificationCount + $mentionCount;
   </div>
   </nav>
 </div>
+
