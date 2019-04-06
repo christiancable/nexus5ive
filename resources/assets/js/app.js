@@ -41,4 +41,8 @@ const app = new Vue({
   el: "#app"
 });
 
+const navigationApp = new Vue({
+  el: "#navigationApp"
+});
+
 // window.$ = window.jQuery = require('jquery');
