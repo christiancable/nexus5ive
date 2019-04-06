@@ -116,7 +116,12 @@ class SectionController extends Controller
         // if the user can moderate the section then they could potentially update subsections
         if ($section->moderator->id === Auth::user()->id) {
             $potentialModerators = User::all(['id','username'])->pluck('username', 'id')->toArray();
-            $moderatedSections = Auth::user()->sections()->select('title', 'id')->get()->pluck('title', 'id')->toArray();
+            $moderatedSections = Auth::user()
+                ->sections()
+                ->select('title', 'id')
+                ->get()
+                ->pluck('title', 'id')
+                ->toArray();
         } else {
             $potentialModerators = [];
             $moderatedSections = [];
