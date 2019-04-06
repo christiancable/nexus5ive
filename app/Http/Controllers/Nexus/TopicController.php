@@ -16,6 +16,7 @@ use Illuminate\Http\Response;
 use App\Helpers\ActivityHelper;
 use App\Helpers\BreadcrumbHelper;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Http\RedirectResponse;
 
 class TopicController extends Controller
@@ -32,7 +33,11 @@ class TopicController extends Controller
      */
     public function index()
     {
-        return Topic::all(['id', 'title','intro']);
+        $secondsToCache = 60 * 30; // 30 minutes
+
+        return Cache::remember('topicIndex', $secondsToCache, function () {
+            return Topic::all(['id', 'title','intro']);
+        });
     }
     
     /**
