@@ -1,33 +1,47 @@
 <template>
-  <div class="container" v-if="topics.length !== 0">
-    <form class="form-inline">
-      <div class="input-group row">
-        <label class="sr-only" for="topicFilter">Topic</label>
-        <input
-          id="topicFilter"
-          v-model="searchTerm"
-          class="form-control col-md-7"
-          placeholder="Search for a topic"
-          autofocus
-        >
+  <ul class="nav navbar-nav">
+    <li class="dropdown nav-item">
+      <a
+        href="#"
+        class="dropdown-toggle nav-link"
+        data-toggle="dropdown"
+        role="button"
+        aria-haspopup="true"
+        aria-expanded="false"
+        id="mentiondropdown"
+      >
+        <span class="oi oi-comment-square mr-1" aria-hidden="true"></span> Topics
+      </a>
+
+      <div class="dropdown-menu" aria-labelledby="mentiondropdown">
+        <div class="form-group px-4 py-3">
+          <label class="sr-only" for="topicFilter">Topic</label>
+          <input
+            v-model="searchTerm"
+            class="form-control"
+            id="topicFilter"
+            placeholder="Search for a Topic"
+          >
+        </div>
+        <div role="separator" class="dropdown-divider"></div>
         <template v-if="matchedTopics.length!==0">
-          <div class="input-group-append col-md-5">
-            <select v-on="{change:go}" @keyup.enter="go" class="custom-select">
-              <option
-                v-for="(topic, index) in matchedTopics"
-                :key="topic.id"
-                :value="topic.id"
-                :selected="index === 0"
-              >{{ topic.title.length ? topic.title : topic.id + ' untitled'}}</option>
-            </select>
-          </div>
+          <a
+            class="dropdown-item"
+            v-for="(topic, index) in matchedTopics"
+            :key="topic.id"
+            :value="topic.id"
+            :selected="index === 0"
+            :href="'/topic/' + topic.id"
+          >{{ topic.title.length ? topic.title : topic.id + ' untitled'}}</a>
+        </template>
+        <template v-else>
+          <span class="dropdown-item-text">
+            <em>No Topics Found</em>
+          </span>
         </template>
       </div>
-    </form>
-  </div>
-  <div v-else>
-    <span>Loading...</span>
-  </div>
+    </li>
+  </ul>
 </template>
 
 
@@ -51,13 +65,6 @@ export default {
             .indexOf(this.searchTerm.toLowerCase()) !== -1
         );
       }, context);
-    }
-  },
-
-  methods: {
-    go: function(ev) {
-      console.log("go to topic " + ev.target.value);
-      location.replace("/topic/" + ev.target.value);
     }
   },
 
