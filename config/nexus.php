@@ -28,5 +28,6 @@ return [
     'google_anaytics_activate' => env('GOOGLE_ANAYTICS_ACTIVATE', false),
     'google_analytics_id' => env('GOOGLE_ANALYTICS_ID'),
     'placeholder_image' => env('NEXUS_PLACEHOLDER_IMAGE', false),
+    'logo_image' => env('NEXUS_LOGO_IMAGE'),
     'subtitle' => env('NEXUS_SUBTITLE', ''),
 ];

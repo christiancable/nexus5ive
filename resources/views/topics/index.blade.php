@@ -22,7 +22,7 @@
     <div class="content">
     <?php
         $latestPost = $posts->get()->first();
-        $postsChunk = $posts->paginate(config('nexus.pagination'));
+        $postsChunk = $posts->simplePaginate(config('nexus.pagination'));
         Auth::user()->removeMentions($postsChunk->items());
         $postsArray = [];
     foreach ($postsChunk as $post) {
