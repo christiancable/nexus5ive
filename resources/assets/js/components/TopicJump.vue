@@ -1,20 +1,29 @@
 <template>
   <div class="container" v-if="topics.length !== 0">
-    <form>
-      <div class="form-group" role="search">
-        <input v-model="searchTerm" class="form-control" placeholder="Search for a topic" autofocus>
+    <form class="form-inline">
+      <div class="input-group row">
+        <label class="sr-only" for="topicFilter">Topic</label>
+        <input
+          id="topicFilter"
+          v-model="searchTerm"
+          class="form-control col-md-7"
+          placeholder="Search for a topic"
+          autofocus
+        >
+        <template v-if="matchedTopics.length!==0">
+          <div class="input-group-append col-md-5">
+            <select v-on="{change:go}" @keyup.enter="go" class="custom-select">
+              <option
+                v-for="(topic, index) in matchedTopics"
+                :key="topic.id"
+                :value="topic.id"
+                :selected="index === 0"
+              >{{ topic.title.length ? topic.title : topic.id + ' untitled'}}</option>
+            </select>
+          </div>
+        </template>
       </div>
     </form>
-    <template v-if="matchedTopics.length!==0">
-      <select v-on="{change:go}" @keyup.enter="go" class="custom-select">
-        <option
-          v-for="(topic, index) in matchedTopics"
-          :key="topic.id"
-          :value="topic.id"
-          :selected="index === 0"
-        >{{ topic.title.length ? topic.title : topic.id + ' untitled'}}</option>
-      </select>
-    </template>
   </div>
   <div v-else>
     <span>Loading...</span>
