@@ -15,7 +15,12 @@
         $heading = $topic->title,
         $lead = $topic->intro
     ])
-    @include('topics._subscribe', compact('topic','unsubscribed'))
+    <section class="d-flex flex-row-reverse justify-content-between">
+        @include('topics._subscribe', compact('topic','unsubscribed'))
+        @if($topic->section->moderator->id === Auth::user()->id)
+            @include('shared._editToggle')
+        @endif
+    </section>
 </div>
 
 <div class="container">
@@ -58,7 +63,10 @@
         @else 
         {{-- if we are on the last post and we  are the author and it is recent then display the moderate view so a user can edit their post --}}
         @if (($post['id'] == $latestPost['id']) && ($post->author->id == Auth::user()->id) && ($post->time->diffInSeconds() <= config('nexus.recent_edit') )) 
-                <?php $allowDelete = false ?>
+                <?php 
+                    $forceCogMenu = true; //show cog menu for recent post
+                    $allowDelete = false; 
+                ?>
                 @include('post._moderate', compact('post', 'readProgress', 'allowDelete'))
         @else
             @include('post._view', compact('post', 'readProgress', 'userCanSeeSecrets'))

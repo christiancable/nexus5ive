@@ -1,4 +1,4 @@
-<section class="d-flex flex-row-reverse">
+
 	{!! Form::open(array(
 		'route' => ['topic.updateSubscription', 'id' => $topic->id],
         'class' => 'form' ))
@@ -13,4 +13,3 @@
 			@endif
 	    </button>
 	{!! Form::close() !!}
-</section>
