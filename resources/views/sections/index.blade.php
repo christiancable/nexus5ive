@@ -17,7 +17,11 @@ $moderator = Auth::user()->id === $section->user_id;
 
     {{-- Section Heading --}}
     @if (Auth::user()->id === $section->user_id )
+        <section class="d-flex flex-row justify-content-between">
+            @include('shared._editToggle')
+        </section>
         @include('section-heading._moderate', $section)
+        
     @else
         @include('shared._heading', [
             $heading = $section->title,
