@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Nexus;
 
-use Auth;
 use App\Post;
 use App\Topic;
 use Validator;
@@ -112,36 +111,36 @@ class TopicController extends Controller
             $readonly = false;
         }
         
-        if ($topic->section->moderator->id === Auth::user()->id) {
+        if ($topic->section->moderator->id === $request->user()->id) {
             $readonly = false;
         }
 
-        if (Auth::user()->administrator) {
+        if ($request->user()->administrator) {
             $readonly = false;
         }
 
         // is this topic secret to the authenticated user?
         $userCanSeeSecrets = false;
 
-        if ($topic->section->moderator->id === Auth::user()->id) {
+        if ($topic->section->moderator->id === $request->user()->id) {
             $userCanSeeSecrets = true;
         }
 
-        if (Auth::user()->administrator) {
+        if ($request->user()->administrator) {
             $userCanSeeSecrets = true;
         }
 
         // get the previously read progress so we can indicate this in the view
-        $readProgress =  ViewHelper::getReadProgress(Auth::user(), $topic);
+        $readProgress =  ViewHelper::getReadProgress($request->user(), $topic);
         
         // get the subscription status
-        $topicStatus = ViewHelper::getTopicStatus(Auth::user(), $topic);
+        $topicStatus = ViewHelper::getTopicStatus($request->user(), $topic);
         $unsubscribed = $topicStatus['unsubscribed'];
 
-        ViewHelper::updateReadProgress(Auth::user(), $topic);
+        ViewHelper::updateReadProgress($request->user(), $topic);
 
         ActivityHelper::updateActivity(
-            Auth::user()->id,
+            $request->user()->id,
             "Reading <em>{$topic->title}</em>",
             action('Nexus\TopicController@show', ['id' => $topic->id])
         );
@@ -281,10 +280,10 @@ class TopicController extends Controller
         $topic = Topic::findOrFail($id);
 
         if ($input['command'] === 'subscribe') {
-            ViewHelper::subscribeToTopic(Auth::user(), $topic);
+            ViewHelper::subscribeToTopic($request->user(), $topic);
             $message = '**Subscribed!** _Catch-up_ will return you here when new comments are added.';
         } else {
-            ViewHelper::unsubscribeFromTopic(Auth::user(), $topic);
+            ViewHelper::unsubscribeFromTopic($request->user(), $topic);
             $message = '**Unsubscribed!** New comments here will be hidden from _Catch-up_.';
         }
 
@@ -295,9 +294,15 @@ class TopicController extends Controller
     /*
         update the latest read time for each subscribed topic
     */
-    public function markAllSubscribedTopicsAsRead()
+    /**
+     * markAllSubscribedTopicsAsRead
+     *
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function markAllSubscribedTopicsAsRead(Request $request)
     {
-        ViewHelper::catchUpCatchUp(Auth::user());
+        ViewHelper::catchUpCatchUp($request->user());
         
         $message = '**Success!** all subscribed topics are now marked as read';
         FlashHelper::showAlert($message, 'success');
