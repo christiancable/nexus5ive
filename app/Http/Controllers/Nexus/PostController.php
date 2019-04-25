@@ -160,18 +160,4 @@ class PostController extends Controller
         $post->forceDelete();
         return redirect()->route('topic.show', ['id' => $post->topic_id]);
     }
-
-    /**
-     * @param Request $request
-     * @return string - json including markdown rendered version of the text field from the request
-     */
-    public function previewPost(Request $request)
-    {
-        if (\Request::ajax()) {
-            $data = \Input::all();
-            $response = [];
-            $response['text'] = \App\Helpers\NxCodeHelper::nxDecode($data['text']);
-            return \response()->json($response);
-        }
-    }
 }
