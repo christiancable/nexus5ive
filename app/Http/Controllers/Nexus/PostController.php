@@ -4,13 +4,13 @@ namespace App\Http\Controllers\Nexus;
 
 use App\Post;
 use App\Topic;
-use Validator;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Helpers\MentionHelper;
-use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Validator;
 
 class PostController extends Controller
 {

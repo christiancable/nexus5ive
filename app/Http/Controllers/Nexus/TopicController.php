@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Nexus;
 
 use App\Post;
 use App\Topic;
-use Validator;
 use App\Section;
 use App\Http\Requests;
 use Illuminate\View\View;
@@ -17,6 +16,7 @@ use App\Helpers\BreadcrumbHelper;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Validator;
 
 class TopicController extends Controller
 {

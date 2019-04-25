@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers\Nexus;
 
-use Auth;
-use Validator;
 use App\Message;
 use App\Http\Requests;
 use Illuminate\View\View;
@@ -13,6 +11,7 @@ use App\Helpers\ActivityHelper;
 use App\Helpers\BreadcrumbHelper;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Validator;
 
 class MessageController extends Controller
 {

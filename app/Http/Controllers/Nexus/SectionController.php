@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Nexus;
 
 use App\User;
 use App\View;
-use Validator;
 use App\Section;
 use App\Http\Requests;
 use Illuminate\Http\Request;
@@ -16,6 +15,7 @@ use Illuminate\Validation\Rule;
 use App\Helpers\BreadcrumbHelper;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Validator;
 
 class SectionController extends Controller
 {

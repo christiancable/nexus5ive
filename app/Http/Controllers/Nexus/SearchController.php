@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\Nexus;
 
 use App\Post;
-use Validator;
 use App\Http\Requests;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
 use App\Helpers\ActivityHelper;
 use App\Helpers\BreadcrumbHelper;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
 class SearchController extends Controller
 {
