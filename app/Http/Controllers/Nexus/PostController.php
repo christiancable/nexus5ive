@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Nexus;
 
-use Auth;
 use App\Post;
 use App\Topic;
 use Validator;
@@ -64,11 +63,11 @@ class PostController extends Controller
         $this->authorize('create', [Post::class, $topic]);
 
         $input = $request->all();
-        $input['user_id'] = Auth::user()->id;
-        $input['popname'] = Auth::user()->popname;
+        $input['user_id'] = $request->user()->id;
+        $input['popname'] = $request->user()->popname;
         $input['time'] = time();
         $post = Post::create($input);
-        Auth::user()->incrementTotalPosts();
+        $request->user()->incrementTotalPosts();
 
         // scan post for mentions
         MentionHelper::makeMentions($post);
@@ -76,7 +75,7 @@ class PostController extends Controller
         
         // if we are viewing the topic with the most recent post at the bottom then
         // redirect to that point in the page
-        if (Auth::user()->viewLatestPostFirst) {
+        if ($request->user()->viewLatestPostFirst) {
             $redirect = action('Nexus\TopicController@show', ['id' => $post->topic_id]);
         } else {
             $redirect = action('Nexus\TopicController@show', ['id' => $post->topic_id]) . '#'  . $post->id;
@@ -138,7 +137,7 @@ class PostController extends Controller
         
         $input = $request->all();
         $updatedPost = $input['form']["$id"];
-        $updatedPost['update_user_id'] = Auth::user()->id;
+        $updatedPost['update_user_id'] = $request->user()->id;
         
         $post->update($updatedPost);
         return back();
