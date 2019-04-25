@@ -114,7 +114,7 @@ $notificationCount = $profileNotificationCount + $mentionCount;
 
                 <div role="separator" class="dropdown-divider"></div>
                 <form class="form-inline" action="{{url('/logout')}}" method="POST">
-                  {{ @csrf() }}
+                  @csrf
                   <button class="btn btn-link dropdown-item"><span class="oi oi-account-logout" aria-hidden="true"></span> Logout </button>
                 </form>
             </div>
