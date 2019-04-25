@@ -2,8 +2,8 @@
 
 namespace App;
 
-use Log;
 use App\ViewModels\UserPresenter;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Nexus;
 
-use Log;
 use Hash;
 use App\User;
 use Validator;
@@ -12,6 +11,7 @@ use Illuminate\Http\Response;
 use App\Helpers\FlashHelper;
 use App\Helpers\ActivityHelper;
 use App\Helpers\BreadcrumbHelper;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
