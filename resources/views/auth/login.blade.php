@@ -13,7 +13,7 @@
   <div class="col-lg">
 
     <form class="form" role="form" method="POST" action="{{ url('/login') }}">
-    {{ csrf_field() }}
+    @csrf
   
     @if (count($errors) > 0)
     <div class="alert alert-danger">

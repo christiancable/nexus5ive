@@ -78,7 +78,7 @@ $errorBag = 'topicUpdate' . $topic->id;
 
             <form action="{{action('Nexus\TopicController@destroy', ['id' => $topic->id])}}" method="POST">
                 <div class="form-group">
-                    {{ csrf_field() }}
+                    @csrf
                     {{ method_field('DELETE') }}
                     {!! Form::button("<span class='oi oi-box mr-2'></span>Archive Topic",
                         array(

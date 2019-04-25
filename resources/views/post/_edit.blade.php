@@ -38,7 +38,7 @@
             @if ($allowDelete)
                 <form action="{{action('Nexus\PostController@destroy', ['id' => $post->id])}}" method="POST">
                     <div class="form-group">
-                        {{ csrf_field() }}
+                        @csrf
                         {{ method_field('DELETE') }}
 
                         {!! Form::button("<span class='oi oi-delete mr-2'></span>Delete",
