@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Nexus;
 
-use Auth;
 use Validator;
 use App\Comment;
 use App\Http\Requests;
@@ -66,7 +65,7 @@ class CommentController extends Controller
         }
             
         $input = $request->all();
-        $input['author_id'] = Auth::user()->id;
+        $input['author_id'] = $request->user()->id;
         
         // if a user is posting on their own profile then assume that they have read the comment
         if ($input['author_id'] === $input['user_id']) {
@@ -92,7 +91,7 @@ class CommentController extends Controller
         $this->authorize('destroy', $comment);
         $comment->delete();
         
-        return redirect(action('Nexus\UserController@show', ['user_name' => Auth::user()->username]));
+        return redirect(action('Nexus\UserController@show', ['user_name' => $request->user()->username]));
     }
 
     /**
@@ -103,7 +102,7 @@ class CommentController extends Controller
      */
     public function destroyAll(Request $request)
     {
-        Auth::user()->clearComments();
+        $request->user()->clearComments();
         return back();
     }
 }
