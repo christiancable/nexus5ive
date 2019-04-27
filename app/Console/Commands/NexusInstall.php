@@ -2,7 +2,12 @@
 
 namespace App\Console\Commands;
 
+use App\User;
+use App\Topic;
+use Exception;
+use App\Section;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Hash;
 
 class NexusInstall extends Command
 {
@@ -39,7 +44,7 @@ class NexusInstall extends Command
     {
         // we are assuming that the sysop is always the first user
         $this->info('Creating administrator, default section and first topic...');
-        $user = \App\User::first();
+        $user = User::first();
 
         if (!$user) {
             $this->info("Please enter in values for the administrator account. Don't worry You can change this later.");
@@ -47,54 +52,54 @@ class NexusInstall extends Command
             $email = $this->ask('Email Address');
             $password = $this->ask('Password');
             
-            $administrator = new \App\User;
+            $administrator = new User;
             $administrator->username = $username;
             $administrator->name = 'Administrator';
             $administrator->email = $email;
-            $administrator->password = \Hash::make($password);
+            $administrator->password = Hash::make($password);
             $administrator->administrator = true;
 
             try {
                 $administrator->save();
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                         $this->error('Failed to add administrator ' . $e);
             }
         } else {
             $this->error('There is already a user account');
         }
 
-        $section = \App\Section::first();
+        $section = Section::first();
 
         if (!$section) {
             $this->info("Please enter in values for the main menu. Don't worry You can change this later.");
             $title = $this->ask('Title');
             
-            $mainmenu = new \App\Section;
+            $mainmenu = new Section;
             $mainmenu->title = $title;
             $mainmenu->user_id = $administrator->id;
 
             try {
                 $mainmenu->save();
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                         $this->error('Failed to add main menu ' . $e);
             }
         } else {
             $this->error('There is already a main menu');
         }
 
-        $topic = \App\Topic::first();
+        $topic = Topic::first();
 
         if (!$topic) {
             $this->info("Please enter in values for the first topic. Don't worry You can change this later.");
             $title = $this->ask('Title');
             
-            $firstTopic = new \App\Topic;
+            $firstTopic = new Topic;
             $firstTopic->title = $title;
             $firstTopic->section_id = $mainmenu->id;
 
             try {
                 $firstTopic->save();
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                         $this->error('Failed to add first topic ' . $e);
             }
         } else {
