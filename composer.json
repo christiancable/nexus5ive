@@ -24,7 +24,8 @@
         "nunomaduro/larastan": "^0.3.4",
         "phpunit/phpunit": "~7.0",
         "squizlabs/php_codesniffer": "*",
-        "symfony/thanks": "^1.0"
+        "symfony/thanks": "^1.0",
+        "wnx/laravel-stats": "^1.9"
     },
     "autoload": {
         "classmap": [

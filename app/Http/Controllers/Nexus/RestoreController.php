@@ -7,6 +7,8 @@ use App\Section;
 use App\Http\Requests;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
+use App\Helpers\RestoreHelper;
+use App\Helpers\BreadcrumbHelper;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 
@@ -22,21 +24,21 @@ class RestoreController extends Controller
      *
      * @return View
      */
-    public function index()
+    public function index(Request $request)
     {
-        $trashedSections = \App\Section::onlyTrashed()
-            ->where('user_id', \Auth::user()->id)
+        $trashedSections = Section::onlyTrashed()
+            ->where('user_id', $request->user()->id)
             ->with('trashedTopics')
             ->get();
 
         // add trashed sections which are children of moderated sections which are not moderated by the user
         // @todo: can this be a query?
-        foreach (\Auth::user()->sections as $moderatedSections) {
+        foreach ($request->user()->sections as $moderatedSections) {
             $unmoderatedSections = $moderatedSections
                 ->sections()
                 ->onlyTrashed()
                 ->with('trashedTopics')
-                ->where('user_id', '!=', \Auth::user()->id)
+                ->where('user_id', '!=', $request->user()->id)
                 ->get();
             foreach ($unmoderatedSections as $unmoderatedSection) {
                 $trashedSections->push($unmoderatedSection);
@@ -44,9 +46,9 @@ class RestoreController extends Controller
         }
 
         $trashedSections = $trashedSections->sortByDesc('deleted_at');
-        $trashedTopics = \Auth::user()->trashedTopics;
-        $breadcrumbs = \App\Helpers\BreadcrumbHelper::breadcumbForUtility('Your Archive');
-        $destinationSections = \Auth::user()->sections()->get();
+        $trashedTopics = $request->user()->trashedTopics;
+        $breadcrumbs = BreadcrumbHelper::breadcumbForUtility('Your Archive');
+        $destinationSections = $request->user()->sections()->get();
 
         return view('restore.index', compact('trashedSections', 'trashedTopics', 'breadcrumbs', 'destinationSections'));
     }
@@ -126,11 +128,11 @@ class RestoreController extends Controller
      */
     public function section(Request $request, $id)
     {
-        $trashedSection = \App\Section::onlyTrashed()->findOrFail($id);
-        $destinationSection = \App\Section::findOrFail($request->destination);
+        $trashedSection = Section::onlyTrashed()->findOrFail($id);
+        $destinationSection = Section::findOrFail($request->destination);
 
         $this->authorize('restore', [Section::class, $trashedSection, $destinationSection]);
-        \App\Helpers\RestoreHelper::restoreSectionToSection($trashedSection, $destinationSection);
+        RestoreHelper::restoreSectionToSection($trashedSection, $destinationSection);
         
         $redirect = action('Nexus\SectionController@show', ['id' => $trashedSection->id]);
         return redirect($redirect);
@@ -145,11 +147,11 @@ class RestoreController extends Controller
      */
     public function topic(Request $request, $id)
     {
-        $trashedTopic = \App\Topic::onlyTrashed()->findOrFail($id);
-        $destinationSection = \App\Section::findOrFail($request->destination);
+        $trashedTopic = Topic::onlyTrashed()->findOrFail($id);
+        $destinationSection = Section::findOrFail($request->destination);
         
         $this->authorize('restore', [Topic::class, $trashedTopic, $destinationSection]);
-        \App\Helpers\RestoreHelper::restoreTopicToSection($trashedTopic, $destinationSection);
+        RestoreHelper::restoreTopicToSection($trashedTopic, $destinationSection);
         
         $redirect = action('Nexus\SectionController@show', ['id' => $destinationSection->id]);
         return redirect($redirect);

@@ -1,8 +1,6 @@
 <?php
 namespace App\Http\Controllers\Nexus;
 
-use Auth;
-use Redirect;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -24,7 +22,7 @@ class MentionController extends Controller
      */
     public function destroyAll(Request $request)
     {
-        Auth::user()->clearMentions();
+        $request->user()->clearMentions();
         return back();
     }
 }

@@ -80,7 +80,7 @@ $formName = 'section'.$subSection->id;
 
         <form action="{{action('Nexus\SectionController@destroy', ['id' => $subSection->id])}}" method="POST">
             <div class="form-group">
-                {{ csrf_field() }}
+                @csrf
                 {{ method_field('DELETE') }}
                 {!! Form::button("<span class='oi oi-box mr-2'></span>Archive Section",
                     array(

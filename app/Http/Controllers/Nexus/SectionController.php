@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers\Nexus;
 
-use Auth;
 use App\User;
 use App\View;
-use Validator;
 use App\Section;
 use App\Http\Requests;
 use Illuminate\Http\Request;
@@ -15,8 +13,10 @@ use App\Helpers\TopicHelper;
 use App\Helpers\ActivityHelper;
 use Illuminate\Validation\Rule;
 use App\Helpers\BreadcrumbHelper;
+use App\Http\Requests\StoreSection;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Validator;
 
 class SectionController extends Controller
 {
@@ -51,27 +51,13 @@ class SectionController extends Controller
      * @param  Request  $request
      * @return RedirectResponse
      */
-    public function store(Request $request)
+    public function store(StoreSection $request)
     {
-        $validator = Validator::make(
-            $request->all(),
-            [
-                "parent_id" => 'required|numeric|exists:sections,id',
-                "title" => 'required',
-            ]
-        );
-        
-        if ($validator->fails()) {
-            return redirect(action('Nexus\SectionController@show', ['id' => request('parent_id')]))
-                ->withErrors($validator, 'sectionCreate')
-                ->withInput();
-        }
-        
         $parentSection = Section::findOrFail(request('parent_id'));
         $this->authorize('create', [Section::class, $parentSection]);
         
         $section = Section::create([
-            'user_id'   => auth()->id(),
+            'user_id'   => $request->user()->id,
             'parent_id' => request('parent_id'),
             'title'     => request('title'),
             'intro'     => request('intro')
@@ -87,7 +73,7 @@ class SectionController extends Controller
      * @param  int  $section_id - default to the first section
      * @return \Illuminate\View\View
      */
-    public function show($section_id = null)
+    public function show(Request $request, $section_id = null)
     {
         if (!$section_id) {
             $section = Section::with([
@@ -108,15 +94,15 @@ class SectionController extends Controller
         }
 
         ActivityHelper::updateActivity(
-            Auth::user()->id,
+            $request->user()->id,
             "Browsing <em>{$section->title}</em>",
             action('Nexus\SectionController@show', ['id' => $section->id])
         );
         
         // if the user can moderate the section then they could potentially update subsections
-        if ($section->moderator->id === Auth::user()->id) {
+        if ($section->moderator->id === $request->user()->id) {
             $potentialModerators = User::all(['id','username'])->pluck('username', 'id')->toArray();
-            $moderatedSections = Auth::user()
+            $moderatedSections = $request->user()
                 ->sections()
                 ->select('title', 'id')
                 ->get()
@@ -183,6 +169,7 @@ class SectionController extends Controller
             ];
         }
         
+        // manually create validator to dynamically name the errorBag
         $validator = Validator::make($request->all(), $rules, $messages);
 
         if ($validator->fails()) {
@@ -240,7 +227,7 @@ class SectionController extends Controller
         $this->authorize('delete', $section);
 
         // the deleting user takes the section into their archive
-        $section->user_id = auth()->id();
+        $section->user_id = $request->user()->id;
         $section->save();
 
         $section->delete();
@@ -269,11 +256,11 @@ class SectionController extends Controller
      *
      * @return RedirectResponse
      */
-    public function leap()
+    public function leap(Request $request)
     {
          // should we be passing the user_id into this method?
         $views = View::with('topic')
-            ->where('user_id', Auth::user()->id)
+            ->where('user_id', $request->user()->id)
             ->where('latest_view_date', '!=', "0000-00-00 00:00:00")
             ->where('unsubscribed', 0)->get();
     

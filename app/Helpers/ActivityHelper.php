@@ -1,8 +1,12 @@
 <?php
 namespace App\Helpers;
 
+use Exception;
+use App\Activity;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Config;
 
 /*
    helper methods for dealing with activities
@@ -10,7 +14,6 @@ use Illuminate\Support\Collection;
 
 class ActivityHelper
 {
-
     /**
      * returns a collection of activities within the last NEXUS_RECENT_ACTIVITY minutes
      * @return Collection of recent activities
@@ -19,7 +22,7 @@ class ActivityHelper
     {
 
         $within = config('nexus.recent_activity');
-        $activities =  \App\Activity::where('time', '>=', Carbon::now()->subMinutes($within))
+        $activities = Activity::where('time', '>=', Carbon::now()->subMinutes($within))
             ->get();
         return $activities;
     }
@@ -32,7 +35,7 @@ class ActivityHelper
      */
     public static function updateActivity($user_id, $text = null, $route = null)
     {
-        $activity = \App\Activity::firstOrNew(['user_id' => $user_id]);
+        $activity = Activity::firstOrNew(['user_id' => $user_id]);
         $activity->text = $text;
         $activity->route = $route;
         $activity->time = time();
@@ -46,10 +49,10 @@ class ActivityHelper
     public static function removeActivity($user_id)
     {
         try {
-            $activity = \App\Activity::where('user_id', $user_id)->firstOrFail();
+            $activity = Activity::where('user_id', $user_id)->firstOrFail();
             $activity->delete();
-        } catch (\Exception $e) {
-            \Log::info('Tried to remove non-existent activity: '. $e);
+        } catch (Exception $e) {
+            Log::info('Tried to remove non-existent activity: '. $e);
         }
     }
 }

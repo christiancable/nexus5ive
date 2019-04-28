@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\Nexus;
 
-use Auth;
 use App\Post;
-use Validator;
 use App\Http\Requests;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
 use App\Helpers\ActivityHelper;
 use App\Helpers\BreadcrumbHelper;
+use App\Http\Requests\SearchRequest;
 use App\Http\Controllers\Controller;
 
 class SearchController extends Controller
@@ -26,13 +25,20 @@ class SearchController extends Controller
     /**
      * Display a search page
      *
+     * @param Request $request
      * @return View
      */
-    public function index()
+    public function index(Request $request)
     {
         $text = 'Search';
         $results = null;
         $breadcrumbs = BreadcrumbHelper::breadcumbForUtility('Search');
+
+        ActivityHelper::updateActivity(
+            $request->user()->id,
+            "Searching",
+            action('Nexus\SearchController@index')
+        );
 
         return view(
             'search.results',
@@ -43,37 +49,27 @@ class SearchController extends Controller
     /**
      * submit the search request
      */
-    public function submitSearch(Request $request)
+    public function submitSearch(SearchRequest $request)
     {
-        $validator = Validator::make(
-            $request->all(),
-            [
-                'text' => 'required'
-            ]
-        );
-
-        if ($validator->fails()) {
-            return redirect(action('Nexus\SearchController@index'))
-                ->withErrors($validator, 'submitSearch')
-                ->withInput();
-        }
-
-
         $input = $request->all();
         $searchText = $input['text'];
         
         return redirect(action('Nexus\SearchController@find', ['text' => $searchText]));
     }
 
-
     /**
      * perform a search against all the posts and
      * return some results
+     *
+     * @param Request $request
+     * @param String $text
+     * @return View
+     *
      * @todo - ignore word order
      * @todo - remove stop words
      * @todo - deal with exact phrases
      */
-    public function find($text)
+    public function find(Request $request, $text)
     {
 
         $phraseSearch = false;
@@ -128,7 +124,7 @@ pattern;
         }
 
         ActivityHelper::updateActivity(
-            Auth::user()->id,
+            $request->user()->id,
             "Searching",
             action('Nexus\SearchController@index')
         );

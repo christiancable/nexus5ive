@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers\Nexus;
 
-use Log;
-use Auth;
-use Hash;
 use App\User;
-use Validator;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Helpers\FlashHelper;
+use App\Helpers\ActivityHelper;
+use App\Helpers\BreadcrumbHelper;
+use App\Http\Requests\UpdateUser;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -26,16 +27,16 @@ class UserController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function index()
+    public function index(Request $request)
     {
         $users =  User::select('username', 'name', 'popname', 'latestLogin', 'totalPosts', 'totalVisits')
             ->orderBy('username', 'asc')->get();
-        \App\Helpers\ActivityHelper::updateActivity(
-            Auth::user()->id,
-            "Viewing list of Users",
-            action('Nexus\UserController@index')
-        );
-        $breadcrumbs = \App\Helpers\BreadcrumbHelper::breadcumbForUtility('Users');
+            ActivityHelper::updateActivity(
+                $request->user()->id,
+                "Viewing list of Users",
+                action('Nexus\UserController@index')
+            );
+        $breadcrumbs = BreadcrumbHelper::breadcumbForUtility('Users');
 
         return view('users.index', compact('users', 'breadcrumbs'));
     }
@@ -67,7 +68,7 @@ class UserController extends Controller
      * @param  string  $user_name - the name of the user
      * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
      */
-    public function show($user_name)
+    public function show(Request $request, $user_name)
     {
 
         try {
@@ -78,19 +79,19 @@ class UserController extends Controller
             return redirect('/users/');
         }
 
-        if ($user->id === Auth::user()->id) {
-            Auth::user()->markCommentsAsRead();
-            Auth::user()->save();
+        if ($user->id === $request->user()->id) {
+            $request->user()->markCommentsAsRead();
+            $request->user()->save();
         }
 
-        \App\Helpers\ActivityHelper::updateActivity(
-            Auth::user()->id,
-            "Examining <em>{$user->username}</em>",
-            action('Nexus\UserController@show', ['user_name' => $user_name])
-        );
+            ActivityHelper::updateActivity(
+                $request->user()->id,
+                "Examining <em>{$user->username}</em>",
+                action('Nexus\UserController@show', ['user_name' => $user_name])
+            );
 
         $themes = \App\Theme::all()->pluck('name', 'id');
-        $breadcrumbs = \App\Helpers\BreadcrumbHelper::breadcrumbForUser($user);
+        $breadcrumbs = BreadcrumbHelper::breadcrumbForUser($user);
         $comments = $user->comments()->paginate(config('nexus.comment_pagination'));
         return view('users.show', compact('user', 'comments', 'breadcrumbs', 'themes'));
     }
@@ -111,27 +112,11 @@ class UserController extends Controller
      * Update the user
      *
      * @param  String $user_name
-     * @param  Request  $request
+     * @param  UpdateUser  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update($user_name, Request $request)
+    public function update($user_name, UpdateUser $request)
     {
-        $validator = Validator::make(
-            $request->all(),
-            [
-                'id'    => 'required|exists:users,id',
-                'email' => 'required|unique:users,email,' . request('id'),
-                'password' => 'confirmed',
-            ]
-        );
-
-        if ($validator->fails()) {
-            return redirect(action('Nexus\UserController@show', ['user_name' => $user_name]))
-                ->withErrors($validator, 'userUpdate')
-                ->withInput();
-        }
-
-        
         $input = $request->all();
         
         // to prevent setting password to an empty string https://trello.com/c/y1WAxwfb
