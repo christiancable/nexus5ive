@@ -8,8 +8,8 @@ use Illuminate\View\View;
 use Illuminate\Http\Request;
 use App\Helpers\ActivityHelper;
 use App\Helpers\BreadcrumbHelper;
+use App\Http\Requests\SearchRequest;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Validator;
 
 class SearchController extends Controller
 {
@@ -49,22 +49,8 @@ class SearchController extends Controller
     /**
      * submit the search request
      */
-    public function submitSearch(Request $request)
+    public function submitSearch(SearchRequest $request)
     {
-        $validator = Validator::make(
-            $request->all(),
-            [
-                'text' => 'required'
-            ]
-        );
-
-        if ($validator->fails()) {
-            return redirect(action('Nexus\SearchController@index'))
-                ->withErrors($validator, 'submitSearch')
-                ->withInput();
-        }
-
-
         $input = $request->all();
         $searchText = $input['text'];
         

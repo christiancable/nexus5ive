@@ -4,15 +4,14 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreComment extends FormRequest
+class SearchRequest extends FormRequest
 {
     /**
-     * The key to be used for the view error bag.
+    * The key to be used for the view error bag.
     *
     * @var string
     */
-    protected $errorBag = 'commentCreate';
-
+    protected $errorBag = 'submitSearch';
 
     /**
      * Determine if the user is authorized to make this request.
@@ -32,17 +31,7 @@ class StoreComment extends FormRequest
     public function rules()
     {
         return [
-            'text' => 'required',
-            'user_id' => 'required|numeric|exists:users,id',
-        ];
-    }
-
-    public function messages()
-    {
-        return [
-            'text.required' => 'Comment Text required',
-            'user_id.required' => 'User ID required',
-            'user_id.exists' => 'Unknown user',
+              'text' => 'required'
         ];
     }
 }

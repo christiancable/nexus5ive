@@ -9,9 +9,9 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Helpers\ActivityHelper;
 use App\Helpers\BreadcrumbHelper;
+use App\Http\Requests\StoreMessage;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Validator;
 
 class MessageController extends Controller
 {
@@ -62,28 +62,11 @@ class MessageController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Request $request
+     * @param  StoreMessage $request
      * @return RedirectResponse
      */
-    public function store(Request $request)
+    public function store(StoreMessage $request)
     {
-        $validator = Validator::make(
-            $request->all(),
-            [
-                'text' => 'required',
-                'user_id' => 'required|numeric|exists:users,id'
-            ],
-            [
-                "text.required" => 'Sending empty messages is a little creepy!'
-            ]
-        );
-
-        if ($validator->fails()) {
-            return redirect(action('Nexus\MessageController@index'))
-                ->withErrors($validator, 'messageStore')
-                ->withInput();
-        }
-
         $input = $request->all();
         $input['read'] = false;
         $input['user_id'] = $input['user_id'];

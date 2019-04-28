@@ -12,6 +12,7 @@ use App\Helpers\FlashHelper;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Helpers\ActivityHelper;
+use App\Http\Requests\StoreTopic;
 use App\Helpers\BreadcrumbHelper;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Cache;
@@ -55,28 +56,8 @@ class TopicController extends Controller
      * @param  Request  $request
      * @return RedirectResponse
      */
-    public function store(Request $request)
+    public function store(StoreTopic $request)
     {
-        $validator = Validator::make(
-            $request->all(),
-            [
-                "title" => 'required',
-                "intro" => 'required',
-                "section_id" => 'required|numeric|exists:sections,id',
-                "weight" => 'required|numeric',
-            ],
-            [
-                "title.required" => 'Title is required. Think of this as the subject to be discussed',
-                "intro.required" => 'Introduction is required. Give a brief introduction to your topic'
-            ]
-        );
-
-        if ($validator->fails()) {
-            return redirect(action('Nexus\SectionController@show', ['id' => request('section_id')]))
-                ->withErrors($validator, 'topicCreate')
-                ->withInput();
-        }
-
         $section = Section::findOrFail(request('section_id'));
         $this->authorize('create', [Topic::class, $section]);
 
@@ -197,6 +178,7 @@ class TopicController extends Controller
     {
         $formName = "topicUpdate$id";
 
+        // create validator here so we can name it based on the topic id
         $validator = Validator::make(
             $request->all(),
             [

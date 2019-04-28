@@ -13,6 +13,7 @@ use App\Helpers\TopicHelper;
 use App\Helpers\ActivityHelper;
 use Illuminate\Validation\Rule;
 use App\Helpers\BreadcrumbHelper;
+use App\Http\Requests\StoreSection;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Validator;
@@ -50,22 +51,8 @@ class SectionController extends Controller
      * @param  Request  $request
      * @return RedirectResponse
      */
-    public function store(Request $request)
+    public function store(StoreSection $request)
     {
-        $validator = Validator::make(
-            $request->all(),
-            [
-                "parent_id" => 'required|numeric|exists:sections,id',
-                "title" => 'required',
-            ]
-        );
-        
-        if ($validator->fails()) {
-            return redirect(action('Nexus\SectionController@show', ['id' => request('parent_id')]))
-                ->withErrors($validator, 'sectionCreate')
-                ->withInput();
-        }
-        
         $parentSection = Section::findOrFail(request('parent_id'));
         $this->authorize('create', [Section::class, $parentSection]);
         
@@ -182,6 +169,7 @@ class SectionController extends Controller
             ];
         }
         
+        // manually create validator to dynamically name the errorBag
         $validator = Validator::make($request->all(), $rules, $messages);
 
         if ($validator->fails()) {

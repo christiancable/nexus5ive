@@ -8,6 +8,7 @@ use App\Http\Requests;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Helpers\MentionHelper;
+use App\Http\Requests\StorePost;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Validator;
@@ -42,23 +43,11 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Request  $request
+     * @param  StorePost  $request
      * @return RedirectResponse
      */
-    public function store(Request $request)
+    public function store(StorePost $request)
     {
-        // validate - errors are passed back to the vue form automatically
-        Validator::make(
-            $request->all(),
-            [
-                'text' => 'required',
-                'topic_id' => 'required|exists:topics,id'
-            ],
-            [
-                "text.required" => 'Text is required. You cannot leave empty posts',
-            ]
-        )->validate();
-
         $topic = Topic::findOrFail($request->topic_id);
         $this->authorize('create', [Post::class, $topic]);
 
@@ -71,8 +60,7 @@ class PostController extends Controller
 
         // scan post for mentions
         MentionHelper::makeMentions($post);
-        
-        
+           
         // if we are viewing the topic with the most recent post at the bottom then
         // redirect to that point in the page
         if ($request->user()->viewLatestPostFirst) {
@@ -115,6 +103,7 @@ class PostController extends Controller
     public function update(Request $request, $id)
     {
         
+        // manually create validator here to dynamically name the errorbag based on the post id
         $validator = Validator::make(
             $request->all(),
             [

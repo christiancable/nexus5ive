@@ -9,7 +9,6 @@ use Illuminate\Http\Response;
 use App\Http\Requests\StoreComment;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Validator;
 
 class CommentController extends Controller
 {

@@ -9,10 +9,10 @@ use Illuminate\Http\Response;
 use App\Helpers\FlashHelper;
 use App\Helpers\ActivityHelper;
 use App\Helpers\BreadcrumbHelper;
+use App\Http\Requests\UpdateUser;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class UserController extends Controller
@@ -112,27 +112,11 @@ class UserController extends Controller
      * Update the user
      *
      * @param  String $user_name
-     * @param  Request  $request
+     * @param  UpdateUser  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update($user_name, Request $request)
+    public function update($user_name, UpdateUser $request)
     {
-        $validator = Validator::make(
-            $request->all(),
-            [
-                'id'    => 'required|exists:users,id',
-                'email' => 'required|unique:users,email,' . request('id'),
-                'password' => 'confirmed',
-            ]
-        );
-
-        if ($validator->fails()) {
-            return redirect(action('Nexus\UserController@show', ['user_name' => $user_name]))
-                ->withErrors($validator, 'userUpdate')
-                ->withInput();
-        }
-
-        
         $input = $request->all();
         
         // to prevent setting password to an empty string https://trello.com/c/y1WAxwfb
