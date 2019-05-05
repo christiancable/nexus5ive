@@ -21,12 +21,14 @@
 			</span>
 
 			<!-- Right Side Of Navbar -->
-            @if (config('nexus.allow_registrations'))
-			<ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class=" btn btn-primary" href="{{ route('register') }}"><span class="oi oi-aperture mr-2"></span>{{ __('Join') }}</a>
-                </li>
-            </ul>
+			@if (!isset($hideRegistration))
+				@if (config('nexus.allow_registrations'))
+				<ul class="navbar-nav ml-auto">
+					<li class="nav-item">
+						<a class=" btn btn-primary" href="{{ route('register') }}"><span class="oi oi-aperture mr-2"></span>{{ __('Join') }}</a>
+					</li>
+				</ul>
+				@endif 
             @endif 
 	</div>
 </nav>

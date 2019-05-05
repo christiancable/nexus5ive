@@ -14,10 +14,13 @@ use Illuminate\Http\Request;
 
 // authentication
 if (config('nexus.allow_registrations') === true) {
-    Auth::routes();
+    Auth::routes(['verify' => true]);
 } else {
-    Auth::routes();
-    // Auth::routes(['register' => false]); = 5.7 and above!!
+    Auth::routes(
+        ['verify' => true],
+        ['register' => false]
+    );
+    
     // so redirect the register route
     Route::redirect('register', 'login', 302);
 }
