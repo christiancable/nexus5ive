@@ -22,7 +22,7 @@ if (config('nexus.allow_registrations') === true) {
     );
     
     // so redirect the register route
-    Route::redirect('register', 'login', 302);
+    Route::redirect('register', 'login');
 }
 
 // API
