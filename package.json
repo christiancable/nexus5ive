@@ -23,7 +23,7 @@
     "laravel-mix": "^4.0.7",
     "lodash": "^4.17.5",
     "mocha": "^5.2.0",
-    "mocha-webpack": "^1.1.0",
+    "mocha-webpack": "^2.0.0-beta.0",
     "open-iconic": "^1.1.1",
     "popper.js": "^1.12",
     "prettier": "^1.14.3",
