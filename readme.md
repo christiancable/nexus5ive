@@ -42,17 +42,20 @@ To enable the Excelsior theme
 `php artisan theme:add Excelsior /css/excelsior.css`
 
 To add external themes from Bootswatch...
-`php artisan theme:add darkly https://bootswatch.com/4/darkly/bootstrap.min.css`
-`php artisan theme:add slate https://bootswatch.com/4/slate/bootstrap.min.css`
-`php artisan theme:add united https://bootswatch.com/4/united/bootstrap.min.css`
-`php artisan theme:add solar https://bootswatch.com/4/solar/bootstrap.min.css`
-`php artisan theme:add sketchy https://bootswatch.com/4/sketchy/bootstrap.min.css`
-`php artisan theme:add materia https://bootswatch.com/4/materia/bootstrap.min.css`
-`php artisan theme:add minty https://bootswatch.com/4/minty/bootstrap.min.css`
-  
+```
+php artisan theme:add darkly https://bootswatch.com/4/darkly/bootstrap.min.css
+php artisan theme:add slate https://bootswatch.com/4/slate/bootstrap.min.css
+php artisan theme:add united https://bootswatch.com/4/united/bootstrap.min.css
+php artisan theme:add solar https://bootswatch.com/4/solar/bootstrap.min.css
+php artisan theme:add sketchy https://bootswatch.com/4/sketchy/bootstrap.min.css
+php artisan theme:add materia https://bootswatch.com/4/materia/bootstrap.min.css
+php artisan theme:add minty https://bootswatch.com/4/minty/bootstrap.min.css
+```  
 Themes can be removed by 
 
-`php artisan theme:remove minty`
+```
+php artisan theme:remove minty
+```
 Users who use a removed theme have their theme set to the default.
 
 ## Development 

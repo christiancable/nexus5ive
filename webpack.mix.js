@@ -1,4 +1,4 @@
-const mix = require('laravel-mix');
+const mix = require("laravel-mix");
 
 /*
  |--------------------------------------------------------------------------
@@ -12,17 +12,17 @@ const mix = require('laravel-mix');
  */
 
 mix
-    .js('resources/assets/js/app.js', 'public/js')
-    .sass('resources/assets/sass/app.scss', 'public/css')
-    
-    // keep as an extra file too for when we use themes
-    .sass('resources/assets/sass/extra.scss', 'public/css')
-    
-    // themes
-    .sass('resources/assets/sass/excelsior.scss', 'public/css')
-    
-    if (process.env.NODE_ENV === 'testing') {
-        mix.disableNotifications();
-    } else {
-        mix.version()
-    }
+  .js("resources/js/app.js", "public/js")
+  .sass("resources/sass/app.scss", "public/css")
+
+  // keep as an extra file too for when we use themes
+  .sass("resources/sass/extra.scss", "public/css")
+
+  // themes
+  .sass("resources/sass/excelsior.scss", "public/css");
+
+if (process.env.NODE_ENV === "testing") {
+  mix.disableNotifications();
+} else {
+  mix.version();
+}

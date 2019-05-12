@@ -2,7 +2,14 @@
 
 namespace App\Console\Commands;
 
+use App\User;
+use Exception;
+use App\Topic;
+use App\Section;
+use App\Comment;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class NexusUpgrade extends Command
 {
@@ -34,14 +41,14 @@ class NexusUpgrade extends Command
     {
         $this->info('Importing Users');
         $errorCount = 0;
-        if (!\App\User::first()) {
-            $count = \DB::select('select count(user_id) as count from usertable')[0]->count;
+        if (!User::first()) {
+            $count = DB::select('select count(user_id) as count from usertable')[0]->count;
             $this->line("Found $count users ");
             $bar = $this->output->createProgressBar($count);
-            $classicUsers = \DB::table('usertable')->get();
+            $classicUsers = DB::table('usertable')->get();
             
             foreach ($classicUsers as $classicUser) {
-                $newUser = new \App\User;
+                $newUser = new User;
                 
                 $newUser->id = $classicUser->user_id;
                 $newUser->username = $classicUser->user_name;
@@ -67,7 +74,7 @@ class NexusUpgrade extends Command
                 }
                 
                 $newUser->ipaddress = $classicUser->user_ipaddress;
-                $lastLogin = \DB::table('whoison')->select('timeon')->where('user_id', $classicUser->user_id)->first();
+                $lastLogin = DB::table('whoison')->select('timeon')->where('user_id', $classicUser->user_id)->first();
                 if ($lastLogin) {
                     $newUser->latestLogin = $lastLogin->timeon;
                 }
@@ -76,7 +83,7 @@ class NexusUpgrade extends Command
                     $newUser->banned = true;
                 }
                 // avoid reusing email addresses
-                $emailUses = \DB::table('usertable')
+                $emailUses = DB::table('usertable')
                     ->select('user_id')->where('user_email', $classicUser->user_email)->get();
                 $count = count($emailUses);
                 if ($count > 1) {
@@ -94,9 +101,9 @@ class NexusUpgrade extends Command
                 }
                 try {
                     $newUser->save();
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                     $errorCount++;
-                    \Log::error('Nexus:upgrade - Failed to add user '. $e);
+                    Log::error('Nexus:upgrade - Failed to add user '. $e);
                 }
                 $bar->advance();
             }
@@ -116,13 +123,13 @@ class NexusUpgrade extends Command
     {
         $this->info('Importing Comments');
         $errorCount = 0;
-        if (!\App\Comment::first()) {
-            $count = \DB::select('select count(comment_id) as count from commenttable')[0]->count;
+        if (!Comment::first()) {
+            $count = DB::select('select count(comment_id) as count from commenttable')[0]->count;
             $this->line("Found $count comments ");
             $bar = $this->output->createProgressBar($count);
-            $classicComments = \DB::table('commenttable')->get();
+            $classicComments = DB::table('commenttable')->get();
             foreach ($classicComments as $classicComment) {
-                $newComment = new \App\Comment;
+                $newComment = new Comment;
                 $newComment->id = $classicComment->comment_id;
                 $newComment->text = $classicComment->text;
                 $newComment->user_id = $classicComment->user_id;
@@ -136,9 +143,9 @@ class NexusUpgrade extends Command
                 try {
                     $newComment->save();
                     $bar->advance();
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                     $errorCount++;
-                    \Log::error('Nexus:upgrade - Failed to add comment '. $e);
+                    Log::error('Nexus:upgrade - Failed to add comment '. $e);
                 }
             }
             $bar->finish();
@@ -156,16 +163,16 @@ class NexusUpgrade extends Command
     {
         $this->info('Importing Sections');
         $errorCount = 0;
-        if (!\App\Section::first()) {
-            $count = \DB::select('select count(section_id) as count from sectiontable')[0]->count;
+        if (!Section::first()) {
+            $count = DB::select('select count(section_id) as count from sectiontable')[0]->count;
             $this->line("Found $count sections ");
             $this->line("Migrating Sections ");
             $bar = $this->output->createProgressBar($count);
-            $classicSections = \DB::table('sectiontable')->get();
+            $classicSections = DB::table('sectiontable')->get();
         
             foreach ($classicSections as $classicSection) {
                 try {
-                    $newSection = new \App\Section;
+                    $newSection = new Section;
                     $newSection->id = $classicSection->section_id;
                     $newSection->title = $classicSection->section_title;
                     $newSection->intro = $classicSection->section_intro;
@@ -174,9 +181,9 @@ class NexusUpgrade extends Command
                     
                     $newSection->save();
                     $bar->advance();
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                     $errorCount++;
-                    \Log::error('Nexus:upgrade - Failed to add section '. $e);
+                    Log::error('Nexus:upgrade - Failed to add section '. $e);
                 }
             }
 
@@ -187,13 +194,13 @@ class NexusUpgrade extends Command
 
             foreach ($classicSections as $classicSection) {
                 try {
-                    $newSection = \App\Section::findOrFail($classicSection->section_id);
+                    $newSection = Section::findOrFail($classicSection->section_id);
                     $newSection->parent_id = $classicSection->parent_id;
                     $newSection->save();
                     $bar->advance();
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                     $errorCount++;
-                    \Log::error('Nexus:upgrade - Failed to add parent to section '. $e);
+                    Log::error('Nexus:upgrade - Failed to add parent to section '. $e);
                 }
             }
             unset($classicSections);
@@ -212,15 +219,15 @@ class NexusUpgrade extends Command
     {
         $this->info('Importing Topics');
         $errorCount = 0;
-        if (!\App\Topic::first()) {
-            $count = \DB::select('select count(topic_id) as count from topictable')[0]->count;
+        if (!Topic::first()) {
+            $count = DB::select('select count(topic_id) as count from topictable')[0]->count;
             $this->line("Found $count topics");
 
             $bar = $this->output->createProgressBar($count);
-            $classicTopics = \DB::table('topictable')->get();
+            $classicTopics = DB::table('topictable')->get();
         
             foreach ($classicTopics as $classicTopic) {
-                $newTopic = new \App\Topic;
+                $newTopic = new Topic;
                 $newTopic->id = $classicTopic->topic_id;
                 $newTopic->title = $classicTopic->topic_title;
                 $newTopic->intro = $classicTopic->topic_description;
@@ -242,9 +249,9 @@ class NexusUpgrade extends Command
                 try {
                     $newTopic->save();
                     $bar->advance();
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                     $errorCount++;
-                    \Log::error('Nexus:upgrade - Failed to import topic: '. $e);
+                    Log::error('Nexus:upgrade - Failed to import topic: '. $e);
                 }
             }
 
@@ -267,10 +274,10 @@ class NexusUpgrade extends Command
 
         if (!\App\Post::first()) {
             $errorCount = 0;
-            $count = \DB::select('select count(message_id) as count from messagetable')[0]->count;
+            $count = DB::select('select count(message_id) as count from messagetable')[0]->count;
             $this->line("Found $count posts");
             $bar = $this->output->createProgressBar($count);
-            \DB::table('messagetable')->chunk(1000, function ($posts) use (&$errorCount, &$bar) {
+            DB::table('messagetable')->chunk(1000, function ($posts) use (&$errorCount, &$bar) {
                 foreach ($posts as $classicPost) {
                     $newPost = new \App\Post;
                     $newPost->id                = $classicPost->message_id;
@@ -291,9 +298,9 @@ class NexusUpgrade extends Command
                     try {
                         $newPost->save();
                         $bar->advance();
-                    } catch (\Exception $e) {
+                    } catch (Exception $e) {
                         $errorCount++;
-                        \Log::info('Nexus:upgrade - Failed to import post: '. $e);
+                        Log::info('Nexus:upgrade - Failed to import post: '. $e);
                     }
                 }
             });
@@ -315,10 +322,10 @@ class NexusUpgrade extends Command
 
         if (!\App\View::first()) {
             $errorCount = 0;
-            $count = \DB::select('select count(topicview_id) as count from topicview')[0]->count;
+            $count = DB::select('select count(topicview_id) as count from topicview')[0]->count;
             $this->line("Found $count views");
             $bar = $this->output->createProgressBar($count);
-            \DB::table('topicview')->chunk(1000, function ($views) use (&$errorCount, &$bar) {
+            DB::table('topicview')->chunk(1000, function ($views) use (&$errorCount, &$bar) {
 
                 foreach ($views as $classicView) {
                     $newView = new \App\View;
@@ -336,9 +343,9 @@ class NexusUpgrade extends Command
                     try {
                         $newView->save();
                         $bar->advance();
-                    } catch (\Exception $e) {
+                    } catch (Exception $e) {
                          $errorCount++;
-                        \Log::info('Nexus:upgrade - Failed to import view: '. $e);
+                        Log::info('Nexus:upgrade - Failed to import view: '. $e);
                     }
                 }
             });
@@ -359,10 +366,10 @@ class NexusUpgrade extends Command
 
         if (!\App\Message::first()) {
             $errorCount = 0;
-            $count = \DB::select('select count(nexusmessage_id) as count from nexusmessagetable')[0]->count;
+            $count = DB::select('select count(nexusmessage_id) as count from nexusmessagetable')[0]->count;
             $this->line("Found $count messages");
             $bar = $this->output->createProgressBar($count);
-            \DB::table('nexusmessagetable')->chunk(1000, function ($messages) use (&$errorCount, &$bar) {
+            DB::table('nexusmessagetable')->chunk(1000, function ($messages) use (&$errorCount, &$bar) {
 
                 foreach ($messages as $classicMessage) {
                     $newMessage = new \App\Message;
@@ -381,9 +388,9 @@ class NexusUpgrade extends Command
                     try {
                         $newMessage->save();
                         $bar->advance();
-                    } catch (\Exception $e) {
+                    } catch (Exception $e) {
                          $errorCount++;
-                        \Log::info('Nexus:upgrade - Failed to import message: '. $e);
+                        Log::info('Nexus:upgrade - Failed to import message: '. $e);
                     }
                 }
             });

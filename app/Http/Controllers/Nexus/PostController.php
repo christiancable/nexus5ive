@@ -2,22 +2,23 @@
 
 namespace App\Http\Controllers\Nexus;
 
-use Auth;
 use App\Post;
 use App\Topic;
-use Validator;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Helpers\MentionHelper;
-use Illuminate\Http\RedirectResponse;
+use App\Http\Requests\StorePost;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Validator;
 
 class PostController extends Controller
 {
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware('verified');
     }
     
     /**
@@ -43,40 +44,27 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Request  $request
+     * @param  StorePost  $request
      * @return RedirectResponse
      */
-    public function store(Request $request)
+    public function store(StorePost $request)
     {
-        // validate - errors are passed back to the vue form automatically
-        Validator::make(
-            $request->all(),
-            [
-                'text' => 'required',
-                'topic_id' => 'required|exists:topics,id'
-            ],
-            [
-                "text.required" => 'Text is required. You cannot leave empty posts',
-            ]
-        )->validate();
-
         $topic = Topic::findOrFail($request->topic_id);
         $this->authorize('create', [Post::class, $topic]);
 
         $input = $request->all();
-        $input['user_id'] = Auth::user()->id;
-        $input['popname'] = Auth::user()->popname;
+        $input['user_id'] = $request->user()->id;
+        $input['popname'] = $request->user()->popname;
         $input['time'] = time();
         $post = Post::create($input);
-        Auth::user()->incrementTotalPosts();
+        $request->user()->incrementTotalPosts();
 
         // scan post for mentions
         MentionHelper::makeMentions($post);
-        
-        
+           
         // if we are viewing the topic with the most recent post at the bottom then
         // redirect to that point in the page
-        if (Auth::user()->viewLatestPostFirst) {
+        if ($request->user()->viewLatestPostFirst) {
             $redirect = action('Nexus\TopicController@show', ['id' => $post->topic_id]);
         } else {
             $redirect = action('Nexus\TopicController@show', ['id' => $post->topic_id]) . '#'  . $post->id;
@@ -116,6 +104,7 @@ class PostController extends Controller
     public function update(Request $request, $id)
     {
         
+        // manually create validator here to dynamically name the errorbag based on the post id
         $validator = Validator::make(
             $request->all(),
             [
@@ -138,7 +127,7 @@ class PostController extends Controller
         
         $input = $request->all();
         $updatedPost = $input['form']["$id"];
-        $updatedPost['update_user_id'] = Auth::user()->id;
+        $updatedPost['update_user_id'] = $request->user()->id;
         
         $post->update($updatedPost);
         return back();
@@ -159,19 +148,5 @@ class PostController extends Controller
         $topicID = $post->topic_id;
         $post->forceDelete();
         return redirect()->route('topic.show', ['id' => $post->topic_id]);
-    }
-
-    /**
-     * @param Request $request
-     * @return string - json including markdown rendered version of the text field from the request
-     */
-    public function previewPost(Request $request)
-    {
-        if (\Request::ajax()) {
-            $data = \Input::all();
-            $response = [];
-            $response['text'] = \App\Helpers\NxCodeHelper::nxDecode($data['text']);
-            return \response()->json($response);
-        }
     }
 }

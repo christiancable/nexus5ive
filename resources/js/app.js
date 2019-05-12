@@ -19,11 +19,14 @@ require("./nexus");
 
 // Vue.component('example-component', require('./components/ExampleComponent.vue'));
 
-Vue.component("userlist", require("./components/Userlist.vue"));
-Vue.component("post-compose", require("./components/PostCompose.vue"));
-Vue.component("post-preview", require("./components/PostPreview.vue"));
-Vue.component("rendered-text", require("./components/RenderedText.vue"));
-Vue.component("topic-jump", require("./components/TopicJump.vue"));
+Vue.component("userlist", require("./components/Userlist.vue").default);
+Vue.component("post-compose", require("./components/PostCompose.vue").default);
+Vue.component("post-preview", require("./components/PostPreview.vue").default);
+Vue.component(
+  "rendered-text",
+  require("./components/RenderedText.vue").default
+);
+Vue.component("topic-jump", require("./components/TopicJump.vue").default);
 // Vue.component('mentions-list', require('./components/Mentions.vue'));
 // const files = require.context('./', true, /\.vue$/i)
 

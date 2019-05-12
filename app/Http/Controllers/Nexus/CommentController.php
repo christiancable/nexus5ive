@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers\Nexus;
 
-use Auth;
-use Validator;
 use App\Comment;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use App\Http\Requests\StoreComment;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 
@@ -16,6 +15,7 @@ class CommentController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware('verified');
     }
     
     /**
@@ -41,32 +41,13 @@ class CommentController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Request $request
+     * @param  StoreComment $request
      * @return RedirectResponse
      */
-    public function store(Request $request)
+    public function store(StoreComment $request)
     {
-        $validator = Validator::make(
-            $request->all(),
-            [
-                'text' => 'required',
-                'user_id' => 'required|numeric|exists:users,id',
-            ],
-            [
-                'text.required' => 'Comment Text required',
-                'user_id.required' => 'User ID required',
-                'user_id.exists' => 'Unknown user',
-            ]
-        );
-            
-        if ($validator->fails()) {
-            return redirect(action('Nexus\UserController@show', ['id' => request('redirect_user')]))
-            ->withErrors($validator, 'commentCreate')
-            ->withInput();
-        }
-            
         $input = $request->all();
-        $input['author_id'] = Auth::user()->id;
+        $input['author_id'] = $request->user()->id;
         
         // if a user is posting on their own profile then assume that they have read the comment
         if ($input['author_id'] === $input['user_id']) {
@@ -92,7 +73,7 @@ class CommentController extends Controller
         $this->authorize('destroy', $comment);
         $comment->delete();
         
-        return redirect(action('Nexus\UserController@show', ['user_name' => Auth::user()->username]));
+        return redirect(action('Nexus\UserController@show', ['user_name' => $request->user()->username]));
     }
 
     /**
@@ -103,7 +84,7 @@ class CommentController extends Controller
      */
     public function destroyAll(Request $request)
     {
-        Auth::user()->clearComments();
+        $request->user()->clearComments();
         return back();
     }
 }

@@ -18,7 +18,7 @@ class ThemesTest extends BrowserKitTestCase
     public $user;
     public $home;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

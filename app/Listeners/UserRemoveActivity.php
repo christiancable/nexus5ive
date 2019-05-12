@@ -2,11 +2,11 @@
 
 namespace App\Listeners;
 
-use Auth;
 use App\User;
 use App\Events;
 use Carbon\Carbon;
 use App\Helpers\ActivityHelper;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
