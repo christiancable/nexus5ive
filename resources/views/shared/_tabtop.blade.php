@@ -1,4 +1,4 @@
-<ul class="nav nav-pills justify-content-end mb-1 cog-menu {{ $forceCogMenu or 'd-none' }}">
+<ul class="nav nav-pills justify-content-end mb-1 cog-menu {{ $forceCogMenu ?? 'd-none' }}">
   
   <li class="nav-item dropdown">
     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">

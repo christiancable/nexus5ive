@@ -69,13 +69,12 @@ export default {
   },
 
   mounted: function() {
-    console.log("getting topics");
     window.axios
       .get("/topic/")
       .then(response => {
         this.topics = response.data;
       })
-      .error(error => {
+      .catch(error => {
         console.log("failed to get list of topics");
       });
   }

@@ -1,5 +1,7 @@
 <?php
 
+use Carbon\Carbon;
+
 /*
 |--------------------------------------------------------------------------
 | Model Factories
@@ -22,6 +24,7 @@ $factory->define(App\User::class, function ($faker) {
         'password' => str_random(10),
         'remember_token' => str_random(10),
         'theme_id' => $defaultTheme->id,
+        'email_verified_at' => Carbon::now() 
     ];
 });
 
