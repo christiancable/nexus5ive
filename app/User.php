@@ -64,10 +64,11 @@ class User extends Authenticatable implements  MustVerifyEmail
     public static function boot()
     {
         parent::boot();
-
         // Attach event handler, on deleting of the user
         User::deleting(function ($user) {
+            Log::info("Deleting user $user->username $user->id");
             // for each post that the user has modified set the modified by user to null
+            Log::info("- resetting author from " . $user->modifiedPosts->count() . " modifiedPosts");
             foreach ($user->modifiedPosts as $modifiedPost) {
                 $modifiedPost->update_user_id = null;
                 $modifiedPost->update();
@@ -76,20 +77,18 @@ class User extends Authenticatable implements  MustVerifyEmail
             /*
             to keep a cascading delete when using softDeletes we must remove the related models here
              */
-            $children = ['comments', 'sections', 'views', 'messages', 'sentMessages', 'activity', 'givenComments'];
-            Log::info("Deleting User $user->username - $user->id");
+            $children = ['posts', 'comments', 'sections', 'views', 'messages', 'sentMessages', 'activity', 'givenComments'];
             foreach ($children as $child) {
-                if ($user->$child()) {
-                    // we need to call delete on the grandchilden to
-                    // trigger their delete() events - seems dumb
+                if ($user->$child !== null) {
+                    // we need to call delete on the grandchilden to trigger their delete() events
                     if (get_class($user->$child) === 'Illuminate\Database\Eloquent\Collection') {
+                        Log::info("- removing " . $user->$child->count() . " $child");
                         foreach ($user->$child as $grandchild) {
-                            Log::info(" - removing grandchildren of user->{$child}");
                             $grandchild->delete();
                         }
                     } else {
-                        Log::info(" - removing user->$child");
-                        if ($user->child) {
+                        Log::info("- removing $child ");
+                        if ($user->$child) {
                             $user->$child->delete();
                         }
                     }
@@ -123,6 +122,11 @@ class User extends Authenticatable implements  MustVerifyEmail
     public function views()
     {
         return $this->hasMany(\App\View::class)->orderBy('latest_view_date', 'dec');
+    }
+
+    public function posts()
+    {
+        return $this->hasMany(\App\Post::class);
     }
 
     public function modifiedPosts()
