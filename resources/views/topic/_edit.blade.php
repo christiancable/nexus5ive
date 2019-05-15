@@ -52,14 +52,14 @@ $errorBag = 'topicUpdate' . $topic->id;
         @if(isset($moderatedSections))
             <div class="form-group form-inline">
                 <label class="mr-sm-2" for="{{$formName}}[section_id]">Section</label>
-                    {!! Form::select($formName . "[section_id]", $moderatedSections, $topic->section_id, ['class' => 'form-control'])!!}
+                    {!! Form::select($formName . "[section_id]", $moderatedSections, $topic->section_id, ['class' => 'form-control custom-select'])!!}
                 </select>
             </div>
         @endif 
 
         <div class="form-group form-inline">
             <label class="mr-sm-2" for="{{$formName}}[weight]">Order</label>
-                {!! Form::selectRange($formName . "[weight]", 0, 10, $topic->weight, ['class' => 'form-control'])!!}
+                {!! Form::selectRange($formName . "[weight]", 0, 10, $topic->weight, ['class' => 'form-control custom-select'])!!}
             </select>
         </div>
     </div>

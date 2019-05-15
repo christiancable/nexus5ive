@@ -32,7 +32,7 @@
 
     <div class="form-group form-inline">
         <label class="mr-sm-2" for="weight">Order</label>
-            {!! Form::selectRange("weight", 0, 10, null, ['class' => 'form-control']) !!}
+            {!! Form::selectRange("weight", 0, 10, null, ['class' => 'form-control custom-select']) !!}
         </select>
     </div>
 </div>
