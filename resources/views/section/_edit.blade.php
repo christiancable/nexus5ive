@@ -32,7 +32,7 @@ $formName = 'section'.$subSection->id;
                         "form[$formName][user_id]",
                         $potentialModerators,
                         $subSection->moderator->id,                    
-                        ['class' => 'form-control']
+                        ['class' => 'form-control custom-select']
                     )
                 !!}
             </select>
@@ -45,7 +45,7 @@ $formName = 'section'.$subSection->id;
                         "form[$formName][parent_id]",
                         $destinations,
                         $parentSectionID,
-                        ['class' => 'form-control']
+                        ['class' => 'form-control custom-select']
                     )
                 !!}
             </select>
@@ -59,7 +59,7 @@ $formName = 'section'.$subSection->id;
                         0,
                         10,
                         $subSection->weight,
-                        ['class' => 'form-control']
+                        ['class' => 'form-control custom-select']
                     )
                 !!}
             </select>

@@ -58,7 +58,7 @@ Form::model($user, array(
 <div class="form-row form-inline">
     <div class="form-group col-12 col-md-6 ">
         {!! Form::label('theme','Theme', ['class'=>'mr-3']) !!}
-        {!! Form::select('theme_id', $themes, $user->theme->id, ['class'=> 'form-control'])!!}
+        {!! Form::select('theme_id', $themes, $user->theme->id, ['class'=> 'form-control custom-select'])!!}
     </div>
     <div class="form-group col-12 col-md-6">
         <div class="form-check">
@@ -102,15 +102,17 @@ Form::model($user, array(
 @if (count($user->sections))
     <span>You moderate the following sections </span>
     <!-- Single button -->
+
+
     <div class="btn-group">
-        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Choose Section <span class="caret"></span>
         </button>
-        <ul class="dropdown-menu">
+        <div class="dropdown-menu">
             @foreach ($user->sections as $section)
-                <li><a href="{{ action('Nexus\SectionController@show', ['section_id' => $section->id]) }}">{{$section->title}}</a></li>
+                <a class="dropdown-item" href="{{ action('Nexus\SectionController@show', ['section_id' => $section->id]) }}">{{$section->title}}</a>
             @endforeach
-        </ul>
+        </div>
     </div>
     <hr> 
 @endif
