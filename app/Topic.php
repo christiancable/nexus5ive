@@ -4,7 +4,9 @@ namespace App;
 
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Database\Eloquent\Model;
+use App\Events\TopicJumpCacheBecameDirty;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Topic extends Model
@@ -31,7 +33,7 @@ class Topic extends Model
             to keep a cascading delete when using softDeletes we must remove the related models here
              */
             $children = ['posts', 'views'];
-            Log::info("Deleting Topic $topic->title - $topic->id");
+            Log::notice("Deleting Topic $topic->title - $topic->id");
             foreach ($children as $child) {
                 if ($topic->$child()) {
                         Log::info(" - removing topic->$child");
@@ -39,6 +41,11 @@ class Topic extends Model
                 }
             }
         });
+
+        // forget the topicjump cache when a topic changes, is created or destroyed
+        Topic::deleted(function () {event(new TopicJumpCacheBecameDirty());});
+        Topic::updated(function () {event(new TopicJumpCacheBecameDirty());});
+        Topic::created(function () {event(new TopicJumpCacheBecameDirty());});        
     }
     /**
      * returns the time of the most recent post
