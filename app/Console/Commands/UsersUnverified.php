@@ -1,8 +1,11 @@
 <?php
 
 /**
- *  users:unverified remove {--confirm}
- *  users:unverified list --age=30
+ *  Command to remove unverified user accounts which have remained 
+ *  unveried for at least {--age} days
+ * 
+ *  users:unverified remove {--confirm} {--age=30}
+ *  
  */
 namespace App\Console\Commands;
 
