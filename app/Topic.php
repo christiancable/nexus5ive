@@ -4,7 +4,9 @@ namespace App;
 
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Database\Eloquent\Model;
+use App\Events\TopicJumpCacheBecameDirty;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Topic extends Model
@@ -39,6 +41,11 @@ class Topic extends Model
                 }
             }
         });
+
+        // forget the topicjump cache when a topic changes, is created or destroyed
+        Topic::deleted(function () {event(new TopicJumpCacheBecameDirty());});
+        Topic::updated(function () {event(new TopicJumpCacheBecameDirty());});
+        Topic::created(function () {event(new TopicJumpCacheBecameDirty());});        
     }
     /**
      * returns the time of the most recent post
