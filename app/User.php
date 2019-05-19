@@ -2,8 +2,10 @@
 
 namespace App;
 
+use App\Events\UserCreated;
 use App\ViewModels\UserPresenter;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -66,7 +68,7 @@ class User extends Authenticatable implements  MustVerifyEmail
         parent::boot();
         // Attach event handler, on deleting of the user
         User::deleting(function ($user) {
-            Log::info("Deleting user $user->username $user->id");
+            Log::notice("Deleting user $user->username $user->id");
             // for each post that the user has modified set the modified by user to null
             Log::info("- resetting author from " . $user->modifiedPosts->count() . " modifiedPosts");
             foreach ($user->modifiedPosts as $modifiedPost) {
@@ -95,6 +97,9 @@ class User extends Authenticatable implements  MustVerifyEmail
                 }
             }
         });
+
+        // log new users
+        User::created(function ($user) {event(new UserCreated($user));});     
     }
 
     /* related models */

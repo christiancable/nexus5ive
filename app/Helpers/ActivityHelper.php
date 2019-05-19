@@ -52,7 +52,7 @@ class ActivityHelper
             $activity = Activity::where('user_id', $user_id)->firstOrFail();
             $activity->delete();
         } catch (Exception $e) {
-            Log::info('Tried to remove non-existent activity: '. $e);
+            Log::notice('Tried to remove non-existent activity: '. $e);
         }
     }
 }
