@@ -36,7 +36,8 @@ return [
     'channels' => [
         'stack' => [
             'driver' => 'stack',
-            'channels' => ['daily', 'slack'],
+            // 'channels' => ['daily', 'slack'],
+            'channels' => explode(",", env('LOG_CHANNELS')),
         ],
 
         'single' => [
