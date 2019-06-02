@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
+use App\Events\TreeCacheBecameDirty;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -37,6 +38,10 @@ class Section extends Model
                 }
             }
         });
+
+        Section::deleted(function () {event(new TreeCacheBecameDirty());});
+        Section::updated(function () {event(new TreeCacheBecameDirty());});
+        Section::created(function () {event(new TreeCacheBecameDirty());}); 
     }
     
     // users
