@@ -303,4 +303,54 @@ Markdown;
             return redirect('/');
         }
     }
+
+
+    /**
+     * a list of locations for the 'jump' menu
+     *
+     * @return array - flatterned array of all topics and sections
+     */
+    public function jumpLocations()
+    {
+       
+    // return Cache::remember('topicIndex', $secondsToCache, function () {
+            // return Section::where('title', '<>', '')->orderBy('title')->get(['id', 'title','intro']);
+        // });
+
+        /*
+        foreach section            
+            for each topic
+                return title, id, intro, i_am_a_topic
+            return title, id, intro, i_am_a_section
+
+        */
+
+        // $locations = Section::with('topics:id,title,intro,section_id')->orderBy('title')->get(['id','title','intro']);
+        $locations = Section::with('topics:id,title,intro,section_id')->orderBy('id', 'DESC')->get(['id','title','intro']);
+        $jumpDestinations = [];
+        
+        $keyIndex = 0;
+        foreach ($locations as $section) {
+            $keyIndex++;
+            $jumpDestinations[]= [
+                'key'   => $keyIndex,
+                'id'    => $section['id'],
+                'title' => $section['title'],
+                'intro' => $section['intro'],
+                'is_section' => true,
+            ];
+            foreach($section['topics'] as $topic) {
+                $keyIndex++;
+                $jumpDestinations[]= [
+                    'key'   => $keyIndex,
+                    'id'    => $topic['id'],
+                    'title' => $topic['title'],
+                    'intro' => $topic['intro'],
+                    'is_section' => false,
+                ];
+            }
+        }
+
+        return $jumpDestinations;
+    }
 }

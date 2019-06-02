@@ -27,7 +27,7 @@ $notificationCount = $profileNotificationCount + $mentionCount;
       <div id="navbar" class="navbar-collapse collapse" style="">
        
        <span id="navigationApp" class="nav navbar-nav mr-auto">
-         <topic-jump></topic-jump>
+         <jump></jump>
        </span>
        
         <ul class="nav navbar-nav mr-auto">

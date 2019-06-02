@@ -26,7 +26,7 @@ Vue.component(
   "rendered-text",
   require("./components/RenderedText.vue").default
 );
-Vue.component("topic-jump", require("./components/TopicJump.vue").default);
+Vue.component("jump", require("./components/Jump.vue").default);
 // Vue.component('mentions-list', require('./components/Mentions.vue'));
 // const files = require.context('./', true, /\.vue$/i)
 

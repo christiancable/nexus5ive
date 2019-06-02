@@ -93,6 +93,7 @@ Route::post('archive/topic/{topic}', 'Nexus\RestoreController@topic')
 
 // utilities
 Route::get('updateSubscriptions', 'Nexus\TopicController@markAllSubscribedTopicsAsRead');
+Route::get('jump', 'Nexus\SectionController@jumpLocations');
 
 // @mentions
 Route::delete('mentions', 'Nexus\MentionController@destroyAll');

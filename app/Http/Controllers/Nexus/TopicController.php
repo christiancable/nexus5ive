@@ -34,11 +34,7 @@ class TopicController extends Controller
      */
     public function index()
     {
-        $secondsToCache = 60 * 30; // 30 minutes
-
-        return Cache::remember('topicIndex', $secondsToCache, function () {
-            return Topic::where('title', '<>', '')->orderBy('title')->get(['id', 'title','intro']);
-        });
+        //
     }
     
     /**
