@@ -15,7 +15,6 @@ use App\Helpers\ActivityHelper;
 use App\Http\Requests\StoreTopic;
 use App\Helpers\BreadcrumbHelper;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Validator;
 
