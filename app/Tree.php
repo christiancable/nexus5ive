@@ -3,8 +3,8 @@
 namespace App;
 
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Model;
-
 class Tree extends Model
 {
     /**
@@ -15,9 +15,9 @@ class Tree extends Model
     */
     public static function tree() 
     {
-        $locations = Section::with('topics:id,title,intro,section_id')->orderBy('id', 'DESC')->get(['id','title','intro']);
+        $locations = Section::with('topics:id,title,intro,section_id')->orderBy('title')->get(['id','title','intro']);
         $destinations = [];
-        
+        $oldenDays = now()->subMonths(12);
         $keyIndex = 0;
         foreach ($locations as $section) {
             $keyIndex++;
@@ -30,12 +30,20 @@ class Tree extends Model
             ];
             foreach($section['topics'] as $topic) {
                 $keyIndex++;
+                if ($topic['most_recent_post_time'] && 
+                $topic['most_recent_post_time']->greaterThanOrEqualTo($oldenDays)) {
+                    $recent = true;
+                } else {
+                    $recent = false;
+                }
+
                 $destinations[]= [
                     'key'   => $keyIndex,
                     'id'    => $topic['id'],
                     'title' => $topic['title'],
                     'intro' => $topic['intro'],
                     'is_section' => false,
+                    'is_recent' => $recent
                 ];
             }
         }

@@ -14,20 +14,28 @@
       </a>
 
       <div class="dropdown-menu" aria-labelledby="mentiondropdown">
-        <div class="form-group px-4 py-3">
-          <label class="sr-only" for="topicFilter">Jump</label>
-          <input
-            v-model="searchTerm"
-            class="form-control"
-            id="topicFilter"
-            placeholder="Search for a Section or Topic"
-          >
+        <div class="px-4 py-3" action="/search" method="post">
+          <slot></slot>
+          <div class="form-group">
+            <label class="sr-only" for="topicFilter">Jump</label>
+            <input
+              v-model="searchTerm"
+              class="form-control"
+              id="topicFilter"
+              placeholder="Search for a Section or Topic"
+              v-on:keyup.enter="performSearch"
+            >
+          </div>
+          <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="showRecent" v-model="showRecent">
+            <label class="form-check-label" for="showRecent">Only recent topics</label>
+          </div>
         </div>
         <div role="separator" class="dropdown-divider"></div>
-        <template v-if="matched.length!==0">
+        <template v-if="locations.length!==0">
           <a
             class="dropdown-item"
-            v-for="(item, index) in matched"
+            v-for="(item, index) in locations"
             :key="item.keyIndex"
             :value="item.keyIndex"
             :selected="index === 0"
@@ -48,22 +56,23 @@
           </a>
         </template>
         <template v-else>
-          <span class="dropdown-item-text">
-            <em>Nothing Found</em>
-          </span>
+          <a :href="'/search/' + searchTerm" class="dropdown-item">
+            <span class="oi oi-magnifying-glass" aria-hidden="true"></span>
+            Search for
+            <em>{{ searchTerm }}</em>
+          </a>
         </template>
       </div>
     </li>
   </ul>
 </template>
 
-
-// v-bind:style= "[condition ? {styleA} : {styleB}]"
 <script>
 export default {
   data() {
     return {
       searchTerm: "",
+      showRecent: true,
       jumpDestinations: []
     };
   },
@@ -78,6 +87,25 @@ export default {
             .indexOf(this.searchTerm.toLowerCase()) !== -1
         );
       }, context);
+    },
+
+    recent: function() {
+      return this.matched.filter(function(item) {
+        if (true == item.is_section) {
+          return true;
+        }
+        if (true == item.is_recent) {
+          return true;
+        }
+      });
+    },
+
+    locations: function() {
+      if (true == this.showRecent) {
+        return this.recent;
+      } else {
+        return this.matched;
+      }
     }
   },
 
@@ -90,6 +118,14 @@ export default {
       .catch(error => {
         console.log("failed to get list of destinations");
       });
+  },
+
+  methods: {
+    performSearch: function() {
+      if (this.searchTerm.length > 0) {
+        window.location = "/search/" + this.searchTerm;
+      }
+    }
   }
 };
 </script>
