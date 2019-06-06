@@ -21,12 +21,19 @@ class Tree extends Model
         $keyIndex = 0;
         foreach ($locations as $section) {
             $keyIndex++;
+            if ($section['most_recent_post'] && 
+            $section['most_recent_post']->updated_at->greaterThanOrEqualTo($oldenDays)) {
+                $recent = true;
+            } else {
+                $recent = false;
+            }
             $destinations[]= [
                 'key'   => $keyIndex,
                 'id'    => $section['id'],
                 'title' => $section['title'],
                 'intro' => $section['intro'],
                 'is_section' => true,
+                'is_recent' => $recent
             ];
             foreach($section['topics'] as $topic) {
                 $keyIndex++;
@@ -36,7 +43,7 @@ class Tree extends Model
                 } else {
                     $recent = false;
                 }
-
+                
                 $destinations[]= [
                     'key'   => $keyIndex,
                     'id'    => $topic['id'],
@@ -54,7 +61,7 @@ class Tree extends Model
     public static function rebuild()
     {
         Log::debug("Rebuilding Tree Cache");
-
+        
         Cache::forget('tree');
         Cache::rememberForever('tree', function () {
             return Tree::tree();
