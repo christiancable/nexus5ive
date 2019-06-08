@@ -40,7 +40,7 @@
 
     {{-- show post box --}}
     @if (Auth::user()->viewLatestPostFirst) 
-    @include('topics._addpost', compact('postsChunk', 'readOnly', 'replyingTo'))
+    @include('topics._addpost', compact('postsChunk', 'readonly', 'replyingTo'))
     @endif
 
     {{-- render posts --}}
@@ -61,7 +61,7 @@
         @if($topic->section->moderator->id === Auth::user()->id)
             @include('post._moderate', compact('post', 'readProgress'))
         @else 
-        {{-- if we are on the last post and we  are the author and it is recent then display the moderate view so a user can edit their post --}}
+        {{-- if we are on the last post and we are the author and it is recent then display the moderate view so a user can edit their post --}}
         @if (($post['id'] == $latestPost['id']) && ($post->author->id == Auth::user()->id) && ($post->time->diffInSeconds() <= config('nexus.recent_edit') )) 
                 <?php 
                     $forceCogMenu = true; //show cog menu for recent post
@@ -79,7 +79,7 @@
 
     {{-- show post box --}}
     @if (!Auth::user()->viewLatestPostFirst) 
-        @include('topics._addpost', compact('postsChunk', 'readOnly', 'reply'))
+        @include('topics._addpost', compact('postsChunk', 'readonly', 'replyingTo'))
     @endif
     {!! $postsChunk->render() !!}
     </div>
