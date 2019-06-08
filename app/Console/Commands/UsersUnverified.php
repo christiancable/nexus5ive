@@ -1,11 +1,11 @@
 <?php
 
 /**
- *  Command to remove unverified user accounts which have remained 
+ *  Command to remove unverified user accounts which have remained
  *  unveried for at least {--age} days
- * 
+ *
  *  users:unverified remove {--confirm} {--age=30}
- *  
+ *
  */
 namespace App\Console\Commands;
 
@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\Collection;
 class UsersUnverified extends Command
 {
     /**
-     * Age an unverified account should reached to be 
+     * Age an unverified account should reached to be
      * considered for removal.
      *
      * @var string
@@ -53,11 +53,11 @@ class UsersUnverified extends Command
     /**
      * generate list of unverified users
      *
-     * @return collection; 
+     * @return collection;
      */
-    private function getUnverifiedUsers() 
+    private function getUnverifiedUsers()
     {
-        return User::where('email_verified_at',  null)
+        return User::where('email_verified_at', null)
         ->whereDate('created_at', '<', Carbon::now()->subDays($this->age)->toDateTimeString())
         ->get();
     }
@@ -87,7 +87,7 @@ class UsersUnverified extends Command
 
         $this->line("Remove Unverified Users");
         $this->line("=======================");
-        foreach($this->unverifiedUsers as $user) {
+        foreach ($this->unverifiedUsers as $user) {
             $this->info("* {$user->username}");
         }
 
@@ -102,7 +102,7 @@ class UsersUnverified extends Command
         }
 
         $deletedUserCount = 0;
-        foreach($this->unverifiedUsers as $user) {
+        foreach ($this->unverifiedUsers as $user) {
             $this->comment("* removing {$user->username}");
             $deletedUserCount++;
             $user->delete();

@@ -2,21 +2,23 @@
 /* extras */
 /* ------ */
 
-
 // Open Iconic icon font
-@import '~open-iconic/font/css/open-iconic-bootstrap.scss';
+@import "~open-iconic/font/css/open-iconic-bootstrap.scss";
 
 $body-color: #f5f8fa !default;
 
 /* blockquote */
-
 blockquote {
-    padding: 0.6rem 1.2rem;
-    margin: 0 0 1.2rem;    
-    border-left: 0.4rem solid $body-color;
+  padding: 0.6rem 1.2rem;
+  margin: 0 0 1.2rem;
+  border-left: 0.4rem solid $body-color;
 }
-
-
+/* jump menu */
+@media (min-width: 768px) {
+  #navigationApp .dropdown-item {
+    min-width: 20rem;
+  }
+}
 
 /* hide cloaked vue components */
 [v-cloak] {
@@ -44,16 +46,16 @@ blockquote {
   height: 100%;
   position: absolute;
   top: 0;
-  left:0;
+  left: 0;
 }
 
 /* lazy loading */
 .b-lazy {
   &.b-error {
-   filter: blur(2px) grayscale(100);
-   opacity: 0.1;
-   transform: rotate(-10deg);
-   transition: .3s ease-in-out;
+    filter: blur(2px) grayscale(100);
+    opacity: 0.1;
+    transform: rotate(-10deg);
+    transition: 0.3s ease-in-out;
   }
 }
 
@@ -66,10 +68,10 @@ img {
 .break-long-words {
   -ms-word-break: break-all;
   word-break: break-all;
-  
+
   /* Non standard for webkit */
   word-break: break-word;
-  
+
   -webkit-hyphens: auto;
   -moz-hyphens: auto;
   hyphens: auto;
@@ -77,9 +79,9 @@ img {
 
 /* stop ios zooming into form inputs on small screens */
 $screen-sm-min: 768px !default;
-@media (max-width: $screen-sm-min) { 
-    textarea.form-control,  input.form-control {
-        font-size: 16px;
-    }
+@media (max-width: $screen-sm-min) {
+  textarea.form-control,
+  input.form-control {
+    font-size: 16px;
+  }
 }
-

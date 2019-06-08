@@ -27,8 +27,8 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
-        'App\Events\TopicJumpCacheBecameDirty' => [
-            'App\Listeners\DeleteTopicJumpCache'
+        'App\Events\TreeCacheBecameDirty' => [
+            'App\Listeners\DeleteTreeCache'
         ],
         'App\Events\UserCreated' => [
             'App\Listeners\LogUnverifiedUser'
