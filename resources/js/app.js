@@ -26,7 +26,7 @@ Vue.component(
   "rendered-text",
   require("./components/RenderedText.vue").default
 );
-Vue.component("topic-jump", require("./components/TopicJump.vue").default);
+Vue.component("search-menu", require("./components/SearchMenu.vue").default);
 // Vue.component('mentions-list', require('./components/Mentions.vue'));
 // const files = require.context('./', true, /\.vue$/i)
 
@@ -34,7 +34,7 @@ Vue.component("topic-jump", require("./components/TopicJump.vue").default);
 //     return Vue.component(_.last(key.split('/')).split('.')[0], files(key))
 // })
 
-/**
+/**t
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.

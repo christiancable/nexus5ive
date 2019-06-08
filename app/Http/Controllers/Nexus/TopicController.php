@@ -15,7 +15,6 @@ use App\Helpers\ActivityHelper;
 use App\Http\Requests\StoreTopic;
 use App\Helpers\BreadcrumbHelper;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Validator;
 
@@ -34,11 +33,7 @@ class TopicController extends Controller
      */
     public function index()
     {
-        $secondsToCache = 60 * 30; // 30 minutes
-
-        return Cache::remember('topicIndex', $secondsToCache, function () {
-            return Topic::where('title', '<>', '')->orderBy('title')->get(['id', 'title','intro']);
-        });
+        //
     }
     
     /**
@@ -54,7 +49,7 @@ class TopicController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Request  $request
+     * @param  \App\Http\Requests\StoreTopic  $request
      * @return RedirectResponse
      */
     public function store(StoreTopic $request)

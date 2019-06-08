@@ -25,6 +25,10 @@ class Kernel extends ConsoleKernel
         // remove old unverified users
         $schedule->command('users:unverified --confirm')
                  ->daily();
+
+        // rebuild the search tree cache if it needs it or now
+        $schedule->command('nexus:rebuildtreecache')
+                 ->daily();
     }
     /**
      * Register the commands for the application.

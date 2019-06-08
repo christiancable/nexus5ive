@@ -26,10 +26,6 @@ $notificationCount = $profileNotificationCount + $mentionCount;
        
       <div id="navbar" class="navbar-collapse collapse" style="">
        
-       <span id="navigationApp" class="nav navbar-nav mr-auto">
-         <topic-jump></topic-jump>
-       </span>
-       
         <ul class="nav navbar-nav mr-auto">
           <li class="nav-item">
             <a {!! App\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Users') !!} href="{{ action('Nexus\UserController@index')}}" class="nav-link">Users</a>
@@ -43,7 +39,8 @@ $notificationCount = $profileNotificationCount + $mentionCount;
           <li class="nav-item">
             <a {!! App\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Latest') !!} href="{{ action('Nexus\SectionController@latest')}}" class="nav-link">Latest</a>
           </li>
-          <li class="nav-item">
+          <span id="navigationApp" v-cloak><search-menu></search-menu></span>
+          <li class="nav-item replace-with-vue">
             <a {!! App\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Search') !!} href="{{ action('Nexus\SearchController@index')}}" class="nav-link">Search</a>
           </li>
         </ul>

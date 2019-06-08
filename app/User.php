@@ -11,7 +11,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable implements  MustVerifyEmail
+class User extends Authenticatable implements MustVerifyEmail
 {
     use Notifiable;
     // use Authenticatable, Authorizable, CanResetPassword;
@@ -79,7 +79,14 @@ class User extends Authenticatable implements  MustVerifyEmail
             /*
             to keep a cascading delete when using softDeletes we must remove the related models here
              */
-            $children = ['posts', 'comments', 'sections', 'views', 'messages', 'sentMessages', 'activity', 'givenComments'];
+            $children = ['posts',
+                'comments',
+                'sections',
+                'views',
+                'messages',
+                'sentMessages',
+                'activity',
+                'givenComments'];
             foreach ($children as $child) {
                 if ($user->$child !== null) {
                     // we need to call delete on the grandchilden to trigger their delete() events
@@ -99,7 +106,11 @@ class User extends Authenticatable implements  MustVerifyEmail
         });
 
         // log new users
-        User::created(function ($user) {event(new UserCreated($user));});     
+        User::created(
+            function ($user) {
+                event(new UserCreated($user));
+            }
+        );
     }
 
     /* related models */
