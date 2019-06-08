@@ -49,7 +49,7 @@ class SectionController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Request  $request
+     * @param  \App\Http\Requests\StoreSection  $request
      * @return RedirectResponse
      */
     public function store(StoreSection $request)

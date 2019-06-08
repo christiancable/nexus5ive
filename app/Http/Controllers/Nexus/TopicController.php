@@ -49,7 +49,7 @@ class TopicController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Request  $request
+     * @param  \App\Http\Requests\StoreTopic  $request
      * @return RedirectResponse
      */
     public function store(StoreTopic $request)

@@ -39,9 +39,15 @@ class Section extends Model
             }
         });
 
-        Section::deleted(function () {event(new TreeCacheBecameDirty());});
-        Section::updated(function () {event(new TreeCacheBecameDirty());});
-        Section::created(function () {event(new TreeCacheBecameDirty());}); 
+        Section::deleted(function () {
+            event(new TreeCacheBecameDirty());
+        });
+        Section::updated(function () {
+            event(new TreeCacheBecameDirty());
+        });
+        Section::created(function () {
+            event(new TreeCacheBecameDirty());
+        });
     }
     
     // users

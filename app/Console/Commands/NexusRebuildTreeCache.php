@@ -40,6 +40,6 @@ class NexusRebuildTreeCache extends Command
     {
         
         $this->line("Rebuilding Tree Cache");
-        Tree::rebuild();   
+        Tree::rebuild();
     }
 }

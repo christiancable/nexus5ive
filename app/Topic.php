@@ -43,9 +43,15 @@ class Topic extends Model
         });
 
         // forget the tree cache when a topic changes, is created or destroyed
-        Topic::deleted(function () {event(new TreeCacheBecameDirty());});
-        Topic::updated(function () {event(new TreeCacheBecameDirty());});
-        Topic::created(function () {event(new TreeCacheBecameDirty());});        
+        Topic::deleted(function () {
+            event(new TreeCacheBecameDirty());
+        });
+        Topic::updated(function () {
+            event(new TreeCacheBecameDirty());
+        });
+        Topic::created(function () {
+            event(new TreeCacheBecameDirty());
+        });
     }
     /**
      * returns the time of the most recent post

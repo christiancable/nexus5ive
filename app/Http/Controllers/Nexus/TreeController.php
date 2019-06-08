@@ -9,7 +9,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Cache;
 
 class TreeController extends Controller
-{   
+{
     public function __construct()
     {
         $this->middleware('auth');
@@ -33,7 +33,7 @@ class TreeController extends Controller
     */
     public function create()
     {
-          
+         //
     }
     
     /**
