@@ -6,13 +6,11 @@ use App\User;
 use App\Topic;
 use App\Section;
 use Tests\BrowserKitTestCase;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class SectionTest extends BrowserKitTestCase
 {
-    use DatabaseTransactions;
+    use RefreshDatabase;
         
     /**
      * @test

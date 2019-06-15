@@ -9,13 +9,11 @@ use App\Section;
 use App\Helpers\ViewHelper;
 use Tests\BrowserKitTestCase;
 use App\Helpers\RestoreHelper;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class RestoreHelperTest extends BrowserKitTestCase
 {
-    use DatabaseTransactions;
+    use RefreshDatabase;
     
     /**
     * @test

@@ -15,16 +15,16 @@ use Carbon\Carbon;
 
 $factory->define(App\User::class, function ($faker) {
 
-    $defaultTheme = App\Theme::firstOrFail();
-
     return [
         'name' => $faker->name,
         'username' => $faker->unique()->username,
         'email' => $faker->email,
         'password' => str_random(10),
         'remember_token' => str_random(10),
-        'theme_id' => $defaultTheme->id,
-        'email_verified_at' => Carbon::now() 
+        'theme_id' => function () {
+            return App\Theme::firstOrFail()->id;
+        },
+        'email_verified_at' => Carbon::now()
     ];
 });
 
