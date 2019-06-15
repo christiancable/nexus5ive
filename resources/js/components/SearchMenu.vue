@@ -9,7 +9,7 @@
       aria-expanded="false"
       id="mentiondropdown"
     >
-      <span class="oi oi-magnifying-glass mr-1 text-success" aria-hidden="true"></span> Search
+      <span class="oi oi-magnifying-glass mr-1" aria-hidden="true"></span> Search
     </a>
 
     <div class="dropdown-menu" aria-labelledby="mentiondropdown">
