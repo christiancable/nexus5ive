@@ -1,6 +1,0 @@
-RewriteEngine on
-RewriteBase /nexus/
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond $1 !^(index\.php)
-RewriteRule ^(.*)$ /nexus/index.php/$1 [L]
