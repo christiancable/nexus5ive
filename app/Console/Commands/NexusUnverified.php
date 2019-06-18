@@ -4,7 +4,7 @@
  *  Command to remove unverified user accounts which have remained
  *  unveried for at least {--age} days
  *
- *  users:unverified remove {--confirm} {--age=30}
+ *  nexus:unverified remove {--confirm} {--age=30}
  *
  */
 namespace App\Console\Commands;
@@ -14,13 +14,13 @@ use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Collection;
 
-class UsersUnverified extends Command
+class NexusUnverified extends Command
 {
     /**
      * Age an unverified account should reached to be
      * considered for removal.
      *
-     * @var string
+     * @var int
      */
     protected $age = 30;
     
@@ -37,7 +37,7 @@ class UsersUnverified extends Command
      *
      * @var string
      */
-    protected $signature = 'users:unverified
+    protected $signature = 'nexus:unverified
                             {--remove : removed unverified users}
                             {--confirm : do not prompt for confirmation}
                             {--age= : unverified users should be at least this many days old}
@@ -57,7 +57,7 @@ class UsersUnverified extends Command
      */
     private function getUnverifiedUsers()
     {
-        return User::where('email_verified_at', null)
+        return User::unverified()
         ->whereDate('created_at', '<', Carbon::now()->subDays($this->age)->toDateTimeString())
         ->get();
     }

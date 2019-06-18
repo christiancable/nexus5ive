@@ -45,4 +45,20 @@ class UnverifiedUsersTest extends TestCase
 
         $this->assertEquals($count, 0);
     }
+
+    /**
+     * @test
+     */
+    public function verifiedUsersDoNotAppearInUnverifiedUserList()
+    {
+        $verifiedUser = factory(User::class)->create([
+           'email_verified_at' => Carbon::now()
+        ]);
+
+        $unverifiedUsers = User::unverified()->get();
+
+        $count = $unverifiedUsers->where('id', $verifiedUser->id)->count();
+
+        $this->assertEquals($count, 0);
+    }
 }
