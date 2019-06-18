@@ -267,4 +267,15 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $query->where('email_verified_at', '<>', null);
     }
+
+    /**
+     * exclude verified users
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeUnverified($query)
+    {
+        return $query->where('email_verified_at', '=', null);
+    }
 }
