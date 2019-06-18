@@ -246,7 +246,7 @@ class User extends Authenticatable implements MustVerifyEmail
         return $count;
     }
 
-       /**
+    /**
      * Present the user model.
      *
      * @return ViewModels\UserPresenter
@@ -254,5 +254,28 @@ class User extends Authenticatable implements MustVerifyEmail
     public function present()
     {
         return new UserPresenter($this);
+    }
+
+
+    /**
+     * exclude unverified users
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeVerified($query)
+    {
+        return $query->where('email_verified_at', '<>', null);
+    }
+
+    /**
+     * exclude verified users
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeUnverified($query)
+    {
+        return $query->where('email_verified_at', '=', null);
     }
 }

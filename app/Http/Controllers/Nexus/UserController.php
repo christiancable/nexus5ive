@@ -31,7 +31,7 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $users =  User::select('username', 'name', 'popname', 'latestLogin', 'totalPosts', 'totalVisits')
-            ->orderBy('username', 'asc')->get();
+            ->verified()->orderBy('username', 'asc')->get();
             ActivityHelper::updateActivity(
                 $request->user()->id,
                 "Viewing list of Users",
