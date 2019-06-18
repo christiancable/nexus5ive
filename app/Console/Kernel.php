@@ -23,7 +23,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // remove old unverified users
-        $schedule->command('users:unverified --confirm')
+        $schedule->command('nexus:unverified --confirm')
                  ->daily();
 
         // rebuild the search tree cache if it needs it or now
