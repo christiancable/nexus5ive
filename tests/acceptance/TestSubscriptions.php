@@ -61,10 +61,10 @@ class TestSubscriptions extends BrowserKitTestCase
             );
 
         /* WHEN */
-        // user visits section and clicks catch-up
+        // user visits section and clicks Next
         $this->actingAs($user)
             ->visit('/section/' . $section->id)
-            ->click('Catch-up')
+            ->click('Next')
             ->see('People have been talking! New posts found in')
             ->dontSee('No updated topics found. Why not start a new conversation or read more sections?')
             ->click('mark all subscribed topics as read');
@@ -73,7 +73,7 @@ class TestSubscriptions extends BrowserKitTestCase
         // does not see the new posts found
          $this->actingAs($user)
             ->visit('/section/' . $section->id)
-            ->click('Catch-up')
+            ->click('Next')
             ->see('No updated topics found. Why not start a new conversation or read more sections?');
 
 
@@ -89,7 +89,7 @@ class TestSubscriptions extends BrowserKitTestCase
         
         $this->actingAs($user)
             ->visit('/section/' . $section->id)
-            ->click('Catch-up')
+            ->click('Next')
             ->see('People have been talking! New posts found in');
             // ->dontSee('No updated topics found. Why not start a new conversation or read more sections?');
     }
