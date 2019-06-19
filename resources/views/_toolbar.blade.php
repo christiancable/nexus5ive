@@ -29,20 +29,31 @@ $notificationCount = $profileNotificationCount + $mentionCount;
        
         <ul class="nav navbar-nav mr-auto">
           <li class="nav-item">
-            <a {!! App\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Users') !!} href="{{ action('Nexus\UserController@index')}}" class="nav-link">Users</a>
+              
+          <li class="nav-item">    
+            <a {!! App\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Latest') !!} href="{{ action('Nexus\SectionController@latest')}}" class="nav-link mr-1">
+            <span class="oi oi-pulse mr-1" aria-hidden="true"></span> Latest</a>
           </li>
+
           <li class="nav-item">
-            <a {!! App\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Catch-Up') !!} href="{{ action('Nexus\SectionController@leap')}}" class="nav-link">Catch-up</a>
+            <a {!! App\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Catch-Up') !!} href="{{ action('Nexus\SectionController@leap')}}" class="nav-link mr-1">
+            <span class="oi oi-arrow-circle-right mr-1" aria-hidden="true"></span> Next</a>
           </li> 
-          <li class="nav-item">
-            <a {!! App\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Whos Online') !!} href="{{ action('Nexus\ActivityController@index')}}" class="nav-link">Who's Online</a>
+
+            <a {!! App\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Users') !!} href="{{ action('Nexus\UserController@index')}}" class="nav-link">
+            <span class="oi oi-people mr-1" aria-hidden="true"></span> Users</a>
           </li>
-          <li class="nav-item">
-            <a {!! App\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Latest') !!} href="{{ action('Nexus\SectionController@latest')}}" class="nav-link">Latest</a>
+
+          <li class="nav-item">    
+            <a {!! App\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Whos Online') !!} href="{{ action('Nexus\ActivityController@index')}}" class="nav-link mr-1">
+            <span class="oi oi-globe mr-1" aria-hidden="true"></span> Who's Online</a>
           </li>
+
+
           <span id="navigationApp" v-cloak><search-menu></search-menu></span>
           <li class="nav-item replace-with-vue">
-            <a {!! App\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Search') !!} href="{{ action('Nexus\SearchController@index')}}" class="nav-link">Search</a>
+            <a {!! App\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Search') !!} href="{{ action('Nexus\SearchController@index')}}" class="nav-link mr-1">
+            <span class="oi oi-magnifying-glass mr-1" aria-hidden="true"></span> Search</a>
           </li>
         </ul>
 
