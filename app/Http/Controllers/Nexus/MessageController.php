@@ -78,4 +78,17 @@ class MessageController extends Controller
 
         return redirect(action('Nexus\MessageController@index'));
     }
+    
+    /**
+    * @param User $user
+    * @return Collection - messages between the auth'd user and the $user
+    */
+    public function conversation(User $user, $request)
+    {
+        $conversation = Message::with('author:id,username')
+            ->where('user_id', Auth()->id)
+            ->where('author_id', $user->id)->get();
+        
+        return $conversation;
+    }
 }
