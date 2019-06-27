@@ -76,6 +76,10 @@ Route::resource('posts', 'Nexus\PostController');
 Route::get('messages/{id}', 'Nexus\MessageController@index');
 Route::resource('messages', 'Nexus\MessageController');
 
+// conversations
+Route::get('chat/{username}', 'Nexus\MessageController@conversation');
+
+
 // activities
 Route::resource('here', 'Nexus\ActivityController');
 
