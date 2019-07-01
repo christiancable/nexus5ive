@@ -80,35 +80,4 @@ class MessageController extends Controller
 
         return redirect(action('Nexus\MessageController@index'));
     }
-    
-    /**
-    * @param string $username
-    * @return Collection - messages between the auth'd user and the $user
-    */
-    public function conversation(Request $request, $username)
-    {
-        $user = User::where('username', $username)->first();
-        if (null === $user) {
-            return redirect(action('Nexus\MessageController@index'));
-        }
-
-        $sideOne = Message::with('author:id,username')
-            ->with('user:id,username')
-            ->where('user_id', Auth::id())
-            ->where('author_id', $user->id)->get();
-        
-        $sideTwo = Message::with('author:id,username')
-            ->with('user:id,username')
-            ->where('user_id', $user->id)
-            ->where('author_id', Auth::id())->get();
-        
-        $conversation = $sideOne->merge($sideTwo)
-            ->sortBy('id');
-
-
-        $breadcrumbs = BreadcrumbHelper::breadcumbForUtility('Chat');
-
-        return view('chat.index', compact('conversation', 'breadcrumbs'));
-        // return $conversation;
-    }
 }
