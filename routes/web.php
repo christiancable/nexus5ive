@@ -77,7 +77,7 @@ Route::get('messages/{id}', 'Nexus\MessageController@index');
 Route::resource('messages', 'Nexus\MessageController');
 
 // conversations
-Route::get('chat/{username}', 'Nexus\MessageController@conversation');
+Route::get('chat/{username}', 'Nexus\ChatController@conversation');
 
 
 // activities
