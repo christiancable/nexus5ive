@@ -1,3 +1,3 @@
-<div class="badge badge-pill {{ $mine ? 'badge-primary' : 'badge-info'}} mb-2">
+<div class="{{ $mine ? 'text-primary' : 'text-success'}} mb-2">
  {{$username}}
- </div>
+</div>

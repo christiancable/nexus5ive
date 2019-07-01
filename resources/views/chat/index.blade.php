@@ -11,53 +11,33 @@
 @section('content')
 
 <div class="container">
-    @include('shared._heading', [$heading = 'Ugh', $lead = 'Ugh Ugh', $icon = 'people'])    
+    @include('shared._heading', [$heading = 'Chat', $lead = 'Modem Talking', $icon = 'people'])    
 </div>
 
 
 
-<div class="container" id="users-list">
+<div class="container">
 
+    <div class="row">
+        <div class="col-md-3 d-none d-md-block">
+            <ul class="list-group">
+            @foreach ($conversationPartners as $partner)
+                <li class="list-group-item"><a href="/chat/{{ $partner }}">{{ $partner }}</a></li>
+            @endforeach
+            </ul>
+        </div>
 
-        <div class="d-flex flex-column">
-            
-        @foreach ($conversation as $message)        
+        <div class="col-md-9">
+        @include('chat._conversation', [$conversation])
+    
 
-            @if (Auth::user()->id === $message->author->id)
-                @php $mine = true @endphp
-            @else 
-                @php $mine = false @endphp
-            @endif 
-
-            
-
-            {{-- <div class="{{ $mine ? 'align-self-end' : 'align-self-start'}}"> --}}
-            <div>
-            
-            @if ($loop->first)
-                @include('chat._name', ['username' => $message->author->username])
-                
-                @php 
-                    $previousMessageAuthorId = $message->author->id;
-                @endphp       
-            @else
-                @if ($previousMessageAuthorId != $message->author->id)
-                    @include('chat._name', ['username' => $message->author->username, $mine])
-                @endif 
-                @php 
-                    $previousMessageAuthorId = $message->author->id;
-                @endphp       
-            @endif
-
-
-                @include('chat._message', [$message, $mine])
-            </div>
-
-
-
-        @endforeach
-        
+        <div>
+            <textarea></textarea>
         </div>
     
+        </div>
+    </div>
+
+
 </div>
 @endsection
