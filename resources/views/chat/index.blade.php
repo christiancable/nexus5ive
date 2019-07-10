@@ -23,8 +23,8 @@
     <div class="col-md-9 d-flex flex-column chat-container">   
         @if ($currentPartner)
         <div class="chat-wrapper">
-            <div class="chat-content" id="chat-content">
-                <div class="chat-conversation d-flex flex-column  justify-content-end">
+            <div class="chat-content d-flex flex-column  justify-content-end" id="chat-content">
+                <div class="chat-conversation">
                     @include('chat._conversation', [$conversation])
                     </div> 
                 </div>
