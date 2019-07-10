@@ -6,17 +6,22 @@ use Auth;
 use App\User;
 use App\Message;
 use Illuminate\Http\Request;
+use App\Helpers\ActivityHelper;
 use App\Helpers\BreadcrumbHelper;
 use App\Http\Controllers\Controller;
 
 class ChatController extends Controller
 {
+    public function index(Request $request)
+    {
+        return $this->noConversation($request);
+    }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function chatList()
     {
         $recipients = Message::with('author', 'user')
            ->where('author_id', Auth::id())
@@ -29,7 +34,31 @@ class ChatController extends Controller
             return strnatcasecmp($a, $b);
         });
 
-        return $conversationPartners;
+        /* hacky until refactor of chat */
+        $chats = [];
+
+        foreach ($conversationPartners as $username) {
+            try {
+                $conversationPartner = User::where('username', $username)->firstOrFail();
+                $unreadCount = Message::where(
+                    [
+                        ['author_id', $conversationPartner->id],
+                        ['user_id', Auth::id()],
+                        ['read',0]
+                    ]
+                )->count();
+                $chats[] = [
+                    'username' => $username,
+                    'unread'   => $unreadCount
+                ];
+            } catch (\Throwable $th) {
+                //throw $th;
+            }
+        }
+
+        return $chats;
+
+        // return $conversationPartners;
     }
 
     /**
@@ -124,7 +153,13 @@ class ChatController extends Controller
 
         $breadcrumbs = BreadcrumbHelper::breadcumbForUtility('Chat');
 
-        $conversationPartners = $this->index();
+            ActivityHelper::updateActivity(
+                Auth::id(),
+                "Chat",
+                action('Nexus\ChatController@index')
+            );
+        
+        $conversationPartners = $this->chatList();
         
 
         return view('chat.index', compact('conversation', 'currentPartner', 'conversationPartners', 'breadcrumbs'));
@@ -137,10 +172,23 @@ class ChatController extends Controller
             return redirect(action('Nexus\MessageController@index'));
         }
 
-        $sideOne = Message::with('author:id,username')
+        $breadcrumbs = BreadcrumbHelper::breadcrumbForChat($user);
+
+        ActivityHelper::updateActivity(
+            Auth::id(),
+            "Chat",
+            action('Nexus\ChatController@index')
+        );
+
+        $sideOneMessages = Message::with('author:id,username')
            ->with('user:id,username')
            ->where('user_id', Auth::id())
-           ->where('author_id', $user->id)->get();
+           ->where('author_id', $user->id);
+
+        // TODO mark messages in conversation as read
+        $sideOneMessages->update(['read' => 1]);
+
+        $sideOne = $sideOneMessages->get();
         
         $sideTwo = Message::with('author:id,username')
            ->with('user:id,username')
@@ -150,12 +198,12 @@ class ChatController extends Controller
         $conversation = $sideOne->merge($sideTwo)
            ->sortBy('id');
 
+        
+        
 
-        $breadcrumbs = BreadcrumbHelper::breadcumbForUtility('Chat');
-
-        $conversationPartners = $this->index();
+        $conversationPartners = $this->chatList();
         $currentPartner = $username;
-
+        
         return view('chat.index', compact('conversation', 'currentPartner', 'conversationPartners', 'breadcrumbs'));
         // return $conversation;
     }
