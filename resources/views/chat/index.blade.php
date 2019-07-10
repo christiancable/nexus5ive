@@ -30,7 +30,8 @@
     }
     
     .overflow-content {
-        height: 2000px;
+        /* min-height: 59vh; */
+        min-height: calc(75vh - 12rem);
         color: black;
         background-color: #ddd;
         padding: 20px;
@@ -86,7 +87,6 @@
 </div>
 
 <script>
-    // document.getElementById("chat-conversation").scrollTop = 100000000000;
     document.getElementsByClassName("overflow-container")[0].scrollTop = 100000000000;
 </script> 
 @endsection
