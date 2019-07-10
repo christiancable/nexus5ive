@@ -18,10 +18,18 @@ class ChatController extends Controller
      */
     public function index()
     {
-      /**
-     @param string $username
-     @return Collection - messages between the auth'd user and the $user
-*/
+        $recipients = Message::with('author', 'user')
+           ->where('author_id', Auth::id())
+           ->get()->pluck('user.username')->unique();
+        $senders = Message::with('author', 'user')
+           ->where('user_id', Auth::id())
+           ->get()->pluck('author.username')->unique();
+
+        $conversationPartners = $recipients->merge($senders)->unique()->sort(function ($a, $b) {
+            return strnatcasecmp($a, $b);
+        });
+
+        return $conversationPartners;
     }
 
     /**
@@ -31,6 +39,7 @@ class ChatController extends Controller
      */
     public function create()
     {
+        xdebug_break();
         //
     }
 
@@ -40,9 +49,26 @@ class ChatController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $username)
     {
-        //
+        $user = User::where('username', $username)->first();
+        if (null === $user) {
+            return redirect(action('Nexus\ChatController@noConversation'));
+        }
+
+        $input = $request->all();
+
+        if (isset($input['text']) && $input['text']) {
+            $message = new Message;
+            $message->read = false;
+            $message->text = $input['text'];
+            $message->user_id = $user->id;
+            $message->time = time();
+            $message->author_id = Auth::id();
+            $message->save();
+        }
+
+        return redirect(action('Nexus\ChatController@conversation', $username));
     }
 
     /**
@@ -91,6 +117,19 @@ class ChatController extends Controller
         //
     }
 
+    public function noConversation(Request $request)
+    {
+        $conversation = [];
+        $currentPartner = '';
+
+        $breadcrumbs = BreadcrumbHelper::breadcumbForUtility('Chat');
+
+        $conversationPartners = $this->index();
+        
+
+        return view('chat.index', compact('conversation', 'currentPartner', 'conversationPartners', 'breadcrumbs'));
+    }
+    
     public function conversation(Request $request, $username)
     {
         $user = User::where('username', $username)->first();
@@ -114,19 +153,10 @@ class ChatController extends Controller
 
         $breadcrumbs = BreadcrumbHelper::breadcumbForUtility('Chat');
 
-        // @TODO ADD THIS ELSEWHERE
-        $recipients = Message::with('author', 'user')
-           ->where('author_id', Auth::id())
-           ->get()->pluck('user.username')->unique();
-        $senders = Message::with('author', 'user')
-           ->where('user_id', Auth::id())
-           ->get()->pluck('author.username')->unique();
+        $conversationPartners = $this->index();
+        $currentPartner = $username;
 
-        $conversationPartners = $recipients->merge($senders)->unique()->sort(function ($a, $b) {
-            return strnatcasecmp($a, $b);
-        });
-        
-        return view('chat.index', compact('conversation', 'conversationPartners', 'breadcrumbs'));
+        return view('chat.index', compact('conversation', 'currentPartner', 'conversationPartners', 'breadcrumbs'));
         // return $conversation;
     }
 }
