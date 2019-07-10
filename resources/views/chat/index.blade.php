@@ -41,6 +41,10 @@
         flex: 1;
         min-height: 0px; /* IMPORTANT: you need this for non-chrome browsers */
     }
+
+    #chat-conversation {
+        background-color: orange;
+    }
     
 </style>
 
@@ -66,7 +70,7 @@
     <div class="col-md-9 d-flex flex-column main-container">   
         <div class="content-wrapper">
             <div class="overflow-container">
-                <div class="overflow-content">
+                <div class="overflow-content d-flex flex-column  justify-content-end">
                     @include('chat._conversation', [$conversation])
                     </div> 
                 </div>
@@ -83,6 +87,6 @@
 
 <script>
     // document.getElementById("chat-conversation").scrollTop = 100000000000;
-    // document.getElementsByClassName("overflow-container")[0].scrollTop = 100000000000;
+    document.getElementsByClassName("overflow-container")[0].scrollTop = 100000000000;
 </script> 
 @endsection
