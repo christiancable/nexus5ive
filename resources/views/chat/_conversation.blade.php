@@ -1,5 +1,4 @@
-<div class="d-flex flex-column">
-    
+<div id="chat-conversation">
     @foreach ($conversation as $message)        
     
     @if (Auth::user()->id === $message->author->id)
@@ -9,24 +8,22 @@
     @endif 
     
     <div>
-        
         @if ($loop->first)
-        @include('chat._name', ['username' => $message->author->username])
-        
-        @php 
-        $previousMessageAuthorId = $message->author->id;
-        @endphp       
+            @include('chat._name', ['username' => $message->author->username])    
+            @php 
+            $previousMessageAuthorId = $message->author->id;
+            @endphp       
         @else
-        @if ($previousMessageAuthorId != $message->author->id)
-        @include('chat._name', ['username' => $message->author->username, $mine])
-        @endif 
-        @php 
-        $previousMessageAuthorId = $message->author->id;
-        @endphp       
+            @if ($previousMessageAuthorId != $message->author->id)
+                @include('chat._name', ['username' => $message->author->username, $mine])
+            @endif 
+            @php 
+            $previousMessageAuthorId = $message->author->id;
+            @endphp       
         @endif
-        
         
         @include('chat._message', [$message, $mine])
     </div>
     
     @endforeach
+</div>
