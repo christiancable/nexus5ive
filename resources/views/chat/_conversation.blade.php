@@ -1,4 +1,4 @@
-<div id="chat-conversation">
+<div>
     @foreach ($conversation as $message)        
     
     @if (Auth::user()->id === $message->author->id)

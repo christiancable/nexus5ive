@@ -1,4 +1,4 @@
- <form class="chat-post" method="POST" action="">
+ <form method="POST" action="">
     @csrf
     <div class="form-group">
         <label class="sr-only" for="text">Message</label>
