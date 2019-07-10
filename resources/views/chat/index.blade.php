@@ -21,18 +21,21 @@
     </div>
     
     <div class="col-md-9 d-flex flex-column chat-container">   
-        @if ($currentPartner)
+    @if ($currentPartner)
         <div class="chat-wrapper">
             <div class="chat-content d-flex flex-column  justify-content-end" id="chat-content">
+            @if (count($conversation) > 0)
                 <div class="chat-conversation">
                     @include('chat._conversation', [$conversation])
-                    </div> 
-                </div>
+                </div> 
+            @else
+                @include('chat._new_conversation', [$currentPartner])
+            @endif
             </div>
-            
-            <div class="chat-post">
-                @include('chat._messageform')
-            </div>
+        </div>
+        <div class="chat-post">
+            @include('chat._messageform')
+        </div>
         </div>
     </div>
     @else
