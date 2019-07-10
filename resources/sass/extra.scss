@@ -85,3 +85,42 @@ $screen-sm-min: 768px !default;
     font-size: 16px;
   }
 }
+
+/* chat */
+
+/*
+layout is like...
+.chat-container
+    .chat-wrapper
+        .chat-content #chat-content
+            .chat-conversation 
+        .chat-post        
+*/
+
+$chat-container-height: 75vh;
+$chat-post-height: 12rem;
+
+.chat-container {
+  height: $chat-container-height; /* or position:absolute; height:100%; */
+}
+
+.chat-post {
+  height: $chat-post-height;
+  padding: 1rem;
+}
+
+.chat-content {
+  flex: 1;
+  overflow: auto;
+}
+
+.chat-conversation {
+  min-height: calc($chat-container-height - $chat-post-height);
+  padding: 20px;
+}
+
+.chat-wrapper {
+  display: flex;
+  flex: 1;
+  min-height: 0px; /* IMPORTANT: you need this for non-chrome browsers */
+}
