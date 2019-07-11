@@ -106,8 +106,8 @@ $notificationCount = $profileNotificationCount + $mentionCount;
                   @endif
                 </a>
 
-                <a class="dropdown-item" href="{{action('Nexus\MessageController@index')}}">
-                  <span class="oi oi-envelope-closed" aria-hidden="true"></span> Inbox 
+                <a class="dropdown-item" href="{{action('Nexus\ChatController@index')}}">
+                  <span class="oi oi-chat" aria-hidden="true"></span> Messages 
                   @if ($messagesCount)
                     <span class="badge badge-info">{{$messagesCount}}</span>
                   @endif
