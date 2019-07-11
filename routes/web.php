@@ -78,8 +78,8 @@ Route::resource('messages', 'Nexus\MessageController');
 
 // conversations
 Route::get('chat/{username}', 'Nexus\ChatController@conversation');
-Route::get('chat', 'Nexus\ChatController@noConversation');
 Route::post('chat/{username}', 'Nexus\ChatController@store');
+Route::resource('chat', 'Nexus\ChatController');
 
 // activities
 Route::resource('here', 'Nexus\ActivityController');
