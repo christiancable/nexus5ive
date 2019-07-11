@@ -40,7 +40,7 @@
     </div>
     @else
     <div class="content">
-        <p>No chat selected</p>
+        @include('chat._create_chat')
     </div>
     @endif
 </div>
