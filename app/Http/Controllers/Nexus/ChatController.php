@@ -12,6 +12,12 @@ use App\Http\Controllers\Controller;
 
 class ChatController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('verified');
+    }
+
     public function index(Request $request)
     {
         return $this->noConversation($request);
