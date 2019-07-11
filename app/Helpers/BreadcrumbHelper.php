@@ -121,7 +121,7 @@ class BreadcrumbHelper
         $crumb['route'] = null;
         $breadcrumbs[] = $crumb;
 
-        $crumb['title'] = 'Chat';
+        $crumb['title'] = 'Messages';
         $crumb['route'] = action('Nexus\ChatController@index');
         $breadcrumbs[] = $crumb;
 

@@ -5,13 +5,13 @@
 @endsection 
 
 @section('meta')
-<title>Chit Chat</title>
+<title>Messages</title>
 @endsection
 
 @section('content')
 
 <div class="container">
-    @include('shared._heading', [$heading = 'Chat', $lead = 'Modem Talking', $icon = 'chat'])    
+    @include('shared._heading', [$heading = 'Messages', $lead = 'Modem Talking', $icon = 'chat'])    
 </div>
 
 <div class="container">
