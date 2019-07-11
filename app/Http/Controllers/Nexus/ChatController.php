@@ -161,7 +161,7 @@ class ChatController extends Controller
 
             ActivityHelper::updateActivity(
                 Auth::id(),
-                "Chat",
+                "Messages",
                 action('Nexus\ChatController@index')
             );
         
@@ -182,7 +182,7 @@ class ChatController extends Controller
 
         ActivityHelper::updateActivity(
             Auth::id(),
-            "Chat",
+            "Messages",
             action('Nexus\ChatController@index')
         );
 
