@@ -11,7 +11,7 @@
 @section('content')
 
 <div class="container">
-    @include('shared._heading', [$heading = 'Chat', $lead = 'Modem Talking', $icon = 'people'])    
+    @include('shared._heading', [$heading = 'Chat', $lead = 'Modem Talking', $icon = 'chat'])    
 </div>
 
 <div class="container">
