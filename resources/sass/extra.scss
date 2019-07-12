@@ -5,6 +5,11 @@
 // Open Iconic icon font
 @import "~open-iconic/font/css/open-iconic-bootstrap.scss";
 
+// Import Bootstrap mixins and variables
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins/_breakpoints";
+
 $body-color: #f5f8fa !default;
 
 /* blockquote */
@@ -97,8 +102,8 @@ layout is like...
         .chat-post        
 */
 
-$chat-container-height: 75vh;
-$chat-post-height: 12rem;
+$chat-container-height: 53vh;
+$chat-post-height: 8rem;
 
 .chat-container {
   height: $chat-container-height; /* or position:absolute; height:100%; */
@@ -109,14 +114,33 @@ $chat-post-height: 12rem;
   padding: 1rem;
 }
 
+.chat-conversation {
+  min-height: calc(#{$chat-container-height} - #{$chat-post-height});
+  padding: 20px;
+}
+
+@include media-breakpoint-up(md) {
+  $chat-container-height-md: 75vh;
+  $chat-post-height-md: 8rem;
+
+  .chat-container {
+    height: $chat-container-height-md; /* or position:absolute; height:100%; */
+  }
+
+  .chat-post {
+    height: $chat-post-height-md;
+    padding: 1rem;
+  }
+
+  .chat-conversation {
+    min-height: calc(#{$chat-container-height-md} - #{$chat-post-height-md});
+    padding: 20px;
+  }
+}
+
 .chat-content {
   flex: 1;
   overflow: auto;
-}
-
-.chat-conversation {
-  min-height: calc($chat-container-height - $chat-post-height);
-  padding: 20px;
 }
 
 .chat-wrapper {
