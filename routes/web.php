@@ -73,8 +73,13 @@ Route::delete('posts/{post}', 'Nexus\PostController@destroy');
 Route::resource('posts', 'Nexus\PostController');
 
 // messages
-Route::get('messages/{id}', 'Nexus\MessageController@index');
-Route::resource('messages', 'Nexus\MessageController');
+// Route::get('messages/{id}', 'Nexus\MessageController@index');
+// Route::resource('messages', 'Nexus\MessageController');
+
+// conversations
+Route::get('chat/{username}', 'Nexus\ChatController@conversation');
+Route::post('chat/{username}', 'Nexus\ChatController@store');
+Route::resource('chat', 'Nexus\ChatController');
 
 // activities
 Route::resource('here', 'Nexus\ActivityController');
