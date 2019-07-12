@@ -175,7 +175,7 @@ class ChatController extends Controller
     {
         $user = User::where('username', $username)->first();
         if (null === $user) {
-            return redirect(action('Nexus\MessageController@index'));
+            return redirect(action('Nexus\ChatController@index'));
         }
 
         $breadcrumbs = BreadcrumbHelper::breadcrumbForChat($user);
