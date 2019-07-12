@@ -107,4 +107,29 @@ class BreadcrumbHelper
 
         return array_reverse($breadcrumbs);
     }
+
+    /**
+     * generates a breadcrumb trail for a user to user chat
+     *
+     * @param User $user
+     * @return array
+     */
+    public static function breadcrumbForChat(User $user)
+    {
+        $breadcrumbs = [];
+        $crumb['title'] = $user->username;
+        $crumb['route'] = null;
+        $breadcrumbs[] = $crumb;
+
+        $crumb['title'] = 'Messages';
+        $crumb['route'] = action('Nexus\ChatController@index');
+        $breadcrumbs[] = $crumb;
+
+        $section = \App\Section::first();
+        $crumb['title'] = $section->title;
+        $crumb['route'] = action('Nexus\SectionController@show', ['section_id' => $section->id]);
+        $breadcrumbs[] = $crumb;
+
+        return array_reverse($breadcrumbs);
+    }
 }

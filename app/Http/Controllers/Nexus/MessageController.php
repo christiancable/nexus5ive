@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Nexus;
 
+use Auth;
+use App\User;
 use App\Message;
 use App\Http\Requests;
 use Illuminate\View\View;
