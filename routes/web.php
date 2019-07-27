@@ -38,7 +38,8 @@ Route::post('api/users', function (Request $request) {
     return response()->json($data);
 })->name('api.users');
 
-// // Interface partials
+
+// Interface partials
 Route::get('interface/toolbar', ['middleware' => 'auth',  function () {
     return response()->view('_toolbar');
 }])->name('interface.toolbar');
@@ -80,6 +81,7 @@ Route::resource('posts', 'Nexus\PostController');
 Route::get('chat/{username}', 'Nexus\ChatController@conversation');
 Route::post('chat/{username}', 'Nexus\ChatController@store');
 Route::resource('chat', 'Nexus\ChatController');
+Route::get('chats', 'Nexus\ChatController@chatList');
 
 // activities
 Route::resource('here', 'Nexus\ActivityController');

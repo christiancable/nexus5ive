@@ -16,8 +16,8 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-md-3 d-none d-md-block">
-            @include('chat._chatlist', [$conversationPartners, $currentPartner])
+        <div class="col-md-3 d-none d-md-block" id="app">
+            <chat-list current-chat="{{$currentPartner}}"></chat-list>
         </div>
     
         <div class="col-md-9 d-flex flex-column chat-container">   
