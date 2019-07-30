@@ -5,44 +5,43 @@
     </div>
   </section>
   <section v-else>
-    <template v-if="!loading">
-      <div class="chat-wrapper">
-        <div class="chat-content d-flex flex-column justify-content-end" id="chat-content">
-          <template v-if="chat.length > 0">
-            <div class="chat-conversation">
-              <div
-                v-for="message in chat"
-                v-bind:key="message.id"
-                :class="[ 'bg-transparent text-black py-2 px-3 mb-3 d-flex justify-content-between border-left', message.user.username == username ? 'border-primary' : 'border-success']"
-              >
-                <span>{{message.text}}</span>
-                <small class="text-muted mx-3 d-none d-md-inline">{{message.time}}</small>
+    <template v-if="chatID">
+      <template v-if="!loading">
+        <div class="chat-wrapper">
+          <div class="chat-content d-flex flex-column justify-content-end" id="chat-content">
+            <template v-if="chat.length > 0">
+              <div class="chat-conversation">
+                <div
+                  v-for="message in chat"
+                  v-bind:key="message.id"
+                  :class="[ 'bg-transparent text-black py-2 px-3 mb-3 d-flex justify-content-between border-left', message.user.username == username ? 'border-primary' : 'border-success']"
+                >
+                  <span>{{message.text}}</span>
+                  <small class="text-muted mx-3 d-none d-md-inline">{{message.time}}</small>
+                </div>
               </div>
-            </div>
-          </template>
-          <template v-else>
-            Start talking message
-            <!-- {{-- @include('chat._new_conversation', [$currentPartner]) --}} -->
-          </template>
+            </template>
+            <template v-else>
+              Start talking message
+              <!-- {{-- @include('chat._new_conversation', [$currentPartner]) --}} -->
+            </template>
+          </div>
         </div>
-      </div>
 
-      <template v-if="chatID">
         <div class="chat-post">
           chat form goes here
           <!-- @include('chat._messageform') -->
         </div>
       </template>
-      <template v-else>
-        <p>NO CHAT SELECTED</p>
-      </template>
-    </template>
-
-    <div v-else>
-      <div class="spinner-border text-info" role="status">
-        <span class="sr-only">Loading...</span>
+      <div v-else>
+        <div class="spinner-border text-info" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
       </div>
-    </div>
+    </template>
+    <template v-else>
+      <p>START NEW CHAT</p>
+    </template>
   </section>
 </template>
 
