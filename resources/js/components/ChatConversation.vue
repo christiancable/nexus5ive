@@ -27,11 +27,7 @@
             </template>
           </div>
         </div>
-
-        <div class="chat-post">
-          chat form goes here
-          <!-- @include('chat._messageform') -->
-        </div>
+        <chat-post v-bind:current-chat="chatID" v-on:sentMessage="fetchData"></chat-post>
       </template>
       <div v-else>
         <div class="spinner-border text-info" role="status">

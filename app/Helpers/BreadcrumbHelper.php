@@ -114,10 +114,10 @@ class BreadcrumbHelper
      * @param User $user
      * @return array
      */
-    public static function breadcrumbForChat(User $user)
+    public static function breadcrumbForChat(String $username)
     {
         $breadcrumbs = [];
-        $crumb['title'] = $user->username;
+        $crumb['title'] = $username;
         $crumb['route'] = null;
         $breadcrumbs[] = $crumb;
 

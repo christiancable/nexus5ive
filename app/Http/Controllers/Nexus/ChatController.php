@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Helpers\ActivityHelper;
 use App\Helpers\BreadcrumbHelper;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Nexus\ChatApiController;
 
 class ChatController extends Controller
 {
@@ -22,50 +23,7 @@ class ChatController extends Controller
     {
         return $this->noConversation($request);
     }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function chatList()
-    {
-        $recipients = Message::with('author', 'user')
-           ->where('author_id', Auth::id())
-           ->get()->pluck('user.username')->unique();
-        $senders = Message::with('author', 'user')
-           ->where('user_id', Auth::id())
-           ->get()->pluck('author.username')->unique();
 
-        $conversationPartners = $recipients->merge($senders)->unique()->sort(function ($a, $b) {
-            return strnatcasecmp($a, $b);
-        });
-
-        /* hacky until refactor of chat */
-        $chats = [];
-
-        foreach ($conversationPartners as $username) {
-            try {
-                $conversationPartner = User::where('username', $username)->firstOrFail();
-                $unreadCount = Message::where(
-                    [
-                        ['author_id', $conversationPartner->id],
-                        ['user_id', Auth::id()],
-                        ['read',0]
-                    ]
-                )->count();
-                $chats[] = [
-                    'username' => $username,
-                    'unread'   => $unreadCount
-                ];
-            } catch (\Throwable $th) {
-                //throw $th;
-            }
-        }
-
-        return $chats;
-
-        // return $conversationPartners;
-    }
 
     /**
      * Show the form for creating a new resource.
@@ -165,20 +123,17 @@ class ChatController extends Controller
                 action('Nexus\ChatController@index')
             );
         
-        $conversationPartners = $this->chatList();
+        // $conversationPartners = $this->chatList();
         
 
-        return view('chat.index', compact('conversation', 'currentPartner', 'conversationPartners', 'breadcrumbs'));
+        return view('chat.index', compact('currentPartner', 'breadcrumbs'));
     }
     
+
     public function conversation(Request $request, $username)
     {
-        $user = User::where('username', $username)->first();
-        if (null === $user) {
-            return redirect(action('Nexus\ChatController@index'));
-        }
-
-        $breadcrumbs = BreadcrumbHelper::breadcrumbForChat($user);
+        
+        $breadcrumbs = BreadcrumbHelper::breadcrumbForChat($username);
 
         ActivityHelper::updateActivity(
             Auth::id(),
@@ -186,31 +141,11 @@ class ChatController extends Controller
             action('Nexus\ChatController@index')
         );
 
-        $sideOneMessages = Message::with('author:id,username')
-           ->with('user:id,username')
-           ->where('user_id', Auth::id())
-           ->where('author_id', $user->id);
-
-        // TODO mark messages in conversation as read
-        $sideOneMessages->update(['read' => 1]);
-
-        $sideOne = $sideOneMessages->get();
-        
-        $sideTwo = Message::with('author:id,username')
-           ->with('user:id,username')
-           ->where('user_id', $user->id)
-           ->where('author_id', Auth::id())->get();
-        
-        $conversation = $sideOne->merge($sideTwo)
-           ->sortBy('id');
-
-        
-        
-
-        $conversationPartners = $this->chatList();
+        // @todo deal with empty conversation
+        // $conversation = $this->getConversation($username);
+        // $conversationPartners = $this->chatList();
         $currentPartner = $username;
         
-        return view('chat.index', compact('conversation', 'currentPartner', 'conversationPartners', 'breadcrumbs'));
-        // return $conversation;
+        return view('chat.index', compact('currentPartner', 'breadcrumbs'));
     }
 }

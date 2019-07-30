@@ -81,7 +81,11 @@ Route::resource('posts', 'Nexus\PostController');
 Route::get('chat/{username}', 'Nexus\ChatController@conversation');
 Route::post('chat/{username}', 'Nexus\ChatController@store');
 Route::resource('chat', 'Nexus\ChatController');
-Route::get('chats', 'Nexus\ChatController@chatList');
+
+// chat refactor for vue
+Route::get('chats/{username}', 'Nexus\ChatApiController@show');
+Route::get('chats', 'Nexus\ChatApiController@index');
+// Route::get('chat/{username}', 'Nexus\ChatController@getConversation');
 
 // activities
 Route::resource('here', 'Nexus\ActivityController');
