@@ -27,7 +27,7 @@
             </template>
           </div>
         </div>
-        <chat-post v-bind:current-chat="chatID" v-on:sentMessage="fetchData"></chat-post>
+        <chat-post v-bind:current-chat="chatID" v-on:sentMessage="refreshMessages"></chat-post>
       </template>
       <div v-else>
         <div class="spinner-border text-info" role="status">
@@ -93,6 +93,19 @@ export default {
       } else {
         this.loading = false;
       }
+    },
+
+    refreshMessages: function(newMessage) {
+      const sendingMessage = {
+        id: "NEWMESSAGE",
+        user: {
+          username: this.username
+        },
+        text: newMessage,
+        time: "..."
+      };
+      this.chat.push(sendingMessage);
+      this.fetchData();
     }
   }
 };

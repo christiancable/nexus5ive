@@ -27,20 +27,18 @@ export default {
 
   computed: {},
 
-  mounted() {
-    console.log("chat post form is mounted");
-  },
+  mounted() {},
 
   methods: {
     sendPost() {
       const data = this.message;
+      this.$emit("sentMessage", this.message.text);
       this.loading = true;
       axios
         .post("", data)
         .then(response => {
-          this.message.text = "";
-          this.$emit("sentMessage");
           this.loading = false;
+          this.message.text = "";
         })
         .catch(error => {
           console.log(error);
