@@ -22,11 +22,15 @@ require("./nexus");
 Vue.component("userlist", require("./components/Userlist.vue").default);
 Vue.component("post-compose", require("./components/PostCompose.vue").default);
 Vue.component("post-preview", require("./components/PostPreview.vue").default);
-Vue.component("chat-list", require("./components/ChatList.vue").default);
-Vue.component("chat-post", require("./components/ChatPost.vue").default);
+Vue.component("chat-list", require("./components/chat/ChatList.vue").default);
+Vue.component("chat-post", require("./components/chat/ChatPost.vue").default);
 Vue.component(
   "chat-conversation",
-  require("./components/ChatConversation.vue").default
+  require("./components/chat/ChatConversation.vue").default
+);
+Vue.component(
+  "chat-message",
+  require("./components/chat/ChatMessage.vue").default
 );
 Vue.component(
   "rendered-text",

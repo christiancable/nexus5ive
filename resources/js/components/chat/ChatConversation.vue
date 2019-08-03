@@ -11,14 +11,14 @@
           <div class="chat-content d-flex flex-column justify-content-end" id="chat-content">
             <template v-if="chat.length > 0">
               <div class="chat-conversation">
-                <div
+                <!-- <div > -->
+                <chat-message
                   v-for="message in chat"
                   v-bind:key="message.id"
-                  :class="[ 'bg-transparent text-black py-2 px-3 mb-3 d-flex justify-content-between border-left', message.user.username == username ? 'border-primary' : 'border-success']"
-                >
-                  <span>{{message.text}}</span>
-                  <small class="text-muted mx-3 d-none d-md-inline">{{message.time}}</small>
-                </div>
+                  :message="message"
+                  :username="username"
+                ></chat-message>
+                <!-- </div> -->
               </div>
             </template>
             <template v-else>
@@ -102,7 +102,7 @@ export default {
           username: this.username
         },
         text: newMessage,
-        time: "..."
+        time: null
       };
       this.chat.push(sendingMessage);
       this.fetchData();

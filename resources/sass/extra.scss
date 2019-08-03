@@ -105,11 +105,14 @@ layout is like...
  - TODO ipads
 */
 
-$chat-container-height: 53vh;
+$chat-wrapper-height: 53vh;
 $chat-post-height: 8rem;
 
-.chat-container {
-  height: $chat-container-height; /* or position:absolute; height:100%; */
+.chat-message {
+  border-left-width: 1rem;
+}
+.chat-wrapper {
+  height: $chat-wrapper-height; /* or position:absolute; height:100%; */
 }
 
 .chat-post {
@@ -118,26 +121,29 @@ $chat-post-height: 8rem;
 }
 
 .chat-conversation {
-  min-height: calc(#{$chat-container-height} - #{$chat-post-height});
-  padding: 20px;
+  min-height: calc(#{$chat-wrapper-height} - #{$chat-post-height});
+  //   padding: 20px;
 }
 
 @include media-breakpoint-up(md) {
-  $chat-container-height-md: 75vh;
+  $chat-wrapper-height-md: 75vh;
   $chat-post-height-md: 8rem;
 
-  .chat-container {
-    height: $chat-container-height-md; /* or position:absolute; height:100%; */
-  }
+  //   .chat-container {
+  //   }
 
   .chat-post {
     height: $chat-post-height-md;
     padding: 1rem;
   }
 
+  .chat-wrapper {
+    height: $chat-wrapper-height-md; /* or position:absolute; height:100%; */
+  }
+
   .chat-conversation {
-    min-height: calc(#{$chat-container-height-md} - #{$chat-post-height-md});
-    padding: 20px;
+    min-height: calc(#{$chat-wrapper-height-md} - #{$chat-post-height-md});
+    // padding: 20px;
   }
 }
 
