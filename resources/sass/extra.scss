@@ -105,55 +105,41 @@ layout is like...
  - TODO ipads
 */
 
-// $header-height: 253.16px;
 $header-height: calc(56.0333px + 47.0333px + 121px);
 $mobile-nav-height: 65.2px;
 $mobile-spacer-height: calc(23.0333px * 4);
 $chat-post-height: 105.8px;
 
-// $chat-wrapper-height: 53vh;
 $chat-wrapper-height: calc(
   100vh - #{$header-height} - #{$mobile-nav-height} - #{$chat-post-height} - #{$mobile-spacer-height}
+);
+
+$chat-wrapper-height-lg: calc(
+  100vh - #{$header-height} - #{$mobile-nav-height} - #{$chat-post-height}
 );
 
 .chat-message {
   border-left-width: 1rem;
 }
+
 .chat-wrapper {
   height: $chat-wrapper-height; /* or position:absolute; height:100%; */
+}
+
+.chat-conversation {
+  min-height: calc(#{$chat-wrapper-height} - #{$chat-post-height});
+}
+
+@include media-breakpoint-up(lg) {
+  .chat-wrapper {
+    height: $chat-wrapper-height-lg;
+  }
 }
 
 .chat-post {
   height: $chat-post-height;
   padding: 1rem;
 }
-
-.chat-conversation {
-  min-height: calc(#{$chat-wrapper-height} - #{$chat-post-height});
-  //   padding: 20px;
-}
-
-// @include media-breakpoint-up(md) {
-//   $chat-wrapper-height-md: 75vh;
-//   $chat-post-height-md: 8rem;
-
-//   //   .chat-container {
-//   //   }
-
-//   .chat-post {
-//     height: $chat-post-height-md;
-//     padding: 1rem;
-//   }
-
-//   .chat-wrapper {
-//     height: $chat-wrapper-height-md; /* or position:absolute; height:100%; */
-//   }
-
-//   .chat-conversation {
-//     min-height: calc(#{$chat-wrapper-height-md} - #{$chat-post-height-md});
-//     // padding: 20px;
-//   }
-// }
 
 .chat-content {
   flex: 1;
