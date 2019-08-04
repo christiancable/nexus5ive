@@ -14,39 +14,20 @@
     @include('shared._heading', [$heading = 'Messages', $lead = 'Modem Talking', $icon = 'chat'])    
 </div>
 
-<div class="container">
+<div class="container" id="app">
     <div class="row">
-        <div class="col-md-3 d-none d-md-block">
-            @include('chat._chatlist', [$conversationPartners, $currentPartner])
+        <div class="col-lg-3 d-none d-lg-block">
+            <chat-list current-chat="{{$currentPartner}}"></chat-list>
         </div>
     
-        <div class="col-md-9 d-flex flex-column chat-container">   
-        @if ($currentPartner)
-            <div class="chat-wrapper">
-                <div class="chat-content d-flex flex-column  justify-content-end" id="chat-content">
-                @if (count($conversation) > 0)
-                    <div class="chat-conversation">
-                        @include('chat._conversation', [$conversation])
-                    </div> 
-                @else
-                    @include('chat._new_conversation', [$currentPartner])
-                @endif
-                </div>
-            </div>
-            <div class="chat-post">
-                @include('chat._messageform')
-            </div>
-        </div>
-    @else
-    <div class="content">
-        @include('chat._create_chat')
-    </div>
-    @endif
+        <div class="col-lg-9 d-flex flex-column chat-container">   
+        <chat-conversation current-chat="{{$currentPartner}}" username="{!! Auth::user()->username !!}"></chat-conversation>
+      
     </div>
 </div>
 
-<script>
+{{-- <script>
     // scroll the chat window down
     document.getElementById("chat-content").scrollTop = 100000000000;
-</script> 
+</script>  --}}
 @endsection
