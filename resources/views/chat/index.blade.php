@@ -26,8 +26,8 @@
     </div>
 </div>
 
-<script>
+{{-- <script>
     // scroll the chat window down
     document.getElementById("chat-content").scrollTop = 100000000000;
-</script> 
+</script>  --}}
 @endsection

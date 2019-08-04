@@ -80,6 +80,11 @@ class ChatApiController extends Controller
         //
     }
 
+    public function chatPartnerIndex()
+    {
+        return User::verified()->orderBy('username')->pluck('username');
+    }
+
     /**
      * Display the specified resource.
      *

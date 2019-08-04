@@ -1,5 +1,5 @@
 <template>
-  <form method="POST" action @submit.prevent="sendPost">
+  <form method="POST" action @submit.prevent="sendPost" class="chat-post">
     <fieldset v-bind:disabled="loading">
       <div class="form-row">
         <div class="col-9 col-md-10">

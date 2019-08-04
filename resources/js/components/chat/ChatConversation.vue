@@ -8,22 +8,23 @@
     <template v-if="chatID">
       <template v-if="!loading">
         <div class="chat-wrapper">
-          <div class="chat-content d-flex flex-column justify-content-end" id="chat-content">
+          <div
+            class="chat-content d-flex flex-column justify-content-end"
+            id="chat-content"
+            v-chat-scroll
+          >
             <template v-if="chat.length > 0">
               <div class="chat-conversation">
-                <!-- <div > -->
                 <chat-message
                   v-for="message in chat"
                   v-bind:key="message.id"
                   :message="message"
                   :username="username"
                 ></chat-message>
-                <!-- </div> -->
               </div>
             </template>
             <template v-else>
-              Start talking message
-              <!-- {{-- @include('chat._new_conversation', [$currentPartner]) --}} -->
+              <chat-start v-bind:current-chat="chatID"></chat-start>
             </template>
           </div>
         </div>
@@ -36,12 +37,13 @@
       </div>
     </template>
     <template v-else>
-      <p>START NEW CHAT</p>
+      <chat-new></chat-new>
     </template>
   </section>
 </template>
 
 <script>
+import VueChatScroll from "vue-chat-scroll";
 import { setInterval, clearInterval } from "timers";
 export default {
   props: ["current-chat", "username"],
@@ -53,7 +55,7 @@ export default {
       loading: true,
       errored: false,
       interval: null,
-      refresh_time: 5000
+      refresh_time: 5 * 1000
     };
   },
 
@@ -63,15 +65,8 @@ export default {
     if (this.currentChat !== void 0) {
       this.chatID = this.currentChat;
     }
-
     this.fetchData();
-
-    this.interval = setInterval(
-      function() {
-        this.fetchData();
-      }.bind(this),
-      this.refresh_time
-    );
+    this.resetTimer();
   },
 
   beforeDestroy: function() {
@@ -98,7 +93,7 @@ export default {
     refreshMessages: function(newMessage) {
       const sendingMessage = {
         id: "NEWMESSAGE",
-        user: {
+        author: {
           username: this.username
         },
         text: newMessage,
@@ -106,6 +101,17 @@ export default {
       };
       this.chat.push(sendingMessage);
       this.fetchData();
+      this.resetTimer();
+    },
+
+    resetTimer: function() {
+      clearInterval(this.interval);
+      this.interval = setInterval(
+        function() {
+          this.fetchData();
+        }.bind(this),
+        this.refresh_time
+      );
     }
   }
 };

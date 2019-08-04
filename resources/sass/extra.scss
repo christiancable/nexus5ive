@@ -106,22 +106,9 @@ $footer-navigation-space-lg: 0;
 }
 
 /* chat */
-
-/*
-layout is like...
-.chat-container
-    .chat-wrapper
-        .chat-content #chat-content
-            .chat-conversation 
-        .chat-post        
-
-
- - TODO ipads
-*/
-
 $header-height: calc(56.0333px + 47.0333px + 121px);
 $mobile-nav-height: 65.2px;
-$chat-post-height: 105.8px;
+$chat-post-height: 130.1px;
 
 $chat-wrapper-height: calc(
   100vh - #{$header-height} - #{$mobile-nav-height} - #{$chat-post-height} - #{$footer-navigation-space}
@@ -132,7 +119,12 @@ $chat-wrapper-height-lg: calc(
 );
 
 .chat-message {
-  border-left-width: 1rem;
+  border-width: 0;
+  //   .card-text {
+  //     border-width: 0;
+  //     border-style: solid;
+  //     border-left-width: 1rem;
+  //   }
 }
 
 .chat-wrapper {
@@ -140,7 +132,8 @@ $chat-wrapper-height-lg: calc(
 }
 
 .chat-conversation {
-  min-height: calc(#{$chat-wrapper-height} - #{$chat-post-height});
+  //   min-height: calc(#{$chat-wrapper-height} - #{$chat-post-height});
+  min-height: 1rem;
 }
 
 @include media-breakpoint-up(lg) {
@@ -150,8 +143,7 @@ $chat-wrapper-height-lg: calc(
 }
 
 .chat-post {
-  height: $chat-post-height;
-  padding: 1rem;
+  //   height: $chat-post-height;
 }
 
 .chat-content {
@@ -163,4 +155,14 @@ $chat-wrapper-height-lg: calc(
   display: flex;
   flex: 1;
   min-height: 0px; /* IMPORTANT: you need this for non-chrome browsers */
+}
+
+//@TODO this 10px value is a bit of a magic number - it covers the different heights of the post form
+.chat-list-wrapper {
+  height: calc(100vh - #{$header-height} - #{$mobile-nav-height} - 10px);
+  min-height: 0px;
+}
+.chat-list {
+  height: calc(100vh - #{$header-height} - #{$mobile-nav-height});
+  overflow: auto;
 }

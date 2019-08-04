@@ -5,20 +5,22 @@
     </div>
   </section>
   <section v-else>
-    <nav class="list-group" v-if="!loading">
-      <a
-        v-for="chat in chats"
-        v-bind:key="chat.username"
-        :class="[ 'list-group-item list-group-item-action d-flex justify-content-between', chat.username == currentChat ? 'active' : '']"
-        :href="'/chat/' + chat.username"
-      >
-        {{ chat.username }}
-        <span
-          class="badge badge-success ml-1"
-          v-if="((chat.username != currentChat) & (chat.unread != 0))"
-        >{{ chat.unread }}</span>
-      </a>
-    </nav>
+    <div class="chat-list-wrapper" v-if="!loading">
+      <nav class="list-group chat-list">
+        <a
+          v-for="chat in chats"
+          v-bind:key="chat.username"
+          :class="[ 'list-group-item list-group-item-action d-flex justify-content-between', chat.username == currentChat ? 'active' : '']"
+          :href="'/chat/' + chat.username"
+        >
+          {{ chat.username }}
+          <span
+            class="badge badge-success ml-1"
+            v-if="((chat.username != currentChat) & (chat.unread != 0))"
+          >{{ chat.unread }}</span>
+        </a>
+      </nav>
+    </div>
     <nav v-else>
       <div class="spinner-border text-info" role="status">
         <span class="sr-only">Loading...</span>
@@ -38,7 +40,7 @@ export default {
       loading: true,
       errored: false,
       interval: null,
-      refresh_time: 5000
+      refresh_time: 15 * 1000
     };
   },
 
