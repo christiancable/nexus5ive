@@ -16,11 +16,11 @@
 
 <div class="container" id="app">
     <div class="row">
-        <div class="col-md-3 d-none d-md-block">
+        <div class="col-lg-3 d-none d-lg-block">
             <chat-list current-chat="{{$currentPartner}}"></chat-list>
         </div>
     
-        <div class="col-md-9 d-flex flex-column chat-container">   
+        <div class="col-lg-9 d-flex flex-column chat-container">   
         <chat-conversation current-chat="{{$currentPartner}}" username="{!! Auth::user()->username !!}"></chat-conversation>
       
     </div>

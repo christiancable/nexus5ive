@@ -75,11 +75,8 @@
         @yield('content')
 
         @auth
-            {{-- UGLY HACK - add space at the bottom on small screens so the bottom nav does not hide content  --}}
-            <div class="container mb-6 d-lg-none"> &nbsp; </div>
-            <div class="container mb-6 d-lg-none"> &nbsp; </div>
-            <div class="container mb-6 d-lg-none"> &nbsp; </div>
-            <div class="container mb-6 d-lg-none"> &nbsp; </div>
+            {{-- add space at the bottom on small screens so the bottom nav does not hide content  --}}
+            <div class="container footer-navigation-spacer"> &nbsp; </div>
             @include('_footer-navigation')
         @endauth
 

@@ -91,6 +91,20 @@ $screen-sm-min: 768px !default;
   }
 }
 
+// mobile footer navigation
+$footer-navigation-space: 4rem;
+$footer-navigation-space-lg: 0;
+
+.footer-navigation-spacer {
+  height: $footer-navigation-space;
+}
+
+@include media-breakpoint-up(lg) {
+  .footer-navigation-spacer {
+    height: $footer-navigation-space-lg;
+  }
+}
+
 /* chat */
 
 /*
@@ -107,11 +121,10 @@ layout is like...
 
 $header-height: calc(56.0333px + 47.0333px + 121px);
 $mobile-nav-height: 65.2px;
-$mobile-spacer-height: calc(23.0333px * 4);
 $chat-post-height: 105.8px;
 
 $chat-wrapper-height: calc(
-  100vh - #{$header-height} - #{$mobile-nav-height} - #{$chat-post-height} - #{$mobile-spacer-height}
+  100vh - #{$header-height} - #{$mobile-nav-height} - #{$chat-post-height} - #{$footer-navigation-space}
 );
 
 $chat-wrapper-height-lg: calc(
