@@ -91,54 +91,59 @@ $screen-sm-min: 768px !default;
   }
 }
 
-/* chat */
+// mobile footer navigation
+$footer-navigation-space: 4rem;
+$footer-navigation-space-lg: 0;
 
-/*
-layout is like...
-.chat-container
-    .chat-wrapper
-        .chat-content #chat-content
-            .chat-conversation 
-        .chat-post        
-
-
- - TODO ipads
-*/
-
-$chat-container-height: 53vh;
-$chat-post-height: 8rem;
-
-.chat-container {
-  height: $chat-container-height; /* or position:absolute; height:100%; */
+.footer-navigation-spacer {
+  height: $footer-navigation-space;
 }
 
-.chat-post {
-  height: $chat-post-height;
-  padding: 1rem;
+@include media-breakpoint-up(lg) {
+  .footer-navigation-spacer {
+    height: $footer-navigation-space-lg;
+  }
+}
+
+/* chat */
+$header-height: calc(56.0333px + 47.0333px + 121px);
+$mobile-nav-height: 65.2px;
+$chat-post-height: 130.1px;
+
+$chat-wrapper-height: calc(
+  100vh - #{$header-height} - #{$mobile-nav-height} - #{$chat-post-height} - #{$footer-navigation-space}
+);
+
+$chat-wrapper-height-lg: calc(
+  100vh - #{$header-height} - #{$mobile-nav-height} - #{$chat-post-height}
+);
+
+.chat-message {
+  border-width: 0;
+  //   .card-text {
+  //     border-width: 0;
+  //     border-style: solid;
+  //     border-left-width: 1rem;
+  //   }
+}
+
+.chat-wrapper {
+  height: $chat-wrapper-height; /* or position:absolute; height:100%; */
 }
 
 .chat-conversation {
-  min-height: calc(#{$chat-container-height} - #{$chat-post-height});
-  padding: 20px;
+  //   min-height: calc(#{$chat-wrapper-height} - #{$chat-post-height});
+  min-height: 1rem;
 }
 
-@include media-breakpoint-up(md) {
-  $chat-container-height-md: 75vh;
-  $chat-post-height-md: 8rem;
-
-  .chat-container {
-    height: $chat-container-height-md; /* or position:absolute; height:100%; */
+@include media-breakpoint-up(lg) {
+  .chat-wrapper {
+    height: $chat-wrapper-height-lg;
   }
+}
 
-  .chat-post {
-    height: $chat-post-height-md;
-    padding: 1rem;
-  }
-
-  .chat-conversation {
-    min-height: calc(#{$chat-container-height-md} - #{$chat-post-height-md});
-    padding: 20px;
-  }
+.chat-post {
+  //   height: $chat-post-height;
 }
 
 .chat-content {
@@ -150,4 +155,14 @@ $chat-post-height: 8rem;
   display: flex;
   flex: 1;
   min-height: 0px; /* IMPORTANT: you need this for non-chrome browsers */
+}
+
+//@TODO this 10px value is a bit of a magic number - it covers the different heights of the post form
+.chat-list-wrapper {
+  height: calc(100vh - #{$header-height} - #{$mobile-nav-height} - 10px);
+  min-height: 0px;
+}
+.chat-list {
+  height: calc(100vh - #{$header-height} - #{$mobile-nav-height});
+  overflow: auto;
 }

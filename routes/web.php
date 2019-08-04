@@ -38,7 +38,8 @@ Route::post('api/users', function (Request $request) {
     return response()->json($data);
 })->name('api.users');
 
-// // Interface partials
+
+// Interface partials
 Route::get('interface/toolbar', ['middleware' => 'auth',  function () {
     return response()->view('_toolbar');
 }])->name('interface.toolbar');
@@ -80,6 +81,11 @@ Route::resource('posts', 'Nexus\PostController');
 Route::get('chat/{username}', 'Nexus\ChatController@conversation');
 Route::post('chat/{username}', 'Nexus\ChatController@store');
 Route::resource('chat', 'Nexus\ChatController');
+
+// chat refactor for vue
+Route::get('chats/{username}', 'Nexus\ChatApiController@show');
+Route::get('chats', 'Nexus\ChatApiController@index');
+Route::get('chatsusers', 'Nexus\ChatApiController@chatPartnerIndex');
 
 // activities
 Route::resource('here', 'Nexus\ActivityController');
