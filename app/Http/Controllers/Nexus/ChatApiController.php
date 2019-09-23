@@ -118,6 +118,7 @@ class ChatApiController extends Controller
            ->sortBy('id');
         
         // turn this into an array
+        // TODO: look at ArrayObject for this
         $return = [];
         foreach ($conversation->toArray() as $message) {
             $return[] = $message;
