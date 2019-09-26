@@ -6,27 +6,7 @@
   </div>
   <div v-else>
     <div v-if="!loading">
-      <h3>👋</h3>
-      <p>Start a conversation.</p>
-
-      <div class="dropdown d-inline">
-        <button
-          class="btn btn-secondary dropdown-toggle"
-          type="button"
-          id="chatUserSelectionMenuButton"
-          data-toggle="dropdown"
-          aria-haspopup="true"
-          aria-expanded="false"
-        >Chat to…</button>
-        <div class="dropdown-menu" aria-labelledby="chatUserSelectionMenuButton">
-          <a
-            v-for="user in users"
-            class="dropdown-item"
-            :key="user"
-            :href="'chat' + '/' + user"
-          >{{user}}</a>
-        </div>
-      </div>
+      <selector :itemKey="itemKey" :itemValue="itemValue" :items="users" :label="'To:'"></selector>
     </div>
     <div v-else>
       <div class="spinner-border text-info" role="status">
@@ -39,6 +19,8 @@
 export default {
   data() {
     return {
+      itemKey: "id",
+      itemValue: "username",
       users: [],
       loading: true,
       errored: false

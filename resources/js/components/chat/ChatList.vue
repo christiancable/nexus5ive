@@ -7,6 +7,7 @@
   <section v-else>
     <div class="chat-list-wrapper" v-if="!loading">
       <nav class="list-group chat-list">
+        <chat-picker></chat-picker>
         <a
           v-for="chat in chats"
           v-bind:key="chat.username"

@@ -27,6 +27,10 @@ Vue.component("chat-new", require("./components/chat/ChatNew.vue").default);
 Vue.component("chat-start", require("./components/chat/ChatStart.vue").default);
 Vue.component("chat-post", require("./components/chat/ChatPost.vue").default);
 Vue.component(
+  "chat-picker",
+  require("./components/chat/ChatPicker.vue").default
+);
+Vue.component(
   "chat-conversation",
   require("./components/chat/ChatConversation.vue").default
 );
@@ -39,6 +43,7 @@ Vue.component(
   require("./components/RenderedText.vue").default
 );
 Vue.component("search-menu", require("./components/SearchMenu.vue").default);
+Vue.component("selector", require("./components/Selector.vue").default);
 // Vue.component('mentions-list', require('./components/Mentions.vue'));
 // const files = require.context('./', true, /\.vue$/i)
 
