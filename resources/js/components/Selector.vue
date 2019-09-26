@@ -1,37 +1,51 @@
 <template>
-  <div class="d-inline">
-    <form class="form-inline">
-      <label v-if="label.length!=0" class="my-1 mr-2" for="inlineFormCustomSelectPref">{{label}}</label>
-      <span>
-        <a
-          href="#"
-          v-for="item in chosenItems"
-          v-bind:key="item[itemKey]"
-          class="badge badge-pill badge-primary mr-1"
-          @click="removeItem(item)"
-        >
-          {{item[itemValue]}}
-          <span>x</span>
-        </a>
-      </span>
+  <div class="container">
+    <form>
+      <div class="row mb-3">
+        <span>
+          <a
+            href="#"
+            v-for="item in chosenItems"
+            v-bind:key="item[itemKey]"
+            class="badge badge-pill badge-primary mr-1"
+            @click="removeItem(item)"
+          >
+            {{item[itemValue]}}
+            <span>x</span>
+          </a>
+        </span>
+      </div>
 
-      <input
-        type="text"
-        class="form-control d-line"
-        v-model="filterText"
-        :placeholder="placeholder"
-        :aria-label="itemValue"
-        aria-describedby
-      />
+      <div class="row">
+        <div class="col-1" v-if="label.length!=0">
+          <label v-if="label.length!=0" class="my-1 mr-2" :for="label">{{label}}</label>
+        </div>
+
+        <div class="col">
+          <input
+            :id="label"
+            type="text"
+            class="form-control d-line"
+            v-model="filterText"
+            :placeholder="placeholder"
+            :aria-label="itemValue"
+            aria-describedby
+          />
+
+          <template v-if="(filteredItems.length!==0) && (filterText.length!==0)">
+            <span class="list-group">
+              <a
+                v-for="item in filteredItems"
+                v-bind:key="item[itemKey]"
+                href="#"
+                class="list-group-item"
+                @click="addItem(item)"
+              >{{item[itemValue]}}</a>
+            </span>
+          </template>
+        </div>
+      </div>
     </form>
-
-    <template v-if="(filteredItems.length!==0) && (filterText.length!==0)">
-      <ul class="nav flex-column">
-        <li v-for="item in filteredItems" :class="nav-item" v-bind:key="item[itemKey]">
-          <a href="#" class="nav-link" @click="addItem(item)">{{item[itemValue]}}</a>
-        </li>
-      </ul>
-    </template>
   </div>
 </template>
 
