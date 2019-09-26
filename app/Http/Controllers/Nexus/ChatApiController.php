@@ -82,7 +82,7 @@ class ChatApiController extends Controller
 
     public function chatPartnerIndex()
     {
-        return User::verified()->orderBy('username')->pluck('username');
+        return User::verified()->orderBy('username')->get(['id', 'username']);
     }
 
     /**
