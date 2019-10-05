@@ -35,7 +35,7 @@
   "dependencies": {
     "blazy": "^1.8.2",
     "lodash": "^4.17.15",
-    "markd": "^1.2.0",
+    "marked": "^0.7.0",
     "moment": "^2.24.0",
     "vue-chat-scroll": "^1.3.5"
   }
