@@ -21,7 +21,6 @@
     "eslint-config-google": "^0.9.1",
     "jquery": "^3.2",
     "laravel-mix": "^4.0.7",
-    "lodash": "^4.17.5",
     "mocha": "^5.2.0",
     "mocha-webpack": "^2.0.0-beta.0",
     "open-iconic": "^1.1.1",
@@ -35,6 +34,7 @@
   },
   "dependencies": {
     "blazy": "^1.8.2",
+    "lodash": "^4.17.15",
     "markd": "^1.2.0",
     "moment": "^2.24.0",
     "vue-chat-scroll": "^1.3.5"
