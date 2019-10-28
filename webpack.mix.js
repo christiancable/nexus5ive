@@ -19,7 +19,8 @@ mix
   .sass("resources/sass/extra.scss", "public/css")
 
   // themes
-  .sass("resources/sass/excelsior.scss", "public/css");
+  .sass("resources/sass/excelsior.scss", "public/css")
+  .sass("resources/sass/halloween.scss", "public/css");
 
 if (process.env.NODE_ENV === "testing") {
   mix.disableNotifications();
