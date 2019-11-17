@@ -1,4 +1,4 @@
-name: Laravel
+name: Tests
 
 on: [push]
 
@@ -13,20 +13,20 @@ jobs:
         registry-url: 'https://registry.npmjs.org'
     - name: Copy .env
       run: php -r "file_exists('.env') || copy('.env.example', '.env');"
-    - name: Install Dependencies
+    - name: Install PHP Dependencies
       run: composer install -q --no-ansi --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist
+    - name: Install JS Dependencies
+      run: yarn install
     - name: Generate key
       run: php artisan key:generate
     - name: Create Database
       run: |
         mkdir -p database
         touch database/database.sqlite
-    - name: Execute test via Mocha
-      run: | 
-        yarn install
-        yarn run test
-    - name: Execute tests (Unit and Feature tests) via PHPUnit
+    - name: Execute PHP tests (Unit and Feature tests) via PHPUnit
       env:
         DB_CONNECTION: sqlite
         DB_DATABASE: database/database.sqlite
       run: vendor/bin/phpunit
+    - name: Execute JS tests via Mocha
+      run: yarn run test
