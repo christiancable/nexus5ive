@@ -199,7 +199,7 @@ class User extends Authenticatable implements MustVerifyEmail
     /* returns number of unread comments */
     public function newCommentCount()
     {
-        return $this->comments(['id','read'])->where('read', false)->count();
+        return $this->comments()->where('read', false)->select('id')->count();
     }
 
     public function markCommentsAsRead()
@@ -214,7 +214,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function newMessageCount()
     {
-        return $this->messages(['id', 'read'])->where('read', false)->count();
+        return $this->messages()->where('read', false)->select('id')->count();
     }
 
     // dealing with @ mentions
