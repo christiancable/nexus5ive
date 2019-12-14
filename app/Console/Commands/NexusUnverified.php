@@ -80,7 +80,7 @@ class NexusUnverified extends Command
     public function handle()
     {
         if ($this->option('age') && is_numeric($this->option('age'))) {
-            $this->age = $this->option('age');
+            $this->age = (int)$this->option('age');
         }
 
         $this->unverifiedUsers = $this->getUnverifiedUsers();
