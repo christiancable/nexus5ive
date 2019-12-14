@@ -111,7 +111,7 @@ class BreadcrumbHelper
     /**
      * generates a breadcrumb trail for a user to user chat
      *
-     * @param User $user
+     * @param String $username
      * @return array
      */
     public static function breadcrumbForChat(String $username)
