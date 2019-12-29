@@ -13,7 +13,6 @@ return [
     | https://laravel.com/docs/5.2/configuration#environment-configuration
     |
     */
-
     'admin_email' => env('NEXUS_ADMIN_EMAIL', ''),
     'bootstrap_theme' => env('NEXUS_BOOTSTRAP_THEME'),
     'allow_registrations' => env('NEXUS_ALLOW_REGISTRATIONS', false),
