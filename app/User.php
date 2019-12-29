@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Events\UserCreated;
+use Illuminate\Support\Arr;
 use App\ViewModels\UserPresenter;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Event;
@@ -117,17 +118,17 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function mentions()
     {
-        return $this->hasMany(\App\Mention::class)->orderBy('id', 'dec');
+        return $this->hasMany(\App\Mention::class)->orderBy('id', 'desc');
     }
     
     public function comments()
     {
-        return $this->hasMany(\App\Comment::class, 'user_id', 'id')->orderBy('id', 'dec');
+        return $this->hasMany(\App\Comment::class, 'user_id', 'id')->orderBy('id', 'desc');
     }
 
     public function givenComments()
     {
-        return $this->hasMany(\App\Comment::class, 'author_id', 'id')->orderBy('id', 'dec');
+        return $this->hasMany(\App\Comment::class, 'author_id', 'id')->orderBy('id', 'desc');
     }
 
     public function sections()
@@ -137,7 +138,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function views()
     {
-        return $this->hasMany(\App\View::class)->orderBy('latest_view_date', 'dec');
+        return $this->hasMany(\App\View::class)->orderBy('latest_view_date', 'desc');
     }
 
     public function posts()
@@ -233,7 +234,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function removeMentions(array $posts)
     {
-        $this->mentions()->whereIn('post_id', array_pluck($posts, 'id'))->delete();
+        $this->mentions()->whereIn('post_id', Arr::pluck($posts, 'id'))->delete();
     }
 
     public function notificationCount()
