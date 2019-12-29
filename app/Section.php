@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 use App\Events\TreeCacheBecameDirty;
@@ -141,6 +142,6 @@ class Section extends Model
     
     public function slug()
     {
-        return str_slug($this->title, '-');
+        return Str::slug($this->title, '-');
     }
 }
