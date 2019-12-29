@@ -29,7 +29,7 @@ if ($post->editor) {
 }
 ?>
 <div class="card mb-3" id="{{$post->id}}">
-    @if (!Illuminate\Support\Str:is($post->title, ""))
+    @if (!Illuminate\Support\Str::is($post->title, ""))
         <div class="card-header bg-primary text-white">
             <span class="card-title">{{$post->title}}</span>
         </div>
