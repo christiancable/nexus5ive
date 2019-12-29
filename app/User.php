@@ -118,17 +118,17 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function mentions()
     {
-        return $this->hasMany(\App\Mention::class)->orderBy('id', 'dec');
+        return $this->hasMany(\App\Mention::class)->orderBy('id', 'desc');
     }
     
     public function comments()
     {
-        return $this->hasMany(\App\Comment::class, 'user_id', 'id')->orderBy('id', 'dec');
+        return $this->hasMany(\App\Comment::class, 'user_id', 'id')->orderBy('id', 'desc');
     }
 
     public function givenComments()
     {
-        return $this->hasMany(\App\Comment::class, 'author_id', 'id')->orderBy('id', 'dec');
+        return $this->hasMany(\App\Comment::class, 'author_id', 'id')->orderBy('id', 'desc');
     }
 
     public function sections()
@@ -138,7 +138,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function views()
     {
-        return $this->hasMany(\App\View::class)->orderBy('latest_view_date', 'dec');
+        return $this->hasMany(\App\View::class)->orderBy('latest_view_date', 'desc');
     }
 
     public function posts()

@@ -78,7 +78,7 @@ class TopicController extends Controller
      */
     public function show(Request $request, $topic_id)
     {
-        $posts = Post::with('author')->where('topic_id', $topic_id)->orderBy('id', 'dsc');
+        $posts = Post::with('author')->where('topic_id', $topic_id)->orderBy('id', 'desc');
         $topic = Topic::findOrFail($topic_id);
         
         // is this topic readonly to the authenticated user?
