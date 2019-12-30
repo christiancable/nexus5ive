@@ -12,8 +12,8 @@ $errorBag = 'topicUpdate' . $topic->id;
     )) 
 !!}
     {!! Form::hidden($formName . '[id]', $topic->id) !!}
-    {!! Form::hidden($formName . '[secret]', false) !!}  
-    {!! Form::hidden($formName. '[readonly]', false) !!}
+    {!! Form::hidden($formName . '[secret]', 0) !!}  
+    {!! Form::hidden($formName. '[readonly]', 0) !!}
 
 
     <div class="form-group">    
