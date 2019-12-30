@@ -36,8 +36,8 @@ return [
     'channels' => [
         'stack' => [
             'driver' => 'stack',
-            // 'channels' => ['daily', 'slack'],
             'channels' => explode(",", env('LOG_CHANNELS')),
+            'ignore_exceptions' => false,
         ],
 
         'single' => [
@@ -57,12 +57,12 @@ return [
             'driver' => 'slack',
             'url' => env('LOG_SLACK_WEBHOOK_URL'),
             'username' => 'Laravel Log',
-            'emoji' => ':robot_face:',
-            'level' => 'notice',
+            'emoji' => env('LOG_SLACK_EMOJI', ':boom:'),
+            'level' => env('LOG_SLACK_LEVEL', 'critical'),
         ],
 
         'papertrail' => [
-            'driver'  => 'monolog',
+            'driver' => 'monolog',
             'level' => 'debug',
             'handler' => SyslogUdpHandler::class,
             'handler_with' => [
@@ -74,6 +74,7 @@ return [
         'stderr' => [
             'driver' => 'monolog',
             'handler' => StreamHandler::class,
+            'formatter' => env('LOG_STDERR_FORMATTER'),
             'with' => [
                 'stream' => 'php://stderr',
             ],

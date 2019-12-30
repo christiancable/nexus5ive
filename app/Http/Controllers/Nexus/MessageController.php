@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Nexus;
 
-use Auth;
 use App\User;
 use App\Message;
 use App\Http\Requests;
@@ -12,6 +11,7 @@ use Illuminate\Http\Response;
 use App\Helpers\ActivityHelper;
 use App\Helpers\BreadcrumbHelper;
 use App\Http\Requests\StoreMessage;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 

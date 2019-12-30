@@ -6,6 +6,7 @@ use App\User;
 use App\View;
 use App\Section;
 use App\Http\Requests;
+use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Helpers\FlashHelper;
@@ -143,7 +144,7 @@ class SectionController extends Controller
 
         // it not valid to move a section into a descendant
         $descendants = $section->allChildSections();
-        $descendantsIDs = array_flatten($descendants->pluck('id')->toArray());
+        $descendantsIDs = Arr::flatten($descendants->pluck('id')->toArray());
         
         // if parents exists then it must be a valid section id
         $allSectionIDs = Section::all('id')->pluck('id')->toArray();

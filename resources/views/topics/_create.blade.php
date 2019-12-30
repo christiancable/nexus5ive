@@ -5,8 +5,8 @@
     )) 
 !!}
 {!! Form::hidden("section_id", $section->id) !!}
-{!! Form::hidden("secret", false) !!}  
-{!! Form::hidden("readonly", false) !!}
+{!! Form::hidden("secret", 0) !!}  
+{!! Form::hidden("readonly", 0) !!}
 
 <div class="form-group">    
     {!! Form::label("title",'Title', ['class' => 'sr-only']) !!}

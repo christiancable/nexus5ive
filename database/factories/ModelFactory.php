@@ -1,7 +1,7 @@
 <?php
 
 use Carbon\Carbon;
-
+use Illuminate\Support\Str;
 /*
 |--------------------------------------------------------------------------
 | Model Factories
@@ -19,8 +19,8 @@ $factory->define(App\User::class, function ($faker) {
         'name' => $faker->name,
         'username' => $faker->unique()->username,
         'email' => $faker->email,
-        'password' => str_random(10),
-        'remember_token' => str_random(10),
+        'password' => Str::random(10),
+        'remember_token' => Str::random(10),
         'theme_id' => function () {
             return App\Theme::firstOrFail()->id;
         },

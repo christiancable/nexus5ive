@@ -63,7 +63,7 @@ class Topic extends Model
     {
         $latestPost =  Post::select('time')
             ->where('topic_id', $this->id)
-            ->orderBy('time', 'dec')
+            ->orderBy('time', 'desc')
             ->first();
 
         if ($latestPost) {
@@ -108,6 +108,6 @@ class Topic extends Model
 
     public function views()
     {
-        return $this->hasMany(\App\View::class)->orderBy('latest_view_date', 'dec');
+        return $this->hasMany(\App\View::class)->orderBy('latest_view_date', 'desc');
     }
 }

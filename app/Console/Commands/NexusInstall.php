@@ -6,6 +6,7 @@ use App\User;
 use App\Topic;
 use Exception;
 use App\Section;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Hash;
 
@@ -44,63 +45,68 @@ class NexusInstall extends Command
     {
         // we are assuming that the sysop is always the first user
         $this->info('Creating administrator, default section and first topic...');
-        $user = User::first();
+        $administrator = User::first();
 
-        if (!$user) {
+        if (!$administrator) {
             $this->info("Please enter in values for the administrator account. Don't worry You can change this later.");
             $username = $this->ask('Username');
             $email = $this->ask('Email Address');
             $password = $this->ask('Password');
             
-            $administrator = new User;
-            $administrator->username = $username;
-            $administrator->name = 'Administrator';
-            $administrator->email = $email;
-            $administrator->password = Hash::make($password);
-            $administrator->administrator = true;
+            $administrator = factory('App\User')->make([
+                'username'      => $username,
+                'name'          => 'Administrator',
+                'email'         => $email,
+                'password'      => Hash::make($password),
+                'administrator' => true,
+            ]);
 
             try {
                 $administrator->save();
             } catch (Exception $e) {
-                        $this->error('Failed to add administrator ' . $e);
+                $this->error('Failed to add administrator ' . $e);
             }
         } else {
             $this->error('There is already a user account');
         }
 
-        $section = Section::first();
+        $mainMenu = Section::first();
 
-        if (!$section) {
+        if (!$mainMenu) {
             $this->info("Please enter in values for the main menu. Don't worry You can change this later.");
             $title = $this->ask('Title');
             
-            $mainmenu = new Section;
-            $mainmenu->title = $title;
-            $mainmenu->user_id = $administrator->id;
+            $mainMenu = factory('App\Section')->make([
+                'title' => $title
+            ]);
+            $mainMenu->moderator()->associate($administrator);
+            $mainMenu->parent()->associate(null);
 
             try {
-                $mainmenu->save();
+                $mainMenu->save();
             } catch (Exception $e) {
-                        $this->error('Failed to add main menu ' . $e);
+                $this->error('Failed to add main menu ' . $e);
             }
         } else {
             $this->error('There is already a main menu');
         }
 
-        $topic = Topic::first();
+        $firstTopic = Topic::first();
 
-        if (!$topic) {
+        if (!$firstTopic) {
             $this->info("Please enter in values for the first topic. Don't worry You can change this later.");
             $title = $this->ask('Title');
+
+            $firstTopic = factory('App\Topic')->make([
+                'title' => $title
+            ]); 
             
-            $firstTopic = new Topic;
-            $firstTopic->title = $title;
-            $firstTopic->section_id = $mainmenu->id;
+            $firstTopic->section()->associate($mainMenu);
 
             try {
                 $firstTopic->save();
             } catch (Exception $e) {
-                        $this->error('Failed to add first topic ' . $e);
+                $this->error('Failed to add first topic ' . $e);
             }
         } else {
             $this->error('There is already a topic');

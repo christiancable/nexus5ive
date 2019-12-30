@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Nexus;
 
-use Auth;
 use App\User;
 use App\Message;
 use Illuminate\Http\Request;
 use App\Helpers\ActivityHelper;
 use App\Helpers\BreadcrumbHelper;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Nexus\ChatApiController;
 
@@ -40,7 +40,7 @@ class ChatController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request, $username)
     {
