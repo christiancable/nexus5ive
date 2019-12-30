@@ -46,7 +46,7 @@ Form::model($user, array(
 
 <div class="form-row">
     <div class="form-check">
-        {!! Form::hidden('private', false) !!}
+        {!! Form::hidden('private', 0) !!}
         {!! Form::checkbox('private', true, $user->private, ['class' => 'form-check-input', 'id' => 'private'])!!}
         {!! Form::label('private','Hide Email', ['class' => 'form-check-label']) !!}
     </div>
@@ -62,7 +62,7 @@ Form::model($user, array(
     </div>
     <div class="form-group col-12 col-md-6">
         <div class="form-check">
-            {!! Form::hidden('viewLatestPostFirst', false) !!}
+            {!! Form::hidden('viewLatestPostFirst', 0) !!}
             {!! Form::checkbox('viewLatestPostFirst', true, $user->viewLatestPostFirst, ['class' => 'form-check-input', 'id' => 'viewLatestPostFirst'])!!}
             {!! Form::label('viewLatestPostFirst', 'Show Latest Posts First', ['class' => 'form-check-label']) !!}
         </div>
