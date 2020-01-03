@@ -137,5 +137,4 @@ class LatestTest extends DuskTestCase
                     ->assertSee($emptyTopic->title);
         });
     }
-
 }
