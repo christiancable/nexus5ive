@@ -33,6 +33,9 @@ class LatestTest extends DuskTestCase
         $this->topic = factory(Topic::class)->create([
             'section_id' => $this->home->id
         ]);
+        $this->emptyTopic = factory(Topic::class)->create([
+            'section_id' => $this->home->id
+        ]);
         $this->post = factory(Post::class)->create([
             'topic_id' => $this->topic->id,
             'user_id' => $this->user->id,
@@ -48,7 +51,7 @@ class LatestTest extends DuskTestCase
     {
         /*
         GIVEN we have a topic with posts
-        WHEN we visit the latest posts page
+        WHEN we visit the Latest Posts page
         THEN should see the text of the latest post
         */
 
@@ -70,7 +73,7 @@ class LatestTest extends DuskTestCase
         /*
         GIVEN we have a topic with posts
         WHEN the user unsubscribes from the topic
-        AND we visit the latest posts page
+        AND we visit the Latest Posts page
         THEN we should not see the text of the latest post
         */
 
@@ -88,4 +91,51 @@ class LatestTest extends DuskTestCase
                     ->assertDontSee($postPreview);
         });
     }
+
+    /**
+     * @test
+     */
+    public function userCanNotSeeEmptyTopicListedInLatest()
+    {
+        /*
+        GIVEN we have a topic with no posts
+        WHEN the user visit the Latest Posts page
+        THEN we should not see the empty topic listed
+        */
+        $user = $this->user;
+        $emptyTopic = $this->emptyTopic;
+
+        $this->browse(function ($browser) use ($user, $emptyTopic) {
+            $browser->loginAs($user)
+                    ->visit('/section/latest/')
+                    ->assertDontSee($emptyTopic->title);
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function userCanSeePostedToTopicListedInLatest()
+    {
+        /*
+        GIVEN we have a topic with no posts
+        AND a post is added to that topic
+        WHEN the user visit the Latest Posts page
+        THEN we should not see that topic listed
+        */
+        $user = $this->user;
+        $emptyTopic = $this->emptyTopic;
+
+        factory(Post::class)->create([
+            'topic_id' => $emptyTopic->id,
+            'user_id' => $user->id,
+        ]);
+
+        $this->browse(function ($browser) use ($user, $emptyTopic) {
+            $browser->loginAs($user)
+                    ->visit('/section/latest/')
+                    ->assertSee($emptyTopic->title);
+        });
+    }
+
 }
