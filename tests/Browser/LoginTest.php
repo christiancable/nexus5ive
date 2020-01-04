@@ -30,6 +30,5 @@ class LoginTest extends DuskTestCase
                     ->press('Log In')
                     ->assertPathIs('/');
         });
-        
     }
 }

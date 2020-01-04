@@ -59,16 +59,11 @@ class NextTest extends DuskTestCase
         $this->topic2 = factory(Topic::class)->create([
             'section_id' => $this->home->id
         ]);
-
-      
     }
     
     /**
      * @test
-     *
-     *
-     * // People have been talking! New posts found in Chat
-    * // Seeing too many old topics then mark all subscribed topics as read
+
      */
     public function userCanJumpToNextUpdatedTopic()
     {
@@ -185,6 +180,5 @@ class NextTest extends DuskTestCase
                     ->press('@toolbar-next')
                     ->assertSee($noTopicsMsg);
         });
-
     }
 }
