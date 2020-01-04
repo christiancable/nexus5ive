@@ -36,7 +36,7 @@ $notificationCount = $profileNotificationCount + $mentionCount;
           </li>
 
           <li class="nav-item">
-            <a {!! App\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Catch-Up') !!} href="{{ action('Nexus\SectionController@leap')}}" class="nav-link mr-1">
+            <a {!! App\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Catch-Up') !!} href="{{ action('Nexus\SectionController@leap')}}" class="nav-link mr-1" dusk="toolbar-next">
             <span class="oi oi-arrow-circle-right mr-1" aria-hidden="true"></span> Next</a>
           </li> 
 
