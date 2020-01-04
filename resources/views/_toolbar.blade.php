@@ -36,7 +36,7 @@ $notificationCount = $profileNotificationCount + $mentionCount;
           </li>
 
           <li class="nav-item">
-            <a {!! App\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Catch-Up') !!} href="{{ action('Nexus\SectionController@leap')}}" class="nav-link mr-1">
+            <a {!! App\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Catch-Up') !!} href="{{ action('Nexus\SectionController@leap')}}" class="nav-link mr-1" dusk="toolbar-next">
             <span class="oi oi-arrow-circle-right mr-1" aria-hidden="true"></span> Next</a>
           </li> 
 
@@ -63,9 +63,9 @@ $notificationCount = $profileNotificationCount + $mentionCount;
         <ul class="nav navbar-nav ml-auto">
             <li class="dropdown nav-item"> 
               <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"
-              id="mentiondropdown">
+              id="mentiondropdown" dusk='mentions-menu-toggle'>
                 <span class="oi oi-bell" aria-hidden="true"></span>
-                <span class="badge  badge-danger">{{$mentionCount}}</span>
+                <span class="badge  badge-danger" dusk='mentions-count'>{{$mentionCount}}</span>
               </a>
 
               <div class="dropdown-menu dropdown-menu-right" aria-labelledby="mentiondropdown">
@@ -79,7 +79,7 @@ $notificationCount = $profileNotificationCount + $mentionCount;
                   <form class="form-inline" action="{{action('Nexus\MentionController@destroyAll')}}" method="POST">
                   @csrf
                   {{ method_field('DELETE') }}
-                    {!! Form::button('<span class="oi oi-check"></span> Clear All Mentions</button>', ['Type' => 'Submit', 'class' => 'btn btn-link dropdown-item', 'id' => 'Clear All Mentions' ]) !!}
+                    {!! Form::button('<span class="oi oi-check"></span> Clear All Mentions</button>', ['Type' => 'Submit', 'class' => 'btn btn-link dropdown-item', 'id' => 'Clear All Mentions', 'dusk' => 'mentions-clear' ]) !!}
                   </form>
               </div>
             </li>

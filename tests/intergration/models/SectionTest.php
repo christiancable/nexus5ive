@@ -5,10 +5,10 @@ namespace Tests\Intergration\Models;
 use App\User;
 use App\Topic;
 use App\Section;
-use Tests\BrowserKitTestCase;
+use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class SectionTest extends BrowserKitTestCase
+class SectionTest extends TestCase
 {
     use RefreshDatabase;
         

@@ -6,11 +6,11 @@ use App\User;
 use App\Post;
 use App\Topic;
 use Faker\Factory;
+use Tests\TestCase;
 use App\Helpers\ViewHelper;
-use Tests\BrowserKitTestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class ViewHelperTest extends BrowserKitTestCase
+class ViewHelperTest extends TestCase
 {
     use RefreshDatabase;
     

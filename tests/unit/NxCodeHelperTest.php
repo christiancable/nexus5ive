@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use Tests\BrowserKitTestCase;
+use Tests\TestCase;
 use App\Helpers\NxCodeHelper;
 use App\Helpers\MarkdownHelper;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
@@ -10,7 +10,7 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 // phpcs:disable Generic.Files.LineLength
-class NxCodeHelperTest extends BrowserKitTestCase
+class NxCodeHelperTest extends TestCase
 {
     
     private $youTubeHTMLStart = <<< 'HTML'

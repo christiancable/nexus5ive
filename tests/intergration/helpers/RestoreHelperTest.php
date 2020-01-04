@@ -6,12 +6,12 @@ use App\User;
 use App\Post;
 use App\Topic;
 use App\Section;
+use Tests\TestCase;
 use App\Helpers\ViewHelper;
-use Tests\BrowserKitTestCase;
 use App\Helpers\RestoreHelper;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class RestoreHelperTest extends BrowserKitTestCase
+class RestoreHelperTest extends TestCase
 {
     use RefreshDatabase;
     

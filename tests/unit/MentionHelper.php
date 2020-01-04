@@ -2,14 +2,14 @@
 
 namespace Tests\Unit;
 
-use Tests\BrowserKitTestCase;
+use Tests\TestCase;
 use App\Helpers\MentionHelper;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 // phpcs:disable Generic.Files.LineLength
-class MentionHelperTest extends BrowserKitTestCase
+class MentionHelperTest extends TestCase
 {
     
     /**
