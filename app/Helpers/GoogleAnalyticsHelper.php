@@ -12,7 +12,6 @@ class GoogleAnalyticsHelper
      **/
     public static function onClickEvent($category, $label, $action = 'Click')
     {
-        // @todo respect the value of the anaytics settings
         $return = "";
 
         if (env('GOOGLE_ANAYTICS_ACTIVATE') == 'true') {
