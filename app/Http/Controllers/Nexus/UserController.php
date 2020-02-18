@@ -88,7 +88,7 @@ class UserController extends Controller
             ActivityHelper::updateActivity(
                 $request->user()->id,
                 "Examining <em>{$user->username}</em>",
-                action('Nexus\UserController@show', ['user_name' => $user_name])
+                action('Nexus\UserController@show', ['user' => $user_name])
             );
 
         $themes = \App\Theme::all()->pluck('name', 'id');
@@ -132,7 +132,7 @@ class UserController extends Controller
         $user->update($input);
         
         FlashHelper::showAlert('Profile Updated!', 'success');
-        return redirect(action('Nexus\UserController@show', ['user_name' => $user_name]));
+        return redirect(action('Nexus\UserController@show', ['user' => $user_name]));
     }
 
     /**

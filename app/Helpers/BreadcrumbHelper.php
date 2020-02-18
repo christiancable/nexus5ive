@@ -29,7 +29,7 @@ class BreadcrumbHelper
         do {
             $crumb = [];
             $crumb['title'] = $section->title;
-            $crumb['route'] = action('Nexus\SectionController@show', ['section_id' => $section->id]);
+            $crumb['route'] = action('Nexus\SectionController@show', ['section' => $section->id]);
             $breadcrumbs[] = $crumb;
             $section = $section->parent;
         } while ($section != null);
@@ -53,7 +53,7 @@ class BreadcrumbHelper
         while ($section != null) {
             $crumb = [];
             $crumb['title'] = $section->title;
-            $crumb['route'] = action('Nexus\SectionController@show', ['section_id' => $section->id]);
+            $crumb['route'] = action('Nexus\SectionController@show', ['section' => $section->id]);
             $breadcrumbs[] = $crumb;
             $section = $section->parent;
         }
@@ -77,7 +77,7 @@ class BreadcrumbHelper
 
         $section = \App\Section::first();
         $crumb['title'] = $section->title;
-        $crumb['route'] = action('Nexus\SectionController@show', ['section_id' => $section->id]);
+        $crumb['route'] = action('Nexus\SectionController@show', ['section' => $section->id]);
         $breadcrumbs[] = $crumb;
 
         return array_reverse($breadcrumbs);
@@ -102,7 +102,7 @@ class BreadcrumbHelper
 
         $section = \App\Section::first();
         $crumb['title'] = $section->title;
-        $crumb['route'] = action('Nexus\SectionController@show', ['section_id' => $section->id]);
+        $crumb['route'] = action('Nexus\SectionController@show', ['section' => $section->id]);
         $breadcrumbs[] = $crumb;
 
         return array_reverse($breadcrumbs);
@@ -127,7 +127,7 @@ class BreadcrumbHelper
 
         $section = \App\Section::first();
         $crumb['title'] = $section->title;
-        $crumb['route'] = action('Nexus\SectionController@show', ['section_id' => $section->id]);
+        $crumb['route'] = action('Nexus\SectionController@show', ['section' => $section->id]);
         $breadcrumbs[] = $crumb;
 
         return array_reverse($breadcrumbs);

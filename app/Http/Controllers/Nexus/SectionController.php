@@ -65,7 +65,7 @@ class SectionController extends Controller
             'intro'     => request('intro')
         ]);
 
-        $redirect = action('Nexus\SectionController@show', ['id' => $section->id]);
+        $redirect = action('Nexus\SectionController@show', ['section' => $section->id]);
         return redirect($redirect);
     }
 
@@ -98,7 +98,7 @@ class SectionController extends Controller
         ActivityHelper::updateActivity(
             $request->user()->id,
             "Browsing <em>{$section->title}</em>",
-            action('Nexus\SectionController@show', ['id' => $section->id])
+            action('Nexus\SectionController@show', ['section' => $section->id])
         );
         
         // if the user can moderate the section then they could potentially update subsections
@@ -233,7 +233,7 @@ class SectionController extends Controller
         $section->save();
 
         $section->delete();
-        $redirect = action('Nexus\SectionController@show', ['id' => $parent_id]);
+        $redirect = action('Nexus\SectionController@show', ['section' => $parent_id]);
         return redirect($redirect);
     }
 
@@ -281,7 +281,7 @@ class SectionController extends Controller
             $destinationTopic = $topics->first()->topic;
 
             // set alert
-            $topicURL = action('Nexus\TopicController@show', ['topic_id' => $destinationTopic->id]);
+            $topicURL = action('Nexus\TopicController@show', ['topic' => $destinationTopic->id]);
             // force the url to be relative so we don't later make this open in the new window
             $topicURL = str_replace(url('/'), '', $topicURL);
             $topicTitle = $destinationTopic->title;

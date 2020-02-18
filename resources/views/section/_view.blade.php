@@ -1,6 +1,6 @@
 <div class="card mb-3">
   <div class="card-header bg-primary text-white">
-    <h2 class="h4 card-title mb-0"><a class="text-white d-block" href="{{ action('Nexus\SectionController@show', ['id' => $subSection->id])}}">{{$subSection->title}}</a></h2>
+    <h2 class="h4 card-title mb-0"><a class="text-white d-block" href="{{ action('Nexus\SectionController@show', ['section' => $subSection->id])}}">{{$subSection->title}}</a></h2>
   </div>
   <div class="card-body">
     {!! App\Helpers\NxCodeHelper::nxDecode($subSection->intro)  !!}
@@ -38,7 +38,7 @@
 
 @if($subSection->most_recent_post)
 	<br>Latest Post in <a href="{{ 
-		action('Nexus\TopicController@show', ['id' => $subSection->most_recent_post->topic->id])}}">
+		action('Nexus\TopicController@show', ['topic' => $subSection->most_recent_post->topic->id])}}">
 		{{-- @todo egear load the most_recent_post->topic --}}
 		{{$subSection->most_recent_post->topic->title}}</a>, {{$subSection->most_recent_post->time->diffForHumans()}}</p> 
 @endif

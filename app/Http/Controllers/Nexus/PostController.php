@@ -65,9 +65,9 @@ class PostController extends Controller
         // if we are viewing the topic with the most recent post at the bottom then
         // redirect to that point in the page
         if ($request->user()->viewLatestPostFirst) {
-            $redirect = action('Nexus\TopicController@show', ['id' => $post->topic_id]);
+            $redirect = action('Nexus\TopicController@show', ['topic' => $post->topic_id]);
         } else {
-            $redirect = action('Nexus\TopicController@show', ['id' => $post->topic_id]) . '#'  . $post->id;
+            $redirect = action('Nexus\TopicController@show', ['topic' => $post->topic_id]) . '#'  . $post->id;
         }
         return redirect($redirect);
     }

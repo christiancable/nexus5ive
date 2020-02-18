@@ -1,6 +1,6 @@
 <div class="card text-center mb-3 bg-light">
     <div class="card-header bg-dark text-white">
-        <a href="{{action('Nexus\UserController@show', ['user_name' => $user->username]) }}" class="d-block text-white"><h3 class="card-title mb-0">{{$user->username}}</h3></a>
+        <a href="{{action('Nexus\UserController@show', ['user' => $user->username]) }}" class="d-block text-white"><h3 class="card-title mb-0">{{$user->username}}</h3></a>
     </div>
     <div class="card-body">
         @if($user->name)
@@ -22,7 +22,7 @@
             </div>
         </div>
 
-        <p><a href="{{action('Nexus\UserController@show', ['user_name' => $user->username]) }}" class="btn btn-primary">View Profile</a></p>
+        <p><a href="{{action('Nexus\UserController@show', ['user' => $user->username]) }}" class="btn btn-primary">View Profile</a></p>
     </div>
 
     @if ($user->latestLogin)

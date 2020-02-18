@@ -1,7 +1,7 @@
 
 <div class="panel panel-primary">
     <div class="panel-heading">
-        <h2 class="panel-title"><a href="{{ action('Nexus\SectionController@show', ['id' => $subSection->id])}}">{{$subSection->title}}</a></h2>
+        <h2 class="panel-title"><a href="{{ action('Nexus\SectionController@show', ['section' => $subSection->id])}}">{{$subSection->title}}</a></h2>
     </div>
 
     <div class="panel-body">
@@ -38,7 +38,7 @@
 
                 @if($subSection->most_recent_post)
                     <br/>
-                    Latest Post in <a href="{{ action('Nexus\TopicController@show', ['id' => $subSection->most_recent_post->topic->id])}}">{{$subSection->most_recent_post->topic->title}}</a>, {{$subSection->most_recent_post->time->diffForHumans()}}</p> 
+                    Latest Post in <a href="{{ action('Nexus\TopicController@show', ['topic' => $subSection->most_recent_post->topic->id])}}">{{$subSection->most_recent_post->topic->title}}</a>, {{$subSection->most_recent_post->time->diffForHumans()}}</p> 
                 @endif
                 </p>
             </div>      
