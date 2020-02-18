@@ -266,7 +266,7 @@ class TopicController extends Controller
         }
 
         FlashHelper::showAlert($message, 'success');
-        return  redirect()->route('topic.show', ['id' => $topic->id]);
+        return  redirect()->route('topic.show', ['topic' => $topic->id]);
     }
     
     /*

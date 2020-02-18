@@ -147,6 +147,6 @@ class PostController extends Controller
         // using forceDelete here because in this case we do not want a soft delete
         $topicID = $post->topic_id;
         $post->forceDelete();
-        return redirect()->route('topic.show', ['id' => $post->topic_id]);
+        return redirect()->route('topic.show', ['topic' => $topicID]);
     }
 }

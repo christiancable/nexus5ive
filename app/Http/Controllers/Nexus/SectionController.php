@@ -211,7 +211,7 @@ class SectionController extends Controller
         
         $section->update($updatedSectionDetails);
 
-        return redirect()->route('section.show', ['id' => $section->id]);
+        return redirect()->route('section.show', ['section' => $section->id]);
     }
 
     /**
@@ -295,7 +295,10 @@ Markdown;
             FlashHelper::showAlert($message, 'success');
             
             // redirect to the parent section of the unread topic
-            return redirect()->action('Nexus\SectionController@show', [$destinationTopic->section->id]);
+            return redirect()->action(
+                'Nexus\SectionController@show',
+                ['section' => $destinationTopic->section->id]
+            );
         } else {
             // set alert
             $message = 'No updated topics found. Why not start a new conversation or read more sections?';
