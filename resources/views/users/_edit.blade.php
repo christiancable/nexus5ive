@@ -110,7 +110,7 @@ Form::model($user, array(
         </button>
         <div class="dropdown-menu">
             @foreach ($user->sections as $section)
-                <a class="dropdown-item" href="{{ action('Nexus\SectionController@show', ['section_id' => $section->id]) }}">{{$section->title}}</a>
+                <a class="dropdown-item" href="{{ action('Nexus\SectionController@show', ['section' => $section->id]) }}">{{$section->title}}</a>
             @endforeach
         </div>
     </div>

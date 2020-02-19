@@ -66,7 +66,7 @@ class TopicController extends Controller
             'weight'     => request('weight')
         ]);
         
-        return redirect(action('Nexus\SectionController@show', ['id' => $topic->section_id]));
+        return redirect(action('Nexus\SectionController@show', ['section' => $topic->section_id]));
     }
     
     /**
@@ -119,7 +119,7 @@ class TopicController extends Controller
         ActivityHelper::updateActivity(
             $request->user()->id,
             "Reading <em>{$topic->title}</em>",
-            action('Nexus\TopicController@show', ['id' => $topic->id])
+            action('Nexus\TopicController@show', ['topic' => $topic->id])
         );
             
         
@@ -195,7 +195,7 @@ class TopicController extends Controller
         $topicDetails = request($formName);
 
         if ($validator->fails()) {
-            return redirect(action('Nexus\SectionController@show', ['id' => $topicDetails['section_id']]))
+            return redirect(action('Nexus\SectionController@show', ['section' => $topicDetails['section_id']]))
             ->withErrors($validator, $formName)
             ->withInput();
         }
@@ -214,7 +214,7 @@ class TopicController extends Controller
         
         $topic->update($topicDetails);
 
-        return redirect(action('Nexus\SectionController@show', ['id' => $topic->section_id]));
+        return redirect(action('Nexus\SectionController@show', ['section' => $topic->section_id]));
     }
 
     /**
@@ -232,7 +232,7 @@ class TopicController extends Controller
         $this->authorize('delete', $topic);
         $topic->delete();
 
-        $redirect = action('Nexus\SectionController@show', ['id' => $section_id]);
+        $redirect = action('Nexus\SectionController@show', ['section' => $section_id]);
         return redirect($redirect);
     }
 
@@ -250,7 +250,7 @@ class TopicController extends Controller
         );
         
         if ($validator->fails()) {
-            return redirect(action('Nexus\TopicController@show', ['id' => $id]));
+            return redirect(action('Nexus\TopicController@show', ['topic' => $id]));
         }
 
 
@@ -266,7 +266,7 @@ class TopicController extends Controller
         }
 
         FlashHelper::showAlert($message, 'success');
-        return  redirect()->route('topic.show', ['id' => $topic->id]);
+        return  redirect()->route('topic.show', ['topic' => $topic->id]);
     }
     
     /*

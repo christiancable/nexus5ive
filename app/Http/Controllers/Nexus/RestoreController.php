@@ -135,7 +135,7 @@ class RestoreController extends Controller
         $this->authorize('restore', [Section::class, $trashedSection, $destinationSection]);
         RestoreHelper::restoreSectionToSection($trashedSection, $destinationSection);
         
-        $redirect = action('Nexus\SectionController@show', ['id' => $trashedSection->id]);
+        $redirect = action('Nexus\SectionController@show', ['section' => $trashedSection->id]);
         return redirect($redirect);
     }
     
@@ -154,7 +154,7 @@ class RestoreController extends Controller
         $this->authorize('restore', [Topic::class, $trashedTopic, $destinationSection]);
         RestoreHelper::restoreTopicToSection($trashedTopic, $destinationSection);
         
-        $redirect = action('Nexus\SectionController@show', ['id' => $destinationSection->id]);
+        $redirect = action('Nexus\SectionController@show', ['section' => $destinationSection->id]);
         return redirect($redirect);
     }
 }

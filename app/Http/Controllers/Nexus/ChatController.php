@@ -61,7 +61,7 @@ class ChatController extends Controller
             $message->save();
         }
 
-        return redirect(action('Nexus\ChatController@conversation', $username));
+        return redirect(action('Nexus\ChatController@conversation', ['username' => $username]));
     }
 
     /**

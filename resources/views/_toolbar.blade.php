@@ -99,7 +99,7 @@ $notificationCount = $profileNotificationCount + $mentionCount;
             </a>
 
             <div class="dropdown-menu" aria-labelledby="profiledropdown">
-                <a class="dropdown-item" href="{{ action('Nexus\UserController@show', ['user_name' => $authUser->username])}}"> 
+                <a class="dropdown-item" href="{{ action('Nexus\UserController@show', ['user' => $authUser->username])}}"> 
                   <span class="oi oi-person" aria-hidden="true"></span> Profile 
                   @if ($commentsCount)
                     <span class="badge badge-info">{{$commentsCount}}</span>

@@ -1,6 +1,6 @@
 
 	{!! Form::open(array(
-		'route' => ['topic.updateSubscription', 'id' => $topic->id],
+		'route' => ['topic.updateSubscription', 'topic' => $topic->id],
         'class' => 'form' ))
     !!}
 	    <button class="btn btn-link">

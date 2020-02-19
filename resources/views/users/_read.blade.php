@@ -37,7 +37,7 @@
     </button>
     <div class="dropdown-menu" aria-labelledby="sectionMenuButton">
         @foreach ($user->sections as $section)
-        <a class="dropdown-item" href="{{ action('Nexus\SectionController@show', ['section_id' => $section->id]) }}">{{$section->title}}</a>
+        <a class="dropdown-item" href="{{ action('Nexus\SectionController@show', ['section' => $section->id]) }}">{{$section->title}}</a>
         @endforeach        
     </div>
 </div>

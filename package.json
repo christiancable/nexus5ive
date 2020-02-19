@@ -13,7 +13,7 @@
     "dusk": "php artisan dusk",
     "coverage": "vendor/bin/phpunit --coverage-html coverage",
     "phpcs": "vendor/bin/phpcs --standard=psr2 app",
-    "larastan": "php artisan code:analyse"
+    "larastan": "vendor/bin/phpstan analyse"
   },
   "devDependencies": {
     "axios": "^0.18",

@@ -22,7 +22,7 @@ class TopicHelper
         $route = action(
             'Nexus\TopicController@show',
             [
-                'id' => $post->topic->id,
+                'topic' => $post->topic->id,
                 'page' => $page,
             ]
         );

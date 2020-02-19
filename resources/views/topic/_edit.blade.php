@@ -76,7 +76,7 @@ $errorBag = 'topicUpdate' . $topic->id;
             </div>
             {!! Form::close() !!}
 
-            <form action="{{action('Nexus\TopicController@destroy', ['id' => $topic->id])}}" method="POST">
+            <form action="{{action('Nexus\TopicController@destroy', ['topic' => $topic->id])}}" method="POST">
                 <div class="form-group">
                     @csrf
                     {{ method_field('DELETE') }}
