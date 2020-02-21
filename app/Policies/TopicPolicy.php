@@ -34,7 +34,8 @@ class TopicPolicy
      */
     public function create(User $user, Section $section)
     {
-        if ($user->adminstrator) {
+        //@todo they are allowed by this is not evidenced in the UI - do we need this?
+        if ($user->administrator) {
             return true;
         }
 
