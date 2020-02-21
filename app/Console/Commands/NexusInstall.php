@@ -53,7 +53,7 @@ class NexusInstall extends Command
             $email = $this->ask('Email Address');
             $password = $this->ask('Password');
             
-            $administrator = factory('App\User')->make([
+            $administrator = factory(User::class)->make([
                 'username'      => $username,
                 'name'          => 'Administrator',
                 'email'         => $email,
