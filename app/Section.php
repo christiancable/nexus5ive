@@ -9,6 +9,47 @@ use App\Events\TreeCacheBecameDirty;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * App\Section
+ *
+ * @property int $id
+ * @property string|null $title
+ * @property string|null $intro
+ * @property int $user_id
+ * @property int|null $parent_id
+ * @property int $weight
+ * @property \Illuminate\Support\Carbon $created_at
+ * @property \Illuminate\Support\Carbon $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read mixed $is_home
+ * @property-read mixed $most_recent_post
+ * @property-read mixed $section_count
+ * @property-read mixed $topic_count
+ * @property-read \App\User $moderator
+ * @property-read \App\Section|null $parent
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Section[] $sections
+ * @property-read int|null $sections_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Topic[] $topics
+ * @property-read int|null $topics_count
+ * @method static bool|null forceDelete()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Section newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Section newQuery()
+ * @method static \Illuminate\Database\Query\Builder|\App\Section onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Section query()
+ * @method static bool|null restore()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Section whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Section whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Section whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Section whereIntro($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Section whereParentId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Section whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Section whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Section whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Section whereWeight($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Section withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|\App\Section withoutTrashed()
+ * @mixin \Eloquent
+ */
 class Section extends Model
 {
     use SoftDeletes;

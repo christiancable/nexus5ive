@@ -4,6 +4,46 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * App\Post
+ *
+ * @property int $id
+ * @property string|null $title
+ * @property string|null $text
+ * @property \Illuminate\Support\Carbon $time
+ * @property string|null $popname
+ * @property int $html
+ * @property int $user_id
+ * @property int $topic_id
+ * @property int|null $update_user_id
+ * @property \Illuminate\Support\Carbon $created_at
+ * @property \Illuminate\Support\Carbon $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \App\User $author
+ * @property-read \App\User|null $editor
+ * @property-read \App\Topic $topic
+ * @method static bool|null forceDelete()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Post newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Post newQuery()
+ * @method static \Illuminate\Database\Query\Builder|\App\Post onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Post query()
+ * @method static bool|null restore()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Post whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Post whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Post whereHtml($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Post whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Post wherePopname($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Post whereText($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Post whereTime($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Post whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Post whereTopicId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Post whereUpdateUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Post whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Post whereUserId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Post withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|\App\Post withoutTrashed()
+ * @mixin \Eloquent
+ */
 class Post extends Model
 {
     use SoftDeletes;

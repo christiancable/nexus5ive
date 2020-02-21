@@ -9,6 +9,47 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * App\Topic
+ *
+ * @property int $id
+ * @property string|null $title
+ * @property string|null $intro
+ * @property int $section_id
+ * @property int $secret
+ * @property int $readonly
+ * @property int $weight
+ * @property \Illuminate\Support\Carbon $created_at
+ * @property \Illuminate\Support\Carbon $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \Carbon|null $most_recent_post_time
+ * @property-read \App\Post $most_recent_post
+ * @property-read \App\Post $most_recent_post_id
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Post[] $posts
+ * @property-read int|null $posts_count
+ * @property-read \App\Section $section
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\View[] $views
+ * @property-read int|null $views_count
+ * @method static bool|null forceDelete()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Topic newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Topic newQuery()
+ * @method static \Illuminate\Database\Query\Builder|\App\Topic onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Topic query()
+ * @method static bool|null restore()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Topic whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Topic whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Topic whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Topic whereIntro($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Topic whereReadonly($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Topic whereSecret($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Topic whereSectionId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Topic whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Topic whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Topic whereWeight($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Topic withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|\App\Topic withoutTrashed()
+ * @mixin \Eloquent
+ */
 class Topic extends Model
 {
     use SoftDeletes;

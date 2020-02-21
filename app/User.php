@@ -12,6 +12,96 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
+/**
+ * App\User
+ *
+ * @property int $id
+ * @property string $name
+ * @property string $email
+ * @property string $password
+ * @property string|null $remember_token
+ * @property \Illuminate\Support\Carbon $created_at
+ * @property \Illuminate\Support\Carbon $updated_at
+ * @property string $username
+ * @property string|null $popname
+ * @property string|null $about
+ * @property string|null $location
+ * @property int $administrator
+ * @property int $banned
+ * @property int $deleted
+ * @property int $totalVisits
+ * @property int $totalPosts
+ * @property string|null $favouriteMovie
+ * @property string|null $favouriteMusic
+ * @property int $private
+ * @property string|null $ipaddress
+ * @property string|null $currentActivity
+ * @property \Illuminate\Support\Carbon|null $latestLogin
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property int $viewLatestPostFirst
+ * @property int $theme_id
+ * @property \Illuminate\Support\Carbon|null $email_verified_at
+ * @property-read \App\Activity $activity
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Comment[] $comments
+ * @property-read int|null $comments_count
+ * @property-read mixed $trashed_topics
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Comment[] $givenComments
+ * @property-read int|null $given_comments_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Mention[] $mentions
+ * @property-read int|null $mentions_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Message[] $messages
+ * @property-read int|null $messages_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Post[] $modifiedPosts
+ * @property-read int|null $modified_posts_count
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
+ * @property-read int|null $notifications_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Post[] $posts
+ * @property-read int|null $posts_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Section[] $sections
+ * @property-read int|null $sections_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Message[] $sentMessages
+ * @property-read int|null $sent_messages_count
+ * @property-read \App\Theme $theme
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\View[] $views
+ * @property-read int|null $views_count
+ * @method static bool|null forceDelete()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User newQuery()
+ * @method static \Illuminate\Database\Query\Builder|\App\User onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User query()
+ * @method static bool|null restore()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User unverified()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User verified()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereAbout($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereAdministrator($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereBanned($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereCurrentActivity($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereDeleted($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereEmailVerifiedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereFavouriteMovie($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereFavouriteMusic($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereIpaddress($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereLatestLogin($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereLocation($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User wherePassword($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User wherePopname($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User wherePrivate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereRememberToken($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereThemeId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereTotalPosts($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereTotalVisits($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereUsername($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereViewLatestPostFirst($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\User withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|\App\User withoutTrashed()
+ * @mixin \Eloquent
+ */
 class User extends Authenticatable implements MustVerifyEmail
 {
     use Notifiable;
