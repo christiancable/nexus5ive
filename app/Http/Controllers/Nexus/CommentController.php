@@ -19,26 +19,6 @@ class CommentController extends Controller
     }
     
     /**
-     * Display a listing of the resource.
-     *
-     * @return Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  StoreComment $request
@@ -73,7 +53,7 @@ class CommentController extends Controller
         $this->authorize('destroy', $comment);
         $comment->delete();
         
-        return redirect(action('Nexus\UserController@show', ['user_name' => $request->user()->username]));
+        return redirect(action('Nexus\UserController@show', ['user' => $request->user()->username]));
     }
 
     /**

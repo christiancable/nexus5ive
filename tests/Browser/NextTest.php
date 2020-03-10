@@ -1,0 +1,184 @@
+<?php
+
+namespace Tests\Browser;
+
+use App\User;
+use App\Post;
+use App\Topic;
+use App\Section;
+use Tests\DuskTestCase;
+use Laravel\Dusk\Browser;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
+
+class NextTest extends DuskTestCase
+{
+    use DatabaseMigrations;
+
+    use DatabaseMigrations;
+
+    protected $user;
+    protected $home;
+    protected $topic;
+    protected $post;
+    protected $postPreview;
+    protected $noTopicsMsg = 'No updated topics found. Why not start a new conversation or read more sections?';
+    protected $newTopicsMsg = 'People have been talking! New posts found in ';
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        /*
+        sets up bbs structure with two sub sections each with a topic
+
+        home
+            - section1
+                - topic1
+            - section2
+                - topic2
+        */
+
+        $this->user = factory(User::class)->create();
+        $this->home = factory(Section::class)->create([
+            'parent_id' => null,
+            'user_id' => $this->user->id,
+        ]);
+
+        $this->section1 = factory(Section::class)->create([
+            'parent_id' => $this->home->id,
+            'user_id' => $this->user->id,
+        ]);
+        $this->section2 = factory(Section::class)->create([
+            'parent_id' => $this->home->id,
+            'user_id' => $this->user->id,
+        ]);
+
+        $this->topic1 = factory(Topic::class)->create([
+            'section_id' => $this->home->id
+        ]);
+        $this->topic2 = factory(Topic::class)->create([
+            'section_id' => $this->home->id
+        ]);
+    }
+    
+    /**
+     * @test
+
+     */
+    public function userCanJumpToNextUpdatedTopic()
+    {
+        /*
+        GIVEN we have a bbs with sections and topic which the user is subscribed to
+        WHEN a post is added to that topic
+        AND user clicks 'Next'
+        THEN user goes to the section containing topic
+        AND use sees the updated topics found message
+        */
+        $user = $this->user;
+        $newTopicsMsg = $this->newTopicsMsg;
+        $topic1 = $this->topic1;
+
+        \App\Helpers\ViewHelper::subscribeToTopic($user, $this->topic1);
+
+        factory(Post::class)->create([
+            'topic_id' => $this->topic1->id,
+            'user_id' => $this->user->id,
+        ]);
+        
+        $this->browse(function ($browser) use ($user, $newTopicsMsg, $topic1) {
+            $browser->loginAs($user)
+                    ->visit('/')
+                    ->press('@toolbar-next')
+                    ->assertPathIs('/section/' . $topic1->section->id)
+                    ->assertSee($newTopicsMsg . $topic1->title);
+        });
+    }
+    
+    /**
+     * @test
+     */
+    public function userDoesNotJumpToTopicWhenNoTopicHasBeenUpdated()
+    {
+        /*
+        GIVEN we have a bbs with sections and no unread topics
+        WHEN user clicks 'Next'
+        THEN user stays on the current section
+        AND use sees the no updated topics found message
+        */
+        $user = $this->user;
+        $noTopicsMsg = $this->noTopicsMsg;
+        
+        $this->browse(function ($browser) use ($user, $noTopicsMsg) {
+            $browser->loginAs($user)
+                    ->visit('/')
+                    ->press('@toolbar-next')
+                    ->assertPathIs('/')
+                    ->assertSee($noTopicsMsg);
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function userDoesNotJumpToNextUnsubscribedTopic()
+    {
+        /*
+        GIVEN we have a bbs with sections and a topic which is unsubscribed from
+        WHEN a post is added to the unsubscribed topic
+        AND user clicks 'Next'
+        THEN user stays on the current section
+        AND use sees the no updated topics found message
+        */
+        $user = $this->user;
+        $noTopicsMsg = $this->noTopicsMsg;
+
+        \App\Helpers\ViewHelper::unsubscribeFromTopic($user, $this->topic1);
+
+        factory(Post::class)->create([
+            'topic_id' => $this->topic1->id,
+            'user_id' => $this->user->id,
+        ]);
+        
+        $this->browse(function ($browser) use ($user, $noTopicsMsg) {
+            $browser->loginAs($user)
+                    ->visit('/')
+                    ->press('@toolbar-next')
+                    ->assertPathIs('/')
+                    ->assertSee($noTopicsMsg);
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function userCanMarkAllSubscribedTopicsAsRead()
+    {
+        /*
+        GIVEN there is an updated topic
+        WHEN the user clicks the Next button
+        AND the user clicks the 'mark all subscribed topics as read' link
+        THEN the user see the 'Success! all subscribed topics are now marked as read' message
+        AND WHEN the user clicks the Next button
+        THEN the user sees the no updated topics found message
+        */
+
+        $user = $this->user;
+        $noTopicsMsg = $this->noTopicsMsg;
+
+        \App\Helpers\ViewHelper::subscribeToTopic($user, $this->topic1);
+
+        factory(Post::class)->create([
+            'topic_id' => $this->topic1->id,
+            'user_id' => $this->user->id,
+        ]);
+        
+        $this->browse(function ($browser) use ($user, $noTopicsMsg) {
+            $browser->loginAs($user)
+                    ->visit('/')
+                    ->press('@toolbar-next')
+                    ->clickLink('mark all subscribed topics as read')
+                    ->press('@toolbar-next')
+                    ->assertSee($noTopicsMsg);
+        });
+    }
+}

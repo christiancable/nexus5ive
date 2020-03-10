@@ -19,7 +19,8 @@ This current version is built using the [Laravel framework](https://laravel.com)
 
 ## Build Status
 
-[![Build Status](https://travis-ci.org/christiancable/nexus5ive.svg?branch=master)](https://travis-ci.org/christiancable/nexus5ive.svg?branch=master)
+
+![Build Status](https://github.com/christiancable/nexus5ive/workflows/Tests/badge.svg?branch=master)
 
 ## Install Steps
 

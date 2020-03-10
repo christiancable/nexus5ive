@@ -6,6 +6,14 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Tree
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Tree newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Tree newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Tree query()
+ * @mixin \Eloquent
+ */
 class Tree extends Model
 {
     /**

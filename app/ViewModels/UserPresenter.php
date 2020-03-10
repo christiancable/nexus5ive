@@ -41,7 +41,7 @@ class UserPresenter
 
     public function profileLink()
     {
-        $url = action('Nexus\UserController@show', ['username' => $this->user->username]);
+        $url = action('Nexus\UserController@show', ['user' => $this->user->username]);
         $html = <<< HTML
 <span class="text-muted">@</span><mark><strong><a href="$url">{$this->user->username}</a></strong></mark>
 HTML;

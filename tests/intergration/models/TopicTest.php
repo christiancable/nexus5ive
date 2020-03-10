@@ -5,10 +5,10 @@ namespace Tests\Intergration\Models;
 use App\Post;
 use App\User;
 use App\Topic;
-use Tests\BrowserKitTestCase;
+use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class TopicTest extends BrowserKitTestCase
+class TopicTest extends TestCase
 {
     use RefreshDatabase;
     

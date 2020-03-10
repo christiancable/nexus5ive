@@ -78,7 +78,7 @@ $formName = 'section'.$subSection->id;
         </div>
         {!! Form::close() !!}
 
-        <form action="{{action('Nexus\SectionController@destroy', ['id' => $subSection->id])}}" method="POST">
+        <form action="{{action('Nexus\SectionController@destroy', ['section' => $subSection->id])}}" method="POST">
             <div class="form-group">
                 @csrf
                 {{ method_field('DELETE') }}

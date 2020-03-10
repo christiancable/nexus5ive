@@ -10,7 +10,7 @@
         @endif 
     </td>
     <td>
-        <form action="{{action('Nexus\CommentController@destroy', ['id' => $comment->id])}}" method="POST">
+        <form action="{{action('Nexus\CommentController@destroy', ['comment' => $comment->id])}}" method="POST">
         @csrf
         {{ method_field('DELETE') }}
             <button class="btn btn-danger"><span class="oi oi-trash" aria-hidden="true"></span> Delete </button>

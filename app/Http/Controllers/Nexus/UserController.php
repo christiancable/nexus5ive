@@ -43,27 +43,6 @@ class UserController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  Request  $request
-     * @return Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
      * Display the specified resource.
      *
      * @param  string  $user_name - the name of the user
@@ -88,7 +67,7 @@ class UserController extends Controller
             ActivityHelper::updateActivity(
                 $request->user()->id,
                 "Examining <em>{$user->username}</em>",
-                action('Nexus\UserController@show', ['user_name' => $user_name])
+                action('Nexus\UserController@show', ['user' => $user_name])
             );
 
         $themes = \App\Theme::all()->pluck('name', 'id');
@@ -132,17 +111,6 @@ class UserController extends Controller
         $user->update($input);
         
         FlashHelper::showAlert('Profile Updated!', 'success');
-        return redirect(action('Nexus\UserController@show', ['user_name' => $user_name]));
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function destroy($id)
-    {
-        //
+        return redirect(action('Nexus\UserController@show', ['user' => $user_name]));
     }
 }

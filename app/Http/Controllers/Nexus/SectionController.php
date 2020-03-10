@@ -28,26 +28,6 @@ class SectionController extends Controller
     }
     
     /**
-     * Display a listing of the resource.
-     *
-     * @return Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \App\Http\Requests\StoreSection  $request
@@ -65,7 +45,7 @@ class SectionController extends Controller
             'intro'     => request('intro')
         ]);
 
-        $redirect = action('Nexus\SectionController@show', ['id' => $section->id]);
+        $redirect = action('Nexus\SectionController@show', ['section' => $section->id]);
         return redirect($redirect);
     }
 
@@ -98,7 +78,7 @@ class SectionController extends Controller
         ActivityHelper::updateActivity(
             $request->user()->id,
             "Browsing <em>{$section->title}</em>",
-            action('Nexus\SectionController@show', ['id' => $section->id])
+            action('Nexus\SectionController@show', ['section' => $section->id])
         );
         
         // if the user can moderate the section then they could potentially update subsections
@@ -117,17 +97,6 @@ class SectionController extends Controller
         $breadcrumbs = BreadcrumbHelper::breadcrumbForSection($section);
 
         return view('sections.index', compact('section', 'breadcrumbs', 'potentialModerators', 'moderatedSections'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function edit($id)
-    {
-        //
     }
 
     /**
@@ -211,7 +180,7 @@ class SectionController extends Controller
         
         $section->update($updatedSectionDetails);
 
-        return redirect()->route('section.show', ['id' => $section->id]);
+        return redirect()->route('section.show', ['section' => $section->id]);
     }
 
     /**
@@ -233,7 +202,7 @@ class SectionController extends Controller
         $section->save();
 
         $section->delete();
-        $redirect = action('Nexus\SectionController@show', ['id' => $parent_id]);
+        $redirect = action('Nexus\SectionController@show', ['section' => $parent_id]);
         return redirect($redirect);
     }
 
@@ -281,7 +250,7 @@ class SectionController extends Controller
             $destinationTopic = $topics->first()->topic;
 
             // set alert
-            $topicURL = action('Nexus\TopicController@show', ['topic_id' => $destinationTopic->id]);
+            $topicURL = action('Nexus\TopicController@show', ['topic' => $destinationTopic->id]);
             // force the url to be relative so we don't later make this open in the new window
             $topicURL = str_replace(url('/'), '', $topicURL);
             $topicTitle = $destinationTopic->title;
@@ -295,7 +264,10 @@ Markdown;
             FlashHelper::showAlert($message, 'success');
             
             // redirect to the parent section of the unread topic
-            return redirect()->action('Nexus\SectionController@show', [$destinationTopic->section->id]);
+            return redirect()->action(
+                'Nexus\SectionController@show',
+                ['section' => $destinationTopic->section->id]
+            );
         } else {
             // set alert
             $message = 'No updated topics found. Why not start a new conversation or read more sections?';

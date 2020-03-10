@@ -2,7 +2,7 @@
 
 /**
  *  Command to remove unverified user accounts which have remained
- *  unveried for at least {--age} days
+ *  unverified for at least {--age} days
  *
  *  nexus:unverified remove {--confirm} {--age=30}
  *
@@ -58,8 +58,8 @@ class NexusUnverified extends Command
     private function getUnverifiedUsers()
     {
         return User::unverified()
-        ->whereDate('created_at', '<', Carbon::now()->subDays($this->age)->toDateTimeString())
-        ->get();
+            ->whereDate('created_at', '<', Carbon::now()->subDays($this->age)->toDateTimeString())
+            ->get();
     }
     /**
      * Create a new command instance.

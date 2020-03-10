@@ -28,13 +28,13 @@ $pattern = '/\[spoiler-\](.*)\[-spoiler\]/iU';
 $unspoiled = preg_replace($pattern, 'XXXXXX', $topic->most_recent_post->text);
 
 $replyLink = action('Nexus\TopicController@show', [
-    'topic_id' => $topic->id,
+    'topic' => $topic->id,
     'reply' => true
 ]);
 
 // links
-$sectionLink = action('Nexus\SectionController@show', ['section_id' => $topic->section->id]);
-$topicLink = action('Nexus\TopicController@show', ['topic_id' => $topic->id]);
+$sectionLink = action('Nexus\SectionController@show', ['section' => $topic->section->id]);
+$topicLink = action('Nexus\TopicController@show', ['topic' => $topic->id]);
 ?>
 
 

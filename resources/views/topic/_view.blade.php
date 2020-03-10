@@ -25,7 +25,7 @@ if ($topic->most_recent_post) {
     }
 }
 
-$topicLink = action('Nexus\TopicController@show', ['topic_id' => $topic->id]);
+$topicLink = action('Nexus\TopicController@show', ['topic' => $topic->id]);
 
 ?>
 

@@ -36,7 +36,7 @@
             {!! Form::close() !!}
             
             @if ($allowDelete)
-                <form action="{{action('Nexus\PostController@destroy', ['id' => $post->id])}}" method="POST">
+                <form action="{{action('Nexus\PostController@destroy', ['post' => $post->id])}}" method="POST">
                     <div class="form-group">
                         @csrf
                         {{ method_field('DELETE') }}
