@@ -11,6 +11,8 @@ jobs:
       with:
         node-version: '10.x'
         registry-url: 'https://registry.npmjs.org'
+    - name: Redis Server in GitHub Actions
+      uses: supercharge/redis-github-action@1.1.0
     - name: Copy .env
       run: php -r "file_exists('.env') || copy('.env.example', '.env');"
     - name: Install PHP Dependencies
