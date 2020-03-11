@@ -139,12 +139,16 @@ class Topic extends Model
 
 
     // posts
-    
     public function posts()
     {
         return $this->hasMany(\App\Post::class)->orderBy('id', 'asc');
     }
 
+    // posts but in reverse order
+    public function reversedPosts()
+    {
+        return $this->hasMany(\App\Post::class)->orderBy('id', 'desc');
+    }
     // views
 
     public function views()
