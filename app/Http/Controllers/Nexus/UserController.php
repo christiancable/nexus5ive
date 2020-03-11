@@ -35,7 +35,7 @@ class UserController extends Controller
         $users =  User::select('username', 'name', 'popname', 'latestLogin', 'totalPosts', 'totalVisits')
             ->verified()->orderBy('username', 'asc')->get();
         ActivityHelper::updateActivity(
-            $request->user()->id,
+            Auth::user()->id,
             "Viewing list of Users",
             action('Nexus\UserController@index')
         );
@@ -63,7 +63,7 @@ class UserController extends Controller
         }
 
         ActivityHelper::updateActivity(
-            $user->id,
+            Auth::user()->id,
             "Examining <em>{$user->username}</em>",
             action('Nexus\UserController@show', ['user' => $user->username])
         );
