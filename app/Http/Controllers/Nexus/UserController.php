@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Nexus;
 
 use App\User;
+use App\Theme;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -12,6 +13,7 @@ use App\Helpers\BreadcrumbHelper;
 use App\Http\Requests\UpdateUser;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -32,70 +34,67 @@ class UserController extends Controller
     {
         $users =  User::select('username', 'name', 'popname', 'latestLogin', 'totalPosts', 'totalVisits')
             ->verified()->orderBy('username', 'asc')->get();
-            ActivityHelper::updateActivity(
-                $request->user()->id,
-                "Viewing list of Users",
-                action('Nexus\UserController@index')
-            );
+        ActivityHelper::updateActivity(
+            $request->user()->id,
+            "Viewing list of Users",
+            action('Nexus\UserController@index')
+        );
         $breadcrumbs = BreadcrumbHelper::breadcumbForUtility('Users');
 
         return view('users.index', compact('users', 'breadcrumbs'));
     }
 
     /**
-     * Display the specified resource.
+     * show a user
      *
-     * @param  string  $user_name - the name of the user
-     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
+     * @param Request $request
+     * @param User $user
+     * @return \Illuminate\View\View
      */
-    public function show(Request $request, $user_name)
+    public function show(Request $request, User $user)
     {
+        // lazy eager load the users comments
+        $user->load('comments', 'comments.author');
 
-        try {
-            $user = User::with('comments', 'comments.author')->where('username', $user_name)->firstOrFail();
-        } catch (ModelNotFoundException $ex) {
-            $message = "$user_name not found. Maybe you're thinking of someone else";
-            FlashHelper::showAlert($message, 'warning');
-            return redirect('/users/');
+        // if the user is looking at their own page then mark comments as read
+        if ($user->id === Auth::user()->id) {
+            $user->markCommentsAsRead();
+            $user->save();
         }
 
-        if ($user->id === $request->user()->id) {
-            $request->user()->markCommentsAsRead();
-            $request->user()->save();
-        }
+        ActivityHelper::updateActivity(
+            $user->id,
+            "Examining <em>{$user->username}</em>",
+            action('Nexus\UserController@show', ['user' => $user->username])
+        );
 
-            ActivityHelper::updateActivity(
-                $request->user()->id,
-                "Examining <em>{$user->username}</em>",
-                action('Nexus\UserController@show', ['user' => $user_name])
-            );
-
-        $themes = \App\Theme::all()->pluck('name', 'id');
+        $themes = Theme::all()->pluck('name', 'id');
         $breadcrumbs = BreadcrumbHelper::breadcrumbForUser($user);
         $comments = $user->comments()->paginate(config('nexus.comment_pagination'));
+
         return view('users.show', compact('user', 'comments', 'breadcrumbs', 'themes'));
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  String  $user_name
+     * edit
+     * this just forwards to the $this->show because edit and show are combined
+     * @param Request $request
+     * @param User $user
      * @return \Illuminate\View\View
      */
-    public function edit($user_name)
+    public function edit(Request $request, User $user)
     {
-        $user = User::with('comments', 'comments.author')->where('username', $user_name)->firstOrFail();
-        return view('users.show')->with('user', $user);
+        return $this->show($request, $user);
     }
 
     /**
      * Update the user
      *
-     * @param  String $user_name
-     * @param  UpdateUser  $request
+     * @param Request $request
+     * @param User $user
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update($user_name, UpdateUser $request)
+    public function update(Request $request, User $user)
     {
         $input = $request->all();
         
@@ -106,11 +105,11 @@ class UserController extends Controller
             unset($input['password']);
         }
         
-        $user = User::findOrFail(request('id'));
         $this->authorize('update', $user);
         $user->update($input);
         
         FlashHelper::showAlert('Profile Updated!', 'success');
-        return redirect(action('Nexus\UserController@show', ['user' => $user_name]));
+        
+        return redirect(action('Nexus\UserController@show', ['user' => $user]));
     }
 }

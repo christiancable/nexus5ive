@@ -154,6 +154,16 @@ class User extends Authenticatable implements MustVerifyEmail
     
     protected $dates = ['latestLogin','deleted_at'];
     
+    /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName()
+    {
+        return 'username';
+    }
+
     public static function boot()
     {
         parent::boot();
