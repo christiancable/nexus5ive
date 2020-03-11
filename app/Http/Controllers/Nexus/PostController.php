@@ -56,18 +56,17 @@ class PostController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  Request  $request
-     * @param  int  $id
+     * @param Request $request
+     * @param Post $post
      * @return RedirectResponse
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Post $post)
     {
-        
         // manually create validator here to dynamically name the errorbag based on the post id
         $validator = Validator::make(
             $request->all(),
             [
-                'id' => 'required:in' . $id . '|exists:posts,id',
+                'id' => 'required:in' . $post->id . '|exists:posts,id',
                 'form.'.$request->input('id').'.text' => 'required',
             ],
             [
@@ -77,15 +76,13 @@ class PostController extends Controller
         );
 
         if ($validator->fails()) {
-            return back()->withErrors($validator, "postUpdate$id")->withInput();
+            return back()->withErrors($validator, "postUpdate{$post->id}")->withInput();
         }
 
-        // get post and auth
-        $post = Post::findOrFail($id);
         $this->authorize('update', [Post::class, $post]);
         
         $input = $request->all();
-        $updatedPost = $input['form']["$id"];
+        $updatedPost = $input['form']["$post->id"];
         $updatedPost['update_user_id'] = $request->user()->id;
         
         $post->update($updatedPost);
@@ -95,17 +92,16 @@ class PostController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param Request $request
+     * @param Post $post
      * @return RedirectResponse
      */
-    public function destroy(Request $request, $id)
+    public function destroy(Request $request, Post $post)
     {
-        $post = Post::findOrFail($id);
         $this->authorize('delete', $post);
 
         // using forceDelete here because in this case we do not want a soft delete
-        $topicID = $post->topic_id;
         $post->forceDelete();
-        return redirect()->route('topic.show', ['topic' => $topicID]);
+        return redirect()->route('topic.show', ['topic' => $post->topic_id]);
     }
 }
