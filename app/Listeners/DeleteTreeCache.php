@@ -5,6 +5,7 @@ namespace App\Listeners;
 use App\Tree;
 use App\Events\TreeCacheBecameDirty;
 use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
@@ -28,14 +29,24 @@ class DeleteTreeCache implements ShouldQueue
      */
     public function handle(TreeCacheBecameDirty $event)
     {
-        Redis::throttle('tree-cache-rebuild')->allow(1)->every(30)->then(function () {
-            // Job logic...
-            logger('QUEUE: adding TreeCacheBecameDirty');
-            Tree::rebuild();
-        }, function () {
-            // could not get lock, avoid adding to the queue
-            logger('QUEUE: avoiding adding TreeCacheBecameDirty');
-            return false;
-        });
+        if ('redis' === config('queue.default')) {
+            Redis::throttle('tree-cache-rebuild')->allow(1)->every(30)->then(function () {
+                // Job logic...
+                logger('QUEUE: processing TreeCacheBecameDirty');
+                $this->executeJob();
+            }, function () {
+                // could not get lock, avoid adding to the queue
+                logger('QUEUE: skipped TreeCacheBecameDirty due to throttling');
+                return false;
+            });
+        } else {
+            logger('QUEUE: use redis to throttle TreeCacheBecameDirty jobs');
+            $this->executeJob();
+        }
+    }
+
+    public function executeJob()
+    {
+        Tree::rebuild();
     }
 }
