@@ -179,7 +179,13 @@ class Section extends Model
             }
         );
     }
-        
+
+    public static function forgetMostRecentPostAttribute($section_id = null)
+    {
+        $cacheKey = 'mostRecentPost' . $section_id;
+        Cache::forget($cacheKey);
+    }
+
     /**
      * recalculateMostRecentPost
      *

@@ -235,7 +235,6 @@ class SectionTest extends TestCase
      */
     public function latestPostReturnsMostRecentPostAsPostsAreRemoved()
     {
-
         /*
         GIVEN a section with topics, and a first and second post
         */
@@ -317,8 +316,9 @@ class SectionTest extends TestCase
                 'parent_id' => null,
                 'user_id' => $moderator->id
         ]);
-        $topic1->section_id = $section2->id;
-        $topic1->save();
+        $topic1->update([
+            'section_id' => $section2->id
+        ]);
 
         /*
         THEN the latest post for that section becomes null

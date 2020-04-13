@@ -30,6 +30,9 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\TreeCacheBecameDirty' => [
             'App\Listeners\DeleteTreeCache'
         ],
+        'App\Events\MostRecentPostForSectionBecameDirty' => [
+            'App\Listeners\DeleteSectionMostRecentPostCache'
+        ],
         'App\Events\UserCreated' => [
             'App\Listeners\LogUnverifiedUser'
         ],
