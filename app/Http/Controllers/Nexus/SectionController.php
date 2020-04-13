@@ -69,7 +69,6 @@ class SectionController extends Controller
             'sections.moderator:id,username',
             'sections.sections',
             'topics.most_recent_post.author:id,username',
-            'sections.topics.posts:id,time'
         );
         
         ActivityHelper::updateActivity(
