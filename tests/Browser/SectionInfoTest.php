@@ -8,6 +8,7 @@ use App\Topic;
 use App\Section;
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class SectionInfoTest extends DuskTestCase
@@ -39,6 +40,9 @@ class SectionInfoTest extends DuskTestCase
         $this->anotherTopicInSubSection = factory(Topic::class)->create([
            'section_id' => $this->subSection->id
         ]);
+
+        // we cache the latest post info so clear the cache between tests
+        Artisan::call('cache:clear');
     }
 
     /**

@@ -89,11 +89,9 @@ class Topic extends Model
         Topic::deleted(function () {
             event(new TreeCacheBecameDirty());
         });
-        Topic::updating(function ($topic) {
+        Topic::updated(function ($topic) {
             $original_section_id = $topic->getOriginal('section_id');
             event(new MostRecentPostForSectionBecameDirty($original_section_id));
-        });
-        Topic::updated(function ($topic) {
             event(new TreeCacheBecameDirty());
         });
         Topic::created(function () {
