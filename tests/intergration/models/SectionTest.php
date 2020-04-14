@@ -3,6 +3,7 @@
 namespace Tests\Intergration\Models;
 
 use App\User;
+use App\Post;
 use App\Topic;
 use App\Section;
 use Tests\TestCase;
@@ -11,7 +12,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 class SectionTest extends TestCase
 {
     use RefreshDatabase;
-        
+
     /**
      * @test
      */
@@ -30,19 +31,19 @@ class SectionTest extends TestCase
                 'parent_id' => $mainmenu->id,
                 'user_id' => $user->id,
                 ]);
-        
+
         // AND some other sections
         factory(Section::class)
             ->create([
                 'parent_id' => $mainmenu->id,
                 'user_id' => $user->id,
                 ]);
-        
+
         $sectionCount = Section::all()->count();
 
         // WHEN that particular section is deleted
         $section->delete();
-        
+
         // THEN number of sections goes down by one
         $sectionCountAfterDeletion = Section::all()->count();
         $this->assertEquals($sectionCountAfterDeletion, $sectionCount-1);
@@ -50,13 +51,15 @@ class SectionTest extends TestCase
         // AND that particular section is soft deleted
         $this->assertTrue($section->trashed());
     }
-    
-    
+
+    /**
+     * @test
+     */
     public function deletingSectionSoftDeletesItsTopics()
     {
         // GIVEN we have a user
         $user = factory(User::class)->create();
-        
+
         // AND we have a section
         $section = factory(Section::class)
             ->create([
@@ -67,9 +70,9 @@ class SectionTest extends TestCase
         // AND that section has topics
         factory(Topic::class)->create(['section_id' => $section->id]);
         $topicsInSectionCount = $section->topics->count();
-                
+
         $topicCount = Topic::all()->count();
-    
+
         // WHEN we delete that section
         $section->delete();
 
@@ -77,19 +80,22 @@ class SectionTest extends TestCase
         // belonging to the original section
         $topicCountAfterDeletion = Topic::all()->count();
         $this->assertEquals($topicCount - $topicsInSectionCount, $topicCountAfterDeletion);
-        
+
         // AND the count of topics for that section is now zero
         $this->assertEquals(Topic::where('section_id', $section->id)->count(), 0);
-        
+
         // BUT that section has soft deleted topics with match the orignal count
         $this->assertEquals(Topic::withTrashed()->where('section_id', $section->id)->count(), $topicsInSectionCount);
     }
 
+    /**
+     * @test
+     */
     public function deletingSectionSoftDeletesItsSubsections()
     {
         // given we have a user with a section and that sub section
          $user = factory(User::class)->create();
-        
+
         // AND we have a section
         $section = factory(Section::class)
             ->create([
@@ -117,5 +123,211 @@ class SectionTest extends TestCase
 
         // we have the right amount of soft deleted subsections
         $this->assertEquals(Section::withTrashed()->where('parent_id', $section->id)->count(), $subsectionCount);
+    }
+
+    /**
+     * @test
+     */
+    public function latestPostIsNullWhenTheSectionHasNoTopics()
+    {
+        /*
+        GIVEN a section with no topics
+        */
+
+        $moderator = factory(User::class)->create();
+        $section = factory(Section::class)->create([
+                'parent_id' => null,
+                'user_id' => $moderator->id
+        ]);
+
+        /*
+        WHEN
+        */
+
+        /*
+        THEN the latest post for that section is null
+        */
+
+        $this->assertNull($section->most_recent_post);
+    }
+
+    /**
+     * @test
+     */
+    public function latestPostIsNullWhenTheTopicsHaveNoPosts()
+    {
+        /*
+        GIVEN a section with no topics
+        */
+
+        $moderator = factory(User::class)->create();
+        $section = factory(Section::class)->create([
+                'parent_id' => null,
+                'user_id' => $moderator->id
+        ]);
+
+        /*
+        WHEN we add topics but no posts
+        */
+
+        factory(Topic::class, 10)->create([
+            'section_id' => $section->id
+        ]);
+
+        /*
+        THEN the latest post for that section is null
+        */
+
+        $this->assertNull($section->most_recent_post);
+    }
+
+    /**
+     * @test
+     */
+    public function latestPostReturnsMostRecentPostAsNewPostsAreAdded()
+    {
+        /*
+        GIVEN a section with topics
+        */
+
+        $moderator = factory(User::class)->create();
+        $section = factory(Section::class)->create([
+                'parent_id' => null,
+                'user_id' => $moderator->id
+        ]);
+
+        $topic1 = factory(Topic::class)->create([
+            'section_id' => $section->id
+        ]);
+
+        $topic2 = factory(Topic::class)->create([
+            'section_id' => $section->id
+        ]);
+
+        /*
+        WHEN a post is added to one of the topics
+        */
+
+        $post1 = factory(Post::class)->create([
+            'topic_id' => $topic1->id
+        ]);
+
+        /*
+        THEN the latest post for that section is that post
+        */
+        $this->assertEquals($post1->id, $section->most_recent_post->id);
+
+        /*
+        WHEN a second post is added to a topic in that section
+        */
+        $post2 = factory(Post::class)->create([
+            'topic_id' => $topic2->id
+        ]);
+
+        /*
+        THEN the latest post for that section becomes that second post
+        */
+        $this->assertEquals($post2->id, $section->most_recent_post->id);
+    }
+
+    /**
+     * @test
+     */
+    public function latestPostReturnsMostRecentPostAsPostsAreRemoved()
+    {
+        /*
+        GIVEN a section with topics, and a first and second post
+        */
+
+        $moderator = factory(User::class)->create();
+        $section = factory(Section::class)->create([
+                'parent_id' => null,
+                'user_id' => $moderator->id
+        ]);
+        $topic1 = factory(Topic::class)->create([
+            'section_id' => $section->id
+        ]);
+        $topic2 = factory(Topic::class)->create([
+            'section_id' => $section->id
+        ]);
+
+        $post1 = factory(Post::class)->create([
+            'topic_id' => $topic1->id
+        ]);
+        $post2 = factory(Post::class)->create([
+            'topic_id' => $topic2->id
+        ]);
+        
+        // second is the latest
+        $this->assertEquals($post2->id, $section->most_recent_post->id);
+
+        /*
+        WHEN the second post is removed
+        */
+        $post2->delete();
+
+        /*
+        THEN the latest post for that section becomes the first post
+        */
+        $this->assertEquals($post1->id, $section->most_recent_post->id);
+
+        /*
+        WHEN the first post is removed
+        */
+        $post1->delete();
+
+        /*
+        THEN the latest post for that section becomes null
+        */
+        $this->assertEquals(null, $section->most_recent_post);
+    }
+
+     /**
+     * @test
+     */
+    public function latestPostReturnsNullWhenTopicWithPreviousLatestPostIsMovedToAnotherSection()
+    {
+        /*
+        GIVEN a section with a topic with a post which is the latest post for that section
+        */
+
+        $moderator = factory(User::class)->create();
+        $section = factory(Section::class)->create([
+                'parent_id' => null,
+                'user_id' => $moderator->id
+        ]);
+        
+        $topic1 = factory(Topic::class)->create([
+            'section_id' => $section->id
+        ]);
+        
+        $post1 = factory(Post::class)->create([
+            'topic_id' => $topic1->id
+        ]);
+        
+        // post1 is the latest post
+        $this->assertEquals($post1->id, $section->most_recent_post->id);
+
+        /*
+        WHEN the topic is moved to another section
+        */
+
+        $section2 = factory(Section::class)->create([
+                'parent_id' => null,
+                'user_id' => $moderator->id
+        ]);
+        $topic1->update([
+            'section_id' => $section2->id
+        ]);
+
+        /*
+        THEN the latest post for that section becomes null
+        */
+        $this->assertNull($section->most_recent_post);
+
+        /*
+        AND the latest post for the new section is the original post
+        */
+        $this->assertEquals($post1->id, $section2->most_recent_post->id);
     }
 }

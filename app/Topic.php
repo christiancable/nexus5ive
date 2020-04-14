@@ -2,12 +2,14 @@
 
 namespace App;
 
+use App\Section;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
 use App\Events\TreeCacheBecameDirty;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Events\MostRecentPostForSectionBecameDirty;
 
 /**
  * App\Topic
@@ -87,7 +89,9 @@ class Topic extends Model
         Topic::deleted(function () {
             event(new TreeCacheBecameDirty());
         });
-        Topic::updated(function () {
+        Topic::updated(function ($topic) {
+            $original_section_id = $topic->getOriginal('section_id');
+            event(new MostRecentPostForSectionBecameDirty($original_section_id));
             event(new TreeCacheBecameDirty());
         });
         Topic::created(function () {
