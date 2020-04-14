@@ -16,6 +16,7 @@ use Illuminate\Validation\Rule;
 use App\Helpers\BreadcrumbHelper;
 use App\Http\Requests\StoreSection;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Validator;
 
@@ -39,7 +40,7 @@ class SectionController extends Controller
         $this->authorize('create', [Section::class, $parentSection]);
         
         $section = Section::create([
-            'user_id'   => $request->user()->id,
+            'user_id'   => Auth::user()->id,
             'parent_id' => request('parent_id'),
             'title'     => request('title'),
             'intro'     => request('intro')
@@ -52,39 +53,34 @@ class SectionController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $section_id - default to the first section
+     * @param Request $request
+     * @param Section|null  Section
      * @return \Illuminate\View\View
      */
-    public function show(Request $request, $section_id = null)
+    public function show(Request $request, Section $section = null)
     {
-        if (!$section_id) {
-            $section = Section::with([
-                'moderator:id,username',
-                'sections.moderator:id,username',
-                'sections.sections',
-                'topics.most_recent_post.author:id,username',
-                'sections.topics.posts:id,time'
-            ])->firstOrFail();
-        } else {
-            $section = Section::with([
-                'moderator:id,username',
-                'sections.moderator:id,username',
-                'sections.sections',
-                'topics.most_recent_post.author:id,username',
-                'sections.topics.posts:id,time'
-            ])->findOrFail($section_id);
+        if (null == $section) {
+            $section = Section::firstOrFail();
         }
 
+        // lazy eager load relationships
+        $section->load(
+            'moderator:id,username',
+            'sections.moderator:id,username',
+            'sections.sections',
+            'topics.most_recent_post.author:id,username',
+        );
+        
         ActivityHelper::updateActivity(
-            $request->user()->id,
+            Auth::user()->id,
             "Browsing <em>{$section->title}</em>",
             action('Nexus\SectionController@show', ['section' => $section->id])
         );
         
         // if the user can moderate the section then they could potentially update subsections
-        if ($section->moderator->id === $request->user()->id) {
+        if ($section->moderator->id === Auth::user()->id) {
             $potentialModerators = User::all(['id','username'])->pluck('username', 'id')->toArray();
-            $moderatedSections = $request->user()
+            $moderatedSections = Auth::user()
                 ->sections()
                 ->select('title', 'id')
                 ->get()
@@ -102,14 +98,13 @@ class SectionController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  Request  $request
-     * @param  int  $id
+     * @param Request $request
+     * @param Section $section
      * @return RedirectResponse
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Section $section)
     {
-        $section = Section::findOrFail($id);
-        $formName = "section{$id}";
+        $formName = "section{$section->id}";
 
         // it not valid to move a section into a descendant
         $descendants = $section->allChildSections();
@@ -135,7 +130,7 @@ class SectionController extends Controller
                     'required',
                     'numeric',
                     Rule::notIn($descendantsIDs),
-                    Rule::notIn([$id]),
+                    Rule::notIn([$section->id]),
                     Rule::In($allSectionIDs)
             ];
         }
@@ -145,13 +140,13 @@ class SectionController extends Controller
 
         if ($validator->fails()) {
             return back()
-                ->withErrors($validator, "sectionUpdate$id")
+                ->withErrors($validator, "sectionUpdate{$section->id}")
                 ->withInput();
         }
         
         $input = $request->all();
         $updatedSectionDetails = [
-            "id" => $id,
+            "id" => $section->id,
             "intro" => $input['form'][$formName]['intro'],
             "parent_id" => $input['form'][$formName]['parent_id'],
             "title" => $input['form'][$formName]['title'],
@@ -186,13 +181,12 @@ class SectionController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
-     * @param  Request  $request
+     * @param Request $request
+     * @param Section $section
      * @return RedirectResponse
      */
-    public function destroy(Request $request, $id)
+    public function destroy(Request $request, Section $section)
     {
-        $section = Section::findOrFail($id);
         $parent_id = $section->parent_id;
 
         $this->authorize('delete', $section);

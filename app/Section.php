@@ -6,6 +6,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 use App\Events\TreeCacheBecameDirty;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -168,7 +169,36 @@ class Section extends Model
     
     public function getMostRecentPostAttribute()
     {
-        $topicIDs = Topic::select('id')->where('section_id', $this->id)->get()->toArray();
+        $cacheKey = 'mostRecentPost' . $this->id;
+        $section_id = $this->id;
+
+        return Cache::rememberForever(
+            $cacheKey,
+            function () use ($section_id) {
+                return self::recalculateMostRecentPost($section_id);
+            }
+        );
+    }
+
+    public static function forgetMostRecentPostAttribute($section_id = null)
+    {
+        $cacheKey = 'mostRecentPost' . $section_id;
+        Cache::forget($cacheKey);
+    }
+
+    /**
+     * recalculateMostRecentPost
+     *
+     * @param mixed $section_id - ID of the section
+     * @return Post - the most recent post for the section or null
+     */
+    private static function recalculateMostRecentPost($section_id = null)
+    {
+        if (null === $section_id) {
+            return null;
+        }
+
+        $topicIDs = Topic::select('id')->where('section_id', $section_id)->get()->toArray();
         if (0 == count($topicIDs)) {
             return null;
         }

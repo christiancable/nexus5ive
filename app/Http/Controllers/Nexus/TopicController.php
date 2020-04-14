@@ -53,14 +53,13 @@ class TopicController extends Controller
      * Display the specified resource.
      *
      * @param Request $request
-     * @param  int  $topic_id
+     * @param Topic  $topic
      * @return View
      */
-    public function show(Request $request, $topic_id)
+    public function show(Request $request, Topic $topic)
     {
-        $posts = Post::with('author')->where('topic_id', $topic_id)->orderBy('id', 'desc');
-        $topic = Topic::findOrFail($topic_id);
-        
+        $posts = $topic->reversedPosts()->with('author');
+
         // is this topic readonly to the authenticated user?
         $readonly = true;
         
@@ -139,9 +138,9 @@ class TopicController extends Controller
      * @param int $id
      * @return RedirectResponse
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Topic $topic)
     {
-        $formName = "topicUpdate$id";
+        $formName = "topicUpdate{$topic->id}";
 
         // create validator here so we can name it based on the topic id
         $validator = Validator::make(
@@ -169,8 +168,6 @@ class TopicController extends Controller
             ->withInput();
         }
         
-        $topic = Topic::findOrFail($id);
-        
         $section = Section::findOrFail($topicDetails['section_id']);
         
         $this->authorize('update', $topic);
@@ -193,9 +190,8 @@ class TopicController extends Controller
      * @param int $id
      * @return RedirectResponse
      */
-    public function destroy(Request $request, $id)
+    public function destroy(Request $request, Topic $topic)
     {
-        $topic = Topic::findOrFail($id);
         $section_id = $topic->section->id;
 
         $this->authorize('delete', $topic);
@@ -206,10 +202,14 @@ class TopicController extends Controller
     }
 
     /**
-     *
+     * updateSubscription
      * toggles a users subscription to the topic
+     *
+     * @param Request $request
+     * @param Topic $topic
+     * @return void
      */
-    public function updateSubscription(Request $request, $id)
+    public function updateSubscription(Request $request, Topic $topic)
     {
         $validator = Validator::make(
             $request->all(),
@@ -219,12 +219,10 @@ class TopicController extends Controller
         );
         
         if ($validator->fails()) {
-            return redirect(action('Nexus\TopicController@show', ['topic' => $id]));
+            return redirect(action('Nexus\TopicController@show', ['topic' => $topic]));
         }
 
-
         $input = $request->all();
-        $topic = Topic::findOrFail($id);
 
         if ($input['command'] === 'subscribe') {
             ViewHelper::subscribeToTopic($request->user(), $topic);
