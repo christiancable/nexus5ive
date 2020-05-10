@@ -50,31 +50,41 @@ class ImportNexus2 extends Command
     
     public function importUser($userdir)
     {
+        // NEXUS.UDB
         $udbFile = $userdir . '/NEXUS.UDB';
-        if (file_exists($udbFile)) {
-            $handle = fopen($udbFile, "rb");
-            $udb = stream_get_contents($handle);
-            fclose($handle);
-            
-            if (false !== $udb) {
-                $user = Nexus2User::parseUDB($udb);
-                $this->info("Found user {$user['Nick']}");
-
-                $existingUser = User::where('username', $user['Nick'])->first();
-                if (null === $existingUser) {
-                    $this->info("Importing {$user['Nick']}");
-                    $newUser = factory(User::class)->create([
-                        'username'  => $user['Nick'],
-                        'name'      => $user['RealName'],
-                        'popname'   => $user['PopName'],
-                    ]);
-
-                    // get comments.txt
-                    // get info.txt
-                } else {
-                    $this->alert("{$user['Nick']} already exists");
-                }
-            }
+        if (!file_exists($udbFile)) {
+            $this->alert("UserDataBase not found");
+            return false;
         }
+
+        $handle = fopen($udbFile, "rb");
+        $udb = stream_get_contents($handle);
+        fclose($handle);
+
+        if (false === $udb) {
+            $this->alert("Could not read UserDataBase at {$udbFile}");
+            return false;
+        }
+
+        $newUser = Nexus2User::importUserDataBase($udb);
+        if (false === $newUser) {
+            $existingUser =  Nexus2User::parseUDB($udb);
+            $this->alert("User already exists: {$existingUser['Nick']}");
+            return false;
+        }
+
+        // INFO.TXT
+        $infoFile = $userdir . '/INFO.TXT';
+        if (!file_exists($infoFile)) {
+            $this->line("No InfoText found for {$newUser->username}");
+        } else {
+            $handle = fopen($infoFile, "rb");
+            $infoFile = stream_get_contents($handle);
+            fclose($handle);
+            $newUser->about = Nexus2User::parseInfo($infoFile);
+        }
+
+        $newUser->save();
+        $this->info("Imported {$newUser->username}");
     }
 }

@@ -2,6 +2,8 @@
 
 namespace App\Helpers\Nexus2;
 
+use App\User as NewUser;
+
 /*
 
 this class is for parsing with user data from nexus2
@@ -126,12 +128,54 @@ class User
 
     public static function parseInfo(string $info) : string
     {
+        // double the new lines to make this markdown friendly
+        $info = str_replace("\r\n", "\r\n\r\n", $info);
+
+        // translate old nexus highlights
+        $info = str_replace("{", "**", $info);
+        $info = str_replace("}", "**", $info);
         return $info;
     }
 
+    /**
+     * parseComments
+     *
+     * @param string $comments COMMENTS.TXT as a string
+     * @return array of comments and users
+     */
     public static function parseComments(string $comments): array
     {
         $comments = [];
         return $comments;
+    }
+
+    /**
+     * importUserDataBase
+     *
+     * imports a Nexus2 UDB if user does not already exist
+     * returns user model ready for saving
+     *
+     * @param string $UDB
+     * @return App\User || false
+     */
+    public static function importUserDataBase(string $UDB)
+    {
+        $importedUser =  self::parseUDB($UDB);
+
+        // does user already exists?
+        $existingUser = NewUser::where('username', $importedUser['Nick'])->first();
+
+        if ($existingUser) {
+            return false;
+        }
+        
+        $newUser = factory(NewUser::class)->make([
+            'username'  => $importedUser['Nick'],
+            'name'      => $importedUser['RealName'],
+            'popname'   => $importedUser['PopName'],
+            'email'     => $importedUser['UserId'] . '@nexus2.imported'
+        ]);
+        
+        return $newUser;
     }
 }
