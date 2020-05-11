@@ -2,6 +2,7 @@
 
 namespace App\Helpers\Nexus2;
 
+use Carbon\Carbon;
 use App\User as NewUser;
 
 /*
@@ -92,6 +93,8 @@ class User
         'IBBSNo' . '/' .
         'CFlags';
 
+    private static $dateTimeFormat = 'D d/n/y * G:i:s';
+
     private static $blank = [
         'Nick'          =>  '',
         'UserId'        =>  '',
@@ -168,12 +171,26 @@ class User
         if ($existingUser) {
             return false;
         }
-        
+
+        // create carbon dates because some legacy dates are not actual dates
+        try {
+            $created = Carbon::createFromFormat(self::$dateTimeFormat, $importedUser['Created']);
+        } catch (\Throwable $th) {
+            $created = Carbon::now();
+        }
+        try {
+            $lastOn = Carbon::createFromFormat(self::$dateTimeFormat, $importedUser['LastOn']);
+        } catch (\Throwable $th) {
+            $lastOn = null;
+        }
+
         $newUser = factory(NewUser::class)->make([
-            'username'  => $importedUser['Nick'],
-            'name'      => $importedUser['RealName'],
-            'popname'   => $importedUser['PopName'],
-            'email'     => $importedUser['UserId'] . '@nexus2.imported'
+            'username'      => $importedUser['Nick'],
+            'name'          => $importedUser['RealName'],
+            'popname'       => $importedUser['PopName'],
+            'email'         => $importedUser['UserId'] . '@nexus2.imported',
+            'created_at'    => $created,
+            'latestLogin'   => $lastOn,
         ]);
         
         return $newUser;
