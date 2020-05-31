@@ -196,7 +196,8 @@ class Section extends Model
      */
     private function recalculateMostRecentPost()
     {
-        $topicIDs = Topic::withoutGlobalScope('with_most_recent_post')->select('id')->where('section_id', $this->id)->get()->toArray();
+        $topicIDs = Topic::withoutGlobalScope('with_most_recent_post')->select('id')
+            ->where('section_id', $this->id)->get()->toArray();
         if (0 == count($topicIDs)) {
             return null;
         }
