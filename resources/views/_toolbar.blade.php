@@ -1,9 +1,13 @@
 <?php
-$authUser = Auth::user();
+$authUser = App\User::findOrfail(Auth::id())->withCount('sections')->first();
+$sectionsCount = $authUser->sections_count;
+
 $commentsCount = $authUser->newCommentCount();
 $messagesCount = $authUser->newMessageCount();
+
 $mentions = $authUser->mentions;
 $mentionCount = count($mentions);
+
 $profileNotificationCount = $commentsCount + $messagesCount;
 $notificationCount = $profileNotificationCount + $mentionCount;
 ?>
@@ -113,7 +117,7 @@ $notificationCount = $profileNotificationCount + $mentionCount;
                   @endif
                 </a>
 
-                @if ($authUser->sections->count())
+                @if ($sectionsCount)
                   <div role="separator" class="dropdown-divider"></div>              
                   <div class="dropdown-header dropdown-item">Moderator Goodies</div>
                   <a class="dropdown-item" href="{{ action('Nexus\RestoreController@index')}}">
