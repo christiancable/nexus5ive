@@ -1,5 +1,4 @@
 <?php
-// dd(Auth::id());
 $authUser = App\User::withCount('sections')->findOrfail(Auth::id());
 $sectionsCount = $authUser->sections_count;
 
