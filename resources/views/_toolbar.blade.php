@@ -1,5 +1,6 @@
 <?php
-$authUser = App\User::findOrfail(Auth::id())->withCount('sections')->first();
+// dd(Auth::id());
+$authUser = App\User::withCount('sections')->findOrfail(Auth::id());
 $sectionsCount = $authUser->sections_count;
 
 $commentsCount = $authUser->newCommentCount();
