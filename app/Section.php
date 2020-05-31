@@ -173,12 +173,11 @@ class Section extends Model
     public function getMostRecentPostAttribute()
     {
         $cacheKey = 'mostRecentPost' . $this->id;
-        $section_id = $this->id;
 
         return Cache::rememberForever(
             $cacheKey,
-            function () use ($section_id) {
-                return $this->recalculateMostRecentPost($section_id);
+            function () {
+                return $this->recalculateMostRecentPost();
             }
         );
     }
@@ -192,17 +191,12 @@ class Section extends Model
     /**
      * recalculateMostRecentPost
      *
-     * @param mixed $section_id - ID of the section
      * @todo rewrite this logic to be more like the topic scope
      * @return Post - the most recent post for the section or null
      */
-    private function recalculateMostRecentPost($section_id = null)
+    private function recalculateMostRecentPost()
     {
-        if (null === $section_id) {
-            return null;
-        }
-
-        $topicIDs = Topic::withoutGlobalScope('with_most_recent_post')->select('id')->where('section_id', $section_id)->get()->toArray();
+        $topicIDs = Topic::withoutGlobalScope('with_most_recent_post')->select('id')->where('section_id', $this->id)->get()->toArray();
         if (0 == count($topicIDs)) {
             return null;
         }
