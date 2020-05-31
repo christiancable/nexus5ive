@@ -151,7 +151,10 @@ class Section extends Model
     // counts - hopefully faster ...
     public function getTopicCountAttribute()
     {
-        return Topic::select(\DB::raw('count(id) as count'))->where('section_id', $this->id)->value('count');
+        return Topic::withoutGlobalScope('with_most_recent_post')
+            ->select(\DB::raw('count(id) as count'))
+            ->where('section_id', $this->id)
+            ->value('count');
     }
     
     public function getSectionCountAttribute()
@@ -164,7 +167,7 @@ class Section extends Model
         return $this->topics()->onlyTrashed()->orderBy('weight', 'asc');
     }
     
-    
+
     // posts
     
     public function getMostRecentPostAttribute()
@@ -175,7 +178,7 @@ class Section extends Model
         return Cache::rememberForever(
             $cacheKey,
             function () use ($section_id) {
-                return self::recalculateMostRecentPost($section_id);
+                return $this->recalculateMostRecentPost($section_id);
             }
         );
     }
@@ -190,15 +193,16 @@ class Section extends Model
      * recalculateMostRecentPost
      *
      * @param mixed $section_id - ID of the section
+     * @todo rewrite this logic to be more like the topic scope
      * @return Post - the most recent post for the section or null
      */
-    private static function recalculateMostRecentPost($section_id = null)
+    private function recalculateMostRecentPost($section_id = null)
     {
         if (null === $section_id) {
             return null;
         }
 
-        $topicIDs = Topic::select('id')->where('section_id', $section_id)->get()->toArray();
+        $topicIDs = Topic::withoutGlobalScope('with_most_recent_post')->select('id')->where('section_id', $section_id)->get()->toArray();
         if (0 == count($topicIDs)) {
             return null;
         }
