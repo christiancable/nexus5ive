@@ -24,8 +24,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read mixed $is_home
  * @property-read mixed $most_recent_post
- * @property-read mixed $section_count
- * @property-read mixed $topic_count
  * @property-read \App\User $moderator
  * @property-read \App\Section|null $parent
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Section[] $sections
@@ -147,17 +145,7 @@ class Section extends Model
         return $this->hasMany(\App\Topic::class)->orderBy('weight', 'asc');
     }
     
-    // counts - hopefully faster ...
-    // @todo is this in use?
-    public function getTopicCountAttribute()
-    {
-        return Topic::withoutGlobalScope('with_most_recent_post')
-            ->select(\DB::raw('count(id) as count'))
-            ->where('section_id', $this->id)
-            ->value('count');
-    }
-    
-    
+
     public function trashedTopics()
     {
         return $this->topics()->onlyTrashed()->orderBy('weight', 'asc');

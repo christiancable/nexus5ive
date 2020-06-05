@@ -8,7 +8,9 @@
         {!! App\Helpers\NxCodeHelper::nxDecode($subSection->intro) !!}
     </div>
     @php
-        $topicCount = $subSection->topicCount;
+        // load counts where we need rather than have accessors on the model
+        $subSection->loadCount(['topics', 'sections']);
+        $topicCount = $subSection->topics_count;
         $subSectionCount = $subSection->sections_count;
     @endphp
     @if($topicCount || $subSectionCount)
