@@ -9,7 +9,7 @@
     </div>
     @php
         $topicCount = $subSection->topicCount;
-        $subSectionCount = $subSection->sectionCount;
+        $subSectionCount = $subSection->sections_count;
     @endphp
     @if($topicCount || $subSectionCount)
         <footer class="card-footer">

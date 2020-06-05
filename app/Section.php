@@ -29,7 +29,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read \App\User $moderator
  * @property-read \App\Section|null $parent
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Section[] $sections
- * @property-read int|null $sections_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Topic[] $topics
  * @property-read int|null $topics_count
  * @method static bool|null forceDelete()
@@ -149,6 +148,7 @@ class Section extends Model
     }
     
     // counts - hopefully faster ...
+    // @todo is this in use?
     public function getTopicCountAttribute()
     {
         return Topic::withoutGlobalScope('with_most_recent_post')
@@ -157,10 +157,6 @@ class Section extends Model
             ->value('count');
     }
     
-    public function getSectionCountAttribute()
-    {
-        return Section::select(\DB::raw('count(id) as count'))->where('parent_id', $this->id)->value('count');
-    }
     
     public function trashedTopics()
     {
