@@ -75,7 +75,7 @@ class BreadcrumbHelper
         $crumb['route'] = null;
         $breadcrumbs[] = $crumb;
 
-        $section = \App\Section::first();
+        $section = \App\Section::first(['id', 'title']);
         $crumb['title'] = $section->title;
         $crumb['route'] = action('Nexus\SectionController@show', ['section' => $section->id]);
         $breadcrumbs[] = $crumb;

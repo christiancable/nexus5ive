@@ -71,6 +71,9 @@ class SectionController extends Controller
             'topics.most_recent_post.author:id,username'
         );
         
+        // load some counts too
+        $section->loadCount('sections');
+
         ActivityHelper::updateActivity(
             Auth::user()->id,
             "Browsing <em>{$section->title}</em>",
