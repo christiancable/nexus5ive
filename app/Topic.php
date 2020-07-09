@@ -117,10 +117,7 @@ class Topic extends Model
      */
     public function getMostRecentPostTimeAttribute()
     {
-        $latestPost =  Post::select('time')
-            ->where('topic_id', $this->id)
-            ->orderBy('time', 'desc')
-            ->first();
+        $latestPost =  $this->most_recent_post;
 
         if ($latestPost) {
             $result = $latestPost->time;
