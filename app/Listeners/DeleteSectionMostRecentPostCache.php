@@ -27,7 +27,6 @@ class DeleteSectionMostRecentPostCache
      */
     public function handle(MostRecentPostForSectionBecameDirty $event)
     {
-        xdebug_break();
         Section::forgetMostRecentPostAttribute($event->section_id);
     }
 }
