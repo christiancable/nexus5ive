@@ -76,7 +76,7 @@ class NexusInstall extends Command
             $this->info("Please enter in values for the main menu. Don't worry You can change this later.");
             $title = $this->ask('Title');
             
-            $mainMenu = factory(App\Section::class)->make([
+            $mainMenu = factory(Section::class)->make([
                 'title' => $title
             ]);
             $mainMenu->moderator()->associate($administrator);
@@ -97,7 +97,7 @@ class NexusInstall extends Command
             $this->info("Please enter in values for the first topic. Don't worry You can change this later.");
             $title = $this->ask('Title');
 
-            $firstTopic = factory(App\Topic::class)->make([
+            $firstTopic = factory(Topic::class)->make([
                 'title' => $title
             ]); 
             
