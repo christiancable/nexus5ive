@@ -26,14 +26,14 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @property string|null $popname
  * @property string|null $about
  * @property string|null $location
- * @property int $administrator
- * @property int $banned
+ * @property bool $administrator
+ * @property bool $banned
  * @property int $deleted
  * @property int $totalVisits
  * @property int $totalPosts
  * @property string|null $favouriteMovie
  * @property string|null $favouriteMusic
- * @property int $private
+ * @property bool $private
  * @property string|null $ipaddress
  * @property string|null $currentActivity
  * @property \Illuminate\Support\Carbon|null $latestLogin
@@ -148,6 +148,9 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'administrator'     => 'bool',
+        'private'           => 'bool',
+        'banned'            => 'bool',
     ];
     
     /* dates */

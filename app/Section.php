@@ -176,7 +176,7 @@ class Section extends Model
      * recalculateMostRecentPost
      *
      * @todo rewrite this logic to be more like the topic scope
-     * @return Post - the most recent post for the section or null
+     * @return Post|null - the most recent post for the section or null
      */
     private function recalculateMostRecentPost()
     {
