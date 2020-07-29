@@ -135,7 +135,7 @@ class TopicController extends Controller
      * Update the topic
      *
      * @param Request $request
-     * @param int $id
+     * @param Topic $topic
      * @return RedirectResponse
      */
     public function update(Request $request, Topic $topic)
@@ -187,7 +187,7 @@ class TopicController extends Controller
      * destroy the topic
      *
      * @param Request $request
-     * @param int $id
+     * @param Topic $topic
      * @return RedirectResponse
      */
     public function destroy(Request $request, Topic $topic)
@@ -207,7 +207,7 @@ class TopicController extends Controller
      *
      * @param Request $request
      * @param Topic $topic
-     * @return void
+     * @return RedirectResponse
      */
     public function updateSubscription(Request $request, Topic $topic)
     {

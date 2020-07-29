@@ -25,7 +25,7 @@ use App\Events\MostRecentPostForSectionBecameDirty;
  * @property \Illuminate\Support\Carbon $created_at
  * @property \Illuminate\Support\Carbon $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property-read \Carbon|null $most_recent_post_time
+ * @property-read \Illuminate\Support\Carbon|null $most_recent_post_time
  * @property-read \App\Post $most_recent_post
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Post[] $posts
  * @property-read int|null $posts_count
@@ -118,7 +118,7 @@ class Topic extends Model
     public function getMostRecentPostTimeAttribute()
     {
         
-        $latestPost =  Post::select('time')
+        $latestPost = Post::select('time')
             ->where('topic_id', $this->id)
             ->orderBy('time', 'desc')
             ->first();
