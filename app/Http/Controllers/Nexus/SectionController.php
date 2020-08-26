@@ -230,7 +230,6 @@ class SectionController extends Controller
          // should we be passing the user_id into this method?
         $views = View::with('topic')
             ->where('user_id', $request->user()->id)
-            ->where('latest_view_date', '!=', "0000-00-00 00:00:00")
             ->where('unsubscribed', 0)->get();
     
         $topics = $views->map(function ($view, $key) {
