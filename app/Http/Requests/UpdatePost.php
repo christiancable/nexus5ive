@@ -4,14 +4,9 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StorePost extends FormRequest
+class UpdatePost extends FormRequest
 {
-    /**
-     * The key to be used for the view error bag.
-    *
-    * @var string
-    */
-    protected $errorBag = 'postStore';
+    protected $formName;
 
     /**
      * Determine if the user is authorized to make this request.
@@ -30,17 +25,21 @@ class StorePost extends FormRequest
      */
     public function rules()
     {
+        $id = $this->request->all()['id'] ?? '';
+        $this->errorBag = 'postUpdate' . $id;
+
         return [
-                'text'     => 'required',
-                'topic_id' => 'required|exists:topics,id',
-                'title'    => 'nullable'
-            ];
+            "form.$id.text"     => 'required',
+            "form.$id.title"    => 'nullable'
+        ];
     }
 
     public function messages()
     {
+        $id = $this->request->all()['id'] ?? '';
+
         return [
-            "text.required" => 'Text is required. You cannot leave empty posts'
+            "form.$id.text.required" => 'Posts cannot be empty'
         ];
     }
 }
