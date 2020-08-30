@@ -15,6 +15,7 @@ use App\Helpers\ActivityHelper;
 use Illuminate\Validation\Rule;
 use App\Helpers\BreadcrumbHelper;
 use App\Http\Requests\StoreSection;
+use App\Http\Requests\UpdateSection;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
@@ -105,56 +106,16 @@ class SectionController extends Controller
      * @param Section $section
      * @return RedirectResponse
      */
-    public function update(Request $request, Section $section)
+    public function update(UpdateSection $request, Section $section)
     {
         $formName = "section{$section->id}";
-
-        // it not valid to move a section into a descendant
-        $descendants = $section->allChildSections();
-        $descendantsIDs = Arr::flatten($descendants->pluck('id')->toArray());
-        
-        // if parents exists then it must be a valid section id
-        $allSectionIDs = Section::all('id')->pluck('id')->toArray();
-        
-        // updating the home section has different validation rules to other sections
-
-        $messages = [
-            "form.{$formName}.title.required" => 'Section Title is required'
-        ];
-        
-        $rules = [
-            "form.{$formName}.title" => 'required',
-            "form.{$formName}.user_id" => 'required|numeric',
-            "form.{$formName}.title" => 'required'
-        ];
-
-        if (!$section->is_home) {
-            $rules["form.{$formName}.parent_id"] = [
-                    'required',
-                    'numeric',
-                    Rule::notIn($descendantsIDs),
-                    Rule::notIn([$section->id]),
-                    Rule::In($allSectionIDs)
-            ];
-        }
-        
-        // manually create validator to dynamically name the errorBag
-        $validator = Validator::make($request->all(), $rules, $messages);
-
-        if ($validator->fails()) {
-            return back()
-                ->withErrors($validator, "sectionUpdate{$section->id}")
-                ->withInput();
-        }
-        
-        $input = $request->all();
         $updatedSectionDetails = [
-            "id" => $section->id,
-            "intro" => $input['form'][$formName]['intro'],
-            "parent_id" => $input['form'][$formName]['parent_id'],
-            "title" => $input['form'][$formName]['title'],
-            "user_id" => $input['form'][$formName]['user_id'],
-            "weight" => $input['form'][$formName]['weight']
+            "id"        => $section->id,
+            "intro"     => $request->validated()['form'][$formName]['intro'],
+            "parent_id" => $request->validated()['form'][$formName]['parent_id'],
+            "title"     => $request->validated()['form'][$formName]['title'],
+            "user_id"   => $request->validated()['form'][$formName]['user_id'],
+            "weight"    => $request->validated()['form'][$formName]['weight']
         ];
         
         // do not set parent for home section
