@@ -8,6 +8,7 @@ use App\Http\Requests;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Helpers\MentionHelper;
+use Illuminate\Support\Carbon;
 use App\Http\Requests\StorePost;
 use App\Http\Requests\UpdatePost;
 use App\Http\Controllers\Controller;
@@ -35,7 +36,7 @@ class PostController extends Controller
         $post = new Post($request->validated());
         $post->user_id = $request->user()->id;
         $post->popname = $request->user()->popname;
-        $post->time = time();
+        $post->time = Carbon::now();
         $post->save();
 
         $request->user()->incrementTotalPosts();
@@ -53,11 +54,10 @@ class PostController extends Controller
         return redirect($redirect);
     }
 
-
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
+     * @param UpdatePost $request
      * @param Post $post
      * @return RedirectResponse
      */

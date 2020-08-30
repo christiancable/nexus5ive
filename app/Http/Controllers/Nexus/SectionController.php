@@ -55,7 +55,7 @@ class SectionController extends Controller
      * Display the specified resource.
      *
      * @param Request $request
-     * @param Section|null  Section
+     * @param Section $section optional
      * @return \Illuminate\View\View
      */
     public function show(Request $request, Section $section = null)
@@ -102,7 +102,7 @@ class SectionController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
+     * @param UpdateSection $request
      * @param Section $section
      * @return RedirectResponse
      */

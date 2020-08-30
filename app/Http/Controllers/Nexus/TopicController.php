@@ -128,7 +128,7 @@ class TopicController extends Controller
      *
      * @param UpdateTopic $request
      * @param Topic $topic
-     * @return void
+     * @return RedirectResponse
      */
     public function update(UpdateTopic $request, Topic $topic)
     {
@@ -170,7 +170,7 @@ class TopicController extends Controller
      * updateSubscription
      * toggles a users subscription to the topic
      *
-     * @param Request $request
+     * @param SubscribeTopic $request
      * @param Topic $topic
      * @return RedirectResponse
      */
