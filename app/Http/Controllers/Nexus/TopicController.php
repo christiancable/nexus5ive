@@ -14,8 +14,10 @@ use Illuminate\Http\Response;
 use App\Helpers\ActivityHelper;
 use App\Http\Requests\StoreTopic;
 use App\Helpers\BreadcrumbHelper;
+use App\Http\Requests\UpdateTopic;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
+use App\Http\Requests\SubscribeTopic;
 use Illuminate\Support\Facades\Validator;
 
 class TopicController extends Controller
@@ -34,18 +36,9 @@ class TopicController extends Controller
      */
     public function store(StoreTopic $request)
     {
-        $section = Section::findOrFail(request('section_id'));
+        $section = Section::findOrFail($request->validated()['section_id']);
         $this->authorize('create', [Topic::class, $section]);
-
-        $topic = Topic::create([
-            'section_id' => request('section_id'),
-            'secret'     => request('secret'),
-            'readonly'   => request('readonly'),
-            'title'      => request('title'),
-            'intro'      => request('intro'),
-            'weight'     => request('weight')
-        ]);
-        
+        $topic = Topic::create($request->validated());
         return redirect(action('Nexus\SectionController@show', ['section' => $topic->section_id]));
     }
     
@@ -130,50 +123,22 @@ class TopicController extends Controller
         );
     }
 
-
     /**
      * Update the topic
      *
-     * @param Request $request
+     * @param UpdateTopic $request
      * @param Topic $topic
      * @return RedirectResponse
      */
-    public function update(Request $request, Topic $topic)
+    public function update(UpdateTopic $request, Topic $topic)
     {
         $formName = "topicUpdate{$topic->id}";
-
-        // create validator here so we can name it based on the topic id
-        $validator = Validator::make(
-            $request->all(),
-            [
-                $formName . ".id"          => 'required|numeric',
-                $formName . ".id"          => 'exists:topics,id',
-                $formName . ".title"       => 'required',
-                $formName . ".intro"       => 'required',
-                $formName . ".section_id"  => 'required|numeric',
-                $formName . ".section_id"  => 'exists:sections,id',
-                $formName . ".weight"      => 'required|numeric',
-            ],
-            [
-                $formName . ".title.required" => 'Title is required. Think of this as the subject to be discussed',
-                $formName . ".intro.required" => 'Introduction is required. Give a brief introduction to your topic'
-            ]
-        );
-        
-        $topicDetails = request($formName);
-
-        if ($validator->fails()) {
-            return redirect(action('Nexus\SectionController@show', ['section' => $topicDetails['section_id']]))
-            ->withErrors($validator, $formName)
-            ->withInput();
-        }
-        
-        $section = Section::findOrFail($topicDetails['section_id']);
+        $topicDetails = $request->validated()[$formName];
         
         $this->authorize('update', $topic);
         
+        // is the user authorized to move the topic to the destination section?
         if ($topic->section_id !== (int) $topicDetails['section_id']) {
-            // is the user authorized to move the topic to a different section?
             $destinationSection = Section::findOrFail($topicDetails['section_id']);
             $this->authorize('move', [$topic, $destinationSection]);
         }
@@ -205,25 +170,13 @@ class TopicController extends Controller
      * updateSubscription
      * toggles a users subscription to the topic
      *
-     * @param Request $request
+     * @param SubscribeTopic $request
      * @param Topic $topic
      * @return RedirectResponse
      */
-    public function updateSubscription(Request $request, Topic $topic)
+    public function updateSubscription(SubscribeTopic $request, Topic $topic)
     {
-        $validator = Validator::make(
-            $request->all(),
-            [
-                "command" => 'required'
-            ]
-        );
-        
-        if ($validator->fails()) {
-            return redirect(action('Nexus\TopicController@show', ['topic' => $topic]));
-        }
-
-        $input = $request->all();
-
+        $input = $request->validated();
         if ($input['command'] === 'subscribe') {
             ViewHelper::subscribeToTopic($request->user(), $topic);
             $message = '**Subscribed!** _Catch-up_ will return you here when new comments are added.';
@@ -236,11 +189,10 @@ class TopicController extends Controller
         return  redirect()->route('topic.show', ['topic' => $topic->id]);
     }
     
-    /*
-        update the latest read time for each subscribed topic
-    */
     /**
      * markAllSubscribedTopicsAsRead
+     *
+     * update the latest read time for each subscribed topic
      *
      * @param Request $request
      * @return RedirectResponse
