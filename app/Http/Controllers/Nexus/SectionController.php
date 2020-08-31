@@ -41,7 +41,7 @@ class SectionController extends Controller
         $this->authorize('create', [Section::class, $parentSection]);
         
         $section = Section::create([
-            'user_id'   => Auth::user()->id,
+            'user_id'   => $request->user()->id,
             'parent_id' => request('parent_id'),
             'title'     => request('title'),
             'intro'     => request('intro')
@@ -76,15 +76,15 @@ class SectionController extends Controller
         $section->loadCount('sections');
 
         ActivityHelper::updateActivity(
-            Auth::user()->id,
+            $request->user()->id,
             "Browsing <em>{$section->title}</em>",
             action('Nexus\SectionController@show', ['section' => $section->id])
         );
         
         // if the user can moderate the section then they could potentially update subsections
-        if ($section->moderator->id === Auth::user()->id) {
+        if ($section->moderator->id === $request->user()->id) {
             $potentialModerators = User::all(['id','username'])->pluck('username', 'id')->toArray();
-            $moderatedSections = Auth::user()
+            $moderatedSections = $request->user()
                 ->sections()
                 ->select('title', 'id')
                 ->get()
