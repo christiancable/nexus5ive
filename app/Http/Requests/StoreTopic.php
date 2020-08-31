@@ -31,10 +31,12 @@ class StoreTopic extends FormRequest
     public function rules()
     {
         return [
-            "title" => 'required',
-            "intro" => 'required',
-            "section_id" => 'required|numeric|exists:sections,id',
-            "weight" => 'required|numeric',
+            "title"         => 'required',
+            "intro"         => 'required',
+            "section_id"    => 'required|numeric|exists:sections,id',
+            "weight"        => 'required|numeric',
+            "secret"        => 'required|numeric',
+            "readonly"      => 'required|numeric',
         ];
     }
 

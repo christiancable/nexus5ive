@@ -13,6 +13,7 @@ $formName = 'section'.$subSection->id;
     'name'      => $formName,
 )) !!}
 
+    {!! Form::hidden('id', $subSection->id) !!}
     {!! Form::hidden("form[$formName][id]", $subSection->id) !!}
 
     <div class="form-group">

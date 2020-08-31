@@ -8,7 +8,9 @@ use App\Http\Requests;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Helpers\MentionHelper;
+use Illuminate\Support\Carbon;
 use App\Http\Requests\StorePost;
+use App\Http\Requests\UpdatePost;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Validator;
@@ -29,14 +31,14 @@ class PostController extends Controller
      */
     public function store(StorePost $request)
     {
-        $topic = Topic::findOrFail($request->topic_id);
-        $this->authorize('create', [Post::class, $topic]);
+        $this->authorize('create', [Post::class, Topic::findOrFail($request->validated()['topic_id'])]);
+        
+        $post = new Post($request->validated());
+        $post->user_id = $request->user()->id;
+        $post->popname = $request->user()->popname;
+        $post->time = Carbon::now();
+        $post->save();
 
-        $input = $request->all();
-        $input['user_id'] = $request->user()->id;
-        $input['popname'] = $request->user()->popname;
-        $input['time'] = time();
-        $post = Post::create($input);
         $request->user()->incrementTotalPosts();
 
         // scan post for mentions
@@ -52,36 +54,18 @@ class PostController extends Controller
         return redirect($redirect);
     }
 
-
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
+     * @param UpdatePost $request
      * @param Post $post
      * @return RedirectResponse
      */
-    public function update(Request $request, Post $post)
+    public function update(UpdatePost $request, Post $post)
     {
-        // manually create validator here to dynamically name the errorbag based on the post id
-        $validator = Validator::make(
-            $request->all(),
-            [
-                'id' => 'required:in' . $post->id . '|exists:posts,id',
-                'form.'.$request->input('id').'.text' => 'required',
-            ],
-            [
-                'form.'.$request->input('id').'.text.required' => 'Posts cannot be empty',
-                'id.required' => 'Post does not exist'
-            ]
-        );
-
-        if ($validator->fails()) {
-            return back()->withErrors($validator, "postUpdate{$post->id}")->withInput();
-        }
-
         $this->authorize('update', [Post::class, $post]);
         
-        $input = $request->all();
+        $input = $request->validated();
         $updatedPost = $input['form']["$post->id"];
         $updatedPost['update_user_id'] = $request->user()->id;
         
