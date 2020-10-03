@@ -21,8 +21,8 @@ class RestoreHelperTest extends TestCase
     public function restoreTopicToSectionDoesRestoresTopicToSection()
     {
         // GIVEN I have a topic in a section and then that topic is deleted
-        $section = factory(Section::class)->create();
-        $topic = factory(Topic::class)->create(['section_id' => $section->id]);
+        $section = Section::factory()->create();
+        $topic = Topic::factory()->create(['section_id' => $section->id]);
         $topic->delete();
         $this->assertTrue($topic->trashed());
         
@@ -39,13 +39,13 @@ class RestoreHelperTest extends TestCase
     public function restoreTopicToSectionDoesRestoresTopicAndPosts()
     {
         // GIVEN I have a topic with posts in a section
-        $section = factory(Section::class)->create();
-        $topic = factory(Topic::class)->create(['section_id' => $section->id]);
-        factory(Post::class, 20)->create(['topic_id' => $topic->id]);
+        $section = Section::factory()->create();
+        $topic = Topic::factory()->create(['section_id' => $section->id]);
+        Post::factory()->count(20)->create(['topic_id' => $topic->id]);
         $topic_id = $topic->id;
         
         // AND a user reads that topic
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         ViewHelper::updateReadProgress($user, $topic);
         
         $postsCount = $topic->posts->count();
@@ -74,13 +74,13 @@ class RestoreHelperTest extends TestCase
     public function restoreTopicToSectionDoesRestoresTopicAndViews()
     {
         // GIVEN I have a topic with posts in a section
-        $section = factory(Section::class)->create();
-        $topic = factory(Topic::class)->create(['section_id' => $section->id]);
-        factory(Post::class, 20)->create(['topic_id' => $topic->id]);
+        $section = Section::factory()->create();
+        $topic = Topic::factory()->create(['section_id' => $section->id]);
+        Post::factory()->count(20)->create(['topic_id' => $topic->id]);
         $topic_id = $topic->id;
         
         // AND a user reads that topic
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         ViewHelper::updateReadProgress($user, $topic);
         
         $viewsCount = $topic->views->count();
@@ -110,12 +110,12 @@ class RestoreHelperTest extends TestCase
     {
         // GIVEN we have a section with topics
         $number_of_topics = 10;
-        $section = factory(Section::class)->create();
+        $section = Section::factory()->create();
         $section_id = $section->id;
-        factory(Topic::class, $number_of_topics)->create(['section_id' => $section_id]);
+        Topic::factory()->count($number_of_topics)->create(['section_id' => $section_id]);
         
         // AND another section
-        $anotherSection = factory(Section::class)->create();
+        $anotherSection = Section::factory()->create();
         
         // WHEN we delete the section
         $section->delete();

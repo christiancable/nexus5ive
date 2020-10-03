@@ -18,7 +18,7 @@ class UnverifiedUsersTest extends TestCase
      */
     public function whenAUserIsVerifiedTheyAreAddedToTheVerifiedUserList()
     {
-        $unverifiedUser = factory(User::class)->create([
+        $unverifiedUser = User::factory()->create([
            'email_verified_at' => null
         ]);
         $userCount = User::verified()->get()->count();
@@ -35,7 +35,7 @@ class UnverifiedUsersTest extends TestCase
      */
     public function unverifiedUsersDoNotAppearInVerifiedUserList()
     {
-        $unverifiedUser = factory(User::class)->create([
+        $unverifiedUser = User::factory()->create([
            'email_verified_at' => null
         ]);
 
@@ -51,7 +51,7 @@ class UnverifiedUsersTest extends TestCase
      */
     public function verifiedUsersDoNotAppearInUnverifiedUserList()
     {
-        $verifiedUser = factory(User::class)->create([
+        $verifiedUser = User::factory()->create([
            'email_verified_at' => Carbon::now()
         ]);
 

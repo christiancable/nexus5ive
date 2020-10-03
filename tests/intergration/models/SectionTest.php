@@ -18,22 +18,22 @@ class SectionTest extends TestCase
      */
     public function deletingSectionSoftDeletesSectionAndOnlyThatOne()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         // GIVEN we have a main menu with a subsection
-        $mainmenu = factory(Section::class)
+        $mainmenu = Section::factory()
             ->create([
                 'parent_id' => null,
                 'user_id' => $user->id,
                 ]);
-        $section = factory(Section::class)
+        $section = Section::factory()
             ->create([
                 'parent_id' => $mainmenu->id,
                 'user_id' => $user->id,
                 ]);
 
         // AND some other sections
-        factory(Section::class)
+        Section::factory()
             ->create([
                 'parent_id' => $mainmenu->id,
                 'user_id' => $user->id,
@@ -58,17 +58,17 @@ class SectionTest extends TestCase
     public function deletingSectionSoftDeletesItsTopics()
     {
         // GIVEN we have a user
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         // AND we have a section
-        $section = factory(Section::class)
+        $section = Section::factory()
             ->create([
                 'parent_id' => null,
                 'user_id' => $user->id,
                 ]);
 
         // AND that section has topics
-        factory(Topic::class)->create(['section_id' => $section->id]);
+        Topic::factory()->create(['section_id' => $section->id]);
         $topicsInSectionCount = $section->topics->count();
 
         $topicCount = Topic::all()->count();
@@ -94,17 +94,18 @@ class SectionTest extends TestCase
     public function deletingSectionSoftDeletesItsSubsections()
     {
         // given we have a user with a section and that sub section
-         $user = factory(User::class)->create();
+         $user = User::factory()->create();
 
         // AND we have a section
-        $section = factory(Section::class)
+        $section = Section::factory()
             ->create([
                 'parent_id' => null,
                 'user_id' => $user->id,
                 ]);
 
         // with subsections
-        factory(Section::class, 6)
+        Section::factory()
+            ->count(6)
             ->create([
                 'parent_id' => $section->id,
                 'user_id' => $user->id,
@@ -134,8 +135,8 @@ class SectionTest extends TestCase
         GIVEN a section with no topics
         */
 
-        $moderator = factory(User::class)->create();
-        $section = factory(Section::class)->create([
+        $moderator = User::factory()->create();
+        $section = Section::factory()->create([
                 'parent_id' => null,
                 'user_id' => $moderator->id
         ]);
@@ -160,8 +161,8 @@ class SectionTest extends TestCase
         GIVEN a section with no topics
         */
 
-        $moderator = factory(User::class)->create();
-        $section = factory(Section::class)->create([
+        $moderator = User::factory()->create();
+        $section = Section::factory()->create([
                 'parent_id' => null,
                 'user_id' => $moderator->id
         ]);
@@ -170,7 +171,7 @@ class SectionTest extends TestCase
         WHEN we add topics but no posts
         */
 
-        factory(Topic::class, 10)->create([
+        Topic::factory()->count(10)->create([
             'section_id' => $section->id
         ]);
 
@@ -190,17 +191,17 @@ class SectionTest extends TestCase
         GIVEN a section with topics
         */
 
-        $moderator = factory(User::class)->create();
-        $section = factory(Section::class)->create([
+        $moderator = User::factory()->create();
+        $section = Section::factory()->create([
                 'parent_id' => null,
                 'user_id' => $moderator->id
         ]);
 
-        $topic1 = factory(Topic::class)->create([
+        $topic1 = Topic::factory()->create([
             'section_id' => $section->id
         ]);
 
-        $topic2 = factory(Topic::class)->create([
+        $topic2 = Topic::factory()->create([
             'section_id' => $section->id
         ]);
 
@@ -208,7 +209,7 @@ class SectionTest extends TestCase
         WHEN a post is added to one of the topics
         */
 
-        $post1 = factory(Post::class)->create([
+        $post1 = Post::factory()->create([
             'topic_id' => $topic1->id
         ]);
 
@@ -220,7 +221,7 @@ class SectionTest extends TestCase
         /*
         WHEN a second post is added to a topic in that section
         */
-        $post2 = factory(Post::class)->create([
+        $post2 = Post::factory()->create([
             'topic_id' => $topic2->id
         ]);
 
@@ -239,22 +240,22 @@ class SectionTest extends TestCase
         GIVEN a section with topics, and a first and second post
         */
 
-        $moderator = factory(User::class)->create();
-        $section = factory(Section::class)->create([
+        $moderator = User::factory()->create();
+        $section = Section::factory()->create([
                 'parent_id' => null,
                 'user_id' => $moderator->id
         ]);
-        $topic1 = factory(Topic::class)->create([
+        $topic1 = Topic::factory()->create([
             'section_id' => $section->id
         ]);
-        $topic2 = factory(Topic::class)->create([
+        $topic2 = Topic::factory()->create([
             'section_id' => $section->id
         ]);
 
-        $post1 = factory(Post::class)->create([
+        $post1 = Post::factory()->create([
             'topic_id' => $topic1->id
         ]);
-        $post2 = factory(Post::class)->create([
+        $post2 = Post::factory()->create([
             'topic_id' => $topic2->id
         ]);
         
@@ -291,17 +292,17 @@ class SectionTest extends TestCase
         GIVEN a section with a topic with a post which is the latest post for that section
         */
 
-        $moderator = factory(User::class)->create();
-        $section = factory(Section::class)->create([
+        $moderator = User::factory()->create();
+        $section = Section::factory()->create([
                 'parent_id' => null,
                 'user_id' => $moderator->id
         ]);
         
-        $topic1 = factory(Topic::class)->create([
+        $topic1 = Topic::factory()->create([
             'section_id' => $section->id
         ]);
         
-        $post1 = factory(Post::class)->create([
+        $post1 = Post::factory()->create([
             'topic_id' => $topic1->id
         ]);
         
@@ -312,7 +313,7 @@ class SectionTest extends TestCase
         WHEN the topic is moved to another section
         */
 
-        $section2 = factory(Section::class)->create([
+        $section2 = Section::factory()->create([
                 'parent_id' => null,
                 'user_id' => $moderator->id
         ]);
