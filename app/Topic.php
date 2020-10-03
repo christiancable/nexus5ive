@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Events\MostRecentPostForSectionBecameDirty;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * App\Topic
@@ -54,6 +55,7 @@ use App\Events\MostRecentPostForSectionBecameDirty;
  */
 class Topic extends Model
 {
+    use HasFactory;
     use SoftDeletes;
     protected $dates = ['deleted_at'];
     protected $fillable = [

@@ -9,6 +9,7 @@ use App\Events\TreeCacheBecameDirty;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * App\Section
@@ -50,6 +51,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Section extends Model
 {
+    use HasFactory;
     use SoftDeletes;
     
     protected $fillable = ['id','title','intro','user_id','parent_id', 'weight'];
