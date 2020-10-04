@@ -105,7 +105,7 @@ class NexusInstall extends Command
                 [
                 'title' => $title
                 ]
-            ); 
+            );
             
             $firstTopic->section()->associate($mainMenu);
 
