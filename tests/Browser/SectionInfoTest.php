@@ -25,19 +25,19 @@ class SectionInfoTest extends DuskTestCase
     {
         parent::setUp();
 
-        $this->user = factory(User::class)->create();
-        $this->home = factory(Section::class)->create([
+        $this->user = User::factory()->create();
+        $this->home = Section::factory()->create([
            'parent_id' => null,
            'user_id' => $this->user->id,
         ]);
-        $this->subSection = factory(Section::class)->create([
+        $this->subSection = Section::factory()->create([
            'parent_id' => $this->home,
            'user_id' => $this->user->id,
         ]);
-        $this->topicInSubSection = factory(Topic::class)->create([
+        $this->topicInSubSection = Topic::factory()->create([
            'section_id' => $this->subSection->id
         ]);
-        $this->anotherTopicInSubSection = factory(Topic::class)->create([
+        $this->anotherTopicInSubSection = Topic::factory()->create([
            'section_id' => $this->subSection->id
         ]);
 
@@ -59,7 +59,7 @@ class SectionInfoTest extends DuskTestCase
         $user = $this->user;
         $home = $this->home;
         
-        $newPost = factory(Post::class)->create([
+        $newPost = Post::factory()->create([
             'topic_id' => $this->topicInSubSection->id,
             'user_id' => $this->user->id,
         ]);
@@ -112,7 +112,7 @@ class SectionInfoTest extends DuskTestCase
         $user = $this->user;
         $home = $this->home;
         
-        $newPost = factory(Post::class)->create([
+        $newPost = Post::factory()->create([
            'topic_id' => $this->topicInSubSection->id,
            'user_id' => $this->user->id,
         ]);
@@ -125,7 +125,7 @@ class SectionInfoTest extends DuskTestCase
                     ->visit('/section/' . $home->id)
                     ->assertSee('Latest Post in ' . $topicInSubSection->title);
 
-            $anotherNewPost = factory(Post::class)->create([
+            $anotherNewPost = Post::factory()->create([
                 'topic_id' => $anotherTopicInSubSection->id,
                 'user_id' => $user->id,
             ]);

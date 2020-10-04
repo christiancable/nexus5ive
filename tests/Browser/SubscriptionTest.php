@@ -22,12 +22,12 @@ class SubscriptionTest extends DuskTestCase
     {
         parent::setUp();
 
-        $this->user = factory(User::class)->create();
-        $this->home = factory(Section::class)->create([
+        $this->user = User::factory()->create();
+        $this->home = Section::factory()->create([
             'parent_id' => null,
             'user_id' => $this->user->id,
         ]);
-        $this->topic = factory(Topic::class)->create([
+        $this->topic = Topic::factory()->create([
             'section_id' => $this->home->id
         ]);
     }

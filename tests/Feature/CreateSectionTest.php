@@ -24,13 +24,13 @@ class CreateSectionTest extends TestCase
         - a sub section
         - a moderator for the sub section
         */
-        $sysop = factory(User::class)->create();
-        $home = factory(Section::class)->create(['parent_id' => null]);
+        $sysop = User::factory()->create();
+        $home = Section::factory()->create(['parent_id' => null]);
         $home->moderator()->associate($sysop);
         $home->save();
         
-        $moderator = factory(User::class)->create();
-        $section = factory(Section::class)->create();
+        $moderator = User::factory()->create();
+        $section = Section::factory()->create();
         $section->parent()->associate($home);
         $section->moderator()->associate($moderator);
         $section->save();
@@ -40,7 +40,7 @@ class CreateSectionTest extends TestCase
         - the moderator creates a new section within the sub section
         */
         
-        $newSection = factory(Section::class)->make(['parent_id' => $section->id]);
+        $newSection = Section::factory()->make(['parent_id' => $section->id]);
         
         $this->actingAs($moderator);
         $response = $this->post('/section', $newSection->toArray());
@@ -71,24 +71,24 @@ class CreateSectionTest extends TestCase
         - a moderator for the sub section
         - a user who is not a moderator
         */
-        $sysop = factory(User::class)->create();
-        $home = factory(Section::class)->create(['parent_id' => null]);
+        $sysop = User::factory()->create();
+        $home = Section::factory()->create(['parent_id' => null]);
         $home->moderator()->associate($sysop);
         $home->save();
         
-        $moderator = factory(User::class)->create();
-        $section = factory(Section::class)->create();
+        $moderator = User::factory()->create();
+        $section = Section::factory()->create();
         $section->parent()->associate($home);
         $section->moderator()->associate($moderator);
         $section->save();
         
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         
         /*
         WHEN
         - a normal user tries to create a new section within the sub section
         */
-        $newSection = factory(Section::class)->make(['parent_id' => $section->id]);
+        $newSection = Section::factory()->make(['parent_id' => $section->id]);
         
         $this->actingAs($user);
         $response = $this->post('/section', $newSection->toArray());
@@ -112,13 +112,13 @@ class CreateSectionTest extends TestCase
         - a sub section
         - a moderator for the sub section
         */
-        $sysop = factory(User::class)->create();
-        $home = factory(Section::class)->create(['parent_id' => null]);
+        $sysop = User::factory()->create();
+        $home = Section::factory()->create(['parent_id' => null]);
         $home->moderator()->associate($sysop);
         $home->save();
         
-        $moderator = factory(User::class)->create();
-        $section = factory(Section::class)->create();
+        $moderator = User::factory()->create();
+        $section = Section::factory()->create();
         $section->parent()->associate($home);
         $section->moderator()->associate($moderator);
         $section->save();
@@ -128,7 +128,7 @@ class CreateSectionTest extends TestCase
         - the moderator creates a new section within the sub section
         */
         
-        $newSection = factory(Section::class)
+        $newSection = Section::factory()
             ->make([
                 'parent_id' => 'madeupnumber',
                 'title' => null

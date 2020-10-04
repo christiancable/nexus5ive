@@ -53,7 +53,7 @@ class NexusInstall extends Command
             $email = $this->ask('Email Address');
             $password = $this->ask('Password');
             
-            $administrator = factory(User::class)->make(
+            $administrator = User::factory()->make(
                 [
                 'username'      => $username,
                 'name'          => 'Administrator',
@@ -78,7 +78,7 @@ class NexusInstall extends Command
             $this->info("Please enter in values for the main menu. Don't worry You can change this later.");
             $title = $this->ask('Title');
             
-            $mainMenu = factory(Section::class)->make(
+            $mainMenu = Section::factory()->make(
                 [
                 'title' => $title
                 ]
@@ -101,11 +101,11 @@ class NexusInstall extends Command
             $this->info("Please enter in values for the first topic. Don't worry You can change this later.");
             $title = $this->ask('Title');
 
-            $firstTopic = factory(Topic::class)->make(
+            $firstTopic = Topic::factory()->make(
                 [
                 'title' => $title
                 ]
-            ); 
+            );
             
             $firstTopic->section()->associate($mainMenu);
 
