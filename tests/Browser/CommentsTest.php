@@ -22,15 +22,15 @@ class CommentsTest extends DuskTestCase
         parent::setUp();
         
         // set up bbs with a sysop and main menu
-        $sysop = factory(User::class)->create();
-        $home = factory(Section::class)->create([
+        $sysop = User::factory()->create();
+        $home = Section::factory()->create([
             'parent_id' => null,
             'user_id' => $sysop->id,
         ]);
             
         // add users for testing
-        $this->user = factory(User::class)->create();
-        $this->user2 = factory(User::class)->create();
+        $this->user = User::factory()->create();
+        $this->user2 = User::factory()->create();
     }
             
     /*
@@ -40,12 +40,12 @@ class CommentsTest extends DuskTestCase
     {
         $user = $this->user;
 
-        $comment1 = factory(Comment::class)->create([
+        $comment1 = Comment::factory()->create([
             'user_id' => $user->id,
             'author_id'=> $this->user2->id,
         ]);
         
-        $comment2 = factory(Comment::class)->create([
+        $comment2 = Comment::factory()->create([
             'user_id' => $user->id,
             'author_id'=> $this->user2->id,
         ]);
@@ -82,12 +82,12 @@ class CommentsTest extends DuskTestCase
     {
         $user = $this->user;
 
-        $comment1 = factory(Comment::class)->create([
+        $comment1 = Comment::factory()->create([
             'user_id' => $user->id,
             'author_id'=> $this->user2->id,
         ]);
 
-        $comment2 = factory(Comment::class)->create([
+        $comment2 = Comment::factory()->create([
             'user_id' => $user->id,
             'author_id'=> $this->user2->id,
         ]);

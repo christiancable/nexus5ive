@@ -25,18 +25,18 @@ class LatestTest extends DuskTestCase
     {
         parent::setUp();
 
-        $this->user = factory(User::class)->create();
-        $this->home = factory(Section::class)->create([
+        $this->user = User::factory()->create();
+        $this->home = Section::factory()->create([
             'parent_id' => null,
             'user_id' => $this->user->id,
         ]);
-        $this->topic = factory(Topic::class)->create([
+        $this->topic = Topic::factory()->create([
             'section_id' => $this->home->id
         ]);
-        $this->emptyTopic = factory(Topic::class)->create([
+        $this->emptyTopic = Topic::factory()->create([
             'section_id' => $this->home->id
         ]);
-        $this->post = factory(Post::class)->create([
+        $this->post = Post::factory()->create([
             'topic_id' => $this->topic->id,
             'user_id' => $this->user->id,
         ]);
@@ -126,7 +126,7 @@ class LatestTest extends DuskTestCase
         $user = $this->user;
         $emptyTopic = $this->emptyTopic;
 
-        factory(Post::class)->create([
+        Post::factory()->create([
             'topic_id' => $emptyTopic->id,
             'user_id' => $user->id,
         ]);
