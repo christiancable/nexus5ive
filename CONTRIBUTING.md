@@ -34,7 +34,7 @@ I use the `master` branch for the current deployed version of this application.
 In short, when you submit code changes, your submissions are understood to be under the same [GNU GPL v2](LICENCE) that covers the project. Feel free to contact the maintainers if that's a concern.
 
 ## Report bugs using Github's [issues](https://github.com/christiancable/nexus5ive/issues)
-We use GitHub issues to track public bugs. Report a bug by opening a new issue; it's that easy!
+I use GitHub issues to track public bugs. Report a bug by opening a new issue; it's that easy!
 
 **Great Bug Reports** tend to have:
 
@@ -57,4 +57,4 @@ I use PSR2 for all the PHP in this project.
 By contributing, you agree that your contributions will be licensed under the [GNU GPL v2](LICENCE)
 
 ## References
-This document was adapted from [briandk](https://gist.github.com/briandk/) [open-source contribution guidelines](https://gist.github.com/briandk/3d2e8b3ec8daf5a27a62)
+This document was adapted from [briandk's](https://gist.github.com/briandk/) excellent [open-source contribution guidelines](https://gist.github.com/briandk/3d2e8b3ec8daf5a27a62)
