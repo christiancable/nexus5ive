@@ -40,7 +40,7 @@ class NexusTheme extends Command
 
     private function addTheme()
     {
-        $theme = factory(Theme::class)->make([
+        $theme = Theme::factory()->make([
                     'path' => $this->option('path'),
                     'name'=> $this->option('name')
         ]);
