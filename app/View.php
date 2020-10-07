@@ -56,4 +56,15 @@ class View extends Model
     {
         return $this->belongsTo(\App\Topic::class);
     }
+
+    /**
+     * Scope a query to only include views to subscribed topics.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeSubscribed($query)
+    {
+        return $query->where('unsubscribed', false);
+    }
 }

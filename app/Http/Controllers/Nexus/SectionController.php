@@ -182,29 +182,23 @@ class SectionController extends Controller
     }
 
     /**
-     * redirects a visitor to a section  with an updated topic
+     * redirects a visitor to a section with an updated topic
      *
      * @return RedirectResponse
      */
     public function leap(Request $request)
     {
-         // should we be passing the user_id into this method?
-        $views = View::with('topic')
+        $views = View::subscribed()
+            ->with('topic')
             ->where('user_id', $request->user()->id)
-            ->where('unsubscribed', 0)->get();
-    
-        $topics = $views->map(function ($view, $key) {
-            if (!is_null($view->topic)) {
-                if ($view->latest_view_date != $view->topic->most_recent_post_time) {
-                    return $view;
-                }
-            }
-        })->reject(function ($view) {
-            return empty($view);
+            ->get();
+
+        $updatedView = $views->first(function ($view) {
+            return ($view->latest_view_date->timestamp != $view->topic->most_recent_post_time->timestamp);
         });
 
-        if ($topics->count()) {
-            $destinationTopic = $topics->first()->topic;
+        if ($updatedView != null) {
+            $destinationTopic = $updatedView->topic;
 
             // set alert
             $topicURL = action('Nexus\TopicController@show', ['topic' => $destinationTopic->id]);
