@@ -42,12 +42,12 @@ class CommentsTest extends DuskTestCase
 
         $comment1 = Comment::factory()->create([
             'user_id' => $user->id,
-            'author_id'=> $this->user2->id,
+            'author_id' => $this->user2->id,
         ]);
         
         $comment2 = Comment::factory()->create([
             'user_id' => $user->id,
-            'author_id'=> $this->user2->id,
+            'author_id' => $this->user2->id,
         ]);
 
         $topDeleteButton = "button.btn-danger:first-of-type";
@@ -84,12 +84,12 @@ class CommentsTest extends DuskTestCase
 
         $comment1 = Comment::factory()->create([
             'user_id' => $user->id,
-            'author_id'=> $this->user2->id,
+            'author_id' => $this->user2->id,
         ]);
 
         $comment2 = Comment::factory()->create([
             'user_id' => $user->id,
-            'author_id'=> $this->user2->id,
+            'author_id' => $this->user2->id,
         ]);
 
         $this->browse(function ($browser) use ($user, $comment1, $comment2) {
