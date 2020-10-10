@@ -31,14 +31,15 @@ class Tree extends Model
         $keyIndex = 0;
         foreach ($locations as $section) {
             $keyIndex++;
-            if ($section['most_recent_post']
+            if (
+                $section['most_recent_post']
                 && $section['most_recent_post']->updated_at->greaterThanOrEqualTo($oldenDays)
             ) {
                 $recent = true;
             } else {
                 $recent = false;
             }
-            $destinations[]= [
+            $destinations[] = [
                 'key'   => $keyIndex,
                 'id'    => $section['id'],
                 'title' => $section['title'],
@@ -48,7 +49,8 @@ class Tree extends Model
             ];
             foreach ($section['topics'] as $topic) {
                 $keyIndex++;
-                if ($topic['most_recent_post_time']
+                if (
+                    $topic['most_recent_post_time']
                     && $topic['most_recent_post_time']->greaterThanOrEqualTo($oldenDays)
                 ) {
                     $recent = true;
@@ -56,7 +58,7 @@ class Tree extends Model
                     $recent = false;
                 }
                 
-                $destinations[]= [
+                $destinations[] = [
                     'key'   => $keyIndex,
                     'id'    => $topic['id'],
                     'title' => $topic['title'],

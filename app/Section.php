@@ -117,7 +117,7 @@ class Section extends Model
     */
     public function allChildSections()
     {
-        $allChildSections = new Collection;
+        $allChildSections = new Collection();
         foreach ($this->sections as $child) {
             $allChildSections->prepend($child);
             $allChildSections = self::listChildren($child, $allChildSections);

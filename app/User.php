@@ -109,6 +109,7 @@ class User extends Authenticatable implements MustVerifyEmail
     use Notifiable;
     // use Authenticatable, Authorizable, CanResetPassword;
     use SoftDeletes;
+
     /**
      * The database table used by the model.
      *
@@ -333,7 +334,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function addMention(\App\Post $post)
     {
-        $mention = new \App\Mention;
+        $mention = new \App\Mention();
         $mention->user_id = $this->id;
         $mention->post_id = $post->id;
         $this->mentions()->save($mention);

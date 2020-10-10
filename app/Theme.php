@@ -29,6 +29,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Theme extends Model
 {
     use HasFactory;
+
     protected $table = 'themes';
     protected $fillable = [
         'name',

@@ -41,7 +41,7 @@ class ChatController extends Controller
         $input = $request->all();
 
         if (isset($input['text']) && $input['text']) {
-            $message = new Message;
+            $message = new Message();
             $message->read = false;
             $message->text = $input['text'];
             $message->user_id = $user->id;
