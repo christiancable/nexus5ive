@@ -48,7 +48,7 @@ class NexusFixDuplicateViews extends Command
                 if ($previousView) {
                     if ($view->topic_id === $previousView->topic_id) {
                         $this->info("Cur\t" . $view);
-                        $this->info("Pre\t" . $previousView ."\n");
+                        $this->info("Pre\t" . $previousView . "\n");
                         $view->delete();
                         $view = null;
                     }

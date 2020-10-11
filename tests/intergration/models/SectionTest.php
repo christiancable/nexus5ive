@@ -46,7 +46,7 @@ class SectionTest extends TestCase
 
         // THEN number of sections goes down by one
         $sectionCountAfterDeletion = Section::all()->count();
-        $this->assertEquals($sectionCountAfterDeletion, $sectionCount-1);
+        $this->assertEquals($sectionCountAfterDeletion, $sectionCount - 1);
 
         // AND that particular section is soft deleted
         $this->assertTrue($section->trashed());

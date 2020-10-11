@@ -42,7 +42,7 @@ class NexusTheme extends Command
     {
         $theme = Theme::factory()->make([
                     'path' => $this->option('path'),
-                    'name'=> $this->option('name')
+                    'name' => $this->option('name')
         ]);
         $theme->save();
     }
@@ -106,7 +106,7 @@ class NexusTheme extends Command
         // show how many users use this theme
         $themeUsersCount = User::where('theme_id', $existingTheme['id'])->select('id')->count();
 
-        $this->info($existingTheme['name'] . ' is used by ' . $themeUsersCount. ' users');
+        $this->info($existingTheme['name'] . ' is used by ' . $themeUsersCount . ' users');
         if ($this->confirm('Do you wish to continue?')) {
             // move existing users of these theme to the default
             $this->setThemeUsersToDefault($existingTheme);

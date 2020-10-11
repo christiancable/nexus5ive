@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Helpers;
 
 use App\Post;
@@ -16,7 +17,7 @@ class TopicHelper
     
         // how many pages worth of posts are we into the topic
         $depth = $post->topic->posts()->where('id', '>=', $post->id)->count();
-        $page = ceil($depth/config('nexus.pagination'));
+        $page = ceil($depth / config('nexus.pagination'));
 
         // create the route
         $route = action(

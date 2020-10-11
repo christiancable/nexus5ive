@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Helpers;
 
 use App\View;
@@ -16,7 +17,7 @@ class ViewHelper
         
         if (!$progress) {
             // first time viewing this topic
-            $progress = new View;
+            $progress = new View();
             $progress->user_id = $user->id;
             $progress->topic_id = $topic->id;
             $progress->latest_view_date = $topic->most_recent_post_time;
@@ -124,7 +125,7 @@ class ViewHelper
             $progress->unsubscribed = true;
             $progress->update();
         } else {
-            $progress = new View;
+            $progress = new View();
             $progress->user_id = $user->id;
             $progress->topic_id = $topic->id;
             $progress->latest_view_date = $topic->most_recent_post_time;
@@ -144,7 +145,7 @@ class ViewHelper
             $progress->unsubscribed = false;
             $progress->update();
         } else {
-            $progress = new View;
+            $progress = new View();
             $progress->user_id = $user->id;
             $progress->topic_id = $topic->id;
             $progress->latest_view_date = $topic->most_recent_post_time;

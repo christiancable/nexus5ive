@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Helpers;
 
 use App\User;
@@ -114,7 +115,7 @@ class BreadcrumbHelper
      * @param String $username
      * @return array
      */
-    public static function breadcrumbForChat(String $username)
+    public static function breadcrumbForChat(string $username)
     {
         $breadcrumbs = [];
         $crumb['title'] = $username;

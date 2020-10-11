@@ -85,7 +85,7 @@ HTML;
     {
         $re = '/(?:https?:)?(?:\/\/)?(?:[0-9A-Z-]+\.)?(?:youtu\.be\/|youtube(?:-nocookie)?\.com\S*?[^\w\s-])([\w-]{11})(?=[^\w-]|$)(?![?=&+%\w.-]*(?:[\'"][^<>]*>|<\/a>))[?=&+%\w.-]*/im';
 
-        $subst = self::$youTubeHTMLStart.'$1'.self::$youTubeHTMLStop;
+        $subst = self::$youTubeHTMLStart . '$1' . self::$youTubeHTMLStop;
         $result = preg_replace($re, $subst, $text);
 
         return $result;
@@ -126,7 +126,7 @@ HTML;
     public static function lazyLoadClass($text, $placeholder = 'placeholder.jpg')
     {
         $re = '/<img src="(.*?)"/m';
-        $subst = '<img class="b-lazy" src="' .$placeholder. '" data-src="$1"';
+        $subst = '<img class="b-lazy" src="' . $placeholder . '" data-src="$1"';
         $text = preg_replace($re, $subst, $text);
         
         return $text;

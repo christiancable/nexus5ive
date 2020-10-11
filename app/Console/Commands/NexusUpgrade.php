@@ -48,7 +48,7 @@ class NexusUpgrade extends Command
             $classicUsers = DB::table('usertable')->get();
             
             foreach ($classicUsers as $classicUser) {
-                $newUser = new User;
+                $newUser = new User();
                 
                 $newUser->id = $classicUser->user_id;
                 $newUser->username = $classicUser->user_name;
@@ -103,7 +103,7 @@ class NexusUpgrade extends Command
                     $newUser->save();
                 } catch (Exception $e) {
                     $errorCount++;
-                    Log::error('Nexus:upgrade - Failed to add user '. $e);
+                    Log::error('Nexus:upgrade - Failed to add user ' . $e);
                 }
                 $bar->advance();
             }
@@ -129,7 +129,7 @@ class NexusUpgrade extends Command
             $bar = $this->output->createProgressBar($count);
             $classicComments = DB::table('commenttable')->get();
             foreach ($classicComments as $classicComment) {
-                $newComment = new Comment;
+                $newComment = new Comment();
                 $newComment->id = $classicComment->comment_id;
                 $newComment->text = $classicComment->text;
                 $newComment->user_id = $classicComment->user_id;
@@ -145,7 +145,7 @@ class NexusUpgrade extends Command
                     $bar->advance();
                 } catch (Exception $e) {
                     $errorCount++;
-                    Log::error('Nexus:upgrade - Failed to add comment '. $e);
+                    Log::error('Nexus:upgrade - Failed to add comment ' . $e);
                 }
             }
             $bar->finish();
@@ -172,7 +172,7 @@ class NexusUpgrade extends Command
         
             foreach ($classicSections as $classicSection) {
                 try {
-                    $newSection = new Section;
+                    $newSection = new Section();
                     $newSection->id = $classicSection->section_id;
                     $newSection->title = $classicSection->section_title;
                     $newSection->intro = $classicSection->section_intro;
@@ -183,7 +183,7 @@ class NexusUpgrade extends Command
                     $bar->advance();
                 } catch (Exception $e) {
                     $errorCount++;
-                    Log::error('Nexus:upgrade - Failed to add section '. $e);
+                    Log::error('Nexus:upgrade - Failed to add section ' . $e);
                 }
             }
 
@@ -200,7 +200,7 @@ class NexusUpgrade extends Command
                     $bar->advance();
                 } catch (Exception $e) {
                     $errorCount++;
-                    Log::error('Nexus:upgrade - Failed to add parent to section '. $e);
+                    Log::error('Nexus:upgrade - Failed to add parent to section ' . $e);
                 }
             }
             unset($classicSections);
@@ -227,7 +227,7 @@ class NexusUpgrade extends Command
             $classicTopics = DB::table('topictable')->get();
         
             foreach ($classicTopics as $classicTopic) {
-                $newTopic = new Topic;
+                $newTopic = new Topic();
                 $newTopic->id = $classicTopic->topic_id;
                 $newTopic->title = $classicTopic->topic_title;
                 $newTopic->intro = $classicTopic->topic_description;
@@ -251,7 +251,7 @@ class NexusUpgrade extends Command
                     $bar->advance();
                 } catch (Exception $e) {
                     $errorCount++;
-                    Log::error('Nexus:upgrade - Failed to import topic: '. $e);
+                    Log::error('Nexus:upgrade - Failed to import topic: ' . $e);
                 }
             }
 
@@ -279,7 +279,7 @@ class NexusUpgrade extends Command
             $bar = $this->output->createProgressBar($count);
             DB::table('messagetable')->chunk(1000, function ($posts) use (&$errorCount, &$bar) {
                 foreach ($posts as $classicPost) {
-                    $newPost = new \App\Post;
+                    $newPost = new \App\Post();
                     $newPost->id                = $classicPost->message_id;
                     $newPost->text              = $classicPost->message_text;
                     $newPost->topic_id          = $classicPost->topic_id;
@@ -300,7 +300,7 @@ class NexusUpgrade extends Command
                         $bar->advance();
                     } catch (Exception $e) {
                         $errorCount++;
-                        Log::info('Nexus:upgrade - Failed to import post: '. $e);
+                        Log::info('Nexus:upgrade - Failed to import post: ' . $e);
                     }
                 }
             });
@@ -328,7 +328,7 @@ class NexusUpgrade extends Command
             DB::table('topicview')->chunk(1000, function ($views) use (&$errorCount, &$bar) {
 
                 foreach ($views as $classicView) {
-                    $newView = new \App\View;
+                    $newView = new \App\View();
                     $newView->id                    = $classicView->topicview_id;
                     $newView->user_id               = $classicView->user_id;
                     $newView->topic_id              = $classicView->topic_id;
@@ -345,7 +345,7 @@ class NexusUpgrade extends Command
                         $bar->advance();
                     } catch (Exception $e) {
                          $errorCount++;
-                        Log::info('Nexus:upgrade - Failed to import view: '. $e);
+                        Log::info('Nexus:upgrade - Failed to import view: ' . $e);
                     }
                 }
             });
@@ -372,7 +372,7 @@ class NexusUpgrade extends Command
             DB::table('nexusmessagetable')->chunk(1000, function ($messages) use (&$errorCount, &$bar) {
 
                 foreach ($messages as $classicMessage) {
-                    $newMessage = new \App\Message;
+                    $newMessage = new \App\Message();
                     $newMessage->id                    = $classicMessage->nexusmessage_id;
                     $newMessage->user_id               = $classicMessage->user_id;
                     $newMessage->author_id             = $classicMessage->from_id;
@@ -390,7 +390,7 @@ class NexusUpgrade extends Command
                         $bar->advance();
                     } catch (Exception $e) {
                          $errorCount++;
-                        Log::info('Nexus:upgrade - Failed to import message: '. $e);
+                        Log::info('Nexus:upgrade - Failed to import message: ' . $e);
                     }
                 }
             });
