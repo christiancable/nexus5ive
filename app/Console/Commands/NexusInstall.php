@@ -2,8 +2,10 @@
 
 namespace App\Console\Commands;
 
+use App\Mode;
 use App\User;
 use App\Topic;
+use App\Theme;
 use Exception;
 use App\Section;
 use Carbon\Carbon;
@@ -44,7 +46,7 @@ class NexusInstall extends Command
     public function handle()
     {
         // we are assuming that the sysop is always the first user
-        $this->info('Creating administrator, default section and first topic...');
+        $this->info('Creating administrator, default mode, section and first topic...');
         $administrator = User::first();
 
         if (!$administrator) {
@@ -116,6 +118,30 @@ class NexusInstall extends Command
             }
         } else {
             $this->error('There is already a topic');
+        }
+
+        $defaultMode = Mode::first();
+
+        if (!$defaultMode) {
+            $defaultMode = Mode::factory()->make(
+                [
+                    'name' => 'Default',
+                    'welcome' => <<< HTML
+ <span class="lead">There are those who believe that **spodding** here began out there, far across the network, with tribes of users who may have been the forefathers of the _Prestoneites_, or the _Facebookers_, or the _Twitters_.</span>
+
+That they may have been the architects of the great forums, or the lost civilizations of _Monochrome_ or _anonyMUD_. Some believe that there may yet be brothers of man who even now fight to survive somewhere beyond the screen...                    
+HTML,
+                    'active' => true,
+                    'override' => false
+                ]
+            );
+
+            try {
+                $defaultMode->theme()->associate(Theme::first());
+                $defaultMode->save();
+            } catch (Exception $e) {
+                $this->error('Failed to add default mode ' . $e);
+            }
         }
     }
 }
