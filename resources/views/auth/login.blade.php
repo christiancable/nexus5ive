@@ -60,9 +60,6 @@
   </div> <!-- .col-md -->
   
   <div class="col-lg">
-    @php
-        $mode  = App\Mode::active()->first();
-    @endphp
     @if ($mode)
     {!! App\Helpers\NxCodeHelper::nxDecode($mode->welcome) !!}
     @endif 
