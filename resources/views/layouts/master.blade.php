@@ -20,39 +20,8 @@
 
     <script src="{{ mix('js/app.js') }}" defer></script>
 
-    <?php
-    // if we have a special event then any theme it has should override the others
-    if (config('nexus.special_event') !== '') {
-        $specialTheme = App\Theme::where('name', '=', config('nexus.special_event'))->first();
-    } else {
-        $specialTheme = false;
-    }
-    ?>
 
-    @if ($specialTheme)
-    <link rel="stylesheet" href="{{ mix($specialTheme->path) }}">
-    @else 
-        @if (config('nexus.bootstrap_theme'))
-                <link rel="stylesheet" href="{{config('nexus.bootstrap_theme')}}">
-                <link href="{{ mix('/css/extra.css') }}" rel="stylesheet">
-        @else
-
-            @auth
-                {{-- auth users can have a theme --}}
-                @if (Auth::User()->theme->external)
-                    <link href="{{ Auth::User()->theme->path }}" rel="stylesheet">
-                    <link href="{{ mix('/css/extra.css') }}" rel="stylesheet">
-                @else 
-                    <link href="{{ mix(Auth::User()->theme->path) }}" rel="stylesheet">
-                @endif
-            @endauth
-
-            @guest
-                <link rel="stylesheet" href="{{ mix('/css/app.css') }}">
-            @endguest
-
-        @endif
-    @endif 
+    @include('_mode')
 
 
     <link rel="apple-touch-icon" href="/apple-touch.png">
