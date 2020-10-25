@@ -18,7 +18,7 @@ class AppServiceProvider extends ServiceProvider
     {
         // share bbs mode to all views
         // @todo make this bit suck less
-        $seconds_to_cache = 60;
+        $seconds_to_cache = 3600;
         $mode = Cache::remember('bbs_mode', $seconds_to_cache, function () {
             return Mode::active()->with('theme')->first();
         });
