@@ -17,7 +17,7 @@ class CommentsTest extends DuskTestCase
     protected $user;
     protected $user2;
     
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         
