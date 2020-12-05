@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Helpers\Nexus2;
+namespace App\Nexus2\Models;
 
 use Carbon\Carbon;
 use App\User as NewUser;

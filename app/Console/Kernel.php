@@ -13,7 +13,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        'App\Nexus2\Console\Commands\ImportNexus2::class'
     ];
     /**
      * Define the application's command schedule.

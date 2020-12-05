@@ -3,12 +3,13 @@
 namespace Tests\Unit\Nexus2;
 
 use Tests\TestCase;
-use App\Helpers\Nexus2\User as Nexus2User;
+use App\Nexus2\Models\User as Nexus2User;
 
 class User extends TestCase
 {
     /**
      * @test
+     * @group nx2
      * @dataProvider providerUserDataBasesAndUsers
      **/
     public function parseUDBparsesUDBstrings($udb, $expected)

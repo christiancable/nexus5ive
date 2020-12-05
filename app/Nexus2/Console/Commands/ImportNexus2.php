@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Nexus2\Console\Commands;
 
-use App\User;
 use Illuminate\Console\Command;
-use App\Helpers\Nexus2\User as Nexus2User;
+use App\Nexus2\Models\User;
 
 class ImportNexus2 extends Command
 {
@@ -13,7 +12,7 @@ class ImportNexus2 extends Command
      *
      * @var string
      */
-    protected $signature = 'nexus:importNexus2 {--userdir=}';
+    protected $signature = 'nexus2:importNexus2 {--userdir=}';
 
     /**
      * The console command description.
@@ -66,9 +65,9 @@ class ImportNexus2 extends Command
             return false;
         }
 
-        $newUser = Nexus2User::importUserDataBase($udb);
+        $newUser = User::importUserDataBase($udb);
         if (false === $newUser) {
-            $existingUser =  Nexus2User::parseUDB($udb);
+            $existingUser =  User::parseUDB($udb);
             $this->alert("User already exists: {$existingUser['Nick']}");
             return false;
         }
@@ -81,7 +80,7 @@ class ImportNexus2 extends Command
             $handle = fopen($infoFile, "rb");
             $infoFile = stream_get_contents($handle);
             fclose($handle);
-            $newUser->about = Nexus2User::parseInfo($infoFile);
+            $newUser->about = User::parseInfo($infoFile);
         }
 
         $newUser->save();
