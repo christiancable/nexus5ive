@@ -31,8 +31,9 @@ class StorePost extends FormRequest
     public function rules()
     {
         return [
-                'text' => 'required',
-                'topic_id' => 'required|exists:topics,id'
+                'text'     => 'required',
+                'topic_id' => 'required|exists:topics,id',
+                'title'    => 'nullable'
             ];
     }
 

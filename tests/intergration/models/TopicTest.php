@@ -18,8 +18,8 @@ class TopicTest extends TestCase
     public function deletingTopicSoftDeletesItsPosts()
     {
         // GIVEN we have a topic with post
-        $topic = factory(Topic::class)->create();
-        factory(Post::class, 20)->create(['topic_id' => $topic->id]);
+        $topic = Topic::factory()->create();
+        Post::factory()->count(20)->create(['topic_id' => $topic->id]);
     
         // we have 1 topic with 20 posts
         $this->assertEquals(Topic::all()->count(), 1);
@@ -42,17 +42,18 @@ class TopicTest extends TestCase
         $faker = \Faker\Factory::create();
 
         // GIVEN we have a topic with posts
-        $topic = factory(Topic::class)->create();
+        $topic = Topic::factory()->create();
 
         // posts from the last month but not today
-        factory(Post::class, 20)
+        Post::factory()
+            ->count(20)
             ->create(
                 ['topic_id' => $topic->id,
                 'time' => $faker->dateTimeThisMonth('-1 days')]
             );
 
         // the most recent post being from today
-        $newPost = factory(Post::class)
+        $newPost = Post::factory()
             ->create(
                 ['topic_id' => $topic->id,
                 'time' => new \DateTime('now')]

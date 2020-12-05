@@ -70,7 +70,7 @@ class ChatApiController extends Controller
      * @param  string  $conversation
      * @return array
      */
-    public function show(String $conversation)
+    public function show(string $conversation)
     {
         $user = User::where('username', $conversation)->first();
         

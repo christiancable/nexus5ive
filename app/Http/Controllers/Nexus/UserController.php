@@ -35,7 +35,7 @@ class UserController extends Controller
         $users =  User::select('username', 'name', 'popname', 'latestLogin', 'totalPosts', 'totalVisits')
             ->verified()->orderBy('username', 'asc')->get();
         ActivityHelper::updateActivity(
-            Auth::user()->id,
+            $request->user()->id,
             "Viewing list of Users",
             action('Nexus\UserController@index')
         );
@@ -57,13 +57,13 @@ class UserController extends Controller
         $user->load('comments', 'comments.author');
 
         // if the user is looking at their own page then mark comments as read
-        if ($user->id === Auth::user()->id) {
+        if ($user->id === $request->user()->id) {
             $user->markCommentsAsRead();
             $user->save();
         }
 
         ActivityHelper::updateActivity(
-            Auth::user()->id,
+            $request->user()->id,
             "Examining <em>{$user->username}</em>",
             action('Nexus\UserController@show', ['user' => $user->username])
         );

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Helpers;
 
 use App\User;
@@ -75,7 +76,7 @@ class BreadcrumbHelper
         $crumb['route'] = null;
         $breadcrumbs[] = $crumb;
 
-        $section = \App\Section::first();
+        $section = \App\Section::first(['id', 'title']);
         $crumb['title'] = $section->title;
         $crumb['route'] = action('Nexus\SectionController@show', ['section' => $section->id]);
         $breadcrumbs[] = $crumb;
@@ -114,7 +115,7 @@ class BreadcrumbHelper
      * @param String $username
      * @return array
      */
-    public static function breadcrumbForChat(String $username)
+    public static function breadcrumbForChat(string $username)
     {
         $breadcrumbs = [];
         $crumb['title'] = $username;

@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * App\Theme
@@ -27,6 +28,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Theme extends Model
 {
+    use HasFactory;
+
     protected $table = 'themes';
     protected $fillable = [
         'name',

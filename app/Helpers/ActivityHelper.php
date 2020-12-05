@@ -1,9 +1,10 @@
 <?php
+
 namespace App\Helpers;
 
 use Exception;
 use App\Activity;
-use Carbon\Carbon;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Config;
@@ -38,7 +39,7 @@ class ActivityHelper
         $activity = Activity::firstOrNew(['user_id' => $user_id]);
         $activity->text = $text;
         $activity->route = $route;
-        $activity->time = time();
+        $activity->time = Carbon::now();
         $activity->save();
     }
 
@@ -52,7 +53,7 @@ class ActivityHelper
             $activity = Activity::where('user_id', $user_id)->firstOrFail();
             $activity->delete();
         } catch (Exception $e) {
-            Log::notice('Tried to remove non-existent activity: '. $e);
+            Log::notice('Tried to remove non-existent activity: ' . $e);
         }
     }
 }

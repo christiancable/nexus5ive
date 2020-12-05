@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Nexus;
 use App\User;
 use App\Message;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use App\Helpers\ActivityHelper;
 use App\Helpers\BreadcrumbHelper;
 use Illuminate\Support\Facades\Auth;
@@ -40,11 +41,11 @@ class ChatController extends Controller
         $input = $request->all();
 
         if (isset($input['text']) && $input['text']) {
-            $message = new Message;
+            $message = new Message();
             $message->read = false;
             $message->text = $input['text'];
             $message->user_id = $user->id;
-            $message->time = time();
+            $message->time = Carbon::now();
             $message->author_id = Auth::id();
             $message->save();
         }

@@ -11,6 +11,7 @@ $errorBag = 'topicUpdate' . $topic->id;
         'method' => 'PATCH'
     )) 
 !!}
+    {!! Form::hidden('id', $topic->id) !!}
     {!! Form::hidden($formName . '[id]', $topic->id) !!}
     {!! Form::hidden($formName . '[secret]', 0) !!}  
     {!! Form::hidden($formName. '[readonly]', 0) !!}

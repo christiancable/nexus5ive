@@ -15,29 +15,34 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
+        // user reg
         \App\Events\SomeEvent::class => [
             \App\Listeners\EventListener::class,
-        ],
-        'Illuminate\Auth\Events\Login' => [
-            \App\Listeners\UserIncreaseTotalVisits::class,
-        ],
-        'Illuminate\Auth\Events\Logout' => [
-            \App\Listeners\UserRemoveActivity::class,
         ],
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
-        'App\Events\TreeCacheBecameDirty' => [
-            'App\Listeners\DeleteTreeCache'
+        \App\Events\UserCreated::class => [
+            \App\Listeners\LogUnverifiedUser::class
         ],
-        'App\Events\MostRecentPostForSectionBecameDirty' => [
-            'App\Listeners\DeleteSectionMostRecentPostCache'
+        \Illuminate\Auth\Events\Verified::class => [
+            \App\Listeners\LogVerifiedUser::class
         ],
-        'App\Events\UserCreated' => [
-            'App\Listeners\LogUnverifiedUser'
+        
+        // user activities
+        \Illuminate\Auth\Events\Login::class => [
+            \App\Listeners\UserIncreaseTotalVisits::class,
         ],
-        'Illuminate\Auth\Events\Verified' => [
-            'App\Listeners\LogVerifiedUser'
+        \Illuminate\Auth\Events\Logout::class => [
+            \App\Listeners\UserRemoveActivity::class,
+        ],
+        
+        // manage caches
+        \App\Events\MostRecentPostForSectionBecameDirty::class => [
+            \App\Listeners\DeleteSectionMostRecentPostCache::class
+        ],
+        \App\Events\TreeCacheBecameDirty::class => [
+            \App\Listeners\DeleteTreeCache::class,
         ],
     ];
 

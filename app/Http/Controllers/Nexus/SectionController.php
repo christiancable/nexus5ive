@@ -15,6 +15,7 @@ use App\Helpers\ActivityHelper;
 use Illuminate\Validation\Rule;
 use App\Helpers\BreadcrumbHelper;
 use App\Http\Requests\StoreSection;
+use App\Http\Requests\UpdateSection;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
@@ -40,7 +41,7 @@ class SectionController extends Controller
         $this->authorize('create', [Section::class, $parentSection]);
         
         $section = Section::create([
-            'user_id'   => Auth::user()->id,
+            'user_id'   => $request->user()->id,
             'parent_id' => request('parent_id'),
             'title'     => request('title'),
             'intro'     => request('intro')
@@ -54,7 +55,7 @@ class SectionController extends Controller
      * Display the specified resource.
      *
      * @param Request $request
-     * @param Section|null  Section
+     * @param Section $section optional
      * @return \Illuminate\View\View
      */
     public function show(Request $request, Section $section = null)
@@ -71,16 +72,19 @@ class SectionController extends Controller
             'topics.most_recent_post.author:id,username'
         );
         
+        // load some counts too
+        $section->loadCount('sections');
+
         ActivityHelper::updateActivity(
-            Auth::user()->id,
+            $request->user()->id,
             "Browsing <em>{$section->title}</em>",
             action('Nexus\SectionController@show', ['section' => $section->id])
         );
         
         // if the user can moderate the section then they could potentially update subsections
-        if ($section->moderator->id === Auth::user()->id) {
+        if ($section->moderator->id === $request->user()->id) {
             $potentialModerators = User::all(['id','username'])->pluck('username', 'id')->toArray();
-            $moderatedSections = Auth::user()
+            $moderatedSections = $request->user()
                 ->sections()
                 ->select('title', 'id')
                 ->get()
@@ -98,60 +102,20 @@ class SectionController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
+     * @param UpdateSection $request
      * @param Section $section
      * @return RedirectResponse
      */
-    public function update(Request $request, Section $section)
+    public function update(UpdateSection $request, Section $section)
     {
         $formName = "section{$section->id}";
-
-        // it not valid to move a section into a descendant
-        $descendants = $section->allChildSections();
-        $descendantsIDs = Arr::flatten($descendants->pluck('id')->toArray());
-        
-        // if parents exists then it must be a valid section id
-        $allSectionIDs = Section::all('id')->pluck('id')->toArray();
-        
-        // updating the home section has different validation rules to other sections
-
-        $messages = [
-            "form.{$formName}.title.required" => 'Section Title is required'
-        ];
-        
-        $rules = [
-            "form.{$formName}.title" => 'required',
-            "form.{$formName}.user_id" => 'required|numeric',
-            "form.{$formName}.title" => 'required'
-        ];
-
-        if (!$section->is_home) {
-            $rules["form.{$formName}.parent_id"] = [
-                    'required',
-                    'numeric',
-                    Rule::notIn($descendantsIDs),
-                    Rule::notIn([$section->id]),
-                    Rule::In($allSectionIDs)
-            ];
-        }
-        
-        // manually create validator to dynamically name the errorBag
-        $validator = Validator::make($request->all(), $rules, $messages);
-
-        if ($validator->fails()) {
-            return back()
-                ->withErrors($validator, "sectionUpdate{$section->id}")
-                ->withInput();
-        }
-        
-        $input = $request->all();
         $updatedSectionDetails = [
-            "id" => $section->id,
-            "intro" => $input['form'][$formName]['intro'],
-            "parent_id" => $input['form'][$formName]['parent_id'],
-            "title" => $input['form'][$formName]['title'],
-            "user_id" => $input['form'][$formName]['user_id'],
-            "weight" => $input['form'][$formName]['weight']
+            "id"        => $section->id,
+            "intro"     => $request->validated()['form'][$formName]['intro'],
+            "parent_id" => $request->validated()['form'][$formName]['parent_id'],
+            "title"     => $request->validated()['form'][$formName]['title'],
+            "user_id"   => $request->validated()['form'][$formName]['user_id'],
+            "weight"    => $request->validated()['form'][$formName]['weight']
         ];
         
         // do not set parent for home section
@@ -218,30 +182,23 @@ class SectionController extends Controller
     }
 
     /**
-     * redirects a visitor to a section  with an updated topic
+     * redirects a visitor to a section with an updated topic
      *
      * @return RedirectResponse
      */
     public function leap(Request $request)
     {
-         // should we be passing the user_id into this method?
-        $views = View::with('topic')
+        $views = View::subscribed()
+            ->with('topic')
             ->where('user_id', $request->user()->id)
-            ->where('latest_view_date', '!=', "0000-00-00 00:00:00")
-            ->where('unsubscribed', 0)->get();
-    
-        $topics = $views->map(function ($view, $key) {
-            if (!is_null($view->topic)) {
-                if ($view->latest_view_date != $view->topic->most_recent_post_time) {
-                    return $view;
-                }
-            }
-        })->reject(function ($view) {
-            return empty($view);
+            ->get();
+
+        $updatedView = $views->first(function ($view) {
+            return ($view->latest_view_date->timestamp != $view->topic->most_recent_post_time->timestamp);
         });
 
-        if ($topics->count()) {
-            $destinationTopic = $topics->first()->topic;
+        if ($updatedView != null) {
+            $destinationTopic = $updatedView->topic;
 
             // set alert
             $topicURL = action('Nexus\TopicController@show', ['topic' => $destinationTopic->id]);

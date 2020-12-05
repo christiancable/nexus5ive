@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Post;
 use App\Section;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
@@ -10,6 +11,7 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Events\MostRecentPostForSectionBecameDirty;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * App\Topic
@@ -24,9 +26,8 @@ use App\Events\MostRecentPostForSectionBecameDirty;
  * @property \Illuminate\Support\Carbon $created_at
  * @property \Illuminate\Support\Carbon $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property-read \Carbon|null $most_recent_post_time
+ * @property-read \Illuminate\Support\Carbon|null $most_recent_post_time
  * @property-read \App\Post $most_recent_post
- * @property-read \App\Post $most_recent_post_id
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Post[] $posts
  * @property-read int|null $posts_count
  * @property-read \App\Section $section
@@ -54,7 +55,9 @@ use App\Events\MostRecentPostForSectionBecameDirty;
  */
 class Topic extends Model
 {
+    use HasFactory;
     use SoftDeletes;
+
     protected $dates = ['deleted_at'];
     protected $fillable = [
         'title',
@@ -97,7 +100,18 @@ class Topic extends Model
         Topic::created(function () {
             event(new TreeCacheBecameDirty());
         });
+
+        // add scope for most recent post
+        static::addGlobalScope('with_most_recent_post', function ($query) {
+            $query->addSelect(['most_recent_post_id' => Post::select('id')
+            ->whereColumn('topic_id', 'topics.id')
+            ->latest()
+            ->take(1)
+            ]);
+        });
     }
+
+
     /**
      * returns the time of the most recent post
      * if the topic has no posts then return the created time of the topic
@@ -106,11 +120,13 @@ class Topic extends Model
      */
     public function getMostRecentPostTimeAttribute()
     {
-        $latestPost =  Post::select('time')
+        
+        $latestPost = Post::select('time')
             ->where('topic_id', $this->id)
             ->orderBy('time', 'desc')
             ->first();
 
+    
         if ($latestPost) {
             $result = $latestPost->time;
         } else {
@@ -123,17 +139,10 @@ class Topic extends Model
     // phpcs:disable PSR1.Methods.CamelCapsMethodName
     public function most_recent_post()
     {
-    // phpcs:enable
-        return $this->hasOne(\App\Post::class)->latest();
+         // phpcs:enable
+        return $this->belongsTo(Post::class);
     }
-    
-    // phpcs:disable PSR1.Methods.CamelCapsMethodName
-    public function most_recent_post_id()
-    {
-    // phpcs:enable
-        return $this->hasOne(\App\Post::class)->latest()->select(['id as post_id','topic_id']);
-    }
-    
+
     // sections
      
     public function section()

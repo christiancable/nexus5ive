@@ -1,3 +1,50 @@
+# modes
+
+nexus has many modes - only one mode is the active mode
+
+a mode has
+    - id
+    - name
+    - welcome text
+    - active
+    - overridge
+
+the active node is selected by a sysop and if the selected node contains a theme then this overrides any used selected theme
+
+to follow 
+
+/admin
+    - select mode
+    - edit mode fields
+    - save
+    - create new mode
+
+the db seed OR nexus install should create the default node
+
+test
+    - normal user cannot visit /admin
+    - sysop can visit /admin
+
+
+forms
+
+    we should have a way to name the multiple forms which could be on a page
+
+    Sections
+        "Section{$section->id}"
+
+    Posts
+        "Post{$post->id}"
+
+clean up the names of the forms we have
+
+Post
+
+Section
+
+
+
+
 # Design
 Notes, thoughts and decisions on how the BBS works from a technical and a user standpoint. 
 

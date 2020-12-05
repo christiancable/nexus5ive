@@ -22,8 +22,8 @@ class DeleteSectionMostRecentPostCache
     /**
      * Handle the event.
      *
-     * @param  object  $event
-     * @return void
+     * @param  MostRecentPostForSectionBecameDirty $event
+     * @return  void
      */
     public function handle(MostRecentPostForSectionBecameDirty $event)
     {

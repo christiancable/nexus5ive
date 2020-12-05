@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int $user_id
  * @property int $topic_id
  * @property \Illuminate\Support\Carbon $latest_view_date
- * @property int $unsubscribed
+ * @property bool $unsubscribed
  * @property \Illuminate\Support\Carbon $created_at
  * @property \Illuminate\Support\Carbon $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
@@ -43,6 +43,10 @@ class View extends Model
     /* dates */
     protected $dates = ['latest_view_date', 'deleted_at'];
 
+    protected $casts = [
+        'unsubscribed' => 'boolean',
+    ];
+
     public function user()
     {
         return $this->belongsTo(\App\User::class);
@@ -51,5 +55,16 @@ class View extends Model
     public function topic()
     {
         return $this->belongsTo(\App\Topic::class);
+    }
+
+    /**
+     * Scope a query to only include views to subscribed topics.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeSubscribed($query)
+    {
+        return $query->where('unsubscribed', false);
     }
 }

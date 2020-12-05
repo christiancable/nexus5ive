@@ -23,13 +23,13 @@ class MentionsTest extends DuskTestCase
     {
         parent::setUp();
 
-        $this->user = factory(User::class)->create();
-        $this->anotherUser = factory(User::class)->create();
-        $this->home = factory(Section::class)->create([
+        $this->user = User::factory()->create();
+        $this->anotherUser = User::factory()->create();
+        $this->home = Section::factory()->create([
             'parent_id' => null,
             'user_id' => $this->user->id,
         ]);
-        $this->topic = factory(Topic::class)->create([
+        $this->topic = Topic::factory()->create([
             'section_id' => $this->home->id
         ]);
     }
@@ -57,7 +57,7 @@ class MentionsTest extends DuskTestCase
         $user = $this->user;
 
         // WHEN that user is mentioned in a topic
-        $post = factory(Post::class)->create([
+        $post = Post::factory()->create([
             'topic_id' => $this->topic->id,
             'user_id' => $this->anotherUser->id,
         ]);
@@ -81,7 +81,7 @@ class MentionsTest extends DuskTestCase
         $user = $this->user;
 
         // WHEN that user is mentioned in a topic
-        $post = factory(Post::class)->create([
+        $post = Post::factory()->create([
             'topic_id' => $this->topic->id,
             'user_id' => $this->anotherUser->id,
         ]);
