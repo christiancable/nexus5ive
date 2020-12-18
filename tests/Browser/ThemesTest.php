@@ -22,8 +22,8 @@ class ThemesTest extends DuskTestCase
         parent::setUp();
 
         $this->defaultTheme = Theme::FirstOrFail();
-        $this->user = factory(User::class)->create();
-        $this->home = factory(Section::class)
+        $this->user = User::factory()->create();
+        $this->home = Section::factory()
         ->create([
             'parent_id' => null,
             'user_id' => $this->user->id,
@@ -68,7 +68,7 @@ class ThemesTest extends DuskTestCase
         $user = $this->user;
 
         // AND we have an alternative theme
-        $alternativeTheme = factory(Theme::class)->create();
+        $alternativeTheme = Theme::factory()->create();
 
         $this->browse(function ($browser) use ($user, $alternativeTheme) {
             // WHEN the user views their profile

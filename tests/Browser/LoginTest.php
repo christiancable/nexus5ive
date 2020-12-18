@@ -19,7 +19,7 @@ class LoginTest extends DuskTestCase
      */
     public function testBasicExample()
     {
-        $user = factory(User::class)->create([
+        $user = User::factory()->create([
             'password' => Hash::make('password'),
         ]);
 

@@ -77,9 +77,11 @@ class PostPolicy
         // is this the most recent post in this topic, is it by the logged in user and is it recent
         $latestPost = $post->topic->posts->last();
 
-        if (($post['id'] === $latestPost['id']) &&
+        if (
+            ($post['id'] === $latestPost['id']) &&
             ($post->author->id == $user->id) &&
-            ($post->time->diffInSeconds() <= config('nexus.recent_edit'))) {
+            ($post->time->diffInSeconds() <= config('nexus.recent_edit'))
+        ) {
             return true;
         }
 

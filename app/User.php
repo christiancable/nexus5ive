@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 /**
@@ -104,9 +105,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  */
 class User extends Authenticatable implements MustVerifyEmail
 {
+    use HasFactory;
     use Notifiable;
     // use Authenticatable, Authorizable, CanResetPassword;
     use SoftDeletes;
+
     /**
      * The database table used by the model.
      *
@@ -331,7 +334,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function addMention(\App\Post $post)
     {
-        $mention = new \App\Mention;
+        $mention = new \App\Mention();
         $mention->user_id = $this->id;
         $mention->post_id = $post->id;
         $this->mentions()->save($mention);

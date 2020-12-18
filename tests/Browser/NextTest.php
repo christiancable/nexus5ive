@@ -38,25 +38,25 @@ class NextTest extends DuskTestCase
                 - topic2
         */
 
-        $this->user = factory(User::class)->create();
-        $this->home = factory(Section::class)->create([
+        $this->user = User::factory()->create();
+        $this->home = Section::factory()->create([
             'parent_id' => null,
             'user_id' => $this->user->id,
         ]);
 
-        $this->section1 = factory(Section::class)->create([
+        $this->section1 = Section::factory()->create([
             'parent_id' => $this->home->id,
             'user_id' => $this->user->id,
         ]);
-        $this->section2 = factory(Section::class)->create([
+        $this->section2 = Section::factory()->create([
             'parent_id' => $this->home->id,
             'user_id' => $this->user->id,
         ]);
 
-        $this->topic1 = factory(Topic::class)->create([
+        $this->topic1 = Topic::factory()->create([
             'section_id' => $this->home->id
         ]);
-        $this->topic2 = factory(Topic::class)->create([
+        $this->topic2 = Topic::factory()->create([
             'section_id' => $this->home->id
         ]);
     }
@@ -80,7 +80,7 @@ class NextTest extends DuskTestCase
 
         \App\Helpers\ViewHelper::subscribeToTopic($user, $this->topic1);
 
-        factory(Post::class)->create([
+        Post::factory()->create([
             'topic_id' => $this->topic1->id,
             'user_id' => $this->user->id,
         ]);
@@ -134,7 +134,7 @@ class NextTest extends DuskTestCase
 
         \App\Helpers\ViewHelper::unsubscribeFromTopic($user, $this->topic1);
 
-        factory(Post::class)->create([
+        Post::factory()->create([
             'topic_id' => $this->topic1->id,
             'user_id' => $this->user->id,
         ]);
@@ -167,7 +167,7 @@ class NextTest extends DuskTestCase
 
         \App\Helpers\ViewHelper::subscribeToTopic($user, $this->topic1);
 
-        factory(Post::class)->create([
+        Post::factory()->create([
             'topic_id' => $this->topic1->id,
             'user_id' => $this->user->id,
         ]);

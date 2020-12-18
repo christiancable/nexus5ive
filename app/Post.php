@@ -1,10 +1,12 @@
 <?php
+
 namespace App;
 
 use App\Post;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Events\MostRecentPostForSectionBecameDirty;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * App\Post
@@ -48,6 +50,7 @@ use App\Events\MostRecentPostForSectionBecameDirty;
  */
 class Post extends Model
 {
+    use HasFactory;
     use SoftDeletes;
     
     protected $fillable = ['title','text','time','popname','html','user_id','topic_id','update_user_id'];

@@ -7,6 +7,7 @@
  *  nexus:unverified remove {--confirm} {--age=30}
  *
  */
+
 namespace App\Console\Commands;
 
 use App\User;

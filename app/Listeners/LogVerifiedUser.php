@@ -27,6 +27,7 @@ class LogVerifiedUser
      */
     public function handle(Verified $event)
     {
-        Log::notice("🎉 User verified: {$event->user->username} - {$event->user->email}");
+        $level = config('nexus.log_verified_user_level');
+        Log::$level("🎉 User verified: {$event->user->username} - {$event->user->email}");
     }
 }

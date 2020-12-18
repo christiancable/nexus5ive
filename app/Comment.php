@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * App\Comment
@@ -30,6 +31,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Comment extends Model
 {
+    use HasFactory;
+
     protected $fillable = ['user_id','author_id','text','read'];
 
     protected $casts = [

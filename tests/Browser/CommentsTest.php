@@ -17,20 +17,20 @@ class CommentsTest extends DuskTestCase
     protected $user;
     protected $user2;
     
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         
         // set up bbs with a sysop and main menu
-        $sysop = factory(User::class)->create();
-        $home = factory(Section::class)->create([
+        $sysop = User::factory()->create();
+        $home = Section::factory()->create([
             'parent_id' => null,
             'user_id' => $sysop->id,
         ]);
             
         // add users for testing
-        $this->user = factory(User::class)->create();
-        $this->user2 = factory(User::class)->create();
+        $this->user = User::factory()->create();
+        $this->user2 = User::factory()->create();
     }
             
     /*
@@ -40,14 +40,14 @@ class CommentsTest extends DuskTestCase
     {
         $user = $this->user;
 
-        $comment1 = factory(Comment::class)->create([
+        $comment1 = Comment::factory()->create([
             'user_id' => $user->id,
-            'author_id'=> $this->user2->id,
+            'author_id' => $this->user2->id,
         ]);
         
-        $comment2 = factory(Comment::class)->create([
+        $comment2 = Comment::factory()->create([
             'user_id' => $user->id,
-            'author_id'=> $this->user2->id,
+            'author_id' => $this->user2->id,
         ]);
 
         $topDeleteButton = "button.btn-danger:first-of-type";
@@ -82,14 +82,14 @@ class CommentsTest extends DuskTestCase
     {
         $user = $this->user;
 
-        $comment1 = factory(Comment::class)->create([
+        $comment1 = Comment::factory()->create([
             'user_id' => $user->id,
-            'author_id'=> $this->user2->id,
+            'author_id' => $this->user2->id,
         ]);
 
-        $comment2 = factory(Comment::class)->create([
+        $comment2 = Comment::factory()->create([
             'user_id' => $user->id,
-            'author_id'=> $this->user2->id,
+            'author_id' => $this->user2->id,
         ]);
 
         $this->browse(function ($browser) use ($user, $comment1, $comment2) {

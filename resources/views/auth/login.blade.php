@@ -60,8 +60,9 @@
   </div> <!-- .col-md -->
   
   <div class="col-lg">
-    <p class="lead">There are those who believe that <strong>spodding</strong> here began out there, far across the network, with tribes of users who may have been the forefathers of the <em>Prestoneites</em>, or the <em>Facebookers</em>, or the <em>Twitters</em>.</p>
-    <p>That they may have been the architects of the great forums, or the lost civilizations of <em>Monochrome</em> or <em>anonyMUD</em>. Some believe that there may yet be brothers of man who even now fight to survive somewhere beyond the screen&hellip;</p>
+    @if ($mode)
+    {!! App\Helpers\NxCodeHelper::nxDecode($mode->welcome) !!}
+    @endif 
   </div> <!-- .col-md -->
 
 </div> <!-- .row -->
