@@ -13,6 +13,14 @@ jobs:
         registry-url: 'https://registry.npmjs.org'
     - name: Redis Server in GitHub Actions
       uses: supercharge/redis-github-action@1.1.0
+
+    - name: Setup PHP 7.3 with composer
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '7.3'
+        coverage: none
+        tools: composer
+
     - name: Copy .env
       run: php -r "file_exists('.env') || copy('.env.example', '.env');"
     - name: Install PHP Dependencies
