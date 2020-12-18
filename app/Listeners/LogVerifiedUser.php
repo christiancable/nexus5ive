@@ -27,6 +27,6 @@ class LogVerifiedUser
      */
     public function handle(Verified $event)
     {
-        Log::notice("🎉 User verified: {$event->user->username} - {$event->user->email}");
+        Log::alert("🎉 User verified: {$event->user->username} - {$event->user->email}");
     }
 }
