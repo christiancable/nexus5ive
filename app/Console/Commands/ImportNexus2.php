@@ -65,10 +65,10 @@ class ImportNexus2 extends Command
                 $type = Detect::sniff($file);
                 switch ($type) {
                     case 'article':
-                        $map[$type][] = $path;
+                        $map['article'][] = $path->getpathName();
                         break;
                     case 'menu':
-                        $map[$type][] = $path;
+                        $map['menu'][] = $path->getpathName();
                         
                         break;
                     
@@ -76,9 +76,10 @@ class ImportNexus2 extends Command
                         # code...
                         break;
                 }
-                var_dump($map);
+
             }
         }
+        print_r($map);
     }
     
     public function importUser($userdir)
