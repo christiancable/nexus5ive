@@ -1,5 +1,7 @@
 <?php
 
+// @todo why can I not move this elsewhere?
+// namespace App\Nexus2\Console\Commands;
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;

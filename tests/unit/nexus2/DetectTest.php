@@ -24,7 +24,7 @@ class DetectTest extends TestCase
      **/
     public function isMenuDetectsMenus($input, $expectedResult)
     {
-        $this->assertEquals(Detect::isMenu($input), $expectedResult);
+        $this->assertEquals($expectedResult, Detect::isMenu($input));
     }
 
     /**
@@ -34,7 +34,7 @@ class DetectTest extends TestCase
      **/
     public function isArticleDetectsArticles($input, $expectedResult)
     {
-        $this->assertEquals(Detect::isArticle($input), $expectedResult);
+        $this->assertEquals($expectedResult, Detect::isArticle($input));
     }
 
     public function potentialMenusAndExpectedResults()

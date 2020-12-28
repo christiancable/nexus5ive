@@ -29,6 +29,22 @@ H
 */
 class Detect
 {
+
+    public static function sniff(string $file): string
+    {
+        if (self::isArticle($file)) {
+            return 'article';
+        }
+
+        if (self::isMenu($file)) {
+            return 'menu';
+        }
+
+
+        return 'unknown';
+    }
+
+
    /**
     * isArticle
     * is $file a nexus2 conversation file
@@ -71,13 +87,13 @@ class Detect
             'folder' => "/^f\s*\d*\s[a-z]\s\S*\s\*\s\S.*$/im",
             
             // a 100 100 U uses U Alternative @Uses for your machine!!
-            'article' => "/^a\s\d*\s\d*\s[a-z]\s\S*\s\S\s\S.*$/im",
+            'article' => "/^a\s*\d*\s*\d*\s[a-z]\s*\S*\s\S*\s*\S\s*.*$/im",
             
             // h ***** SPLENDUDSVILLE ******
             'heading' => "/^h\s*\S*.*$/im",
 
             // . commands - this does not work???
-            'dot' => '/^\.\S*$/im',
+            'dot' => '/^\.\S.*$/im',
         ];
 
         // .owner dummy vevaphon the_dud nightcrawler seventhson seeker
@@ -92,7 +108,6 @@ class Detect
         }
 
         foreach ($menuItems as $type => $pattern) {
-            var_dump($type);
             if (preg_match($pattern, $file)) {
                 return true;
             }
