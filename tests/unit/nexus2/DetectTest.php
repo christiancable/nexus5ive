@@ -15,6 +15,7 @@ class DetectTest extends TestCase
     {
         $this->validArticle = file_get_contents("tests/Fixtures/Nexus2/Articles/DARK");
         $this->validMenu = file_get_contents("tests/Fixtures/Nexus2/Menus/8BIT.MNU");
+        $this->otherMenu = file_get_contents("untracked/ucl_info/BBS/SECTIONS/DEICIDE/THRASH/SEPULTUR");
     }
 
     /**
@@ -53,6 +54,10 @@ class DetectTest extends TestCase
             'valid menu' => [
                 $input = $this->validMenu,
                 $expectedOutput = true,
+            ],
+            'metal article NOT menu' => [
+                $input = $this->otherMenu,
+                $expectedOutput = false,
             ],
             'text' => [
                 $input = <<< TXT

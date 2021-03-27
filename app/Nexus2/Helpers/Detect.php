@@ -11,18 +11,18 @@ C = comment - ???
 M = message on the screen - just text
 R = run - runs a dos command
 I
-H 
+H
 . = command - a command to the nexus parser
 
-^[#/;].*				{ BEGIN(0);		return IGNOREIT;		}
-[Aa][^ \t]*[ \t]*		{ BEGIN(NORMAL); return ARTICLETYPE;	}
-[Ff][^ \t]*[ \t]*		{ BEGIN(NORMAL); return FOLDERTYPE;		}
-[Cc][^ \t]*[ \t]*		{ BEGIN(NORMAL); return COMMENTTYPE;	}
-[Mm][^ \t]*[ \t]*		{ BEGIN(NORMAL); return MCOMMENTTYPE;	}
-[Rr][^ \t]*[ \t]*		{ BEGIN(NORMAL); return RUNTYPE;		}
-[Ii][^ \t]*[ \t]*		{ BEGIN(NORMAL); return INTERNALTYPE;	}
-[Hh][^ \t]*[ \t]*		{ BEGIN(NORMAL); return HEADERTYPE;		}
-"."						{ BEGIN(COMMAND);}
+^[#/;].*                { BEGIN(0);     return IGNOREIT;        }
+[Aa][^ \t]*[ \t]*       { BEGIN(NORMAL); return ARTICLETYPE;    }
+[Ff][^ \t]*[ \t]*       { BEGIN(NORMAL); return FOLDERTYPE;     }
+[Cc][^ \t]*[ \t]*       { BEGIN(NORMAL); return COMMENTTYPE;    }
+[Mm][^ \t]*[ \t]*       { BEGIN(NORMAL); return MCOMMENTTYPE;   }
+[Rr][^ \t]*[ \t]*       { BEGIN(NORMAL); return RUNTYPE;        }
+[Ii][^ \t]*[ \t]*       { BEGIN(NORMAL); return INTERNALTYPE;   }
+[Hh][^ \t]*[ \t]*       { BEGIN(NORMAL); return HEADERTYPE;     }
+"."                     { BEGIN(COMMAND);}
 
 
 
@@ -52,16 +52,23 @@ class Detect
     */
     public static function isArticle(string $file): bool
     {
-        $header = substr($file, 0, 2);
-        if ("1b01" !== bin2hex($header)) {
-            return false;
-        }
-
         if (strlen($file) === 0) {
             return false;
         }
 
-        return true;
+        // most articles start off with a post
+        $header = substr($file, 0, 2);
+        if ("1b01" == bin2hex($header)) {
+            return true;
+        }
+
+        // some articles have ascii at the top so check the rest of the file
+        // for what looks like a post
+        if (preg_match('/^\x1b\x01/im', $file)) {
+            return true;
+        }
+
+        return false;
     }
 
 
@@ -75,7 +82,7 @@ class Detect
     public static function isMenu(string $file): bool
     {
         
-        // c 0 
+        // c 0
         $comment = "";
 
         // m 0
