@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Mode;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\ServiceProvider;
@@ -29,6 +30,9 @@ class AppServiceProvider extends ServiceProvider
         }
         
         View::share('mode', $mode);
+
+        // use bootstrap for pagination
+        Paginator::useBootstrap();
     }
 
     /**
