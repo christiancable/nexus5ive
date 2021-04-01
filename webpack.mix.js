@@ -11,8 +11,15 @@ const mix = require("laravel-mix");
  |
  */
 
+ mix.webpackConfig({
+    resolve: {
+        fallback: { "timers": require.resolve("timers-browserify") }
+    }
+});
+
+
 mix
-  .js("resources/js/app.js", "public/js")
+  .js("resources/js/app.js", "public/js").vue()
   .sass("resources/sass/app.scss", "public/css")
 
   // keep as an extra file too for when we use themes
