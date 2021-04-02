@@ -103,8 +103,8 @@ class ImportNexus2 extends Command
         }
 
         foreach ($newUsers as $user) {
-            $this->info("Adding comments for $user->username");
-            $this->addCommentsForUser($user);
+            $count = $this->addCommentsForUser($user);
+            $this->comment("Added $count comments for $user->username");
         }
 
         $this->newLine();
@@ -134,7 +134,7 @@ class ImportNexus2 extends Command
             'name'          => $user->name,
             'email'         => $user->username . "@imported",
             //@todo parse info for nx2 formatting
-            'about'         => $user->info,
+            'about'         => "$user->info\n\n-- legacy user added automatically by import --",
             'totalVisits'   => $user->totalVisits,
             'totalPosts'    => $user->totalPosts,
             'latestLogin'   => $user->latestLogin,
@@ -151,6 +151,7 @@ class ImportNexus2 extends Command
         // valid nx5 comments need a user and text - nx2 allowed freetext so we need to be careful
         $pattern = '/{(.*)} : (.*)/m';
         $commentCount = 0;
+
         foreach ($user->comments as $comment) {
             preg_match_all($pattern, $comment, $matches, PREG_SET_ORDER, 0);
             if (count($matches) && 3 == count($matches[0])) {
@@ -163,9 +164,9 @@ class ImportNexus2 extends Command
                         [
                             'username' => $username,
                             'email'    => $username . "@imported",
-                            'name'     => 'added automatically by import',
-                            'popname'  => 'added automatically by import',
-                            'about'    => 'added automatically by import',
+                            'name'     => '-- legacy user added automatically by import --',
+                            'popname'  => '-- legacy user added automatically by import --',
+                            'about'    => '-- legacy user added automatically by import --',
                         ]
                     );
                     $author->save();
@@ -180,7 +181,10 @@ class ImportNexus2 extends Command
                     'text' => $text,
                     'read' => true,
                 ]);
+                $commentCount++;
             }
         }
+       
+        return $commentCount;
     }
 }
