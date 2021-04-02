@@ -1,13 +1,13 @@
 <?php
-
-// namespace App\Nexus2\Console\Commands;
 namespace App\Console\Commands;
 
-use App\Nexus2\Models\User;
+use App\User;
+use App\Comment;
 use App\Nexus2\Helpers\Detect;
 use RecursiveIteratorIterator;
 use Illuminate\Console\Command;
 use RecursiveDirectoryIterator;
+use App\Nexus2\Models\User as Nexus2User;
 
 class ImportNexus2 extends Command
 {
@@ -25,15 +25,15 @@ class ImportNexus2 extends Command
      */
     protected $description = 'Imports nexus2 data';
 
-    // /**
-    //  * Create a new command instance.
-    //  *
-    //  * @return void
-    //  */
-    // public function __construct()
-    // {
-    //     parent::__construct();
-    // }
+    /**
+     * Create a new command instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        parent::__construct();
+    }
 
     /**
      * Execute the console command.
@@ -42,7 +42,10 @@ class ImportNexus2 extends Command
      */
     public function handle()
     {
-        
+
+        /*
+        Users
+        */
         $root = $this->option('rootdir');
         rtrim($root, '/');
         if (null != $root) {
@@ -56,69 +59,128 @@ class ImportNexus2 extends Command
         );
 
         $paths = array($root);
-        $map = [];
+        $users = [];
+        $errors = [];
 
         foreach ($iter as $path) {
             // file file is text
             if (is_file($path)) {
-                $file = file_get_contents($path);
-                $type = Detect::sniff($file);
-                switch ($type) {
-                    case 'article':
-                        $map['article'][] = $path->getpathName();
-                        break;
-                    case 'menu':
-                        $map['menu'][] = $path->getpathName();
-                        
-                        break;
-                    
-                    default:
-                        # code...
-                        break;
-                }
+                if ('NEXUS.UDB' == strtoupper($path->getFileName())) {
+                    $udb = file_get_contents($path->getPathName());
 
+                    try {
+                        $comments = file_get_contents($path->getPath() . DIRECTORY_SEPARATOR . "COMMENTS.TXT");
+                    } catch (\Throwable $th) {
+                        $comments = '';
+                    }
+
+                    try {
+                        $info = file_get_contents($path->getPath() . DIRECTORY_SEPARATOR . "INFO.TXT");
+                    } catch (\Throwable $th) {
+                        $info = '';
+                    }
+
+                    try {
+                        $users[] = new Nexus2User($udb, $info, $comments);
+                    } catch (\Throwable $th) {
+                        $errors[] = $path->getPath();
+                    }
+                }
             }
         }
-        print_r($map);
+
+        $newUsers = [];
+        foreach ($users as $user) {
+            $this->info("$user->username:");
+            if ($newUser = $this->importUser($user)) {
+                $this->comment("added");
+                $newUsers[] = $user;
+            } else {
+                $this->line('already exists, skipping');
+            }
+
+            $this->newLine();
+        }
+
+        foreach ($newUsers as $user) {
+            $this->info("Adding comments for $user->username");
+            $this->addCommentsForUser($user);
+        }
+
+        $this->newLine();
+        $this->comment("Added " . count($newUsers) . " users");
+
+        /*
+        Sections
+        */
+
+        /*
+        Topics and Posts
+        */
     }
-    
-    public function importUser($userdir)
+
+
+    public function importUser($user)
     {
-        // NEXUS.UDB
-        $udbFile = $userdir . '/NEXUS.UDB';
-        if (!file_exists($udbFile)) {
-            $this->alert("UserDataBase not found");
+        $existingUser = User::where('username', $user->username)->first();
+        if ($existingUser) {
             return false;
         }
 
-        $handle = fopen($udbFile, "rb");
-        $udb = stream_get_contents($handle);
-        fclose($handle);
-
-        if (false === $udb) {
-            $this->alert("Could not read UserDataBase at {$udbFile}");
-            return false;
-        }
-
-        $newUser = User::importUserDataBase($udb);
-        if (false === $newUser) {
-            $existingUser =  User::parseUDB($udb);
-            $this->alert("User already exists: {$existingUser['Nick']}");
-            return false;
-        }
-
-        // INFO.TXT
-        $infoFile = $userdir . '/INFO.TXT';
-        if (!file_exists($infoFile)) {
-            $this->line("No InfoText found for {$newUser->username}");
-        } else {
-            $handle = fopen($infoFile, "rb");
-            $infoFile = stream_get_contents($handle);
-            fclose($handle);
-            $newUser->about = User::parseInfo($infoFile);
-        }
+        $newUser = User::factory()->make(
+            [
+            'username'      => $user->username,
+            'popname'       => $user->popname,
+            'name'          => $user->name,
+            'email'         => $user->username . "@imported",
+            //@todo parse info for nx2 formatting
+            'about'         => $user->info,
+            'totalVisits'   => $user->totalVisits,
+            'totalPosts'    => $user->totalPosts,
+            'latestLogin'   => $user->latestLogin,
+            'created_at'    => $user->created_at,
+            ]
+        );
 
         $newUser->save();
-        $this->info("Imported {$newUser->username}");
+        return $newUser;
+    }
+
+    public function addCommentsForUser($user)
+    {
+        // valid nx5 comments need a user and text - nx2 allowed freetext so we need to be careful
+        $pattern = '/{(.*)} : (.*)/m';
+        $commentCount = 0;
+        foreach ($user->comments as $comment) {
+            preg_match_all($pattern, $comment, $matches, PREG_SET_ORDER, 0);
+            if (count($matches) && 3 == count($matches[0])) {
+                $username = $matches[0][1];
+                $text = $matches[0][2];
+
+                $author = User::where('username', $username)->first();
+                if (!$author) {
+                    $author = User::factory()->make(
+                        [
+                            'username' => $username,
+                            'email'    => $username . "@imported",
+                            'name'     => 'added automatically by import',
+                            'popname'  => 'added automatically by import',
+                            'about'    => 'added automatically by import',
+                        ]
+                    );
+                    $author->save();
+                }
+
+                $user = User::where('username', $user->username)->first();
+
+                Comment::create([
+                    'user_id' => $user->id,
+                    'author_id' => $author->id,
+                    // @todo parse text for nx2 formatting
+                    'text' => $text,
+                    'read' => true,
+                ]);
+            }
+        }
     }
 }

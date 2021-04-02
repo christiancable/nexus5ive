@@ -12,14 +12,26 @@ class User extends TestCase
      * @group nx2
      * @dataProvider providerUserDataBasesAndUsers
      **/
-    public function parseUDBparsesUDBstrings($udb, $expected)
+    public function userIsHydratedFromUDB($udb, $expected)
     {
-        $parsedUser = Nexus2User::parseUDB($udb);
-        foreach (array_keys($expected) as $key) {
-            $this->assertEquals($parsedUser[$key], $expected[$key]);
-        }
+        $user = new Nexus2User($udb);
+    
+        $this->assertEquals($user->username, $expected['Nick']);
+        $this->assertEquals($user->name, $expected['RealName']);
+        $this->assertEquals($user->popname, $expected['PopName']);        
+        $this->assertEquals($user->email, $expected['UserId'] . '@nexus2.imported');        
     }
 
+    /**
+     * @test
+     */public function commentsIsAnArrayOfUserNamesAndMessages() 
+    {
+        $handle = fopen("tests/Fixtures/Nexus2/Users/6/COMMENTS.TXT", "rb");
+        $contents = stream_get_contents($handle);
+        fclose($handle);
+
+        $comments = Nexus2User::parseComments($contents);
+    }
 
     public function providerUserDataBasesAndUsers()
     {
@@ -51,4 +63,13 @@ class User extends TestCase
             ],
         ];
     }
+
+    // public function providerCommentsAndExpected()
+    // {
+    //     return [
+    //         'empty comments file' => [
+    //             'ss
+    //         ]
+    //         ];
+    // }
 }

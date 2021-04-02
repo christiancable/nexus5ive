@@ -3,9 +3,23 @@
 namespace App\Nexus2\Models;
 
 use Carbon\Carbon;
-use App\User as NewUser;
 
 /*
+
+example usage
+
+
+$legacyUser = new App\Nexus2\Modules\User($udb, $info, $comments);
+
+issue with udb
+    throw exception
+
+issue with info
+    no info
+
+issue with comments
+    no comments
+
 
 this class is for parsing with user data from nexus2
 
@@ -114,13 +128,33 @@ class User
         'Flags'         =>  '',
     ];
 
+
+    public $username; 
+    public $name; 
+    public $popname; 
+    public $email; 
+    public $created_at; 
+    public $latestLogin;
+    public $totalEdits;
+    public $totalPosts;
+
+    public $comments = [];
+    public $info;
+
+    function __construct(string $udb, string $info = '', string $comments = '') {
+        $this->hydrate($udb);
+        $this->comments = $this->parseComments($comments);
+        $this->info = $this->parseInfo($info);
+    }
+
+
     /**
      * parseUDB
      *
      * @param string $udb NEXUS.UDB as a string
      * @return array parsed user info
      */
-    public static function parseUDB(string $udb): array
+    public function parseUDB(string $udb): array
     {
         $unpacked = unpack(self::$format, $udb);
         $user = $unpacked;
@@ -129,15 +163,10 @@ class User
     }
 
 
-    public static function parseInfo(string $info) : string
+    public function parseInfo(string $info) : string
     {
         // double the new lines to make this markdown friendly
-        $info = str_replace("\r\n", "\r\n\r\n", $info);
-
-        // translate old nexus highlights
-        $info = str_replace("{", "**", $info);
-        $info = str_replace("}", "**", $info);
-        return $info;
+        return str_replace("\r\n", "\r\n\r\n", $info);
     }
 
     /**
@@ -148,29 +177,20 @@ class User
      */
     public static function parseComments(string $comments): array
     {
-        $comments = [];
-        return $comments;
+        return array_reverse(explode(PHP_EOL, $comments));
     }
 
     /**
-     * importUserDataBase
+     * hydrate
      *
      * imports a Nexus2 UDB if user does not already exist
      * returns user model ready for saving
      *
      * @param string $UDB
-     * @return App\User || false
      */
-    public static function importUserDataBase(string $UDB)
+    public function hydrate(string $UDB)
     {
-        $importedUser =  self::parseUDB($UDB);
-
-        // does user already exists?
-        $existingUser = NewUser::where('username', $importedUser['Nick'])->first();
-
-        if ($existingUser) {
-            return false;
-        }
+        $importedUser =  $this->parseUDB($UDB);
 
         // create carbon dates because some legacy dates are not actual dates
         try {
@@ -184,15 +204,13 @@ class User
             $lastOn = null;
         }
 
-        $newUser = factory(NewUser::class)->make([
-            'username'      => $importedUser['Nick'],
-            'name'          => $importedUser['RealName'],
-            'popname'       => $importedUser['PopName'],
-            'email'         => $importedUser['UserId'] . '@nexus2.imported',
-            'created_at'    => $created,
-            'latestLogin'   => $lastOn,
-        ]);
-        
-        return $newUser;
+        $this->username    = $importedUser['Nick'];
+        $this->name        = $importedUser['RealName'];
+        $this->popname     = $importedUser['PopName'];
+        $this->email       = $importedUser['UserId'] . '@nexus2.imported';
+        $this->totalVisits = $importedUser['NoOfTimesOn'];
+        $this->totalPosts  = $importedUser['NoOfEdits'];
+        $this->created_at  = $created;
+        $this->latestLogin = $lastOn;
     }
 }
