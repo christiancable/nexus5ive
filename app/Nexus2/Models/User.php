@@ -135,8 +135,8 @@ class User
     public $email; 
     public $created_at; 
     public $latestLogin;
-    public $totalEdits;
     public $totalPosts;
+    public $totalVisits;
 
     public $comments = [];
     public $info;
@@ -182,9 +182,6 @@ class User
 
     /**
      * hydrate
-     *
-     * imports a Nexus2 UDB if user does not already exist
-     * returns user model ready for saving
      *
      * @param string $UDB
      */

@@ -7,6 +7,7 @@ use App\Nexus2\Helpers\Detect;
 use RecursiveIteratorIterator;
 use Illuminate\Console\Command;
 use RecursiveDirectoryIterator;
+use App\Nexus2\Helpers\Highlighter;
 use App\Nexus2\Models\User as Nexus2User;
 
 class ImportNexus2 extends Command
@@ -33,7 +34,10 @@ class ImportNexus2 extends Command
     public function __construct()
     {
         parent::__construct();
+        $this->highlighter = new Highlighter();
     }
+
+    private $hightlighter;
 
     /**
      * Execute the console command.
@@ -130,11 +134,10 @@ class ImportNexus2 extends Command
         $newUser = User::factory()->make(
             [
             'username'      => $user->username,
-            'popname'       => $user->popname,
+            'popname'       => $this->highlighter->highlight($user->popname),
             'name'          => $user->name,
             'email'         => $user->username . "@imported",
-            //@todo parse info for nx2 formatting
-            'about'         => "$user->info\n\n-- legacy user added automatically by import --",
+            'about'         => $this->highlighter->highlight("$user->info\n\n-- __legacy user added automatically by import__ --"),
             'totalVisits'   => $user->totalVisits,
             'totalPosts'    => $user->totalPosts,
             'latestLogin'   => $user->latestLogin,
@@ -164,9 +167,9 @@ class ImportNexus2 extends Command
                         [
                             'username' => $username,
                             'email'    => $username . "@imported",
-                            'name'     => '-- legacy user added automatically by import --',
-                            'popname'  => '-- legacy user added automatically by import --',
-                            'about'    => '-- legacy user added automatically by import --',
+                            'name'     => '-- __legacy user added automatically by import__ --',
+                            'popname'  => '-- __legacy user added automatically by import__ --',
+                            'about'    => '-- __legacy user added automatically by import__ --',
                         ]
                     );
                     $author->save();
@@ -177,8 +180,7 @@ class ImportNexus2 extends Command
                 Comment::create([
                     'user_id' => $user->id,
                     'author_id' => $author->id,
-                    // @todo parse text for nx2 formatting
-                    'text' => $text,
+                    'text' =>  $this->highlighter->highlight($text),
                     'read' => true,
                 ]);
                 $commentCount++;
