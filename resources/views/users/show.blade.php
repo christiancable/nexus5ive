@@ -8,19 +8,21 @@
 <title>{{$user->username}}</title>
 @endsection
 
+
 @section('content')
     <div class="container">
 
         @if (Auth::user()->id == $user->id)
             @include('shared._heading', [
-                $heading = $user->username
+                $heading = $user->username,
             ])
             @include('users._edit', $user)
         @else
             @include('shared._heading', [
                 $heading = $user->username,
                 $lead = $user->name,
-                $introduction = $user->popname
+                $introduction = $user->popname,
+                $tag = 'Inactive',
             ])
             @include('users._read', $user)
         @endif

@@ -137,11 +137,12 @@ class ImportNexus2 extends Command
             'popname'       => $this->highlighter->highlight($user->popname),
             'name'          => $user->name,
             'email'         => $user->username . "@imported",
-            'about'         => $this->highlighter->highlight("$user->info\n\n-- __legacy user added automatically by import__ --"),
+            'about'         => $this->highlighter->highlight($user->info),
             'totalVisits'   => $user->totalVisits,
             'totalPosts'    => $user->totalPosts,
             'latestLogin'   => $user->latestLogin,
             'created_at'    => $user->created_at,
+            'legacy'        => true,
             ]
         );
 
@@ -167,9 +168,9 @@ class ImportNexus2 extends Command
                         [
                             'username' => $username,
                             'email'    => $username . "@imported",
-                            'name'     => '-- __legacy user added automatically by import__ --',
-                            'popname'  => '-- __legacy user added automatically by import__ --',
-                            'about'    => '-- __legacy user added automatically by import__ --',
+                            'name'     => '',
+                            'popname'  => '',
+                            'about'    => '',
                         ]
                     );
                     $author->save();
