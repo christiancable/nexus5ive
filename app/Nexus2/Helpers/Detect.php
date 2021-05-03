@@ -89,18 +89,19 @@ class Detect
         $message = "";
 
         // a lazy list of patterns for menu lines
+        // menus must link to an article or another menu otherwise they are just not a menu
         $menuItems = [
             // f 0 Y amstrad\amst.mnu * Amstrad section, especially for Amstrads!
             'folder' => "/^f\s*\d*\s[a-z]\s\S*\s\*\s\S.*$/im",
             
             // a 100 100 U uses U Alternative @Uses for your machine!!
-            'article' => "/^a\s*\d*\s*\d*\s[a-z]\s*\S*\s\S*\s*\S\s*.*$/im",
-            
+            'artice' => '/^a\s(?<read>\d*)\s(?<write>\d*)\s\w\s(?<file>\w*)\s(.)\s(?<name>.*)$/ismU',
+
             // h ***** SPLENDUDSVILLE ******
-            'heading' => "/^h\s*\S*.*$/im",
+            // 'heading' => "/^h\s*\S*.*$/im",
 
             // . commands - this does not work???
-            'dot' => '/^\.\S.*$/im',
+            // 'dot' => '/^\.\S.*$/im',
         ];
 
         // .owner dummy vevaphon the_dud nightcrawler seventhson seeker

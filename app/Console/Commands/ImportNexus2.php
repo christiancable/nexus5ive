@@ -9,6 +9,7 @@ use Illuminate\Console\Command;
 use RecursiveDirectoryIterator;
 use App\Nexus2\Helpers\Highlighter;
 use App\Nexus2\Models\User as Nexus2User;
+use App\Nexus2\Models\Menu as Nexus2Menu;
 
 class ImportNexus2 extends Command
 {
@@ -17,7 +18,7 @@ class ImportNexus2 extends Command
      *
      * @var string
      */
-    protected $signature = 'nexus2:import {--rootdir=}';
+    protected $signature = 'nexus2:import {--userdir=} {--bbsdir=}';
 
     /**
      * The console command description.
@@ -50,10 +51,101 @@ class ImportNexus2 extends Command
         /*
         Users
         */
-        $root = $this->option('rootdir');
+        $root = $this->option('userdir');
+        if ($root) {
+            $this->importUsers($root);
+        }
+        
+        $root = $this->option('bbsdir');
+        if ($root) {
+            $this->importBBS($root);
+        }
+        
+
+        /*
+        Sections
+        */
+        
+        
+        /*
+        Topics and Posts
+        */
+    }
+    
+    public function importBBS($root)
+    {
         rtrim($root, '/');
         if (null != $root) {
-            echo "path is $root\n";
+            $this->comment("Importing Sections and Files from $root");
+        }
+
+        $iter = new RecursiveIteratorIterator(
+            new RecursiveDirectoryIterator($root, RecursiveDirectoryIterator::SKIP_DOTS),
+            RecursiveIteratorIterator::SELF_FIRST,
+            RecursiveIteratorIterator::CATCH_GET_CHILD // Ignore "Permission denied"
+        );
+    
+        $paths = array($root);
+
+        $articles = [];
+        $menus = [];
+        foreach ($iter as $path) {
+            // file file is text
+            if (is_file($path)) {
+                $fileContent = file_get_contents($path->getPathName());
+                $type = Detect::sniff($fileContent);
+
+                switch ($type) {
+                    case 'menu':
+                        // menu detection is matching zip files and all sorts
+                        // $this->comment($path->getPathName() . " $type");
+                        $menus[] = new Nexus2Menu($fileContent, $path->getPathName());
+                        break;
+                    
+                    case 'article':
+                        // $this->comment($path->getPathName() . " $type");
+                        // $articles[] = $fileContent;
+                        break;
+                    default:
+                        # code...
+                        break;
+                }
+              
+                // if (Detect::isMenu($fileContent)) {
+                // }
+                // $this->comment($path->getFileName());
+
+            
+            }
+        }
+        
+        $newUsers = [];
+        foreach ($menus as $menu) {
+            $this->info($menu->path);
+            foreach ($menu->menus as $submenu) {
+                $this->info(" [*] " . $submenu['name'] . " - " . $submenu['file']);
+            }
+            foreach ($menu->articles as $article) {
+                $this->info(" - " . $article['name'] . " - " . $article['file']);
+            }
+            // $this->info("$user->username:");
+            // if ($newUser = $this->importUser($user)) {
+            //     $this->comment("added");
+            //     $newUsers[] = $user;
+            // } else {
+            //     $this->line('already exists, skipping');
+            // }
+
+            $this->newLine();
+        }
+        
+    }
+
+    public function importUsers($root)
+    {
+        rtrim($root, '/');
+        if (null != $root) {
+            $this->comment("Importing Users from $root");
         }
 
         $iter = new RecursiveIteratorIterator(
@@ -114,16 +206,7 @@ class ImportNexus2 extends Command
         $this->newLine();
         $this->comment("Added " . count($newUsers) . " users");
 
-        /*
-        Sections
-        */
-
-        /*
-        Topics and Posts
-        */
     }
-
-
     public function importUser($user)
     {
         $existingUser = User::where('username', $user->username)->first();
