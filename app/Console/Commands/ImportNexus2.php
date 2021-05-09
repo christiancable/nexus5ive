@@ -71,7 +71,15 @@ class ImportNexus2 extends Command
         Topics and Posts
         */
     }
-    
+    public function filePathKey($filename, $root)
+    {
+        // if filename starts with a slash then return filename
+        // else return $root + $filename
+
+
+    }
+
+
     public function importBBS($root)
     {
         rtrim($root, '/');
@@ -99,7 +107,8 @@ class ImportNexus2 extends Command
                     case 'menu':
                         // menu detection is matching zip files and all sorts
                         // $this->comment($path->getPathName() . " $type");
-                        $menus[] = new Nexus2Menu($fileContent, $path->getPathName());
+                        $key = strtolower($path->getPathName());
+                        $menus[$key] = new Nexus2Menu($fileContent, $path->getPathName(), $path->getPath(), $root);
                         break;
                     
                     case 'article':
@@ -120,10 +129,16 @@ class ImportNexus2 extends Command
         }
         
         $newUsers = [];
-        foreach ($menus as $menu) {
+        foreach ($menus as $key => $menu) {
             $this->info($menu->path);
+            $this->info($menu->root);
             foreach ($menu->menus as $submenu) {
                 $this->info(" [*] " . $submenu['name'] . " - " . $submenu['file']);
+                if (isset($menus[$submenu['file']])) {
+                    $this->info('Exists');
+                } else {
+                    $this->error('Does not exist');
+                }
             }
             foreach ($menu->articles as $article) {
                 $this->info(" - " . $article['name'] . " - " . $article['file']);

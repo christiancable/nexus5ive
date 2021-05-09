@@ -16,10 +16,30 @@ class Menu
     public $articles = [];
     public $comments = [];
     public $path = '';
+    public $root = '';
     
-    function __construct(string $file, string $path) {
+    function __construct(string $file, string $path, string $root, string $importRoot) {
+        $this->path = strtolower($path);
+        $this->root = strtolower($root);
+        $this->importRoot = $importRoot;
         $this->hydrate($file);
-        $this->path = $path;
+    }
+
+    // public function getRoot(string $path): string
+    // {
+    //     $parts = explode(DIRECTORY_SEPARATOR, $this->normalisePath($path));
+    //     return end($parts);
+    // }
+
+    public function normalisePath(string $path) :string
+    {
+        $tmp =  str_replace("\\", DIRECTORY_SEPARATOR, $path);
+
+        if (DIRECTORY_SEPARATOR ===  $tmp[0]) {
+            return strtolower($this->importRoot . DIRECTORY_SEPARATOR . $tmp);
+        } else {
+            return strtolower($this->root . DIRECTORY_SEPARATOR . $tmp);
+        }
     }
 
     public function parseMenu($file)
@@ -36,7 +56,8 @@ class Menu
 
     /**
      * @see https://regex101.com/r/MpXoKW/1
-     */public function parseArticleLines($file): array
+     */
+    public function parseArticleLines($file): array
     {
         $re = '/^a\s+(?<read>\d+)\s+(?<write>\d+)\s+\w\s(?<file>\w+)\s+(\S)\s+(?<name>.+)$/ismU';
         preg_match_all($re, $file, $matches, PREG_SET_ORDER, 0);
@@ -45,7 +66,7 @@ class Menu
             $articleLines[] = [
                 'read' => $articleLine['read'],
                 'write' => $articleLine['write'],
-                'file' => $articleLine['file'],
+                'file' => $this->normalisePath($articleLine['file']),
                 'name'=> trim($articleLine['name']),
             ];
         }
@@ -63,7 +84,7 @@ class Menu
         foreach ($matches as $menuLine) {
             $menuLines[] = [
                 'read' => $menuLine['read'],
-                'file' => $menuLine['file'],
+                'file' => $this->normalisePath($menuLine['file']),
                 'name'=> trim($menuLine['name']),
             ];
         }
