@@ -1,0 +1,52 @@
+h ***** SPLENDUDSVILLE ******
+.owner dummy vevaphon the_dud nightcrawler seventhson seeker
+# this ownerline is too big and Mark dont need to be on it !
+.if user dummy emrys valis 
+.noscan
+.endif
+.title \sections\guitar\8bit\menu.mnu
+m 0 Moderated by {Vevaphon} *{;}], {The_Dud} & {Nightcrawler}
+m 0 (with a little tinsy winsy help from Dark_Angel)
+m 0 The section that isn't afraid to say {NO}
+m 0 Currently being run by {SEVENTH SON}
+.if user @ban 
+m 0
+m 0 But for you there is nothing
+.noscan
+.quit
+.endif
+.scan
+m 0
+a 0 100 L thought R Heres a thought for you
+#a 0 100 U ideas * Golden Requests
+c 0 
+f 0 V spec\spec.mnu * THE Spectrum section
+f 0 Y amstrad\amst.mnu * Amstrad section, especially for Amstrads!
+f 0 E cbm\cbm.mnu * Commodore 64, with a hint of Vic 20
+f 0 R oth\other.mnu * "Wierd and wonderful" section
+f 0 H bbc\6502.mnu * BBC Micro section (with electrons)
+f 0 A cons\cons.mnu * 8 Bit Consoles section, and lesser consoles...
+f 0 T atari\atari.mnu * ATARI-ST SECTION
+m 0  
+#f 0 S \sections\guitar\16bit\16bit.mnu * The 16 BiT mEnU
+m 0 
+m 0
+m 0 {Page Down to delve deeper!}
+.pagebreak
+m 0 {Page Up To go from the stupid to the bizarre!}
+m 0 
+a 100 100 B Hardware * Hardware for 8Bits *
+a 100 100 D how * Did your machine change your LIFE?
+a 100 100 O bugs * Interesting Bugs in your machine
+a 100 100 U uses U Alternative @Uses for your machine!!
+a 100 100 P packet * Packet radio and 8 Bit computers
+a 100 100 F Sale * Sell/Buy 8 Bit Computers Here *
+a 100 100 C Compare * How 8 Bit machines have changed *
+a 100 100 Q Prices * The cost of 8 Bits then and now! *
+
+.if user sysop dark_angel vevaphon nightcrawler
+.noscan
+.a 180 180  diary *u Quite possibly the best file on nexus.....
+.scan
+.endif
+

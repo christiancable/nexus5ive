@@ -5,6 +5,10 @@
     @endif 
 </h1>
 
+@if(!empty($tag))
+<span class="badge badge-info">{{$tag}}</span>
+@endif 
+
 @if(!empty($lead))
     <span class="lead">
         {!! App\Helpers\NxCodeHelper::nxDecode($lead) !!}
