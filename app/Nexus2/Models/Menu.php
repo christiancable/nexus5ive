@@ -3,22 +3,20 @@
 namespace App\Nexus2\Models;
 
 
-
-
-
-class Menu
-{
+class Menu {
     private $file;
 
     public $owner = '';
     public $header = '';
+    public $title = '';
     public $menus = [];
     public $articles = [];
     public $comments = [];
     public $path = '';
     public $root = '';
     
-    function __construct(string $file, string $path, string $root, string $importRoot) {
+    function __construct(string $file, string $path, string $root, string $importRoot, string $title = '') {
+        $this->title = $title;
         $this->path = strtolower($path);
         $this->root = strtolower($root);
         $this->importRoot = $importRoot;

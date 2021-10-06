@@ -3,6 +3,7 @@ namespace App\Console\Commands;
 
 use App\User;
 use App\Comment;
+use App\Section;
 use App\Nexus2\Helpers\Detect;
 use RecursiveIteratorIterator;
 use Illuminate\Console\Command;
@@ -133,16 +134,16 @@ class ImportNexus2 extends Command
             $this->info($menu->path);
             $this->info($menu->root);
             foreach ($menu->menus as $submenu) {
-                $this->info(" [*] " . $submenu['name'] . " - " . $submenu['file']);
+                
                 if (isset($menus[$submenu['file']])) {
-                    $this->info('Exists');
+                    $this->importMenu($menus[$submenu['file']], $submenu['name']);
                 } else {
                     $this->error('Does not exist');
                 }
             }
-            foreach ($menu->articles as $article) {
-                $this->info(" - " . $article['name'] . " - " . $article['file']);
-            }
+            // foreach ($menu->articles as $article) {
+            //     $this->info(" - " . $article['name'] . " - " . $article['file']);
+            // }
             // $this->info("$user->username:");
             // if ($newUser = $this->importUser($user)) {
             //     $this->comment("added");
@@ -155,7 +156,49 @@ class ImportNexus2 extends Command
         }
         
     }
+    
+    /**
+     * importMenu
+     *
+     * @param  mixed $menu
+     * @param  mixed $title
+     * @return void
+     * 
+     * @todo
+     *  create section
+     *  create topics
+     *  find parent for section
+     */
+    public function importMenu($menu, $title = '')
+    {
+        $menu->title = $title;
+        // xdebug_break();
+        
+        $this->info(" [*] " . $menu->title . " - " . $menu->path);
+        xdebug_break();
+        $section = new Section([
+            'title' => $menu->title
+        ]);
 
+        $section->moderator()->associate(User::first());
+        $section->parent()->associate(Section::first());
+        
+        $section->save();
+
+        return;
+        // foreach ($menu->articles as $article) {
+        //     $this->info(" [-] " . $article['name']);
+        // }
+
+        // foreach ($menu->menus as $submenu) {
+        //     xdebug_break();
+        //     // $this->info(" [-] " . $article['name']);
+        // }
+
+        // $sect
+
+        // return true;
+    }
     public function importUsers($root)
     {
         rtrim($root, '/');
