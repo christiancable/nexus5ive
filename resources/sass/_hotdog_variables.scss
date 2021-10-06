@@ -8,13 +8,13 @@ $white:  #ffffff;
 
 $theme-colors: (
   "primary":    $black,
-  "secondary":  black,
-  "success":    black,
-  "info":       black,
-  "warning":    black,
-  "danger":     black,
-  "light":      black,
-  "dark":       black
+  "secondary":  $yellow,
+  "success":   $red,
+  "info":       $gray,
+  "warning":    $yellow,
+  "danger":    $white,
+  "light":      $gray,
+  "dark":      $red
 );
 
 // body
@@ -33,45 +33,22 @@ $card-cap-bg: $gray;
 
 // buttons
 
+// navbar
+$navbar-dark-brand-color: $white;
+$navbar-dark-brand-hover-color: $white;
+$navbar-dark-color: $white;
+$navbar-dark-hover-color: $white;
 
+// breadcrumbs
+
+$breadcrumb-bg: $yellow;
+$breadcrumb-divider-color: $black;
+$breadcrumb-active-color: $gray;
 
 // Typography
 $headings-font-family: 'VT323', monospace;
-$font-family-sans-serif: "Nunito", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-$font-size-base: 0.9rem;
+// $headings-font-weight: 900;
+$font-family-sans-serif: Roboto,  Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+$font-size-base: 1rem;
 $line-height-base: 1.6;
 $text-muted: $black;
-
-
-/*
-gray
-black
-white
-red
-yellow
-
-title bar 
-    - active white on black
-    - inactive whte on red
-
-menu
-    - background white
-    - text black
-    - highlighed white on black
-
-
-*/
-
-// Colors
-$teal: #4dc0b5;
-$orange: #f6993f;
-$indigo: #6574cd;
-$purple: #9561e2;
-$pink: #f66D9b;
-
-// muted colours from BS3
-$blue:  #3097D1;
-// $red: #bf5329;
-// $yellow: #cbb956;
-$green: #2ab27b;
-$cyan: #8eb4cb;
