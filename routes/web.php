@@ -1,4 +1,5 @@
 <?php
+
 use Illuminate\Http\Request;
 
 /*
@@ -20,7 +21,7 @@ if (config('nexus.allow_registrations') === true) {
         ['verify' => true],
         ['register' => false]
     );
-    
+
     // so redirect the register route
     Route::redirect('register', 'login');
 }
@@ -101,6 +102,9 @@ Route::post('archive/section/{section}', 'Nexus\RestoreController@section')
     ->name('archive.section');
 Route::post('archive/topic/{topic}', 'Nexus\RestoreController@topic')
     ->name('archive.topic');
+
+// admin
+Route::resource('admin', 'Nexus\ModeController');
 
 // utilities
 Route::get('updateSubscriptions', 'Nexus\TopicController@markAllSubscribedTopicsAsRead');
