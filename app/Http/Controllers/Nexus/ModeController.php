@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Nexus;
 
 use App\Mode;
@@ -40,12 +41,13 @@ class ModeController extends Controller
             "Settings",
         );
         $breadcrumbs = BreadcrumbHelper::breadcumbForUtility('Settings');
-        
+
         $modes = Mode::all();
         $currentMode = $modes->where('active', 1)->first() ?? $modes->first();
-    
+
         return view(
-            'modes.index', compact(
+            'modes.index',
+            compact(
                 'currentMode',
                 'modes',
                 'breadcrumbs',
@@ -117,7 +119,8 @@ class ModeController extends Controller
     public function activate(Request $request)
     {
         $validator = Validator::make(
-            $request->all(), [
+            $request->all(),
+            [
             'mode' => 'required',
             'mode' => 'exists:App\Mode,id',
             ]
@@ -137,11 +140,11 @@ class ModeController extends Controller
 
         // forget any existing cache @see App\Providers\AppServiceProvider
         Cache::forget('bbs_mode');
-        
+
         // set that chosen mode as the new default
         $mode->active = true;
         $mode->save();
-        
+
 
         $message = <<< Markdown
         Setting Mode to **{$mode->name}**
