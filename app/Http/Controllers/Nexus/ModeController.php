@@ -1,11 +1,15 @@
 <?php
-
 namespace App\Http\Controllers\Nexus;
 
 use App\Mode;
 use Illuminate\Http\Request;
+use App\Helpers\FlashHelper;
+use App\Helpers\ActivityHelper;
+use App\Helpers\BreadcrumbHelper;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Validator;
 
 class ModeController extends Controller
 {
@@ -13,6 +17,7 @@ class ModeController extends Controller
     /**
      * __construct
      * allowed users are auth, verified, sysops
+     *
      * @return void
      */
     public function __construct()
@@ -30,7 +35,22 @@ class ModeController extends Controller
      */
     public function index(Request $request)
     {
-        return(Mode::all());
+        ActivityHelper::updateActivity(
+            $request->user()->id,
+            "Settings",
+        );
+        $breadcrumbs = BreadcrumbHelper::breadcumbForUtility('Settings');
+        
+        $modes = Mode::all();
+        $currentMode = $modes->where('active', 1)->first() ?? $modes->first();
+    
+        return view(
+            'modes.index', compact(
+                'currentMode',
+                'modes',
+                'breadcrumbs',
+            )
+        );
     }
 
     /**
@@ -46,7 +66,7 @@ class ModeController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -57,7 +77,7 @@ class ModeController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Mode  $mode
+     * @param  \App\Mode $mode
      * @return \Illuminate\Http\Response
      */
     public function show(Mode $mode)
@@ -68,7 +88,7 @@ class ModeController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Mode  $mode
+     * @param  \App\Mode $mode
      * @return \Illuminate\Http\Response
      */
     public function edit(Mode $mode)
@@ -79,8 +99,8 @@ class ModeController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Mode  $mode
+     * @param  \Illuminate\Http\Request $request
+     * @param  \App\Mode                $mode
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Mode $mode)
@@ -89,9 +109,51 @@ class ModeController extends Controller
     }
 
     /**
+     * Set the specified mode as the default.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function activate(Request $request)
+    {
+        $validator = Validator::make(
+            $request->all(), [
+            'mode' => 'required',
+            'mode' => 'exists:App\Mode,id',
+            ]
+        );
+
+        if ($validator->fails()) {
+            FlashHelper::showAlert('Unable to update mode', 'warning');
+            return back();
+        }
+
+          // Retrieve the validated input...
+          $validated = $validator->validated();
+          $mode = Mode::findOrFail($validated['mode']);
+
+        // unset any modes set to default
+        Mode::where('active', true)->update(['active' => false]);
+
+        // forget any existing cache @see App\Providers\AppServiceProvider
+        Cache::forget('bbs_mode');
+        
+        // set that chosen mode as the new default
+        $mode->active = true;
+        $mode->save();
+        
+
+        $message = <<< Markdown
+        Setting Mode to **{$mode->name}**
+        Markdown;
+        FlashHelper::showAlert($message, 'success');
+        return back();
+    }
+
+    /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Mode  $mode
+     * @param  \App\Mode $mode
      * @return \Illuminate\Http\Response
      */
     public function destroy(Mode $mode)

@@ -26,19 +26,15 @@ class ModePolicy
             return false;
     }
 
-        /**
-         * Determine whether the user can view any models.
-         *
-         * @param  \App\User  $user
-         * @return mixed
-         */
+    /**
+     * Determine whether the user can view any models.
+     *
+     * @param  \App\User  $user
+     * @return mixed
+     */
     public function viewAny(User $user)
     {
-        // die('here');
-        // Log::info('user' . $user->id);
-
-
-        // return true;
+        //
     }
 
     /**
