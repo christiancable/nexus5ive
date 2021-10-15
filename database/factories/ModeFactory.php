@@ -22,7 +22,11 @@ class ModeFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'name' => $this->faker->word,
+            'welcome' => $this->faker->paragraph,
+            // theme_id
+            'active' => false,
+            'override' => false,
         ];
     }
 }
