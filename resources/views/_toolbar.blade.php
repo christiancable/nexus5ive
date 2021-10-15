@@ -117,13 +117,22 @@ $notificationCount = $profileNotificationCount + $mentionCount;
                   @endif
                 </a>
 
-                @if ($sectionsCount)
+                @if ($authUser->administrator)
+                  <div role="separator" class="dropdown-divider"></div>              
+                  <div class="dropdown-header dropdown-item">Administrator Goodies</div>
+                  <a class="dropdown-item" href="{{ action('Nexus\ModeController@index')}}">
+                    <span class="oi oi-wrench" aria-hidden="true"></span> BBS Settings
+                  </a>
+                @endif
+
+                 @if ($sectionsCount)
                   <div role="separator" class="dropdown-divider"></div>              
                   <div class="dropdown-header dropdown-item">Moderator Goodies</div>
                   <a class="dropdown-item" href="{{ action('Nexus\RestoreController@index')}}">
                     <span class="oi oi-box" aria-hidden="true"></span> Your Archive
                   </a>
                 @endif
+
 
                 <div role="separator" class="dropdown-divider"></div>
                 <form class="form-inline" action="{{url('/logout')}}" method="POST">

@@ -7,8 +7,10 @@ use App\User;
 use App\Topic;
 use App\Comment;
 use App\Section;
+use App\Mode;
 use App\Policies\UserPolicy;
 use App\Policies\PostPolicy;
+use App\Policies\ModePolicy;
 use App\Policies\TopicPolicy;
 use App\Policies\CommentPolicy;
 use App\Policies\SectionPolicy;
@@ -29,6 +31,7 @@ class AuthServiceProvider extends ServiceProvider
         Topic::class    => TopicPolicy::class,
         Section::class  => SectionPolicy::class,
         Comment::class  => CommentPolicy::class,
+        Mode::class     => ModePolicy::class,
     ];
 
     /**
