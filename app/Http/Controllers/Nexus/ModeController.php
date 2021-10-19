@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Nexus;
 
 use App\Mode;
+use App\Theme;
 use Illuminate\Http\Request;
 use App\Helpers\FlashHelper;
 use App\Helpers\ActivityHelper;
@@ -45,12 +46,15 @@ class ModeController extends Controller
         $modes = Mode::all();
         $currentMode = $modes->where('active', 1)->first() ?? $modes->first();
 
+        $themes = Theme::all();
+
         return view(
             'modes.index',
             compact(
                 'currentMode',
                 'modes',
                 'breadcrumbs',
+                'themes'
             )
         );
     }
@@ -118,6 +122,15 @@ class ModeController extends Controller
      */
     public function activate(Request $request)
     {
+        xdebug_break();
+
+        /*
+            mode: 1
+            welcome: "some text"
+            theme_id: 3
+            theme_override: true
+
+        */
         $validator = Validator::make(
             $request->all(),
             [
