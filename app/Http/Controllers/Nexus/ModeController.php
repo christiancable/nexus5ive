@@ -110,28 +110,28 @@ class ModeController extends Controller
     }
 
     /**
-     * Set the specified mode as the default.
+     * Handle form submission and pass input onto activate or update
      *
      * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function activate(Request $request)
+    public function handle(Request $request)
     {
-        xdebug_break();
-
-        /*
-            mode: 1
-            welcome: "some text"
-            theme_id: 3
-            theme_override: true
-
-        */
         $validator = Validator::make(
             $request->all(),
             [
-            'mode' => 'required',
-            'mode' => 'exists:App\Mode,id',
-            ]
+            'mode' => [
+                'required',
+                'exists:App\Mode,id',
+            ],
+            'welcome' => 'required',
+            'theme_id' => 'exists:App\Theme,id',
+            'action'    => [
+                'required',
+                'in:update,activate'
+            ],
+            'theme_override' => 'sometimes',
+            ],
         );
 
         if ($validator->fails()) {
@@ -139,26 +139,83 @@ class ModeController extends Controller
             return back();
         }
 
-          // Retrieve the validated input...
-          $validated = $validator->validated();
-          $mode = Mode::findOrFail($validated['mode']);
-
-        // unset any modes set to default
-        Mode::where('active', true)->update(['active' => false]);
+        $validatedData = $validator->validated();
+        $mode = Mode::findOrFail($validatedData['mode']);
 
         // forget any existing cache @see App\Providers\AppServiceProvider
         Cache::forget('bbs_mode');
 
+        switch ($validatedData['action']) {
+            case 'update':
+                $message = $this->updateMode($mode, $validatedData);
+                break;
+
+            case 'activate':
+                $message = $this->activate($mode);
+                break;
+
+            default:
+                $message = [
+                'body'  =>  'nothing happened',
+                'status' => 'warning'
+                ];
+                break;
+        }
+
+        FlashHelper::showAlert($message['body'], $message['status']);
+        return back();
+    }
+
+    /**
+     * activate
+     *
+     * sets the Mode as the default
+     *
+     * @param  Mode $mode
+     * @return array
+     */
+    private function activate(Mode $mode): array
+    {
+        // unset any modes set to default
+        Mode::where('active', true)->update(['active' => false]);
         // set that chosen mode as the new default
         $mode->active = true;
         $mode->save();
 
+        $message = <<< Markdown
+            Setting Mode to **{$mode->name}**
+        Markdown;
+
+        return [
+            'body' => trim($message),
+            'status'  => 'success'
+        ];
+    }
+
+    /**
+     * updateMode
+     *
+     * saves changes to the Mode
+     *
+     * @param  Mode  $mode
+     * @param  array $updates
+     * @return array
+     */
+    private function updateMode(Mode $mode, array $updates): array
+    {
+        $mode->welcome = $updates['welcome'];
+        $mode->theme_id = $updates['theme_id'];
+        $mode->override = $updates['theme_override'] ? 1 : 0;
+        $mode->save();
 
         $message = <<< Markdown
-        Setting Mode to **{$mode->name}**
+            Updated **{$mode->name}**
         Markdown;
-        FlashHelper::showAlert($message, 'success');
-        return back();
+
+        return [
+            'body' => trim($message),
+            'status'  => 'success'
+        ];
     }
 
     /**

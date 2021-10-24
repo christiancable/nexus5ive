@@ -34,6 +34,7 @@
         name="theme_override"
         id="theme_override"
         type="checkbox"
+        value="true"
         v-model="modes[selected_mode_id]['override']"
       />
     </div>
