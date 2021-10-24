@@ -17,24 +17,30 @@
 
     <div class="container">
         <div class="content">
-            <p>Nothing much to see here yet...</p>
+            Current BBS Mode is
+            <strong>{{ $currentMode->name }}</strong>.{{ $currentMode->override ? ' This overrides any user selected theme' : '' }}
+            <hr />
         </div>
     </div>
+
     <div class="container">
         <div class="content">
-            <form action="{{ route('mode.activate') }}" method="POST">
+            <form action="{{ route('mode.handle') }}" method="POST">
                 @csrf
-                <div class="form-group">
-                    <label for="exampleFormControlSelect1">BBS Mode is
-                        <strong>{{ $currentMode->name }}</strong>.{{ $currentMode->override ? ' This overrides any user selected theme' : '' }}</label>
-                    <select name="mode" class="custom-select" id="mode">
-                        @foreach ($modes as $mode)
-                            <option value="{{ $mode->id }}" {{ $mode->active ? 'selected' : '' }}>
-                                {{ $mode->name }}</option>
-                        @endforeach
-                    </select>
+
+                <div id="app" v-cloak>
+                    <mode-edit :modes="{{ json_encode($modes) }}" :current_mode_id="{{ $currentMode->id }}"
+                        :themes="{{ json_encode($themes) }}">
+                    </mode-edit>
                 </div>
-                <button class="btn btn-primary btn-lg btn-block" type="submit">Set Mode</button>
+
+
+                <div class="form-group">
+                    <button id="update" class="btn btn-success" value="update" name="action" type="submit">Update
+                        mode</button>
+                    <button id="activate " class="btn btn-primary" value="activate" name="action" type="submit">Set BBS
+                        mode</button>
+                </div>
             </form>
         </div>
     </div>
