@@ -105,8 +105,8 @@ Route::post('archive/topic/{topic}', 'Nexus\RestoreController@topic')
     
 // admin
 Route::resource('admin', 'Nexus\ModeController');
-Route::post('admin', 'Nexus\ModeController@activate')
-        ->name('mode.activate');
+Route::post('admin', 'Nexus\ModeController@handle')
+        ->name('mode.handle');
 
 // utilities
 Route::get('updateSubscriptions', 'Nexus\TopicController@markAllSubscribedTopicsAsRead');
