@@ -43,19 +43,14 @@ class ModeController extends Controller
         );
         $breadcrumbs = BreadcrumbHelper::breadcumbForUtility('Settings');
 
-        $modes = Mode::all();
-        $currentMode = $modes->where('active', 1)->first() ?? $modes->first();
-
-        $themes = Theme::all();
-
         return view(
             'modes.index',
-            compact(
-                'currentMode',
-                'modes',
-                'breadcrumbs',
-                'themes'
-            )
+            [
+                'currentMode' => Mode::where('active', 1)->first() ?? Mode::first(),
+                'modes' => Mode::all()->keyBy('id'),
+                'themes' => Theme::all()->keyBy('id'),
+                'breadcrumbs' => $breadcrumbs
+            ],
         );
     }
 

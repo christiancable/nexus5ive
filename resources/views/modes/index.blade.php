@@ -17,7 +17,7 @@
 
     <div class="container">
         <div class="content">
-            BBS Mode is
+            Current BBS Mode is
             <strong>{{ $currentMode->name }}</strong>.{{ $currentMode->override ? ' This overrides any user selected theme' : '' }}
             <hr />
         </div>
@@ -29,7 +29,7 @@
                 @csrf
 
                 <div id="app" v-cloak>
-                    <mode-edit :modes="{{ json_encode($modes) }}" :currentMode="{{ json_encode($currentMode) }}"
+                    <mode-edit :modes="{{ json_encode($modes) }}" :current_mode_id="{{$currentMode->id}}"
                         :themes="{{ json_encode($themes) }}">
                     </mode-edit>
                 </div>
