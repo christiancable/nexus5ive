@@ -77,8 +77,8 @@ class ThemesTest extends DuskTestCase
                 ->visit('/users/' . $user->username)
                 ->select('theme_id', $alternativeTheme->name)
                 ->press('Save Changes');
-        
-        
+
+
             // THEN they can see they have the alternative theme selected
             $browser->loginAs($user)
                 ->visit('/users/' . $user->username)

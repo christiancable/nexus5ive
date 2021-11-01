@@ -74,7 +74,7 @@ class Topic extends Model
 
         // Attach event handler for deleting a topic
         Topic::deleting(function ($topic) {
-           
+
             /*
             to keep a cascading delete when using softDeletes we must remove the related models here
              */
@@ -120,13 +120,13 @@ class Topic extends Model
      */
     public function getMostRecentPostTimeAttribute()
     {
-        
+
         $latestPost = Post::select('time')
             ->where('topic_id', $this->id)
             ->orderBy('time', 'desc')
             ->first();
 
-    
+
         if ($latestPost) {
             $result = $latestPost->time;
         } else {
@@ -144,7 +144,7 @@ class Topic extends Model
     }
 
     // sections
-     
+
     public function section()
     {
         return $this->belongsTo(\App\Section::class);

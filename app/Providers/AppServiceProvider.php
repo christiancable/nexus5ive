@@ -28,7 +28,7 @@ class AppServiceProvider extends ServiceProvider
         } catch (\Throwable $th) {
             $mode = null;
         }
-        
+
         View::share('mode', $mode);
 
         // use bootstrap for pagination

@@ -19,7 +19,7 @@ class RestoreController extends Controller
         $this->middleware('auth');
         $this->middleware('verified');
     }
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -69,11 +69,11 @@ class RestoreController extends Controller
 
         $this->authorize('restore', [Section::class, $trashedSection, $destinationSection]);
         RestoreHelper::restoreSectionToSection($trashedSection, $destinationSection);
-        
+
         $redirect = action('Nexus\SectionController@show', ['section' => $trashedSection->id]);
         return redirect($redirect);
     }
-    
+
     /**
      * Restore a trashed topic
      *
@@ -85,10 +85,10 @@ class RestoreController extends Controller
     {
         $trashedTopic = Topic::onlyTrashed()->findOrFail($id);
         $destinationSection = Section::findOrFail($request->destination);
-        
+
         $this->authorize('restore', [Topic::class, $trashedTopic, $destinationSection]);
         RestoreHelper::restoreTopicToSection($trashedTopic, $destinationSection);
-        
+
         $redirect = action('Nexus\SectionController@show', ['section' => $destinationSection->id]);
         return redirect($redirect);
     }

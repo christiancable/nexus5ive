@@ -57,7 +57,7 @@ class Tree extends Model
                 } else {
                     $recent = false;
                 }
-                
+
                 $destinations[] = [
                     'key'   => $keyIndex,
                     'id'    => $topic['id'],
@@ -68,14 +68,14 @@ class Tree extends Model
                 ];
             }
         }
-        
+
         return $destinations;
     }
-    
+
     public static function rebuild()
     {
         Log::debug("Rebuilding Tree Cache");
-        
+
         Cache::forget('tree');
         Cache::rememberForever(
             'tree',

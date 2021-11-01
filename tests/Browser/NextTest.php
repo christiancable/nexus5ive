@@ -60,7 +60,7 @@ class NextTest extends DuskTestCase
             'section_id' => $this->home->id
         ]);
     }
-    
+
     /**
      * @test
 
@@ -84,7 +84,7 @@ class NextTest extends DuskTestCase
             'topic_id' => $this->topic1->id,
             'user_id' => $this->user->id,
         ]);
-        
+
         $this->browse(function ($browser) use ($user, $newTopicsMsg, $topic1) {
             $browser->loginAs($user)
                     ->visit('/')
@@ -93,7 +93,7 @@ class NextTest extends DuskTestCase
                     ->assertSee($newTopicsMsg . $topic1->title);
         });
     }
-    
+
     /**
      * @test
      */
@@ -107,7 +107,7 @@ class NextTest extends DuskTestCase
         */
         $user = $this->user;
         $noTopicsMsg = $this->noTopicsMsg;
-        
+
         $this->browse(function ($browser) use ($user, $noTopicsMsg) {
             $browser->loginAs($user)
                     ->visit('/')
@@ -138,7 +138,7 @@ class NextTest extends DuskTestCase
             'topic_id' => $this->topic1->id,
             'user_id' => $this->user->id,
         ]);
-        
+
         $this->browse(function ($browser) use ($user, $noTopicsMsg) {
             $browser->loginAs($user)
                     ->visit('/')
@@ -171,7 +171,7 @@ class NextTest extends DuskTestCase
             'topic_id' => $this->topic1->id,
             'user_id' => $this->user->id,
         ]);
-        
+
         $this->browse(function ($browser) use ($user, $noTopicsMsg) {
             $browser->loginAs($user)
                     ->visit('/')

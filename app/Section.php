@@ -53,17 +53,17 @@ class Section extends Model
 {
     use HasFactory;
     use SoftDeletes;
-    
+
     protected $fillable = ['id','title','intro','user_id','parent_id', 'weight'];
     protected $dates = ['deleted_at'];
-    
+
     public static function boot()
     {
         parent::boot();
-        
+
         // Attach event handler for deleting a section
         Section::deleting(function ($section) {
-            
+
             /*
             to keep a cascading delete when using softDeletes we must remove the related models here
             */
@@ -91,27 +91,27 @@ class Section extends Model
             event(new TreeCacheBecameDirty());
         });
     }
-    
+
     // users
-    
+
     public function moderator()
     {
         return $this->belongsTo(\App\User::class, 'user_id', 'id');
     }
-    
+
     // sections
-    
+
     public function parent()
     {
         return $this->belongsTo(\App\Section::class, 'parent_id', 'id');
     }
-    
+
     public function sections()
     {
         return $this->hasMany(\App\Section::class, 'parent_id', 'id')->orderBy('weight', 'asc');
     }
 
-    
+
     /**
     * @return Collection - all descendant sections
     */
@@ -135,7 +135,7 @@ class Section extends Model
         }
         return $children;
     }
-    
+
     public function getIsHomeAttribute()
     {
         return null === $this->parent_id;
@@ -146,16 +146,16 @@ class Section extends Model
     {
         return $this->hasMany(\App\Topic::class)->orderBy('weight', 'asc');
     }
-    
+
 
     public function trashedTopics()
     {
         return $this->topics()->onlyTrashed()->orderBy('weight', 'asc');
     }
-    
+
 
     // posts
-    
+
     public function getMostRecentPostAttribute()
     {
         $cacheKey = 'mostRecentPost' . $this->id;
@@ -192,10 +192,10 @@ class Section extends Model
         if (!$postID) {
             return null;
         }
-        
+
         return Post::find($postID->id);
     }
-    
+
     public function slug()
     {
         return Str::slug($this->title, '-');

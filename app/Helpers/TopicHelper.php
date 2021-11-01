@@ -14,7 +14,7 @@ class TopicHelper
      */
     public static function routeToPost(Post $post)
     {
-    
+
         // how many pages worth of posts are we into the topic
         $depth = $post->topic->posts()->where('id', '>=', $post->id)->count();
         $page = ceil($depth / config('nexus.pagination'));
@@ -50,13 +50,13 @@ AND tt.id = groupedtt.LatestPostID
 WHERE deleted_at IS NULL 
 ORDER BY tt.id desc limit $maxresults
 SQL;
-    
+
         $allTopicIDs = Arr::pluck(\DB::select(\DB::raw($sql)), 'topic_id');
         // $topics = \App\Topic::with('most_recent_post', 'most_recent_post.author', 'section')
         // removed most_recent_post from the eager loading here as it was killing memory in large forums
         $topics = \App\Topic::with('section')
         ->whereIn('id', $allTopicIDs)->get();
-           
+
         // sorting here rather than in SQL because FIELD is MySQL only and so fails tests
         $sortedTopics = $topics->sortBy(function ($model) use ($allTopicIDs) {
             return array_search($model->id, $allTopicIDs);

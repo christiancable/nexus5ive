@@ -11,7 +11,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 // phpcs:disable Generic.Files.LineLength
 class MentionHelperTest extends TestCase
 {
-    
+
     /**
      *
      * @dataProvider provideridentifyMentionedUsersFindsUsernames
@@ -43,7 +43,7 @@ class MentionHelperTest extends TestCase
             ],
         ];
     }
-    
+
     /**
     *
     * @dataProvider providerHighlightMentionsHighlights
