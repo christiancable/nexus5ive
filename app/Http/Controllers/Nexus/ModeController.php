@@ -205,7 +205,11 @@ class ModeController extends Controller
     {
         $mode->welcome = $updates['welcome'];
         $mode->theme_id = $updates['theme_id'];
-        $mode->override = $updates['theme_override'] ? 1 : 0;
+        if (array_key_exists('theme_override', $updates)) {
+            $mode->override = $updates['theme_override'] ? 1 : 0;
+        } else {
+            $mode->override = 0;
+        }
         $mode->save();
 
         $message = <<< Markdown
