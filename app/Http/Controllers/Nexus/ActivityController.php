@@ -16,7 +16,7 @@ class ActivityController extends Controller
         $this->middleware('auth');
         $this->middleware('verified');
     }
-    
+
     /**
      * Display a listing of the resource.
      * @return \Illuminate\View\View

@@ -13,7 +13,7 @@ class UserPresenter
      * @var User
      */
     protected $user;
-    
+
     /**
      * Create a new Presenter instance.
      *

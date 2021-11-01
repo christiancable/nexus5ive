@@ -258,7 +258,7 @@ class SectionTest extends TestCase
         $post2 = Post::factory()->create([
             'topic_id' => $topic2->id
         ]);
-        
+
         // second is the latest
         $this->assertEquals($post2->id, $section->most_recent_post->id);
 
@@ -297,15 +297,15 @@ class SectionTest extends TestCase
                 'parent_id' => null,
                 'user_id' => $moderator->id
         ]);
-        
+
         $topic1 = Topic::factory()->create([
             'section_id' => $section->id
         ]);
-        
+
         $post1 = Post::factory()->create([
             'topic_id' => $topic1->id
         ]);
-        
+
         // post1 is the latest post
         $this->assertEquals($post1->id, $section->most_recent_post->id);
 

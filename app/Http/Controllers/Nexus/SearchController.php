@@ -54,7 +54,7 @@ class SearchController extends Controller
     {
         $input = $request->all();
         $searchText = $input['text'];
-        
+
         return redirect(action('Nexus\SearchController@find', ['text' => $searchText]));
     }
 
@@ -80,7 +80,7 @@ class SearchController extends Controller
         $pattern = <<< 'pattern'
 /^['|"](.*)['|"]$/
 pattern;
-        
+
         $matches = false;
         preg_match($pattern, $text, $matches);
 
@@ -98,7 +98,7 @@ pattern;
                     $searchTerms[] = $word;
                 }
             }
-        
+
             // dd($searchTerms);
 
             foreach ($searchTerms as $word) {

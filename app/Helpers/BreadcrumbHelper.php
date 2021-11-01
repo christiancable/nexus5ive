@@ -34,7 +34,7 @@ class BreadcrumbHelper
             $breadcrumbs[] = $crumb;
             $section = $section->parent;
         } while ($section != null);
-        
+
         return array_reverse($breadcrumbs);
     }
 

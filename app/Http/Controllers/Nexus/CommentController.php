@@ -17,7 +17,7 @@ class CommentController extends Controller
         $this->middleware('auth');
         $this->middleware('verified');
     }
-    
+
     /**
      * Store a newly created resource in storage.
      *
@@ -28,14 +28,14 @@ class CommentController extends Controller
     {
         $input = $request->all();
         $input['author_id'] = $request->user()->id;
-        
+
         // if a user is posting on their own profile then assume that they have read the comment
         if ($input['author_id'] === $input['user_id']) {
             $input['read'] = true;
         } else {
             $input['read'] = false;
         }
-   
+
         Comment::create($input);
 
         return redirect("/users/" . $input['redirect_user'] . '#comments');
@@ -52,7 +52,7 @@ class CommentController extends Controller
     {
         $this->authorize('destroy', $comment);
         $comment->delete();
-        
+
         return redirect(action('Nexus\UserController@show', ['user' => $request->user()->username]));
     }
 

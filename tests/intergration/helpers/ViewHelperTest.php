@@ -13,7 +13,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 class ViewHelperTest extends TestCase
 {
     use RefreshDatabase;
-    
+
     /**
      * @test
      */
@@ -31,14 +31,14 @@ class ViewHelperTest extends TestCase
                 ['topic_id' => $topic->id,
                 'time' => $faker->dateTimeThisMonth('-2 days')]
             );
-            
+
         // AND the most recent post being from yesterday
         $newPost = Post::factory()
             ->create(
                 ['topic_id' => $topic->id,
                 'time' => $faker->dateTimeThisMonth('-1 days')]
             );
-          
+
         // WHEN the user reads the topic
         ViewHelper::updateReadProgress($user, $topic);
 
@@ -82,7 +82,7 @@ class ViewHelperTest extends TestCase
                 ['topic_id' => $topic->id,
                 'time' => $faker->dateTimeThisMonth('-2 days')]
             );
-            
+
         // AND the user has read the topic
         ViewHelper::updateReadProgress($user, $topic);
 
@@ -118,7 +118,7 @@ class ViewHelperTest extends TestCase
                 ['topic_id' => $topic->id,
                 'time' => $faker->dateTimeThisMonth('-2 days')]
             );
-            
+
         // AND the user has read the topic
         ViewHelper::updateReadProgress($user, $topic);
 
@@ -137,7 +137,7 @@ class ViewHelperTest extends TestCase
 
         // GIVEN we have a user
          $user = User::factory()->create();
-        
+
         // WHEN we add a topic
         $topic = Topic::factory()->create();
         // THEN the topic appears to have new to the user
@@ -155,7 +155,7 @@ class ViewHelperTest extends TestCase
 
         // GIVEN we have a user
          $user = User::factory()->create();
-        
+
         // AND we add a topic
         $topic = Topic::factory()->create();
 
@@ -177,7 +177,7 @@ class ViewHelperTest extends TestCase
 
         // GIVEN we have a user
          $user = User::factory()->create();
-        
+
         // AND we add a topic
         $topic = Topic::factory()->create();
 
@@ -199,7 +199,7 @@ class ViewHelperTest extends TestCase
 
         // GIVEN we have a user
          $user = User::factory()->create();
-        
+
         // AND we add a topic
         $topic = Topic::factory()->create();
 

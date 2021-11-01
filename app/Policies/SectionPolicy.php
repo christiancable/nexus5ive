@@ -46,7 +46,7 @@ class SectionPolicy
         if ($user->id === $section->moderator->id) {
             return true;
         }
-        
+
         // note the section might not have a parent
         if ($section->parent) {
             if ($section->parent->moderator->id === $user->id) {

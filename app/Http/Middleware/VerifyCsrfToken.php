@@ -12,7 +12,7 @@ class VerifyCsrfToken extends BaseVerifier
      * @var bool
      */
     protected $addHttpCookie = true;
-    
+
     /**
      * The URIs that should be excluded from CSRF verification.
      *

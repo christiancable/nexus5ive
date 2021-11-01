@@ -73,11 +73,11 @@ class ChatApiController extends Controller
     public function show(string $conversation)
     {
         $user = User::where('username', $conversation)->first();
-        
+
         if (null === $user) {
             return [];
         }
-        
+
         $sideOneMessages = Message::with('author:id,username')
            ->with('user:id,username')
            ->where('user_id', Auth::id())
@@ -87,15 +87,15 @@ class ChatApiController extends Controller
         $sideOneMessages->update(['read' => 1]);
 
         $sideOne = $sideOneMessages->get();
-        
+
         $sideTwo = Message::with('author:id,username')
            ->with('user:id,username')
            ->where('user_id', $user->id)
            ->where('author_id', Auth::id())->get();
-        
+
         $conversation = $sideOne->merge($sideTwo)
            ->sortBy('id');
-        
+
         // turn this into an array
         $return = [];
         foreach ($conversation->toArray() as $message) {

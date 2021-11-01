@@ -85,7 +85,7 @@ class LatestTest extends DuskTestCase
             $browser->loginAs($user)
                     ->visit('/topic/' . $topic->id)
                     ->press('Unsubscribe from this topic');
-            
+
             $browser->loginAs($user)
                     ->visit('/section/latest/')
                     ->assertDontSee($postPreview);
