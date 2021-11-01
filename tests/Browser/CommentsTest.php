@@ -13,26 +13,26 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 class CommentsTest extends DuskTestCase
 {
     use DatabaseMigrations;
-    
+
     protected $user;
     protected $user2;
-    
+
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         // set up bbs with a sysop and main menu
         $sysop = User::factory()->create();
         $home = Section::factory()->create([
             'parent_id' => null,
             'user_id' => $sysop->id,
         ]);
-            
+
         // add users for testing
         $this->user = User::factory()->create();
         $this->user2 = User::factory()->create();
     }
-            
+
     /*
     * a given user can clear a comment from their profile page
     */
@@ -44,7 +44,7 @@ class CommentsTest extends DuskTestCase
             'user_id' => $user->id,
             'author_id' => $this->user2->id,
         ]);
-        
+
         $comment2 = Comment::factory()->create([
             'user_id' => $user->id,
             'author_id' => $this->user2->id,
@@ -65,7 +65,7 @@ class CommentsTest extends DuskTestCase
                     ->visit('/users/' . $user->username)
                     ->press($topDeleteButton);
 
-            
+
              $browser->loginAs($user)
                     ->visit('/users/' . $user->username)
             // THEN user can no longer see top comment

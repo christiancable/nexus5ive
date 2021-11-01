@@ -12,7 +12,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 // phpcs:disable Generic.Files.LineLength
 class NxCodeHelperTest extends TestCase
 {
-    
+
     private $youTubeHTMLStart = <<< 'HTML'
 <div class="video-wrapper">
       <iframe id="youtube-player" src="//www.youtube.com/embed/
