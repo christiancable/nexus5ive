@@ -15,7 +15,7 @@ class TreeController extends Controller
         $this->middleware('auth');
         $this->middleware('verified');
     }
-    
+
     /**
     * Display the specified resource.
     *

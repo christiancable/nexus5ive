@@ -28,7 +28,7 @@ class SectionController extends Controller
         $this->middleware('auth');
         $this->middleware('verified');
     }
-    
+
     /**
      * Store a newly created resource in storage.
      *
@@ -39,7 +39,7 @@ class SectionController extends Controller
     {
         $parentSection = Section::findOrFail(request('parent_id'));
         $this->authorize('create', [Section::class, $parentSection]);
-        
+
         $section = Section::create([
             'user_id'   => $request->user()->id,
             'parent_id' => request('parent_id'),
@@ -71,7 +71,7 @@ class SectionController extends Controller
             'sections.sections',
             'topics.most_recent_post.author:id,username'
         );
-        
+
         // load some counts too
         $section->loadCount('sections');
 
@@ -80,7 +80,7 @@ class SectionController extends Controller
             "Browsing <em>{$section->title}</em>",
             action('Nexus\SectionController@show', ['section' => $section->id])
         );
-        
+
         // if the user can moderate the section then they could potentially update subsections
         if ($section->moderator->id === $request->user()->id) {
             $potentialModerators = User::all(['id','username'])->pluck('username', 'id')->toArray();
@@ -117,26 +117,26 @@ class SectionController extends Controller
             "user_id"   => $request->validated()['form'][$formName]['user_id'],
             "weight"    => $request->validated()['form'][$formName]['weight']
         ];
-        
+
         // do not set parent for home section
         if ($section->is_home) {
             $updatedSectionDetails["parent_id"] = null;
         }
-        
+
         if ($updatedSectionDetails['parent_id'] == $section->parent_id) {
             $destinationSection = $section->parent;
         } else {
             $destinationSection = Section::findOrFail($updatedSectionDetails['parent_id']);
         }
-        
+
         // can user update the details?
         $this->authorize('update', $section);
-        
+
         if ($updatedSectionDetails['parent_id'] != $section->parent_id) {
             // can the user move the section?
             $this->authorize('move', [Section::class, $section, $destinationSection]);
         }
-        
+
         $section->update($updatedSectionDetails);
 
         return redirect()->route('section.show', ['section' => $section->id]);
@@ -213,7 +213,7 @@ People have been talking! New posts found in **[$topicTitle]($topicURL)**
 Seeing too many old topics then **[mark all subscribed topics as read]($subscribeAllURL)**
 Markdown;
             FlashHelper::showAlert($message, 'success');
-            
+
             // redirect to the parent section of the unread topic
             return redirect()->action(
                 'Nexus\SectionController@show',
@@ -223,7 +223,7 @@ Markdown;
             // set alert
             $message = 'No updated topics found. Why not start a new conversation or read more sections?';
             FlashHelper::showAlert($message, 'warning');
-            
+
             // redirect to main menu
             return redirect('/');
         }

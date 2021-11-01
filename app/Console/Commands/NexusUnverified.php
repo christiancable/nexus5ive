@@ -24,7 +24,7 @@ class NexusUnverified extends Command
      * @var int
      */
     protected $age = 30;
-    
+
     /**
      * List of unverified users to be
      * considered for removal.

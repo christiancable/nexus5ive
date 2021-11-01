@@ -36,12 +36,12 @@ class PostPolicy
         if ($user->administrator) {
             return true;
         }
-    
+
         // moderators can always create new posts in topics they moderate
         if ($user->id === $topic->section->moderator->id) {
             return true;
         }
-    
+
         // other users can only create posts of the topic is not ready only
         if (!$topic->readonly) {
             return true;

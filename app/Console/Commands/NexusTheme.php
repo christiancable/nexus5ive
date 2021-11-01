@@ -100,7 +100,7 @@ class NexusTheme extends Command
             $this->error('You cannot remove the default theme');
             return;
         }
-    
+
         $this->info('Removing Theme: ' . $existingTheme['name'] . ' - ' . $existingTheme['path']);
 
         // show how many users use this theme

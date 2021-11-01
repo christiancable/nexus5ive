@@ -52,14 +52,14 @@ class Post extends Model
 {
     use HasFactory;
     use SoftDeletes;
-    
+
     protected $fillable = ['title','text','time','popname','html','user_id','topic_id','update_user_id'];
     protected $dates = ['time', 'deleted_at'];
-    
+
     public static function boot()
     {
         parent::boot();
-        
+
         // attach events for updated section->most_recent_post
         Post::deleting(function ($post) {
             if ($post->id === $post->topic->section->most_recent_post->id) {
@@ -76,7 +76,7 @@ class Post extends Model
     {
         return $this->belongsTo(\App\Topic::class);
     }
-    
+
     public function author()
     {
         return $this->belongsTo(\App\User::class, 'user_id');

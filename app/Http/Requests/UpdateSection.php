@@ -39,7 +39,7 @@ class UpdateSection extends FormRequest
             "form.{$formName}.weight" => 'numeric|nullable'
         ];
 
-        
+
         $section = Section::findOrFail($id);
         if (!$section->is_home) {
             // check if this is a valid parent

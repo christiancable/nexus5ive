@@ -24,7 +24,7 @@ class UserController extends Controller
         $this->middleware('auth');
         $this->middleware('verified');
     }
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -97,19 +97,19 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         $input = $request->all();
-        
+
         // to prevent setting password to an empty string https://trello.com/c/y1WAxwfb
         if ($input['password'] <> '') {
             $input['password'] = Hash::make($input['password']);
         } else {
             unset($input['password']);
         }
-        
+
         $this->authorize('update', $user);
         $user->update($input);
-        
+
         FlashHelper::showAlert('Profile Updated!', 'success');
-        
+
         return redirect(action('Nexus\UserController@show', ['user' => $user]));
     }
 }

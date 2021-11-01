@@ -32,7 +32,7 @@ class PostController extends Controller
     public function store(StorePost $request)
     {
         $this->authorize('create', [Post::class, Topic::findOrFail($request->validated()['topic_id'])]);
-        
+
         $post = new Post($request->validated());
         $post->user_id = $request->user()->id;
         $post->popname = $request->user()->popname;
@@ -43,7 +43,7 @@ class PostController extends Controller
 
         // scan post for mentions
         MentionHelper::makeMentions($post);
-           
+
         // if we are viewing the topic with the most recent post at the bottom then
         // redirect to that point in the page
         if ($request->user()->viewLatestPostFirst) {
@@ -64,11 +64,11 @@ class PostController extends Controller
     public function update(UpdatePost $request, Post $post)
     {
         $this->authorize('update', [Post::class, $post]);
-        
+
         $input = $request->validated();
         $updatedPost = $input['form']["$post->id"];
         $updatedPost['update_user_id'] = $request->user()->id;
-        
+
         $post->update($updatedPost);
         return back();
     }

@@ -46,39 +46,39 @@ class NexusUpgrade extends Command
             $this->line("Found $count users ");
             $bar = $this->output->createProgressBar($count);
             $classicUsers = DB::table('usertable')->get();
-            
+
             foreach ($classicUsers as $classicUser) {
                 $newUser = new User();
-                
+
                 $newUser->id = $classicUser->user_id;
                 $newUser->username = $classicUser->user_name;
                 $newUser->popname = $classicUser->user_popname;
                 $newUser->about = $classicUser->user_comment;
                 $newUser->location = $classicUser->user_town;
-                
+
                 if ($classicUser->user_sysop === 'y') {
                     $newUser->administrator = true;
                 } else {
                     $newUser->administrator = false;
                 }
-                
+
                 $newUser->totalVisits = $classicUser->user_totalvisits;
                 $newUser->totalPosts = $classicUser->user_totaledits;
                 $newUser->favouriteMovie = $classicUser->user_film;
                 $newUser->favouriteMusic = $classicUser->user_band;
-                
+
                 if ($classicUser->user_hideemail === 'no') {
                     $newUser->private = false;
                 } else {
                     $newUser->private = true;
                 }
-                
+
                 $newUser->ipaddress = $classicUser->user_ipaddress;
                 $lastLogin = DB::table('whoison')->select('timeon')->where('user_id', $classicUser->user_id)->first();
                 if ($lastLogin) {
                     $newUser->latestLogin = $lastLogin->timeon;
                 }
-                
+
                 if ($classicUser->user_status === 'Invalid') {
                     $newUser->banned = true;
                 }
@@ -93,7 +93,7 @@ class NexusUpgrade extends Command
                 }
 
                 $newUser->password = $classicUser->user_password;
-                
+
                 if ($classicUser->user_realname != "") {
                     $newUser->name = $classicUser->user_realname;
                 } else {
@@ -169,7 +169,7 @@ class NexusUpgrade extends Command
             $this->line("Migrating Sections ");
             $bar = $this->output->createProgressBar($count);
             $classicSections = DB::table('sectiontable')->get();
-        
+
             foreach ($classicSections as $classicSection) {
                 try {
                     $newSection = new Section();
@@ -178,7 +178,7 @@ class NexusUpgrade extends Command
                     $newSection->intro = $classicSection->section_intro;
                     $newSection->user_id = $classicSection->user_id;
                     $newSection->weight = $classicSection->section_weight;
-                    
+
                     $newSection->save();
                     $bar->advance();
                 } catch (Exception $e) {
@@ -225,7 +225,7 @@ class NexusUpgrade extends Command
 
             $bar = $this->output->createProgressBar($count);
             $classicTopics = DB::table('topictable')->get();
-        
+
             foreach ($classicTopics as $classicTopic) {
                 $newTopic = new Topic();
                 $newTopic->id = $classicTopic->topic_id;
@@ -245,7 +245,7 @@ class NexusUpgrade extends Command
                 } else {
                     $newTopic->secret = true;
                 }
-                    
+
                 try {
                     $newTopic->save();
                     $bar->advance();
