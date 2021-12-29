@@ -24,7 +24,7 @@ class UserController extends Controller
         $this->middleware('auth');
         $this->middleware('verified');
     }
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -47,8 +47,8 @@ class UserController extends Controller
     /**
      * show a user
      *
-     * @param Request $request
-     * @param User $user
+     * @param  Request $request
+     * @param  User    $user
      * @return \Illuminate\View\View
      */
     public function show(Request $request, User $user)
@@ -68,7 +68,19 @@ class UserController extends Controller
             action('Nexus\UserController@show', ['user' => $user->username])
         );
 
-        $themes = Theme::all()->pluck('name', 'id');
+        // sort themes for dropdown display with Default theme first
+        $allThemes = Theme::orderBy('name')->get();
+
+        // assume default theme first and remove it to make sorting easy
+        $defaultTheme = Theme::first();
+        $allThemes->pull($defaultTheme->id);
+        if ($defaultTheme) {
+            $themes = collect([$defaultTheme])
+                ->concat($allThemes)
+                ->pluck('ucname', 'id');
+        } else {
+            $themes = $allThemes->pluck('ucname', 'id');
+        }
         $breadcrumbs = BreadcrumbHelper::breadcrumbForUser($user);
         $comments = $user->comments()->paginate(config('nexus.comment_pagination'));
 
@@ -78,8 +90,9 @@ class UserController extends Controller
     /**
      * edit
      * this just forwards to the $this->show because edit and show are combined
-     * @param Request $request
-     * @param User $user
+     *
+     * @param  Request $request
+     * @param  User    $user
      * @return \Illuminate\View\View
      */
     public function edit(Request $request, User $user)
@@ -90,26 +103,26 @@ class UserController extends Controller
     /**
      * Update the user
      *
-     * @param Request $request
-     * @param User $user
+     * @param  Request $request
+     * @param  User    $user
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, User $user)
     {
         $input = $request->all();
-        
+
         // to prevent setting password to an empty string https://trello.com/c/y1WAxwfb
         if ($input['password'] <> '') {
             $input['password'] = Hash::make($input['password']);
         } else {
             unset($input['password']);
         }
-        
+
         $this->authorize('update', $user);
         $user->update($input);
-        
+
         FlashHelper::showAlert('Profile Updated!', 'success');
-        
+
         return redirect(action('Nexus\UserController@show', ['user' => $user]));
     }
 }

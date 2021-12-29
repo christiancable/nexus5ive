@@ -28,7 +28,7 @@ class EventServiceProvider extends ServiceProvider
         \Illuminate\Auth\Events\Verified::class => [
             \App\Listeners\LogVerifiedUser::class
         ],
-        
+
         // user activities
         \Illuminate\Auth\Events\Login::class => [
             \App\Listeners\UserIncreaseTotalVisits::class,
@@ -36,7 +36,7 @@ class EventServiceProvider extends ServiceProvider
         \Illuminate\Auth\Events\Logout::class => [
             \App\Listeners\UserRemoveActivity::class,
         ],
-        
+
         // manage caches
         \App\Events\MostRecentPostForSectionBecameDirty::class => [
             \App\Listeners\DeleteSectionMostRecentPostCache::class

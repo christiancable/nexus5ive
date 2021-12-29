@@ -27,7 +27,7 @@ class TopicController extends Controller
         $this->middleware('auth');
         $this->middleware('verified');
     }
-    
+
     /**
      * Store a newly created resource in storage.
      *
@@ -41,7 +41,7 @@ class TopicController extends Controller
         $topic = Topic::create($request->validated());
         return redirect(action('Nexus\SectionController@show', ['section' => $topic->section_id]));
     }
-    
+
     /**
      * Display the specified resource.
      *
@@ -55,11 +55,11 @@ class TopicController extends Controller
 
         // is this topic readonly to the authenticated user?
         $readonly = true;
-        
+
         if ($topic->readonly == false) {
             $readonly = false;
         }
-        
+
         if ($topic->section->moderator->id === $request->user()->id) {
             $readonly = false;
         }
@@ -81,7 +81,7 @@ class TopicController extends Controller
 
         // get the previously read progress so we can indicate this in the view
         $readProgress =  ViewHelper::getReadProgress($request->user(), $topic);
-        
+
         // get the subscription status
         $topicStatus = ViewHelper::getTopicStatus($request->user(), $topic);
         $unsubscribed = $topicStatus['unsubscribed'];
@@ -93,8 +93,8 @@ class TopicController extends Controller
             "Reading <em>{$topic->title}</em>",
             action('Nexus\TopicController@show', ['topic' => $topic->id])
         );
-            
-        
+
+
         // if replying then include a copy of what we are replying to
         $replyingTo = null;
         if ($request->reply && $topic->most_recent_post) {
@@ -134,15 +134,15 @@ class TopicController extends Controller
     {
         $formName = "topicUpdate{$topic->id}";
         $topicDetails = $request->validated()[$formName];
-        
+
         $this->authorize('update', $topic);
-        
+
         // is the user authorized to move the topic to the destination section?
         if ($topic->section_id !== (int) $topicDetails['section_id']) {
             $destinationSection = Section::findOrFail($topicDetails['section_id']);
             $this->authorize('move', [$topic, $destinationSection]);
         }
-        
+
         $topic->update($topicDetails);
 
         return redirect(action('Nexus\SectionController@show', ['section' => $topic->section_id]));
@@ -188,7 +188,7 @@ class TopicController extends Controller
         FlashHelper::showAlert($message, 'success');
         return  redirect()->route('topic.show', ['topic' => $topic->id]);
     }
-    
+
     /**
      * markAllSubscribedTopicsAsRead
      *
@@ -200,10 +200,10 @@ class TopicController extends Controller
     public function markAllSubscribedTopicsAsRead(Request $request)
     {
         ViewHelper::catchUpCatchUp($request->user());
-        
+
         $message = '**Success!** all subscribed topics are now marked as read';
         FlashHelper::showAlert($message, 'success');
-        
+
         return redirect('/');
     }
 }

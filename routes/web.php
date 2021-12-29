@@ -26,9 +26,11 @@ if (config('nexus.allow_registrations') === true) {
     Route::redirect('register', 'login');
 }
 
-Route::get('/inactive', function () {
-    return view('auth.inactive');
-})->name('inactive');
+Route::get(
+    '/inactive', function () {
+        return view('auth.inactive');
+    }
+)->name('inactive');
 
 Route::middleware(['notlegacy'])->group(
     function () {
@@ -122,6 +124,11 @@ Route::middleware(['notlegacy'])->group(
         // utilities
         Route::get('updateSubscriptions', 'Nexus\TopicController@markAllSubscribedTopicsAsRead');
         Route::get('jump', 'Nexus\TreeController@show');
+
+        // admin
+        Route::resource('admin', 'Nexus\ModeController');
+        Route::post('admin', 'Nexus\ModeController@handle')
+        ->name('mode.handle');
 
         // @mentions
         Route::delete('mentions', 'Nexus\MentionController@destroyAll');

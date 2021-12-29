@@ -14,7 +14,7 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 class SectionInfoTest extends DuskTestCase
 {
     use DatabaseMigrations;
-    
+
     protected $user;
     protected $home;
     protected $subSection;
@@ -58,7 +58,7 @@ class SectionInfoTest extends DuskTestCase
 
         $user = $this->user;
         $home = $this->home;
-        
+
         $newPost = Post::factory()->create([
             'topic_id' => $this->topicInSubSection->id,
             'user_id' => $this->user->id,
@@ -87,7 +87,7 @@ class SectionInfoTest extends DuskTestCase
 
         $user = $this->user;
         $home = $this->home;
-        
+
         $this->browse(function (Browser $browser) use ($user, $home) {
             $browser->loginAs($user)
                     ->visit('/section/' . $home->id)
@@ -111,7 +111,7 @@ class SectionInfoTest extends DuskTestCase
 
         $user = $this->user;
         $home = $this->home;
-        
+
         $newPost = Post::factory()->create([
            'topic_id' => $this->topicInSubSection->id,
            'user_id' => $this->user->id,

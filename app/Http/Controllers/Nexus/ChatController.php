@@ -65,17 +65,17 @@ class ChatController extends Controller
                 "Messages",
                 action('Nexus\ChatController@index')
             );
-        
+
         // $conversationPartners = $this->chatList();
-        
+
 
         return view('chat.index', compact('currentPartner', 'breadcrumbs'));
     }
-    
+
 
     public function conversation(Request $request, $username)
     {
-        
+
         $breadcrumbs = BreadcrumbHelper::breadcrumbForChat($username);
 
         ActivityHelper::updateActivity(
@@ -88,7 +88,7 @@ class ChatController extends Controller
         // $conversation = $this->getConversation($username);
         // $conversationPartners = $this->chatList();
         $currentPartner = $username;
-        
+
         return view('chat.index', compact('currentPartner', 'breadcrumbs'));
     }
 }

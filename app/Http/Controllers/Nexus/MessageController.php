@@ -22,7 +22,7 @@ class MessageController extends Controller
         $this->middleware('auth');
         $this->middleware('verified');
     }
-    
+
     /**
      * Displays a list of messages sent to the logged in user
      * @todo - generate $activeUsers array from a list of active users

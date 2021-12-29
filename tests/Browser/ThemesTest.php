@@ -75,14 +75,14 @@ class ThemesTest extends DuskTestCase
             // and they select a different theme
             $browser->loginAs($user)
                 ->visit('/users/' . $user->username)
-                ->select('theme_id', $alternativeTheme->name)
+                ->select('theme_id', $alternativeTheme->id)
                 ->press('Save Changes');
-        
-        
+
+
             // THEN they can see they have the alternative theme selected
             $browser->loginAs($user)
                 ->visit('/users/' . $user->username)
-                ->assertSee($alternativeTheme->name);
+                ->assertSee($alternativeTheme->ucname);
         });
     }
 }

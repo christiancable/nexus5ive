@@ -15,7 +15,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 /**
  * App\User
- *
+ * @codingStandardsIgnoreStart
  * @property      int $id
  * @property      string $name
  * @property      string $email
@@ -102,6 +102,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @method        static \Illuminate\Database\Query\Builder|\App\User withTrashed()
  * @method        static \Illuminate\Database\Query\Builder|\App\User withoutTrashed()
  * @mixin         \Eloquent
+ * @codingStandardsIgnoreEnd
  */
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -136,7 +137,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'viewLatestPostFirst',
         'theme_id'
     ];
-     
+
     /**
      * The attributes excluded from the model's JSON form.
      *
@@ -156,11 +157,11 @@ class User extends Authenticatable implements MustVerifyEmail
         'banned'            => 'bool',
         'legacy'            => 'bool',
     ];
-    
+
     /* dates */
-    
+
     protected $dates = ['latestLogin','deleted_at'];
-    
+
     /**
      * Get the route key for the model.
      *
@@ -229,7 +230,7 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(\App\Mention::class)->orderBy('id', 'desc');
     }
-    
+
     public function comments()
     {
         return $this->hasMany(\App\Comment::class, 'user_id', 'id')->orderBy('id', 'desc');
@@ -274,7 +275,7 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasOne(\App\Activity::class);
     }
-    
+
     public function theme()
     {
         return $this->belongsTo(\App\Theme::class);
@@ -291,11 +292,11 @@ class User extends Authenticatable implements MustVerifyEmail
         */
 
         $sectionIDs = $this->sections->pluck('id')->toArray();
-        
+
         $trashedTopics = Topic::onlyTrashed()
             ->whereIn('section_id', $sectionIDs)
             ->get();
-        
+
         return $trashedTopics;
     }
     /* helper methods */

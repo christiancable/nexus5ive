@@ -54,7 +54,7 @@ class NexusInstall extends Command
             $username = $this->ask('Username');
             $email = $this->ask('Email Address');
             $password = $this->ask('Password');
-            
+
             $administrator = User::factory()->make(
                 [
                 'username'      => $username,
@@ -79,7 +79,7 @@ class NexusInstall extends Command
         if (!$mainMenu) {
             $this->info("Please enter in values for the main menu. Don't worry You can change this later.");
             $title = $this->ask('Title');
-            
+
             $mainMenu = Section::factory()->make(
                 [
                 'title' => $title
@@ -108,7 +108,7 @@ class NexusInstall extends Command
                 'title' => $title
                 ]
             );
-            
+
             $firstTopic->section()->associate($mainMenu);
 
             try {
@@ -124,6 +124,7 @@ class NexusInstall extends Command
 
         if (!$defaultMode) {
             $defaultMode = Mode::factory()->make(
+                // @codingStandardsIgnoreStart
                 [
                     'name' => 'Default',
                     'welcome' => <<< HTML
@@ -134,6 +135,7 @@ HTML,
                     'active' => true,
                     'override' => false
                 ]
+                // @codingStandardsIgnoreEnd
             );
 
             try {

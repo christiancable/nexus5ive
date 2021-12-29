@@ -14,7 +14,7 @@ class ViewHelper
     public static function updateReadProgress(User $user, Topic $topic)
     {
         $progress = View::where('topic_id', $topic->id)->where('user_id', $user->id)->first();
-        
+
         if (!$progress) {
             // first time viewing this topic
             $progress = new View();
@@ -69,7 +69,7 @@ class ViewHelper
         } else {
             $return = false;
         }
-        
+
         if (!$topic->most_recent_post_time) {
             $return = false;
         }
@@ -153,7 +153,7 @@ class ViewHelper
             $progress->save();
         }
     }
-    
+
     /*
         updates the read progress of all previously read topics
         with the latest post of those topics
@@ -161,7 +161,7 @@ class ViewHelper
     public static function catchUpCatchUp(User $user)
     {
         $views = $user->views;
-        
+
         foreach ($views as $view) {
             if ($view->topic != null) {
                 self::updateReadProgress($user, $view->topic);
