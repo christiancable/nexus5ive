@@ -69,15 +69,18 @@ class UserController extends Controller
         );
 
         // sort themes for dropdown display with Default theme first
-        $allThemes = Theme::orderBy('name')->get()->pluck('ucname', 'id');
-        // assume default theme is 1
-        $defaultTheme = $allThemes->pull(1);
-        if ($defaultTheme) {
-            $themes = collect($defaultTheme)->concat($allThemes);
-        } else {
-            $themes = $allThemes;
-        }
+        $allThemes = Theme::orderBy('name')->get();
 
+        // assume default theme first and remove it to make sorting easy
+        $defaultTheme = Theme::first();
+        $allThemes->pull($defaultTheme->id);
+        if ($defaultTheme) {
+            $themes = collect([$defaultTheme])
+                ->concat($allThemes)
+                ->pluck('ucname', 'id');
+        } else {
+            $themes = $allThemes->pluck('ucname', 'id');
+        }
         $breadcrumbs = BreadcrumbHelper::breadcrumbForUser($user);
         $comments = $user->comments()->paginate(config('nexus.comment_pagination'));
 
