@@ -77,7 +77,7 @@ class UserController extends Controller
         } else {
             $themes = $allThemes;
         }
-    
+
         $breadcrumbs = BreadcrumbHelper::breadcrumbForUser($user);
         $comments = $user->comments()->paginate(config('nexus.comment_pagination'));
 
