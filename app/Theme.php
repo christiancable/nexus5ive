@@ -42,10 +42,21 @@ class Theme extends Model
     {
         return $this->hasMany(\App\User::class);
     }
-
+    
     /**
-     * getExternalAttribute
-     * - is the theme css internal or external
+     * GetUCNameAttribute
+     * the name field in sentence case
+     * 
+     * @return string
+     */
+    public function getUCNameAttribute()
+    {
+        return ucwords($this->name);
+    }
+    /**
+     * GetExternalAttribute
+     * is the theme css internal or external
+     * 
      * @return bool
      */
     public function getExternalAttribute()

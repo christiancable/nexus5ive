@@ -82,7 +82,7 @@ class ThemesTest extends DuskTestCase
             // THEN they can see they have the alternative theme selected
             $browser->loginAs($user)
                 ->visit('/users/' . $user->username)
-                ->assertSee($alternativeTheme->name);
+                ->assertSee($alternativeTheme->ucname);
         });
     }
 }
