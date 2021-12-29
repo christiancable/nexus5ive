@@ -58,7 +58,7 @@ Form::model($user, array(
 <div class="form-row form-inline">
     <div class="form-group col-12 col-md-6 ">
         {!! Form::label('theme','Theme', ['class'=>'mr-3']) !!}
-        {!! Form::select('theme_id', $themes, $user->theme->id, ['class'=> 'form-control custom-select'])!!}
+        {!! Form::select('theme_id', $themes, $user->theme->id, ['class'=> 'form-control custom-select', 'dusk' =>"theme_select" ])!!}
     </div>
     <div class="form-group col-12 col-md-6">
         <div class="form-check">
