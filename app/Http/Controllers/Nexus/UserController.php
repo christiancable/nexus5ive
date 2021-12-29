@@ -47,8 +47,8 @@ class UserController extends Controller
     /**
      * show a user
      *
-     * @param Request $request
-     * @param User $user
+     * @param  Request $request
+     * @param  User    $user
      * @return \Illuminate\View\View
      */
     public function show(Request $request, User $user)
@@ -68,7 +68,14 @@ class UserController extends Controller
             action('Nexus\UserController@show', ['user' => $user->username])
         );
 
-        $themes = Theme::all()->pluck('name', 'id');
+        // get default theme and then the others sorted by name
+        $defaultTheme = Theme::firstOrFail();
+        $otherThemes = Theme::orderBy('name')->get()->except($defaultTheme->id);
+
+        $themes = collect([$defaultTheme])
+            ->concat($otherThemes)
+            ->pluck('ucname', 'id');
+
         $breadcrumbs = BreadcrumbHelper::breadcrumbForUser($user);
         $comments = $user->comments()->paginate(config('nexus.comment_pagination'));
 
@@ -78,8 +85,9 @@ class UserController extends Controller
     /**
      * edit
      * this just forwards to the $this->show because edit and show are combined
-     * @param Request $request
-     * @param User $user
+     *
+     * @param  Request $request
+     * @param  User    $user
      * @return \Illuminate\View\View
      */
     public function edit(Request $request, User $user)
@@ -90,8 +98,8 @@ class UserController extends Controller
     /**
      * Update the user
      *
-     * @param Request $request
-     * @param User $user
+     * @param  Request $request
+     * @param  User    $user
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, User $user)

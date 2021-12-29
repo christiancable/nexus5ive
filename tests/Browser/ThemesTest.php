@@ -16,18 +16,22 @@ class ThemesTest extends DuskTestCase
     public $defaultTheme;
     public $user;
     public $home;
+    public $alternativeTheme;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->defaultTheme = Theme::FirstOrFail();
+        $this->alternativeTheme = Theme::factory()->create();
         $this->user = User::factory()->create();
         $this->home = Section::factory()
-        ->create([
-            'parent_id' => null,
-            'user_id' => $this->user->id,
-        ]);
+            ->create(
+                [
+                'parent_id' => null,
+                'user_id' => $this->user->id,
+                ]
+            );
     }
 
     /**
@@ -42,25 +46,28 @@ class ThemesTest extends DuskTestCase
     }
 
      /**
-     * @test
-     */
+      * @test
+      */
     public function userCanSeeWhichThemeTheyUse()
     {
 
         $user = $this->user;
         $defaultTheme = $this->defaultTheme;
 
-        $this->browse(function ($browser) use ($user, $defaultTheme) {
-            // when the user views their profile
-            // the user can see which theme they have
-            $browser->loginAs($user)
-                ->visit('/users/' . $user->username)
-                ->assertSee($defaultTheme->name);
-        });
+        $this->browse(
+            function ($browser) use ($user, $defaultTheme) {
+                // when the user views their profile
+                // the user can see which theme they have
+                $browser->loginAs($user)
+                    ->visit('/users/' . $user->username)
+                    ->assertSelected('@theme_select', $defaultTheme->id);
+            }
+        );
     }
 
     /**
      * @test
+     * @group ugh
      */
     public function userCanChangeTheme()
     {
@@ -68,21 +75,21 @@ class ThemesTest extends DuskTestCase
         $user = $this->user;
 
         // AND we have an alternative theme
-        $alternativeTheme = Theme::factory()->create();
-
-        $this->browse(function ($browser) use ($user, $alternativeTheme) {
-            // WHEN the user views their profile
-            // and they select a different theme
-            $browser->loginAs($user)
-                ->visit('/users/' . $user->username)
-                ->select('theme_id', $alternativeTheme->name)
-                ->press('Save Changes');
-
-
-            // THEN they can see they have the alternative theme selected
-            $browser->loginAs($user)
-                ->visit('/users/' . $user->username)
-                ->assertSee($alternativeTheme->name);
-        });
+        $alternativeTheme = $this->alternativeTheme;
+    
+        $this->browse(
+            function ($browser) use ($user, $alternativeTheme) {
+                // WHEN the user views their profile
+                // and they select a different theme
+                $browser->loginAs($user)
+                    ->visit('/users/' . $user->username)
+                    ->assertSelectHasOption('@theme_select', $alternativeTheme->id)
+                    ->select('@theme_select', $alternativeTheme->id)
+                    ->press('Save Changes')
+                    ->visit('/users/' . $user->username)
+                    // THEN we see that theme is selected on next visit
+                    ->assertSelected('@theme_select', $alternativeTheme->id);
+            }
+        );
     }
 }
