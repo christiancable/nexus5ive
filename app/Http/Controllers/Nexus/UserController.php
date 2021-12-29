@@ -71,11 +71,11 @@ class UserController extends Controller
         // get default theme and then the others sorted by name
         $defaultTheme = Theme::firstOrFail();
         $otherThemes = Theme::orderBy('name')->get()->except($defaultTheme->id);
-    
+
         $themes = collect([$defaultTheme])
             ->concat($otherThemes)
             ->pluck('ucname', 'id');
-        
+
         $breadcrumbs = BreadcrumbHelper::breadcrumbForUser($user);
         $comments = $user->comments()->paginate(config('nexus.comment_pagination'));
 
