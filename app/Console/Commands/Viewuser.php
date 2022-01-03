@@ -1,11 +1,9 @@
 <?php
 
-// @todo why can I not move this elsewhere?
-// namespace App\Nexus2\Console\Commands;
 namespace App\Console\Commands;
 
+use App\Nexus2\Models\User;
 use Illuminate\Console\Command;
-use App\Helpers\Nexus2\User;
 
 class ViewUser extends Command
 {
@@ -14,7 +12,7 @@ class ViewUser extends Command
      *
      * @var string
      */
-    protected $signature = 'nexus2:viewUser {--userdir=}';
+    protected $signature = 'nexus2:viewUser {userdir}';
 
     /**
      * The console command description.
@@ -40,35 +38,41 @@ class ViewUser extends Command
      */
     public function handle()
     {
-        // are we importing a user?
+        $userdir = $this->argument('userdir');
 
-        $userdir = $this->option('userdir');
-        rtrim($userdir, '/');
-        if (null != $userdir) {
-            $this->viewUser($userdir);
-        }
-    }
-    
-    public function viewUser($userdir)
-    {
-        // NEXUS.UDB
-        $udbFile = $userdir . '/NEXUS.UDB';
-        if (!file_exists($udbFile)) {
-            $this->alert("UserDataBase not found");
-            return false;
+        try {
+            $user = new User($userdir);
+        } catch (\Throwable $th) {
+            $this->error($th->getMessage());
+            die();
         }
 
-        $handle = fopen($udbFile, "rb");
-        $udb = stream_get_contents($handle);
-        fclose($handle);
+        $this->comment("User");
+        $this->info("Username:\t" . $user->username());
+        $this->info("UserID:\t\t" . $user->userId());
+        $this->info("realName:\t" . $user->realName());
+        $this->info("popName:\t" . $user->popName());
+        $this->info("rights:\t\t" . $user->rights());
+        $this->info("noOfEdits:\t" . $user->noOfEdits());
+        $this->info("totalTimeOn:\t" . $user->totalTimeOn());
+        $this->info("noOfTimesOn:\t" . $user->noOfTimesOn());
+        $this->info("password:\t" . $user->password());
+        $this->info("dept:\t\t" . $user->dept());
+        $this->info("faculty:\t" . $user->faculty());
+        $this->info("created:\t" . $user->created());
+        $this->info("lastOn:\t\t" . $user->lastOn());
+        $this->info("historyFile:\t" . $user->historyFile());
+        $this->info("BBSNo:\t\t" . $user->BBSNo());
+        $this->info("flags:\t\t" . $user->flags());
 
-        if (false === $udb) {
-            $this->alert("Could not read UserDataBase at {$udbFile}");
-            return false;
+        $this->newLine();
+        $this->comment("Info");
+        $this->info($user->info());
+
+        $this->newLine();
+        $this->comment("Comments");
+        foreach ($user->comments() as $comment) {
+            $this->info("{$comment['username']} - {$comment['body']}");
         }
-        
-        $existingUser =  User::parseUDB($udb);
-
-        $this->info(print_r($existingUser, true));
     }
 }

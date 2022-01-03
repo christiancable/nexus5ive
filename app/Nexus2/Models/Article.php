@@ -69,7 +69,15 @@ class Article
      */
     private function parseFromFile(string $filename): void
     {
-        $this->parse(file_get_contents($filename));
+        try {
+            $content = file_get_contents($filename);
+        } catch (\Throwable $th) {
+            throw new \Exception("Article File Not Found", 1);
+        }
+        if (false === $content) {
+            throw new \Exception("Article File Not Found", 1);
+        }
+        $this->parse($content);
     }
         
     /**

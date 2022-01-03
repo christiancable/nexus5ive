@@ -41,7 +41,12 @@ class ViewArticle extends Command
     {
         $filename = $this->argument('filename');
 
-        $article = new Article($filename);
+        try {
+            $article = new Article($filename);
+        } catch (\Throwable $th) {
+            $this->error($th->getMessage());
+            die();
+        }
 
         $this->info("Parsing $filename");
         

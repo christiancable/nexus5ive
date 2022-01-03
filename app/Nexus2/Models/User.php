@@ -5,23 +5,15 @@ namespace App\Nexus2\Models;
 use Carbon\Carbon;
 
 /*
+this class is for parsing with user data from nexus2
 
 example usage
+$legacyUser = new App\Nexus2\Models\User($path);
 
 
-$legacyUser = new App\Nexus2\Modules\User($udb, $info, $comments);
-
-issue with udb
-    throw exception
-
-issue with info
-    no info
-
-issue with comments
-    no comments
-
-
-this class is for parsing with user data from nexus2
+$legacyUser->username()
+$legacyUser->info()
+$legacyUser->comments()
 
 including
 COMMENTS.TXT
@@ -107,44 +99,56 @@ class User
         'IBBSNo' . '/' .
         'CFlags';
 
-    private static $dateTimeFormat = 'D d/n/y * G:i:s';
+    // private static $dateTimeFormat = 'D d/n/y * G:i:s';
 
-    private static $blank = [
-        'Nick'          =>  '',
-        'UserId'        =>  '',
-        'RealName'      =>  '',
-        'PopName'       =>  '',
-        'Rights'        =>  '',
-        'NoOfEdits'     =>  '',
-        'TotalTimeOn'   =>  '',
-        'NoOfTimesOn'   =>  '',
-        'Password'      =>  '',
-        'Dept'          =>  '',
-        'Faculty'       =>  '',
-        'Created'       =>  '',
-        'LastOn'        =>  '',
-        'HistoryFile'   =>  '',
-        'BBSNo'         =>  '',
-        'Flags'         =>  '',
-    ];
+    const COMMENTS_FILE         = 'comments.txt';
+    const INFO_FILE             = 'info.txt';
+    const USER_DATABASE_FILE    = 'NEXUS.UDB';
 
+    private $_username = '';
+    private $_userId = '';
+    private $_realName = '';
+    private $_popName = '';
+    private $_rights = '';
+    private $_noOfEdits = '';
+    private $_totalTimeOn = '';
+    private $_noOfTimesOn = '';
+    private $_password = '';
+    private $_dept = '';
+    private $_faculty = '';
+    private $_created = '';
+    private $_lastOn = '';
+    private $_historyFile = '';
+    private $_BBSNo = '';
+    private $_flags = '';
+    private $_info = '';
 
-    public $username; 
-    public $name; 
-    public $popname; 
-    public $email; 
-    public $created_at; 
-    public $latestLogin;
-    public $totalPosts;
-    public $totalVisits;
+    private $_comments = [];
 
-    public $comments = [];
-    public $info;
+    function __construct(string $path = null)
+    {
+        if (null == $path) {
+            return;    
+        }
+        $userdir = rtrim($path, '/');
 
-    function __construct(string $udb, string $info = '', string $comments = '') {
-        $this->hydrate($udb);
-        $this->comments = $this->parseComments($comments);
-        $this->info = $this->parseInfo($info);
+        // user database
+        $udbfile = $userdir . DIRECTORY_SEPARATOR . self::USER_DATABASE_FILE;
+        if (file_exists($udbfile)) {
+            $this->hydrate(file_get_contents($udbfile));
+        } else {
+            throw new \Exception("User Database File Not Found", 1);
+        }
+
+        $commentsfile = $userdir . DIRECTORY_SEPARATOR . self::COMMENTS_FILE;
+        if (file_exists($commentsfile)) {
+            $this->_comments = $this->parseComments(file_get_contents($commentsfile));
+        }
+
+        $infofile = $userdir . DIRECTORY_SEPARATOR . self::INFO_FILE;
+        if (file_exists($infofile)) {
+            $this->_info = $this->parseInfo(file_get_contents($infofile));
+        }
     }
 
 
@@ -169,15 +173,37 @@ class User
         return str_replace("\r\n", "\r\n\r\n", $info);
     }
 
+    public function parseCommentLine(string $commentLine): ?array
+    {
+        $re = '/{(?<username>.*)} : (?<body>.*)/m';
+    
+        $result = preg_match($re, $commentLine, $matches);
+        if (!$result) {
+            return null;
+        }
+        return [
+            'username'  => $matches['username'] ?? '',
+            'body'      => $matches['body'] ?? '',
+        ];
+    }
     /**
      * parseComments
      *
      * @param string $comments COMMENTS.TXT as a string
      * @return array of comments and users
      */
-    public static function parseComments(string $comments): array
+    public function parseComments(string $comments): array
     {
-        return array_reverse(explode(PHP_EOL, $comments));
+        $commentLines = array_reverse(explode(PHP_EOL, $comments));
+        
+        $comments = [];
+        foreach ($commentLines as $line) {
+            $comment = $this->parseCommentLine($line);
+            if ($comment) {
+                $comments[] = $comment;
+            }
+        }
+        return $comments;
     }
 
     /**
@@ -188,26 +214,111 @@ class User
     public function hydrate(string $UDB)
     {
         $importedUser =  $this->parseUDB($UDB);
+        $this->_username = $importedUser['Nick'];
+        $this->_userId = $importedUser['UserId'];
+        $this->_realName = $importedUser['RealName'];
+        $this->_popName = $importedUser['PopName'];
+        $this->_rights = $importedUser['Rights'];
+        $this->_noOfEdits = $importedUser['NoOfEdits'];
+        $this->_totalTimeOn = $importedUser['TotalTimeOn'];
+        $this->_noOfTimesOn = $importedUser['NoOfTimesOn'];
+        $this->_password = $importedUser['Password'];
+        $this->_dept = $importedUser['Dept'];
+        $this->_faculty = $importedUser['Faculty'];
+        $this->_created = $importedUser['Created'];
+        $this->_lastOn = $importedUser['LastOn'];
+        $this->_historyFile = $importedUser['HistoryFile'];
+        $this->_BBSNo = $importedUser['BBSNo'];
+        $this->_flags = $importedUser['Flags'];
+    }
 
-        // create carbon dates because some legacy dates are not actual dates
-        try {
-            $created = Carbon::createFromFormat(self::$dateTimeFormat, $importedUser['Created']);
-        } catch (\Throwable $th) {
-            $created = Carbon::now();
-        }
-        try {
-            $lastOn = Carbon::createFromFormat(self::$dateTimeFormat, $importedUser['LastOn']);
-        } catch (\Throwable $th) {
-            $lastOn = null;
-        }
+    public function username()
+    {
+        return $this->_username;
+    } 
 
-        $this->username    = $importedUser['Nick'];
-        $this->name        = $importedUser['RealName'];
-        $this->popname     = $importedUser['PopName'];
-        $this->email       = $importedUser['UserId'] . '@nexus2.imported';
-        $this->totalVisits = $importedUser['NoOfTimesOn'];
-        $this->totalPosts  = $importedUser['NoOfEdits'];
-        $this->created_at  = $created;
-        $this->latestLogin = $lastOn;
+    public function userId()
+    {
+        return $this->_userId;
+    } 
+
+    public function realName()
+    {
+        return $this->_realName;
+    } 
+
+    public function popName()
+    {
+        return $this->_popName;
+    } 
+
+    public function rights()
+    {
+        return $this->_rights;
+    } 
+
+    public function noOfEdits()
+    {
+        return $this->_noOfEdits;
+    } 
+
+    public function totalTimeOn()
+    {
+        return $this->_totalTimeOn;
+    } 
+
+    public function noOfTimesOn()
+    {
+        return $this->_noOfTimesOn;
+    } 
+
+    public function password()
+    {
+        return $this->_password;
+    } 
+
+    public function dept()
+    {
+        return $this->_dept;
+    } 
+
+    public function faculty()
+    {
+        return $this->_faculty;
+    } 
+
+    public function created()
+    {
+        return $this->_created;
+    } 
+
+    public function lastOn()
+    {
+        return $this->_lastOn;
+    } 
+
+    public function historyFile()
+    {
+        return $this->_historyFile;
+    } 
+
+    public function BBSNo()
+    {
+        return $this->_BBSNo;
+    } 
+
+    public function flags()
+    {
+        return $this->_flags;
+    } 
+
+    public function comments()
+    {
+        return $this->_comments;
+    }
+
+    public function info()
+    {
+        return $this->_info;
     }
 }
