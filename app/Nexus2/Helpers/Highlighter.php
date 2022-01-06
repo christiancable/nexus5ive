@@ -6,11 +6,11 @@ class Highlighter
 {
     /**
      * translates nexus2 formatting to markdown
-     * 
+     *
      * @param string $raw - nexus2 text
-     * 
+     *
      * @return string text with markdown formatting
-     * 
+     *
      */
     public function highlight(string $raw): string
     {

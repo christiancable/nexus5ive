@@ -16,7 +16,7 @@ class MustNotBeLegacy
      * @return mixed
      */
     public function handle(Request $request, Closure $next)
-    {        
+    {
         $user = $request->user();
 
         if ($user && $user->legacy) {
