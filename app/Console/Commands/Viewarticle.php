@@ -49,7 +49,7 @@ class ViewArticle extends Command
         }
 
         $this->info("Parsing $filename");
-        
+
         if ($article->first()) {
             $this->info("from {$article->date()}\n");
         } else {
@@ -64,7 +64,7 @@ class ViewArticle extends Command
             if ($comment['subject']) {
                 $this->comment("Subject: " . $comment['subject']);
             }
-            $this->comment("\n" . $comment['body']. "\n");
+            $this->comment("\n" . $comment['body'] . "\n");
             $this->info('---');
         }
     }

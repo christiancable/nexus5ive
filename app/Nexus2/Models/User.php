@@ -2,8 +2,6 @@
 
 namespace App\Nexus2\Models;
 
-use Carbon\Carbon;
-
 /*
 this class is for parsing with user data from nexus2
 
@@ -28,16 +26,16 @@ NEXUS.CFG
 nexus2 UDB format notes
 
 DEFINES.H
-#define S_NICK                  17
-#define S_USERID                30
-#define S_REALNAME              30
-#define S_POPNAME               41
-#define S_PASSWORD              21
-#define S_DEPT                  30
-#define S_FACULTY               30
-#define S_FLAGS                 250
-#define S_HISTORYFILE           13
-#define S_ACTION                41
+// define S_NICK                  17
+// define S_USERID                30
+// define S_REALNAME              30
+// define S_POPNAME               41
+// define S_PASSWORD              21
+// define S_DEPT                  30
+// define S_FACULTY               30
+// define S_FLAGS                 250
+// define S_HISTORYFILE           13
+// define S_ACTION                41
 
 USERS.H
 typedef struct _UDB
@@ -101,34 +99,34 @@ class User
 
     // private static $dateTimeFormat = 'D d/n/y * G:i:s';
 
-    const COMMENTS_FILE         = 'comments.txt';
-    const INFO_FILE             = 'info.txt';
-    const USER_DATABASE_FILE    = 'NEXUS.UDB';
+    private const COMMENTS_FILE         = 'comments.txt';
+    private const INFO_FILE             = 'info.txt';
+    private const USER_DATABASE_FILE    = 'NEXUS.UDB';
 
-    private $_username = '';
-    private $_userId = '';
-    private $_realName = '';
-    private $_popName = '';
-    private $_rights = '';
-    private $_noOfEdits = '';
-    private $_totalTimeOn = '';
-    private $_noOfTimesOn = '';
-    private $_password = '';
-    private $_dept = '';
-    private $_faculty = '';
-    private $_created = '';
-    private $_lastOn = '';
-    private $_historyFile = '';
-    private $_BBSNo = '';
-    private $_flags = '';
-    private $_info = '';
+    private $username = '';
+    private $userId = '';
+    private $realName = '';
+    private $popName = '';
+    private $rights = '';
+    private $noOfEdits = '';
+    private $totalTimeOn = '';
+    private $noOfTimesOn = '';
+    private $password = '';
+    private $dept = '';
+    private $faculty = '';
+    private $created = '';
+    private $lastOn = '';
+    private $historyFile = '';
+    private $BBSNo = '';
+    private $flags = '';
+    private $info = '';
 
-    private $_comments = [];
+    private $comments = [];
 
-    function __construct(string $path = null)
+    public function __construct(string $path = null)
     {
         if (null == $path) {
-            return;    
+            return;
         }
         $userdir = rtrim($path, '/');
 
@@ -142,12 +140,12 @@ class User
 
         $commentsfile = $userdir . DIRECTORY_SEPARATOR . self::COMMENTS_FILE;
         if (file_exists($commentsfile)) {
-            $this->_comments = $this->parseComments(file_get_contents($commentsfile));
+            $this->comments = $this->parseComments(file_get_contents($commentsfile));
         }
 
         $infofile = $userdir . DIRECTORY_SEPARATOR . self::INFO_FILE;
         if (file_exists($infofile)) {
-            $this->_info = $this->parseInfo(file_get_contents($infofile));
+            $this->info = $this->parseInfo(file_get_contents($infofile));
         }
     }
 
@@ -155,7 +153,7 @@ class User
     /**
      * parseUDB
      *
-     * @param string $udb NEXUS.UDB as a string
+     * @param  string $udb NEXUS.UDB as a string
      * @return array parsed user info
      */
     public function parseUDB(string $udb): array
@@ -167,7 +165,7 @@ class User
     }
 
 
-    public function parseInfo(string $info) : string
+    public function parseInfo(string $info): string
     {
         // double the new lines to make this markdown friendly
         return str_replace("\r\n", "\r\n\r\n", $info);
@@ -176,7 +174,7 @@ class User
     public function parseCommentLine(string $commentLine): ?array
     {
         $re = '/{(?<username>.*)} : (?<body>.*)/m';
-    
+
         $result = preg_match($re, $commentLine, $matches);
         if (!$result) {
             return null;
@@ -189,13 +187,13 @@ class User
     /**
      * parseComments
      *
-     * @param string $comments COMMENTS.TXT as a string
+     * @param  string $comments COMMENTS.TXT as a string
      * @return array of comments and users
      */
     public function parseComments(string $comments): array
     {
         $commentLines = array_reverse(explode(PHP_EOL, $comments));
-        
+
         $comments = [];
         foreach ($commentLines as $line) {
             $comment = $this->parseCommentLine($line);
@@ -214,111 +212,122 @@ class User
     public function hydrate(string $UDB)
     {
         $importedUser =  $this->parseUDB($UDB);
-        $this->_username = $importedUser['Nick'];
-        $this->_userId = $importedUser['UserId'];
-        $this->_realName = $importedUser['RealName'];
-        $this->_popName = $importedUser['PopName'];
-        $this->_rights = $importedUser['Rights'];
-        $this->_noOfEdits = $importedUser['NoOfEdits'];
-        $this->_totalTimeOn = $importedUser['TotalTimeOn'];
-        $this->_noOfTimesOn = $importedUser['NoOfTimesOn'];
-        $this->_password = $importedUser['Password'];
-        $this->_dept = $importedUser['Dept'];
-        $this->_faculty = $importedUser['Faculty'];
-        $this->_created = $importedUser['Created'];
-        $this->_lastOn = $importedUser['LastOn'];
-        $this->_historyFile = $importedUser['HistoryFile'];
-        $this->_BBSNo = $importedUser['BBSNo'];
-        $this->_flags = $importedUser['Flags'];
+        $this->username = $importedUser['Nick'];
+        $this->userId = $importedUser['UserId'];
+        $this->realName = $importedUser['RealName'];
+        $this->popName = $importedUser['PopName'];
+        $this->rights = $importedUser['Rights'];
+        $this->noOfEdits = $importedUser['NoOfEdits'];
+        $this->totalTimeOn = $importedUser['TotalTimeOn'];
+        $this->noOfTimesOn = $importedUser['NoOfTimesOn'];
+        $this->password = $importedUser['Password'];
+        $this->dept = $importedUser['Dept'];
+        $this->faculty = $importedUser['Faculty'];
+        $this->created = $importedUser['Created'];
+        $this->lastOn = $importedUser['LastOn'];
+        $this->historyFile = $importedUser['HistoryFile'];
+        $this->BBSNo = $importedUser['BBSNo'];
+        $this->flags = $importedUser['Flags'];
     }
 
     public function username()
     {
-        return $this->_username;
-    } 
+        return $this->username;
+    }
 
     public function userId()
     {
-        return $this->_userId;
-    } 
+        return $this->userId;
+    }
 
     public function realName()
     {
-        return $this->_realName;
-    } 
+        return $this->realName;
+    }
 
     public function popName()
     {
-        return $this->_popName;
-    } 
+        return $this->popName;
+    }
 
     public function rights()
     {
-        return $this->_rights;
-    } 
+        return $this->rights;
+    }
 
     public function noOfEdits()
     {
-        return $this->_noOfEdits;
-    } 
+        return $this->noOfEdits;
+    }
 
     public function totalTimeOn()
     {
-        return $this->_totalTimeOn;
-    } 
+        return $this->totalTimeOn;
+    }
 
     public function noOfTimesOn()
     {
-        return $this->_noOfTimesOn;
-    } 
+        return $this->noOfTimesOn;
+    }
 
     public function password()
     {
-        return $this->_password;
-    } 
+        return $this->password;
+    }
 
     public function dept()
     {
-        return $this->_dept;
-    } 
+        return $this->dept;
+    }
 
     public function faculty()
     {
-        return $this->_faculty;
-    } 
+        return $this->faculty;
+    }
 
     public function created()
     {
-        return $this->_created;
-    } 
+        return $this->created;
+    }
 
     public function lastOn()
     {
-        return $this->_lastOn;
-    } 
+        return $this->lastOn;
+    }
 
     public function historyFile()
     {
-        return $this->_historyFile;
-    } 
+        return $this->historyFile;
+    }
 
     public function BBSNo()
     {
-        return $this->_BBSNo;
-    } 
+        return $this->BBSNo;
+    }
 
     public function flags()
     {
-        return $this->_flags;
-    } 
+        return $this->flags;
+    }
 
     public function comments()
     {
-        return $this->_comments;
+        return $this->comments;
     }
 
     public function info()
     {
-        return $this->_info;
+        return $this->info;
+    }
+
+    /**
+     * the unique key for this user
+     * for users this is the username
+     *
+     * @return string
+     */
+    public function key(): string
+    {
+        return $this->username();
     }
 }
