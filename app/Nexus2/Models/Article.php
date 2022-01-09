@@ -59,7 +59,11 @@ class Article
     private function isComment(string $rawPost): bool
     {
         $lines = preg_split('/\R/', $rawPost);
-        return  strstr($lines[1], self::USER_LINE_START);
+        try {
+            return  strstr($lines[1], self::USER_LINE_START);
+        } catch (\Throwable $th) {
+            return false;
+        }
     }
 
     /**

@@ -7,15 +7,14 @@ use App\Nexus2\Helpers\Key;
 class Menu
 {
     // phpcs:disable Generic.Files.LineLength
-    private const ARTICLE_PATTERN   = '/^a\s+(?<read>\d+)\s+(?<write>\d+)\s+(?<shortcut>\w)\s(?<file>\w+)\s+\S\s+(?<name>.+)$/ismU';
-
-    private const MENU_PATTERN      = '/^f\s+(?<read>\d+)\s+(?<shortcut>\S)\s+(?<file>\S+)\s+(\S)\s+(?<name>.+)$/ismU';
-    private const OWNER_PATTERN     = '/^.owner\s+(?<owner>.*)$/ismU';
-    private const TITLE_PATTERN     = '/^.title\s+(?<file>.*)$/ismU';
-    private const HEADING_PATTERN   = '/^H\s+(?<heading>.*)$/ismU';
-    private const MESSAGE_PATTERN   = '/^M\s+(?<read>\d+)((\s+)(?<message>.*))?$/ismU';
-    private const DOT_PATTERN       = '/^(?<command>\.\w+)((\s)(?<operand>.*))?$/ismU';
-    private const COMMENT_PATTERN   = '/^#(?<comment>.*)?$/ismU';
+    public const ARTICLE_PATTERN   = '/^a\s+(?<read>\d+)\s+(?<write>\d+)\s+(?<shortcut>\w)\s(?<file>\w+)\s+\S\s+(?<name>.+)$/ismU';
+    public const MENU_PATTERN      = '/^f\s+(?<read>\d+)\s+(?<shortcut>\S)\s+(?<file>\S+)\s+(\S)\s+(?<name>.+)$/ismU';
+    public const OWNER_PATTERN     = '/^.owner\s+(?<owner>.*)$/ismU';
+    public const TITLE_PATTERN     = '/^.title\s+(?<file>.*)$/ismU';
+    public const HEADING_PATTERN   = '/^H\s+(?<heading>.*)$/ismU';
+    public const MESSAGE_PATTERN   = '/^M\s+(?<read>\d+)((\s+)(?<message>.*))?$/ismU';
+    public const DOT_PATTERN       = '/^(?<command>\.\w+)((\s)(?<operand>.*))?$/ismU';
+    public const COMMENT_PATTERN   = '/^#(?<comment>.*)?$/ismU';
     // phpcs:enable 
 
     private $content;

@@ -1,9 +1,12 @@
 <?php
+
 namespace App\Console\Commands;
 
 use App\User;
 use App\Comment;
 use App\Section;
+use App\Nexus2\Models\Menu;
+use App\Nexus2\Models\Article;
 use App\Nexus2\Helpers\Detect;
 use RecursiveIteratorIterator;
 use Illuminate\Console\Command;
@@ -11,6 +14,7 @@ use RecursiveDirectoryIterator;
 use App\Nexus2\Helpers\Highlighter;
 use App\Nexus2\Models\User as Nexus2User;
 use App\Nexus2\Models\Menu as Nexus2Menu;
+use Illuminate\Support\Str;
 
 class ImportNexus2 extends Command
 {
@@ -56,18 +60,18 @@ class ImportNexus2 extends Command
         if ($root) {
             $this->importUsers($root);
         }
-        
+
         $root = $this->option('bbsdir');
         if ($root) {
             $this->importBBS($root);
         }
-        
+
 
         /*
         Sections
         */
-        
-        
+
+
         /*
         Topics and Posts
         */
@@ -76,11 +80,20 @@ class ImportNexus2 extends Command
     {
         // if filename starts with a slash then return filename
         // else return $root + $filename
-
-
     }
 
+    /*
 
+    idea 
+    - import all the users
+    - get all the files
+    - ignore the obvious ones
+    - try to make menus for the rest
+        - import the successful menus
+        - for each menu import the articles
+        - for each article import any new users
+    - run out of memory
+    */
     public function importBBS($root)
     {
         rtrim($root, '/');
@@ -93,77 +106,71 @@ class ImportNexus2 extends Command
             RecursiveIteratorIterator::SELF_FIRST,
             RecursiveIteratorIterator::CATCH_GET_CHILD // Ignore "Permission denied"
         );
-    
+
         $paths = array($root);
 
         $articles = [];
         $menus = [];
+        $ignoredExtensions = ['.PAI', '.ZIP', '.EXE', '.BAT', '.$$$', '.COM', '.QQQ', '.BAK'];
         foreach ($iter as $path) {
-            // file file is text
             if (is_file($path)) {
-                $fileContent = file_get_contents($path->getPathName());
-                $type = Detect::sniff($fileContent);
-
-                switch ($type) {
-                    case 'menu':
-                        // menu detection is matching zip files and all sorts
-                        // $this->comment($path->getPathName() . " $type");
-                        $key = strtolower($path->getPathName());
-                        $menus[$key] = new Nexus2Menu($fileContent, $path->getPathName(), $path->getPath(), $root);
-                        break;
-                    
-                    case 'article':
-                        // $this->comment($path->getPathName() . " $type");
-                        // $articles[] = $fileContent;
-                        break;
-                    default:
-                        # code...
-                        break;
+                if (Str::endsWith(Str::upper($path->getFileName()), $ignoredExtensions)) {
+                    // skip ignored files
+                    continue;
+                };
+                try {
+                    $menu = new Menu($path, $root);
+                } catch (\Throwable $th) {
+                    $this->error($th->getMessage());
                 }
-              
-                // if (Detect::isMenu($fileContent)) {
-                // }
-                // $this->comment($path->getFileName());
 
-            
-            }
-        }
-        
-        $newUsers = [];
-        foreach ($menus as $key => $menu) {
-            $this->info($menu->path);
-            $this->info($menu->root);
-            foreach ($menu->menus as $submenu) {
-                
-                if (isset($menus[$submenu['file']])) {
-                    $this->importMenu($menus[$submenu['file']], $submenu['name']);
-                } else {
-                    $this->error('Does not exist');
+                // if we actually have a menu then assume that it at least has menus or articles
+                $count = $menu->articles() + $menu->menus();
+                if ($count) {
+                    $menus[$menu->key()] = $menu;
                 }
             }
-            // foreach ($menu->articles as $article) {
-            //     $this->info(" - " . $article['name'] . " - " . $article['file']);
-            // }
-            // $this->info("$user->username:");
-            // if ($newUser = $this->importUser($user)) {
-            //     $this->comment("added");
-            //     $newUsers[] = $user;
-            // } else {
-            //     $this->line('already exists, skipping');
-            // }
-
-            $this->newLine();
         }
+
+        if (count($menus)) {
+            foreach ($menus as $menu) {
+                // $this->info($menu->key());
+            }
+            $this->info("Found " . count($menus) . " menus");
+        }
+
+        foreach ($menus as $menu) {
+            foreach ($menu->articles() as $articlelink) {
+                // dd($articlelink);
+                try {
+                    $article = new Article($articlelink['file']);
+                    // $this->info("+ {$articlelink['file']}");
+                    $articles[$articlelink['file']] = $article;
+                } catch (\Throwable $th) {
+                    //throw $th;
+                    // couldn't import article
+                    $this->warn($menu->key() . ' -- ' . $articlelink['file'] . ' ' . $th->getMessage());
+                }
+            }
+
+            foreach ($menu->menus() as $menulink) {
+                // dd($menulink);
+                // check if we have that menu already
+            }
+        }
+
+        $this->info("Imported " . count($articles) . " articles");
+
         
     }
-    
+
     /**
      * importMenu
      *
      * @param  mixed $menu
      * @param  mixed $title
      * @return void
-     * 
+     *
      * @todo
      *  create section
      *  create topics
@@ -173,7 +180,7 @@ class ImportNexus2 extends Command
     {
         $menu->title = $title;
         // xdebug_break();
-        
+
         $this->info(" [*] " . $menu->title . " - " . $menu->path);
         xdebug_break();
         $section = new Section([
@@ -182,7 +189,7 @@ class ImportNexus2 extends Command
 
         $section->moderator()->associate(User::first());
         $section->parent()->associate(Section::first());
-        
+
         $section->save();
 
         return;
@@ -263,7 +270,6 @@ class ImportNexus2 extends Command
 
         $this->newLine();
         $this->comment("Added " . count($newUsers) . " users");
-
     }
     public function importUser($user)
     {
@@ -328,7 +334,7 @@ class ImportNexus2 extends Command
                 $commentCount++;
             }
         }
-       
+
         return $commentCount;
     }
 }
