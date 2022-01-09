@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Nexus2\Models\Menu;
+use App\Nexus2\Models\Article;
 use Illuminate\Console\Command;
 
 class ViewMenu extends Command
@@ -77,6 +78,31 @@ class ViewMenu extends Command
             $this->newLine();
         }
 
+        $continue = true;
+        if ($this->confirm('Display Articles?') && $continue) {
+            foreach ($menu->articles() as $articlelink) {
+                $this->info($articlelink['name']);
+                $article = new Article($articlelink['file']);
+                $this->comment($article->preamble());
+
+                foreach ($article->comments() as $comment) {
+                    $this->comment($comment['date']);
+                    $this->comment("({$comment['popname']}) {$comment['username']}");
+                    if ($comment['subject']) {
+                        $this->comment("Subject: " . $comment['subject']);
+                    }
+                    $this->comment("\n" . $comment['body'] . "\n");
+                    $this->info('---');
+                }
+                if ($this->confirm('Next article?')) {
+                    $continue = true;
+                } else {
+                    $continue = false;
+                }
+            }
+        }
+
+        
         $this->comment("Menus");
         foreach ($menu->menus() as $menulink) {
             $this->info("[{$menulink['shortcut']}]\t{$menulink['name']}");
@@ -85,7 +111,7 @@ class ViewMenu extends Command
             $this->newLine();
         }
 
-        $this->info(print_r($menu->raw(), $menu->debug()));
+        // $this->info(print_r($menu->raw(), $menu->debug()));
         // $this->info(print_r($menu->articles()));
         // $this->info(print_r($menu->menus()));
     }
