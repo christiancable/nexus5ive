@@ -26,7 +26,7 @@ This current version is built using the [Laravel framework](https://laravel.com)
 
 - `composer install`
 - `cp .evn.example .env`
-- Edit .env; add your datbase info and sensible values for the NEXUS\_\*
+- Edit .env; add your database info and sensible values for the NEXUS\_\*
 - `php artisan migrate`
 - `yarn`
 - `yarn run production`
@@ -92,6 +92,6 @@ Static analysis is provided using the [larastan](https://medium.com/@nunomaduro/
 
 ### Coding Standards
 
-PHP is written to confirm to PSR2. To check the status of all the files within `app` run:
+PHP is written to confirm to PSR12. To check the status of all the files within `app` run:
 
 `yarn phpcs`

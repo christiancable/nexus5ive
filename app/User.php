@@ -155,6 +155,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'administrator'     => 'bool',
         'private'           => 'bool',
         'banned'            => 'bool',
+        'legacy'            => 'bool',
     ];
 
     /* dates */

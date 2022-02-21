@@ -45,6 +45,11 @@ return [
             'path' => storage_path('logs/laravel.log'),
             'level' => 'debug',
         ],
+        'dusk' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/dusk.log'),
+            'level' => 'debug',
+        ],
 
         'daily' => [
             'driver' => 'daily',
