@@ -2,9 +2,13 @@
 
 namespace App\Console\Commands;
 
+use Carbon\Carbon;
 use App\User;
+use App\Post;
+use App\Topic;
 use App\Comment;
 use App\Section;
+use Illuminate\Support\Str;
 use App\Nexus2\Models\Menu;
 use App\Nexus2\Models\Article;
 use App\Nexus2\Helpers\Detect;
@@ -14,7 +18,6 @@ use RecursiveDirectoryIterator;
 use App\Nexus2\Helpers\Highlighter;
 use App\Nexus2\Models\User as Nexus2User;
 use App\Nexus2\Models\Menu as Nexus2Menu;
-use Illuminate\Support\Str;
 
 class ImportNexus2 extends Command
 {
@@ -85,13 +88,22 @@ class ImportNexus2 extends Command
     /*
 
     idea 
-    - import all the users
-    - get all the files
-    - ignore the obvious ones
-    - try to make menus for the rest
-        - import the successful menus
-        - for each menu import the articles
-        - for each article import any new users
+    Users:
+        [x] import all the users from USR
+        [x] import all the comments for the users
+        [x] import all the users only found in the comments
+    Files:
+        - get all the files
+        - ignore the obvious ones
+        - try to make menus for the rest
+            - import the successful menus
+            - for each menu import the articles
+                - for each article import each post
+                - import any unknown users
+    What new things do we need in nexus5?:
+        [ ] preamble for topics
+
+
     - run out of memory
     */
     public function importBBS($root)
@@ -122,7 +134,9 @@ class ImportNexus2 extends Command
                     $menu = new Menu($path, $root);
                 } catch (\Throwable $th) {
                     $this->error($th->getMessage());
+                    continue;
                 }
+
 
                 // if we actually have a menu then assume that it at least has menus or articles
                 $count = $menu->articles() + $menu->menus();
@@ -133,35 +147,79 @@ class ImportNexus2 extends Command
         }
 
         if (count($menus)) {
-            foreach ($menus as $menu) {
-                // $this->info($menu->key());
-            }
             $this->info("Found " . count($menus) . " menus");
         }
-
+        
+        //@todo deal with links between menus
         foreach ($menus as $menu) {
+            // create menu
+            $this->info($menu->key());
+            $this->info($menu->heading());
+            $this->info($menu->title());
+            $section = new Section();         
+            $section->parent()->associate(Section::first());
+            $section->moderator()->associate(User::first());
+            
+            $section->title = $menu->key(); //@todo section name
+            $section->intro = $menu->heading();
+            $section->save();
+
+            // add articles for menu
             foreach ($menu->articles() as $articlelink) {
-                // dd($articlelink);
                 try {
                     $article = new Article($articlelink['file']);
-                    // $this->info("+ {$articlelink['file']}");
                     $articles[$articlelink['file']] = $article;
                 } catch (\Throwable $th) {
                     //throw $th;
                     // couldn't import article
                     $this->warn($menu->key() . ' -- ' . $articlelink['file'] . ' ' . $th->getMessage());
+                    continue;
+                }
+                $this->info("+ {$articlelink['file']}");
+                $topic = new Topic([
+                    'title' => $article->path(), //@todo topic title
+                    'intro' => $article->preamble(),
+                ]);
+
+                $topic->section()->associate($section);
+                $topic->save();
+
+                foreach ($article->comments() as $comment) {
+
+                    
+                    $post = new Post([
+                        'title' => $comment['subject'],
+                        'text' => $comment['body'],
+                        'popname' => $comment['popname'],
+                    ]);
+
+                    $dateStr = $comment['date']['date'] . " " . $comment['date']['time'];
+                    try {
+                        $post->time = Carbon::createFromFormat('d/m/Y G:i:s', $dateStr);
+                    } catch (\Throwable $th) {
+                    }
+                    // get post author
+                    $author = User::where('username', $comment['username'])->first();
+                    if (!$author) {
+                        $author = User::factory()->make(
+                            [
+                                'username' => $comment['username'],
+                                'email'    => $comment['username'] . "@imported",
+                                'name'     => '',
+                                'popname'  => '',
+                                'about'    => '',
+                                'legacy'   => true,
+                            ]
+                        );
+                        $author->save();
+                    }
+                    $post->author()->associate($author);
+                    $post->topic()->associate($topic);
+
+                    $post->save();
                 }
             }
-
-            foreach ($menu->menus() as $menulink) {
-                // dd($menulink);
-                // check if we have that menu already
-            }
         }
-
-        $this->info("Imported " . count($articles) . " articles");
-
-        
     }
 
     /**
@@ -228,31 +286,18 @@ class ImportNexus2 extends Command
             if (is_file($path)) {
                 if ('NEXUS.UDB' == strtoupper($path->getFileName())) {
                     $udb = file_get_contents($path->getPathName());
-
                     try {
-                        $comments = file_get_contents($path->getPath() . DIRECTORY_SEPARATOR . "COMMENTS.TXT");
-                    } catch (\Throwable $th) {
-                        $comments = '';
-                    }
-
-                    try {
-                        $info = file_get_contents($path->getPath() . DIRECTORY_SEPARATOR . "INFO.TXT");
-                    } catch (\Throwable $th) {
-                        $info = '';
-                    }
-
-                    try {
-                        $users[] = new Nexus2User($udb, $info, $comments);
+                        $users[] = new Nexus2User($path->getPath());
                     } catch (\Throwable $th) {
                         $errors[] = $path->getPath();
                     }
                 }
             }
         }
-
+        // dd($errors, $users);
         $newUsers = [];
         foreach ($users as $user) {
-            $this->info("$user->username:");
+            $this->info("{$user->username()}:");
             if ($newUser = $this->importUser($user)) {
                 $this->comment("added");
                 $newUsers[] = $user;
@@ -265,7 +310,7 @@ class ImportNexus2 extends Command
 
         foreach ($newUsers as $user) {
             $count = $this->addCommentsForUser($user);
-            $this->comment("Added $count comments for $user->username");
+            $this->comment("Added $count comments for {$user->username()}");
         }
 
         $this->newLine();
@@ -273,22 +318,22 @@ class ImportNexus2 extends Command
     }
     public function importUser($user)
     {
-        $existingUser = User::where('username', $user->username)->first();
+        $existingUser = User::where('username', $user->username())->first();
         if ($existingUser) {
             return false;
         }
 
         $newUser = User::factory()->make(
             [
-            'username'      => $user->username,
-            'popname'       => $this->highlighter->highlight($user->popname),
-            'name'          => $user->name,
-            'email'         => $user->username . "@imported",
-            'about'         => $this->highlighter->highlight($user->info),
-            'totalVisits'   => $user->totalVisits,
-            'totalPosts'    => $user->totalPosts,
-            'latestLogin'   => $user->latestLogin,
-            'created_at'    => $user->created_at,
+            'username'      => $user->username(),
+            'popname'       => $this->highlighter->highlight($user->popname()),
+            'name'          => $user->realName(),
+            'email'         => $user->username() . "@imported",
+            'about'         => $this->highlighter->highlight($user->info()),
+            'totalVisits'   => $user->noOfTimesOn(),
+            'totalPosts'    => $user->noOfEdits(),
+            // 'latestLogin'   => $user->lastOn(),
+            // 'created_at'    => $user->created(),
             'legacy'        => true,
             ]
         );
@@ -297,42 +342,39 @@ class ImportNexus2 extends Command
         return $newUser;
     }
 
-    public function addCommentsForUser($user)
+    public function addCommentsForUser($legacyUser)
     {
-        // valid nx5 comments need a user and text - nx2 allowed freetext so we need to be careful
-        $pattern = '/{(.*)} : (.*)/m';
         $commentCount = 0;
 
-        foreach ($user->comments as $comment) {
-            preg_match_all($pattern, $comment, $matches, PREG_SET_ORDER, 0);
-            if (count($matches) && 3 == count($matches[0])) {
-                $username = $matches[0][1];
-                $text = $matches[0][2];
+        foreach ($legacyUser->comments() as $comment) {
 
-                $author = User::where('username', $username)->first();
-                if (!$author) {
-                    $author = User::factory()->make(
-                        [
-                            'username' => $username,
-                            'email'    => $username . "@imported",
-                            'name'     => '',
-                            'popname'  => '',
-                            'about'    => '',
-                        ]
-                    );
-                    $author->save();
-                }
+            $username = $comment["username"];
+            $text = $comment["body"];
+    
 
-                $user = User::where('username', $user->username)->first();
-
-                Comment::create([
-                    'user_id' => $user->id,
-                    'author_id' => $author->id,
-                    'text' =>  $this->highlighter->highlight($text),
-                    'read' => true,
-                ]);
-                $commentCount++;
+            $author = User::where('username', $username)->first();
+            if (!$author) {
+                $author = User::factory()->make(
+                    [
+                        'username' => $username,
+                        'email'    => $username . "@imported",
+                        'name'     => '',
+                        'popname'  => '',
+                        'about'    => '',
+                    ]
+                );
+                $author->save();
             }
+            
+            $user = User::where('username', $legacyUser->username())->first();
+
+            Comment::create([
+                'user_id' => $user->id,
+                'author_id' => $author->id,
+                'text' =>  $this->highlighter->highlight($text),
+                'read' => true,
+            ]);
+            $commentCount++;
         }
 
         return $commentCount;

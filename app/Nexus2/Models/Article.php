@@ -16,6 +16,7 @@ class Article
     private const DATE_LINE_START       = "\e\x01";
     private const USER_LINE_START       = "\e\x02";
     private const SUBJECT_LINE_START    = "\e\x03";
+    private const DATE_TIME_SPLIT       = "\xC4";
 
     private $comments = [];
     private $content = '';
@@ -107,6 +108,26 @@ class Article
         ];
     }
 
+    public function parseDateTime(string $rawDateTime)
+    {
+        /*
+        11:59:27 � 10/11/1993
+        */
+        $result = explode(self::DATE_TIME_SPLIT, $rawDateTime);
+        if (2 === count($result)) {
+            return [
+                'time' => trim($result[0]),
+                'date' => trim($result[1]),
+            ];
+        } else {
+            return [
+                'time' => null,
+                'date' => null
+            ];
+        }
+
+    }
+
     public function parsePost($rawPost)
     {
         /* post format, note subject line is optional
@@ -125,7 +146,7 @@ class Article
 
         $lines = preg_split('/\R/', $rawPost);
 
-        $post['date'] = trim(ltrim($lines[0], self::DATE_LINE_START));
+        $post['date'] = $this->parseDateTime(trim(ltrim($lines[0], self::DATE_LINE_START)));
         unset($lines[0]);
 
         if (strstr($lines[1], self::USER_LINE_START)) {

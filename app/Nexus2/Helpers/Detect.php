@@ -81,7 +81,7 @@ class Detect
     */
     public static function isMenu(string $file): bool
     {
-        
+
         // c 0
         $comment = "";
 
@@ -93,7 +93,7 @@ class Detect
         $menuItems = [
             // f 0 Y amstrad\amst.mnu * Amstrad section, especially for Amstrads!
             'folder' => "/^f\s*\d*\s[a-z]\s\S*\s\*\s\S.*$/im",
-            
+
             // a 100 100 U uses U Alternative @Uses for your machine!!
             'artice' => '/^a\s(?<read>\d*)\s(?<write>\d*)\s\w\s(?<file>\w*)\s(.)\s(?<name>.*)$/ismU',
 
@@ -120,7 +120,7 @@ class Detect
                 return true;
             }
         }
-        
+
         return false;
     }
 }
