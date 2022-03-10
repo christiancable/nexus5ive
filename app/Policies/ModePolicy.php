@@ -14,7 +14,7 @@ class ModePolicy
     /**
      * Perform pre-authorization checks.
      *
-     * @param  \App\Models\User  $user
+     * @param  \App\User  $user
      * @param  string  $ability
      * @return void|bool
      */
