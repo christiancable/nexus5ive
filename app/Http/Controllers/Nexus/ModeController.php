@@ -15,7 +15,6 @@ use Illuminate\Support\Facades\Validator;
 
 class ModeController extends Controller
 {
-
     /**
      * __construct
      * allowed users are auth, verified, sysops
