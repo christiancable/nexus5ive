@@ -9,6 +9,7 @@ use App\Events\TreeCacheBecameDirty;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
@@ -136,9 +137,16 @@ class Section extends Model
         return $children;
     }
 
-    public function getIsHomeAttribute()
+    /**
+     * Is this the Home Section?
+     *
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute
+     */
+    protected function isHome(): Attribute
     {
-        return null === $this->parent_id;
+        return Attribute::get(
+            fn() => null === $this->parent_id
+        );
     }
 
     // topics
@@ -154,18 +162,26 @@ class Section extends Model
     }
 
 
-    // posts
-
-    public function getMostRecentPostAttribute()
+    /**
+     * The most recent post
+     *
+     * Note: uses withoutObjectCaching because we handing caching ourselves here
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute
+     */
+    public function mostRecentPost(): Attribute
     {
-        $cacheKey = 'mostRecentPost' . $this->id;
-
-        return Cache::rememberForever(
-            $cacheKey,
+        return Attribute::get(
             function () {
-                return $this->recalculateMostRecentPost();
+                $cacheKey = 'mostRecentPost' . $this->id;
+
+                return Cache::rememberForever(
+                    $cacheKey,
+                    function () {
+                        return $this->recalculateMostRecentPost();
+                    }
+                );
             }
-        );
+        )->withoutObjectCaching();
     }
 
     public static function forgetMostRecentPostAttribute($section_id = null)

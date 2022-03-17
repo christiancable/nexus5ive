@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
@@ -44,23 +45,26 @@ class Theme extends Model
     }
 
     /**
-     * GetUCNameAttribute
      * the name field in sentence case
      *
-     * @return string
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute
      */
-    public function getUCNameAttribute()
+    public function UCName(): Attribute
     {
-        return ucwords($this->name);
+        return Attribute::get(
+            fn() => ucwords($this->name)
+        );
     }
+
     /**
-     * GetExternalAttribute
-     * is the theme css internal or external
+     *  is the theme css internal or external
      *
-     * @return bool
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute
      */
-    public function getExternalAttribute()
+    public function External(): Attribute
     {
-        return 0 === strpos($this->path, 'http');
+        return Attribute::get(
+            fn() => 0 === strpos($this->path, 'http')
+        );
     }
 }
