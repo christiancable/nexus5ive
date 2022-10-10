@@ -54,8 +54,11 @@ class Section extends Model
     use HasFactory;
     use SoftDeletes;
 
+    protected $casts = [
+        'deleted_at' => 'datetime',
+    ];
+
     protected $fillable = ['id','title','intro','user_id','parent_id', 'weight'];
-    protected $dates = ['deleted_at'];
 
     public static function boot()
     {

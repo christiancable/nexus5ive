@@ -36,9 +36,8 @@ class Message extends Model
 
     protected $casts = [
         'read' => 'boolean',
+        'time' => 'datetime',
     ];
-
-    protected $dates = ['time'];
 
     public function author()
     {

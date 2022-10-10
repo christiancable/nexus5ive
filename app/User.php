@@ -152,14 +152,12 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'latestLogin'       => 'datetime',
+        'deleted_at'        => 'datetime',
         'administrator'     => 'bool',
         'private'           => 'bool',
         'banned'            => 'bool',
     ];
-
-    /* dates */
-
-    protected $dates = ['latestLogin','deleted_at'];
 
     /**
      * Get the route key for the model.
