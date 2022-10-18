@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Nexus\ChatApiController;
 use App\Http\Controllers\Nexus\ChatController;
 use Illuminate\Http\Request;
 
@@ -91,9 +92,9 @@ Route::post('chat/{username}', [ChatController::class, 'store']);
 Route::resource('chat', ChatController::class);
 
 // chat refactor for vue
-Route::get('chats/{username}', 'Nexus\ChatApiController@show');
-Route::get('chats', 'Nexus\ChatApiController@index');
-Route::get('chatsusers', 'Nexus\ChatApiController@chatPartnerIndex');
+Route::get('chats/{username}', [ChatApiController::class, 'show']);
+Route::get('chats', [ChatApiController::class, 'index']);
+Route::get('chatsusers', [ChatApiController::class, 'chatPartnerIndex']);
 
 // activities
 Route::resource('here', 'Nexus\ActivityController');
