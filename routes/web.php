@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Nexus\ActivityController;
 use App\Http\Controllers\Nexus\ChatApiController;
 use App\Http\Controllers\Nexus\ChatController;
 use Illuminate\Http\Request;
@@ -97,7 +98,7 @@ Route::get('chats', [ChatApiController::class, 'index']);
 Route::get('chatsusers', [ChatApiController::class, 'chatPartnerIndex']);
 
 // activities
-Route::resource('here', 'Nexus\ActivityController');
+Route::resource('here', ActivityController::class);
 
 // search
 Route::get('search', 'Nexus\SearchController@index');
