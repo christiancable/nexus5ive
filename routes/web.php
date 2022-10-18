@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 
 use App\Http\Controllers\Nexus\SectionController;
+use App\Http\Controllers\Nexus\TopicController;
 use App\Http\Controllers\Nexus\UserController;
 
 /*
@@ -64,10 +65,11 @@ Route::get('/section/latest', [SectionController::class, 'latest']);
 Route::resource('section', SectionController::class);
 
 // topics
-Route::delete('topic/{topic}', 'Nexus\TopicController@destroy');
-Route::post('/topic/{topic}/subscribe', 'Nexus\TopicController@updateSubscription')
+Route::delete('topic/{topic}', [TopicController::class, 'destroy']);
+
+Route::post('/topic/{topic}/subscribe', [TopicController::class, 'updateSubscription'])
     ->name('topic.updateSubscription');
-Route::resource('topic', 'Nexus\TopicController');
+Route::resource('topic', TopicController::class);
 
 // comments
 Route::delete('comments', 'Nexus\CommentController@destroyAll');
