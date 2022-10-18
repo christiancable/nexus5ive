@@ -2,6 +2,9 @@
 
 use Illuminate\Http\Request;
 
+use App\Http\Controllers\Nexus\SectionController;
+use App\Http\Controllers\Nexus\UserController;
+
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -46,18 +49,19 @@ Route::get('interface/toolbar', ['middleware' => 'auth',  function () {
 }])->name('interface.toolbar');
 
 
-// users
-Route::resource('users', 'Nexus\UserController');
+// uers
+Route::resource('users', UserController::class);
 
 
 // special sections
-Route::get('/', 'Nexus\SectionController@show');
-Route::get('/home', 'Nexus\SectionController@show');
-Route::get('leap', 'Nexus\SectionController@leap');
-Route::get('/section/latest', 'Nexus\SectionController@latest');
+
+Route::get('/', [SectionController::class, 'show']);
+Route::get('/home', [SectionController::class, 'show']);
+Route::get('leap', [SectionController::class, 'leap']);
+Route::get('/section/latest', [SectionController::class, 'latest']);
 
 // sections
-Route::resource('section', 'Nexus\SectionController');
+Route::resource('section', SectionController::class);
 
 // topics
 Route::delete('topic/{topic}', 'Nexus\TopicController@destroy');
@@ -102,11 +106,11 @@ Route::post('archive/section/{section}', 'Nexus\RestoreController@section')
     ->name('archive.section');
 Route::post('archive/topic/{topic}', 'Nexus\RestoreController@topic')
     ->name('archive.topic');
-    
+
 // admin
 Route::resource('admin', 'Nexus\ModeController');
 Route::post('admin', 'Nexus\ModeController@handle')
-        ->name('mode.handle');
+    ->name('mode.handle');
 
 // utilities
 Route::get('updateSubscriptions', 'Nexus\TopicController@markAllSubscribedTopicsAsRead');
