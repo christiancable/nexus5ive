@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Nexus\CommentController;
 use Illuminate\Http\Request;
 
 use App\Http\Controllers\Nexus\SectionController;
@@ -55,7 +56,6 @@ Route::resource('users', UserController::class);
 
 
 // special sections
-
 Route::get('/', [SectionController::class, 'show']);
 Route::get('/home', [SectionController::class, 'show']);
 Route::get('leap', [SectionController::class, 'leap']);
@@ -66,15 +66,14 @@ Route::resource('section', SectionController::class);
 
 // topics
 Route::delete('topic/{topic}', [TopicController::class, 'destroy']);
-
 Route::post('/topic/{topic}/subscribe', [TopicController::class, 'updateSubscription'])
     ->name('topic.updateSubscription');
 Route::resource('topic', TopicController::class);
 
 // comments
-Route::delete('comments', 'Nexus\CommentController@destroyAll');
-Route::delete('comments/{comment}', 'Nexus\CommentController@destroy');
-Route::resource('comments', 'Nexus\CommentController');
+Route::delete('comments', [CommentController::class, 'destroyAll']);
+Route::delete('comments/{comment}', [CommentController::class, 'destroy']);
+Route::resource('comments', CommentController::class);
 
 // posts
 Route::delete('posts/{post}', 'Nexus\PostController@destroy');
