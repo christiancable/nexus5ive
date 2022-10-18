@@ -1,16 +1,19 @@
 <?php
 
-use App\Http\Controllers\Nexus\ActivityController;
-use App\Http\Controllers\Nexus\ChatApiController;
-use App\Http\Controllers\Nexus\ChatController;
 use Illuminate\Http\Request;
 
+use App\Http\Controllers\Nexus\ActivityController;
+use App\Http\Controllers\Nexus\ChatApiController;
+use App\Http\Controllers\Nexus\MentionController;
 use App\Http\Controllers\Nexus\CommentController;
-use App\Http\Controllers\Nexus\PostController;
 use App\Http\Controllers\Nexus\RestoreController;
-use App\Http\Controllers\Nexus\SearchController;
 use App\Http\Controllers\Nexus\SectionController;
+use App\Http\Controllers\Nexus\SearchController;
 use App\Http\Controllers\Nexus\TopicController;
+use App\Http\Controllers\Nexus\ModeController;
+use App\Http\Controllers\Nexus\PostController;
+use App\Http\Controllers\Nexus\ChatController;
+use App\Http\Controllers\Nexus\TreeController;
 use App\Http\Controllers\Nexus\UserController;
 
 /*
@@ -82,7 +85,7 @@ Route::delete('comments/{comment}', [CommentController::class, 'destroy']);
 Route::resource('comments', CommentController::class);
 
 // posts
-Route::delete('posts/{post}', [PostController::class , 'destroy']);
+Route::delete('posts/{post}', [PostController::class, 'destroy']);
 Route::resource('posts', PostController::class);
 
 // messages
@@ -115,13 +118,13 @@ Route::post('archive/topic/{topic}', [RestoreController::class, 'topic'])
     ->name('archive.topic');
 
 // admin
-Route::resource('admin', 'Nexus\ModeController');
-Route::post('admin', 'Nexus\ModeController@handle')
+Route::resource('admin', ModeController::class);
+Route::post('admin', [ModeController::class, 'handle'])
     ->name('mode.handle');
 
 // utilities
-Route::get('updateSubscriptions', 'Nexus\TopicController@markAllSubscribedTopicsAsRead');
-Route::get('jump', 'Nexus\TreeController@show');
+Route::get('updateSubscriptions', [TopicController::class, 'markAllSubscribedTopicsAsRead']);
+Route::get('jump', [TreeController::class, 'show']);
 
 // @mentions
-Route::delete('mentions', 'Nexus\MentionController@destroyAll');
+Route::delete('mentions', [MentionController::class, 'destroyAll']);
