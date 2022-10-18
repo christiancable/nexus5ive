@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Nexus\ChatController;
 use Illuminate\Http\Request;
 
 use App\Http\Controllers\Nexus\CommentController;
@@ -85,9 +86,9 @@ Route::resource('posts', PostController::class);
 // Route::resource('messages', 'Nexus\MessageController');
 
 // conversations
-Route::get('chat/{username}', 'Nexus\ChatController@conversation');
-Route::post('chat/{username}', 'Nexus\ChatController@store');
-Route::resource('chat', 'Nexus\ChatController');
+Route::get('chat/{username}', [ChatController::class, 'conversation']);
+Route::post('chat/{username}', [ChatController::class, 'store']);
+Route::resource('chat', ChatController::class);
 
 // chat refactor for vue
 Route::get('chats/{username}', 'Nexus\ChatApiController@show');
