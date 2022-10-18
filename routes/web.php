@@ -1,8 +1,9 @@
 <?php
 
-use App\Http\Controllers\Nexus\CommentController;
 use Illuminate\Http\Request;
 
+use App\Http\Controllers\Nexus\CommentController;
+use App\Http\Controllers\Nexus\PostController;
 use App\Http\Controllers\Nexus\SectionController;
 use App\Http\Controllers\Nexus\TopicController;
 use App\Http\Controllers\Nexus\UserController;
@@ -76,8 +77,8 @@ Route::delete('comments/{comment}', [CommentController::class, 'destroy']);
 Route::resource('comments', CommentController::class);
 
 // posts
-Route::delete('posts/{post}', 'Nexus\PostController@destroy');
-Route::resource('posts', 'Nexus\PostController');
+Route::delete('posts/{post}', [PostController::class , 'destroy']);
+Route::resource('posts', PostController::class);
 
 // messages
 // Route::get('messages/{id}', 'Nexus\MessageController@index');
