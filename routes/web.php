@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Controllers\Nexus\CommentController;
 use App\Http\Controllers\Nexus\PostController;
+use App\Http\Controllers\Nexus\RestoreController;
+use App\Http\Controllers\Nexus\SearchController;
 use App\Http\Controllers\Nexus\SectionController;
 use App\Http\Controllers\Nexus\TopicController;
 use App\Http\Controllers\Nexus\UserController;
@@ -101,15 +103,15 @@ Route::get('chatsusers', [ChatApiController::class, 'chatPartnerIndex']);
 Route::resource('here', ActivityController::class);
 
 // search
-Route::get('search', 'Nexus\SearchController@index');
-Route::get('search/{text}', 'Nexus\SearchController@find');
-Route::post('search', 'Nexus\SearchController@submitSearch');
+Route::get('search', [SearchController::class, 'index']);
+Route::get('search/{text}', [SearchController::class, 'find']);
+Route::post('search', [SearchController::class, 'submitSearch']);
 
 // restore
-Route::resource('archive', 'Nexus\RestoreController');
-Route::post('archive/section/{section}', 'Nexus\RestoreController@section')
+Route::resource('archive', RestoreController::class);
+Route::post('archive/section/{section}', [RestoreController::class, 'section'])
     ->name('archive.section');
-Route::post('archive/topic/{topic}', 'Nexus\RestoreController@topic')
+Route::post('archive/topic/{topic}', [RestoreController::class, 'topic'])
     ->name('archive.topic');
 
 // admin
