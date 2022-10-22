@@ -29,8 +29,12 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Activity extends Model
 {
+    protected $casts = [
+        'deleted_at' => 'datetime',
+        'time'       => 'datetime',
+    ];
+
     protected $table = 'activities';
-    protected $dates = ['time', 'deleted_at'];
     protected $fillable = ['user_id', 'text', 'route', 'time'];
 
     public function user()

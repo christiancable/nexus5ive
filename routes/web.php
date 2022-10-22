@@ -2,6 +2,20 @@
 
 use Illuminate\Http\Request;
 
+use App\Http\Controllers\Nexus\ActivityController;
+use App\Http\Controllers\Nexus\ChatApiController;
+use App\Http\Controllers\Nexus\MentionController;
+use App\Http\Controllers\Nexus\CommentController;
+use App\Http\Controllers\Nexus\RestoreController;
+use App\Http\Controllers\Nexus\SectionController;
+use App\Http\Controllers\Nexus\SearchController;
+use App\Http\Controllers\Nexus\TopicController;
+use App\Http\Controllers\Nexus\ModeController;
+use App\Http\Controllers\Nexus\PostController;
+use App\Http\Controllers\Nexus\ChatController;
+use App\Http\Controllers\Nexus\TreeController;
+use App\Http\Controllers\Nexus\UserController;
+
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -46,71 +60,71 @@ Route::get('interface/toolbar', ['middleware' => 'auth',  function () {
 }])->name('interface.toolbar');
 
 
-// users
-Route::resource('users', 'Nexus\UserController');
+// uers
+Route::resource('users', UserController::class);
 
 
 // special sections
-Route::get('/', 'Nexus\SectionController@show');
-Route::get('/home', 'Nexus\SectionController@show');
-Route::get('leap', 'Nexus\SectionController@leap');
-Route::get('/section/latest', 'Nexus\SectionController@latest');
+Route::get('/', [SectionController::class, 'show']);
+Route::get('/home', [SectionController::class, 'show']);
+Route::get('leap', [SectionController::class, 'leap']);
+Route::get('/section/latest', [SectionController::class, 'latest']);
 
 // sections
-Route::resource('section', 'Nexus\SectionController');
+Route::resource('section', SectionController::class);
 
 // topics
-Route::delete('topic/{topic}', 'Nexus\TopicController@destroy');
-Route::post('/topic/{topic}/subscribe', 'Nexus\TopicController@updateSubscription')
+Route::delete('topic/{topic}', [TopicController::class, 'destroy']);
+Route::post('/topic/{topic}/subscribe', [TopicController::class, 'updateSubscription'])
     ->name('topic.updateSubscription');
-Route::resource('topic', 'Nexus\TopicController');
+Route::resource('topic', TopicController::class);
 
 // comments
-Route::delete('comments', 'Nexus\CommentController@destroyAll');
-Route::delete('comments/{comment}', 'Nexus\CommentController@destroy');
-Route::resource('comments', 'Nexus\CommentController');
+Route::delete('comments', [CommentController::class, 'destroyAll']);
+Route::delete('comments/{comment}', [CommentController::class, 'destroy']);
+Route::resource('comments', CommentController::class);
 
 // posts
-Route::delete('posts/{post}', 'Nexus\PostController@destroy');
-Route::resource('posts', 'Nexus\PostController');
+Route::delete('posts/{post}', [PostController::class, 'destroy']);
+Route::resource('posts', PostController::class);
 
 // messages
 // Route::get('messages/{id}', 'Nexus\MessageController@index');
 // Route::resource('messages', 'Nexus\MessageController');
 
 // conversations
-Route::get('chat/{username}', 'Nexus\ChatController@conversation');
-Route::post('chat/{username}', 'Nexus\ChatController@store');
-Route::resource('chat', 'Nexus\ChatController');
+Route::get('chat/{username}', [ChatController::class, 'conversation']);
+Route::post('chat/{username}', [ChatController::class, 'store']);
+Route::resource('chat', ChatController::class);
 
 // chat refactor for vue
-Route::get('chats/{username}', 'Nexus\ChatApiController@show');
-Route::get('chats', 'Nexus\ChatApiController@index');
-Route::get('chatsusers', 'Nexus\ChatApiController@chatPartnerIndex');
+Route::get('chats/{username}', [ChatApiController::class, 'show']);
+Route::get('chats', [ChatApiController::class, 'index']);
+Route::get('chatsusers', [ChatApiController::class, 'chatPartnerIndex']);
 
 // activities
-Route::resource('here', 'Nexus\ActivityController');
+Route::resource('here', ActivityController::class);
 
 // search
-Route::get('search', 'Nexus\SearchController@index');
-Route::get('search/{text}', 'Nexus\SearchController@find');
-Route::post('search', 'Nexus\SearchController@submitSearch');
+Route::get('search', [SearchController::class, 'index']);
+Route::get('search/{text}', [SearchController::class, 'find']);
+Route::post('search', [SearchController::class, 'submitSearch']);
 
 // restore
-Route::resource('archive', 'Nexus\RestoreController');
-Route::post('archive/section/{section}', 'Nexus\RestoreController@section')
+Route::resource('archive', RestoreController::class);
+Route::post('archive/section/{section}', [RestoreController::class, 'section'])
     ->name('archive.section');
-Route::post('archive/topic/{topic}', 'Nexus\RestoreController@topic')
+Route::post('archive/topic/{topic}', [RestoreController::class, 'topic'])
     ->name('archive.topic');
-    
+
 // admin
-Route::resource('admin', 'Nexus\ModeController');
-Route::post('admin', 'Nexus\ModeController@handle')
-        ->name('mode.handle');
+Route::resource('admin', ModeController::class);
+Route::post('admin', [ModeController::class, 'handle'])
+    ->name('mode.handle');
 
 // utilities
-Route::get('updateSubscriptions', 'Nexus\TopicController@markAllSubscribedTopicsAsRead');
-Route::get('jump', 'Nexus\TreeController@show');
+Route::get('updateSubscriptions', [TopicController::class, 'markAllSubscribedTopicsAsRead']);
+Route::get('jump', [TreeController::class, 'show']);
 
 // @mentions
-Route::delete('mentions', 'Nexus\MentionController@destroyAll');
+Route::delete('mentions', [MentionController::class, 'destroyAll']);

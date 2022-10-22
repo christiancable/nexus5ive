@@ -58,7 +58,10 @@ class Topic extends Model
     use HasFactory;
     use SoftDeletes;
 
-    protected $dates = ['deleted_at'];
+    protected $casts = [
+        'deleted_at' => 'datetime',
+    ];
+
     protected $fillable = [
         'title',
         'intro',
