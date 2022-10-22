@@ -16,3 +16,5 @@ nexus.sublime*
 composer.lock
 .vscode/*
 /coverage
+yarn-error.log
+.phpunit.result.cache
