@@ -2,7 +2,8 @@
 
 namespace App\Helpers;
 
-use Parsedown;
+use Illuminate\Support\Str;
+
 
 class MarkdownHelper
 {
@@ -14,8 +15,8 @@ class MarkdownHelper
      */
     public static function markdown($markdown)
     {
-        $parser = new NxMarkdown();
-        $html = $parser->text($markdown);
+
+        $html = Str::of($markdown)->markdown();
 
         return $html;
     }
