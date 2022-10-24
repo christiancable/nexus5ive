@@ -89,7 +89,7 @@ HTML
     public function testMarkdownExtensions($input, $expectedOutput)
     {
         $output = MarkdownHelper::markdown($input);
-        $this->assertEquals($output, $expectedOutput);
+        $this->assertEquals($expectedOutput, $output);
     }
 
     public function providerMarkdownExtensions()
@@ -101,7 +101,7 @@ HTML
             ],
             'external link' => [
                 $input = '[a link](http://example.com)',
-                $expectedOutput = '<p><a href="http://example.com" target="_blank">a link</a></p>',
+                $expectedOutput = '<p><a href="http://example.com">a link</a></p>',
             ],
             'internal link' => [
                 $input = '[a link](/users)',
@@ -109,7 +109,7 @@ HTML
             ],
             'inline internal link' => [
                 $input = 'http://example.com',
-                $expectedOutput = '<p><a href="http://example.com" target="_blank">http://example.com</a></p>',
+                $expectedOutput = '<p><a href="http://example.com">http://example.com</a></p>',
             ],
         ];
     }
