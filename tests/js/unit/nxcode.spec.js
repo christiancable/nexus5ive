@@ -1,4 +1,4 @@
-import nxcode from "../../../resources/js/nxcode";
+import nxcode  from "../../../resources/js/nxcode.js";
 var assert = require("assert");
 
 describe("nxCode", function() {
