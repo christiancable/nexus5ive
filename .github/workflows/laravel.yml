@@ -45,5 +45,5 @@ jobs:
         DB_DATABASE: database/database.sqlite
       run: vendor/bin/phpunit
     
-    - name: Execute JS tests via Mocha
+    - name: Execute JS tests via Jest
       run: yarn run test
