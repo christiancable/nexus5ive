@@ -40,11 +40,10 @@ class View extends Model
 {
     use SoftDeletes;
 
-    /* dates */
-    protected $dates = ['latest_view_date', 'deleted_at'];
-
     protected $casts = [
-        'unsubscribed' => 'boolean',
+        'unsubscribed'      => 'boolean',
+        'latest_view_date'  => 'datetime',
+        'deleted_at'        => 'datetime',
     ];
 
     public function user()

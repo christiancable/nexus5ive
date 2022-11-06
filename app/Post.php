@@ -53,8 +53,12 @@ class Post extends Model
     use HasFactory;
     use SoftDeletes;
 
+    protected $casts = [
+        'deleted_at' => 'datetime',
+        'time'       => 'datetime',
+    ];
+
     protected $fillable = ['title','text','time','popname','html','user_id','topic_id','update_user_id'];
-    protected $dates = ['time', 'deleted_at'];
 
     public static function boot()
     {

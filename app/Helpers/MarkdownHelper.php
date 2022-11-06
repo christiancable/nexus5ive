@@ -2,7 +2,8 @@
 
 namespace App\Helpers;
 
-use Parsedown;
+use Illuminate\Support\Str;
+
 
 class MarkdownHelper
 {
@@ -14,9 +15,28 @@ class MarkdownHelper
      */
     public static function markdown($markdown)
     {
-        $parser = new NxMarkdown();
-        $html = $parser->text($markdown);
 
+        $config = [
+            'renderer' => [
+                'block_separator' => "\n",
+                'inner_separator' => "\n",
+                'soft_break'      => "\n",
+            ],
+            'commonmark' => [
+                'enable_em' => true,
+                'enable_strong' => true,
+                'use_asterisk' => true,
+                'use_underscore' => true,
+                'unordered_list_markers' => ['-', '*', '+'],
+            ],
+            'html_input' => 'escape',
+            'allow_unsafe_links' => false,
+            'max_nesting_level' => PHP_INT_MAX,
+            'slug_normalizer' => [
+                'max_length' => 255,
+            ],
+        ];
+        $html = Str::of($markdown)->markdown($config)->rtrim("\n");
         return $html;
     }
 }
