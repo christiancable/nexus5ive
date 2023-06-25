@@ -2,6 +2,8 @@
 
 namespace App\Helpers;
 
+use Illuminate\Support\Facades\Log;
+
 // phpcs:disable Generic.Files.LineLength
 class NxCodeHelper
 {
@@ -151,6 +153,8 @@ HTML;
             $text = self::lazyloadClass($text, config('nexus.placeholder_image'));
         }
         $text = MentionHelper::highlightMentions($text);
+
+        Log::debug($text);
 
         return $text;
     }
