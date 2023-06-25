@@ -153,9 +153,7 @@ HTML;
             $text = self::lazyloadClass($text, config('nexus.placeholder_image'));
         }
         $text = MentionHelper::highlightMentions($text);
-
-        Log::debug($text);
-
+        
         return $text;
     }
 }
