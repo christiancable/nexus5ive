@@ -19,13 +19,13 @@ class TopicTest extends TestCase
     public function deletingTopicSoftDeletesItsPosts()
     {
         // GIVEN we have a topic with post
-        $topic = Topic::factory()->has(Section::factory()->has(User::factory()))->create();
-        dd($topic);
+        $section = Section::factory()->for(User::factory(), 'moderator')->create();
+        $topic = Topic::factory(['section_id' => $section->id])->create();
         Post::factory()->count(20)->create(['topic_id' => $topic->id]);
 
         // we have 1 topic with 20 posts
         $this->assertEquals(Topic::all()->count(), 1);
-        $this->assertEquals(Post::where('topic_id', $topic->id)->count(), 20);
+        $this->assertEquals(Post::where('topic_id', $topic->id)->for(User::factory, 'author')->count(), 20);
 
         // WHEN we archive the topic
         $topic->delete();
