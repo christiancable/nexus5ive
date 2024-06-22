@@ -5,6 +5,7 @@ namespace Tests\Intergration\Models;
 use App\Post;
 use App\User;
 use App\Topic;
+use App\Section;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -18,7 +19,8 @@ class TopicTest extends TestCase
     public function deletingTopicSoftDeletesItsPosts()
     {
         // GIVEN we have a topic with post
-        $topic = Topic::factory()->create();
+        $topic = Topic::factory()->has(Section::factory()->has(User::factory()))->create();
+        dd($topic);
         Post::factory()->count(20)->create(['topic_id' => $topic->id]);
 
         // we have 1 topic with 20 posts
@@ -48,15 +50,19 @@ class TopicTest extends TestCase
         Post::factory()
             ->count(20)
             ->create(
-                ['topic_id' => $topic->id,
-                'time' => $faker->dateTimeThisMonth('-1 days')]
+                [
+                    'topic_id' => $topic->id,
+                    'time' => $faker->dateTimeThisMonth('-1 days')
+                ]
             );
 
         // the most recent post being from today
         $newPost = Post::factory()
             ->create(
-                ['topic_id' => $topic->id,
-                'time' => new \DateTime('now')]
+                [
+                    'topic_id' => $topic->id,
+                    'time' => new \DateTime('now')
+                ]
             );
 
         // WHEN we look at look at the MostRecentPostTime
