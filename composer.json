@@ -21,9 +21,10 @@
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.6",
+        "brianium/paratest": "^6.6",
         "fakerphp/faker": "^1.9.1",
         "laravel/dusk": "^6.22",
-        "laravel/sail": "^1.0.1",
+        "laravel/sail": "^1.29",
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^6.1",
         "nunomaduro/larastan": "^2.0",
