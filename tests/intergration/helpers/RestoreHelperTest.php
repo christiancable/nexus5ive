@@ -16,12 +16,12 @@ class RestoreHelperTest extends TestCase
     use RefreshDatabase;
 
     /**
-    * @test
-    */
+     * @test
+     */
     public function restoreTopicToSectionDoesRestoresTopicToSection()
     {
         // GIVEN I have a topic in a section and then that topic is deleted
-        $section = Section::factory()->create();
+        $section = Section::factory()->for(User::factory(), 'moderator')->create();
         $topic = Topic::factory()->create(['section_id' => $section->id]);
         $topic->delete();
         $this->assertTrue($topic->trashed());
@@ -34,14 +34,14 @@ class RestoreHelperTest extends TestCase
     }
 
     /**
-    * @test
-    */
-    public function restoreTopicToSectionDoesRestoresTopicAndPosts()
+     * @test
+     */
+    public function restoreTopicToSectionDoesRestoreTopicAndPosts()
     {
         // GIVEN I have a topic with posts in a section
-        $section = Section::factory()->create();
+        $section = Section::factory()->for(User::factory(), 'moderator')->create();
         $topic = Topic::factory()->create(['section_id' => $section->id]);
-        Post::factory()->count(20)->create(['topic_id' => $topic->id]);
+        Post::factory()->count(20)->for(User::factory(), 'author')->create(['topic_id' => $topic->id]);
         $topic_id = $topic->id;
 
         // AND a user reads that topic
@@ -69,14 +69,14 @@ class RestoreHelperTest extends TestCase
     }
 
     /**
-    * @test
-    */
+     * @test
+     */
     public function restoreTopicToSectionDoesRestoresTopicAndViews()
     {
         // GIVEN I have a topic with posts in a section
-        $section = Section::factory()->create();
-        $topic = Topic::factory()->create(['section_id' => $section->id]);
-        Post::factory()->count(20)->create(['topic_id' => $topic->id]);
+        $section = Section::factory()->for(User::factory(), 'moderator')->create();
+        $topic = Topic::factory()->for($section)->create();
+        Post::factory()->for(User::factory(), 'author')->count(20)->create(['topic_id' => $topic->id]);
         $topic_id = $topic->id;
 
         // AND a user reads that topic
@@ -104,18 +104,18 @@ class RestoreHelperTest extends TestCase
     }
 
     /**
-    * @test
-    */
+     * @test
+     */
     public function restoreSectionToSectionDoesRestoreSection()
     {
         // GIVEN we have a section with topics
         $number_of_topics = 10;
-        $section = Section::factory()->create();
+        $section = Section::factory()->for(User::factory(), 'moderator')->create();
         $section_id = $section->id;
-        Topic::factory()->count($number_of_topics)->create(['section_id' => $section_id]);
+        Topic::factory()->for($section)->count($number_of_topics)->create();
 
         // AND another section
-        $anotherSection = Section::factory()->create();
+        $anotherSection = Section::factory()->for(User::factory(), 'moderator')->create();
 
         // WHEN we delete the section
         $section->delete();
