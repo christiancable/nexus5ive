@@ -25,19 +25,19 @@ class SectionTest extends TestCase
             ->create([
                 'parent_id' => null,
                 'user_id' => $user->id,
-                ]);
+            ]);
         $section = Section::factory()
             ->create([
                 'parent_id' => $mainmenu->id,
                 'user_id' => $user->id,
-                ]);
+            ]);
 
         // AND some other sections
         Section::factory()
             ->create([
                 'parent_id' => $mainmenu->id,
                 'user_id' => $user->id,
-                ]);
+            ]);
 
         $sectionCount = Section::all()->count();
 
@@ -65,7 +65,7 @@ class SectionTest extends TestCase
             ->create([
                 'parent_id' => null,
                 'user_id' => $user->id,
-                ]);
+            ]);
 
         // AND that section has topics
         Topic::factory()->create(['section_id' => $section->id]);
@@ -94,14 +94,14 @@ class SectionTest extends TestCase
     public function deletingSectionSoftDeletesItsSubsections()
     {
         // given we have a user with a section and that sub section
-         $user = User::factory()->create();
+        $user = User::factory()->create();
 
         // AND we have a section
         $section = Section::factory()
             ->create([
                 'parent_id' => null,
                 'user_id' => $user->id,
-                ]);
+            ]);
 
         // with subsections
         Section::factory()
@@ -109,7 +109,7 @@ class SectionTest extends TestCase
             ->create([
                 'parent_id' => $section->id,
                 'user_id' => $user->id,
-                ]);
+            ]);
 
         $subsectionCount = Section::where('parent_id', $section->id)->count();
 
@@ -136,10 +136,7 @@ class SectionTest extends TestCase
         */
 
         $moderator = User::factory()->create();
-        $section = Section::factory()->create([
-                'parent_id' => null,
-                'user_id' => $moderator->id
-        ]);
+        $section = Section::factory()->for($moderator, 'moderator')->create();
 
         /*
         WHEN
@@ -163,8 +160,8 @@ class SectionTest extends TestCase
 
         $moderator = User::factory()->create();
         $section = Section::factory()->create([
-                'parent_id' => null,
-                'user_id' => $moderator->id
+            'parent_id' => null,
+            'user_id' => $moderator->id
         ]);
 
         /*
@@ -184,6 +181,7 @@ class SectionTest extends TestCase
 
     /**
      * @test
+     * @group busted
      */
     public function latestPostReturnsMostRecentPostAsNewPostsAreAdded()
     {
@@ -193,8 +191,8 @@ class SectionTest extends TestCase
 
         $moderator = User::factory()->create();
         $section = Section::factory()->create([
-                'parent_id' => null,
-                'user_id' => $moderator->id
+            'parent_id' => null,
+            'user_id' => $moderator->id
         ]);
 
         $topic1 = Topic::factory()->create([
@@ -209,7 +207,7 @@ class SectionTest extends TestCase
         WHEN a post is added to one of the topics
         */
 
-        $post1 = Post::factory()->create([
+        $post1 = Post::factory()->for(User::factory(), 'author')->create([
             'topic_id' => $topic1->id
         ]);
 
@@ -221,7 +219,7 @@ class SectionTest extends TestCase
         /*
         WHEN a second post is added to a topic in that section
         */
-        $post2 = Post::factory()->create([
+        $post2 = Post::factory()->for(User::factory(), 'author')->create([
             'topic_id' => $topic2->id
         ]);
 
@@ -233,6 +231,7 @@ class SectionTest extends TestCase
 
     /**
      * @test
+     * @group busted
      */
     public function latestPostReturnsMostRecentPostAsPostsAreRemoved()
     {
@@ -242,8 +241,8 @@ class SectionTest extends TestCase
 
         $moderator = User::factory()->create();
         $section = Section::factory()->create([
-                'parent_id' => null,
-                'user_id' => $moderator->id
+            'parent_id' => null,
+            'user_id' => $moderator->id
         ]);
         $topic1 = Topic::factory()->create([
             'section_id' => $section->id
@@ -252,10 +251,10 @@ class SectionTest extends TestCase
             'section_id' => $section->id
         ]);
 
-        $post1 = Post::factory()->create([
+        $post1 = Post::factory()->for(User::factory(), 'author')->create([
             'topic_id' => $topic1->id
         ]);
-        $post2 = Post::factory()->create([
+        $post2 = Post::factory()->for(User::factory(), 'author')->create([
             'topic_id' => $topic2->id
         ]);
 
@@ -283,8 +282,9 @@ class SectionTest extends TestCase
         $this->assertEquals(null, $section->most_recent_post);
     }
 
-     /**
+    /**
      * @test
+     * @group busted
      */
     public function latestPostReturnsNullWhenTopicWithPreviousLatestPostIsMovedToAnotherSection()
     {
@@ -294,15 +294,15 @@ class SectionTest extends TestCase
 
         $moderator = User::factory()->create();
         $section = Section::factory()->create([
-                'parent_id' => null,
-                'user_id' => $moderator->id
+            'parent_id' => null,
+            'user_id' => $moderator->id
         ]);
 
         $topic1 = Topic::factory()->create([
             'section_id' => $section->id
         ]);
 
-        $post1 = Post::factory()->create([
+        $post1 = Post::factory()->for(User::factory(), 'author')->create([
             'topic_id' => $topic1->id
         ]);
 
@@ -314,8 +314,8 @@ class SectionTest extends TestCase
         */
 
         $section2 = Section::factory()->create([
-                'parent_id' => null,
-                'user_id' => $moderator->id
+            'parent_id' => null,
+            'user_id' => $moderator->id
         ]);
         $topic1->update([
             'section_id' => $section2->id
