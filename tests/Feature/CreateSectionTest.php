@@ -13,8 +13,8 @@ class CreateSectionTest extends TestCase
     use RefreshDatabase;
 
     /**
-    * @test
-    */
+     * @test
+     */
     public function moderatorCanCreateNewSubsection()
     {
         /*
@@ -25,15 +25,10 @@ class CreateSectionTest extends TestCase
         - a moderator for the sub section
         */
         $sysop = User::factory()->create();
-        $home = Section::factory()->create(['parent_id' => null]);
-        $home->moderator()->associate($sysop);
-        $home->save();
+        $home = Section::factory()->for($sysop, 'moderator')->create();
 
         $moderator = User::factory()->create();
-        $section = Section::factory()->create();
-        $section->parent()->associate($home);
-        $section->moderator()->associate($moderator);
-        $section->save();
+        $section = Section::factory()->for($moderator, 'moderator')->for($home, 'parent')->create();
 
         /*
         WHEN
@@ -41,7 +36,7 @@ class CreateSectionTest extends TestCase
         */
 
         $newSection = Section::factory()->make(['parent_id' => $section->id]);
-
+        unset($newSection['user_id']);
         $this->actingAs($moderator);
         $response = $this->post('/section', $newSection->toArray());
 
@@ -53,14 +48,22 @@ class CreateSectionTest extends TestCase
         */
         $response->assertSessionMissing('errors');
         $response->assertStatus(302);
+        $message = print_r([$response->getTargetUrl(), $newSection->intro, $newSection->title], true);
+        // fwrite(STDOUT, print_r($response, true));
+        fwrite(STDOUT, $message);
+
+        fwrite(STDOUT, "Visit " . $response->getTargetUrl());
+        $response2 = $this->get($response->getTargetUrl());
+        dd('Stop');
+
         $this->get($response->getTargetUrl())
-        ->assertSee($newSection->intro)
-        ->assertSee($newSection->title);
+            ->assertSee($newSection->intro)
+            ->assertSee($newSection->title);
     }
 
     /**
-    * @test
-    */
+     * @test
+     */
     public function userCannotCreateSubsection()
     {
         /*
@@ -72,15 +75,10 @@ class CreateSectionTest extends TestCase
         - a user who is not a moderator
         */
         $sysop = User::factory()->create();
-        $home = Section::factory()->create(['parent_id' => null]);
-        $home->moderator()->associate($sysop);
-        $home->save();
+        $home = Section::factory()->for($sysop, 'moderator')->create();
 
         $moderator = User::factory()->create();
-        $section = Section::factory()->create();
-        $section->parent()->associate($home);
-        $section->moderator()->associate($moderator);
-        $section->save();
+        $section = Section::factory()->for($moderator, 'moderator')->for($home, 'parent')->create();
 
         $user = User::factory()->create();
 
@@ -101,11 +99,11 @@ class CreateSectionTest extends TestCase
     }
 
     /**
-    * @test
-    */
+     * @test
+     */
     public function moderatorCannotCreateInvalidSubsection()
     {
-         /*
+        /*
         GIVEN we have
         - a home section
         - s sysop
@@ -113,16 +111,10 @@ class CreateSectionTest extends TestCase
         - a moderator for the sub section
         */
         $sysop = User::factory()->create();
-        $home = Section::factory()->create(['parent_id' => null]);
-        $home->moderator()->associate($sysop);
-        $home->save();
+        $home = Section::factory()->for($sysop, 'moderator')->create(['parent_id' => null]);
 
         $moderator = User::factory()->create();
-        $section = Section::factory()->create();
-        $section->parent()->associate($home);
-        $section->moderator()->associate($moderator);
-        $section->save();
-
+        $section = Section::factory()->for($moderator, 'moderator')->for($home, 'parent')->create();
         /*
         WHEN
         - the moderator creates a new section within the sub section
@@ -134,9 +126,7 @@ class CreateSectionTest extends TestCase
                 'title' => null
             ]);
 
-        $this->actingAs($moderator);
         $response = $this->post('/section', $newSection->toArray());
-
         /*
         THEN
         - we have errors about the parent_id and title
