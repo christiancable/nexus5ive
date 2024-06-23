@@ -13,17 +13,28 @@ class TopicTest extends TestCase
 {
     use RefreshDatabase;
 
+
+    protected $user;
+    protected $home;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->user = User::factory()->create();
+        $this->home = Section::factory()->for($this->user, 'moderator')->create([
+            'parent_id' => null,
+        ]);
+    }
+
+
     /**
      * @test
      */
     public function deletingTopicSoftDeletesItsPosts()
     {
-        // GIVEN we have a topic with post
-        //
-        $user = User::factory()->create();
-        $section = Section::factory()->for($user, 'moderator')->create();
-        $topic = Topic::factory()->for($section)->create();
-
+        // GIVEN we have a topic with posts
+        $topic = Topic::factory()->for($this->home)->create();
         Post::factory()->count(20)->for(User::factory(), 'author')->create(['topic_id' => $topic->id]);
 
         // we have 1 topic with 20 posts
@@ -47,23 +58,23 @@ class TopicTest extends TestCase
         $faker = \Faker\Factory::create();
 
         // GIVEN we have a topic with posts
-        $topic = Topic::factory()->create();
+        $topic = Topic::factory()->for($this->home)->create();
 
         // posts from the last month but not today
         Post::factory()
+            ->for($topic)
             ->count(20)
             ->create(
                 [
-                    'topic_id' => $topic->id,
                     'time' => $faker->dateTimeThisMonth('-1 days')
                 ]
             );
 
         // the most recent post being from today
         $newPost = Post::factory()
+            ->for($topic)
             ->create(
                 [
-                    'topic_id' => $topic->id,
                     'time' => new \DateTime('now')
                 ]
             );
