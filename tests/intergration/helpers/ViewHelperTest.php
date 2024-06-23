@@ -5,6 +5,7 @@ namespace Tests\Intergration\Helpers;
 use App\User;
 use App\Post;
 use App\Topic;
+use App\Section;
 use Faker\Factory;
 use Tests\TestCase;
 use App\Helpers\ViewHelper;
@@ -25,18 +26,26 @@ class ViewHelperTest extends TestCase
         $user = User::factory()->create();
 
         // AND we have a topic with posts
-        $topic = Topic::factory()->create();
+        $topic = Topic::factory()->for(Section::factory()->for($user, 'moderator'))->create();
+
+
         Post::factory()->count(20)
+            ->for(User::factory(), 'author')
             ->create(
-                ['topic_id' => $topic->id,
-                'time' => $faker->dateTimeThisMonth('-2 days')]
+                [
+                    'topic_id' => $topic->id,
+                    'time' => $faker->dateTimeThisMonth('-2 days')
+                ]
             );
 
         // AND the most recent post being from yesterday
         $newPost = Post::factory()
+            ->for(User::factory(), 'author')
             ->create(
-                ['topic_id' => $topic->id,
-                'time' => $faker->dateTimeThisMonth('-1 days')]
+                [
+                    'topic_id' => $topic->id,
+                    'time' => $faker->dateTimeThisMonth('-1 days')
+                ]
             );
 
         // WHEN the user reads the topic
@@ -51,9 +60,12 @@ class ViewHelperTest extends TestCase
 
         // WHEN a new post is added now
         $anotherPost = Post::factory()
+            ->for(User::factory(), 'author')
             ->create(
-                ['topic_id' => $topic->id,
-                'time' => new \DateTime('now')]
+                [
+                    'topic_id' => $topic->id,
+                    'time' => new \DateTime('now')
+                ]
             );
 
         // THEN the date of the most recent post in the topic does not matches
@@ -72,15 +84,21 @@ class ViewHelperTest extends TestCase
         $faker = Factory::create();
 
         // GIVEN we have a user
-         $user = User::factory()->create();
+        $user = User::factory()->create();
         // AND we have a topic
         // with posts
         // AND we have a topic with posts
-        $topic = Topic::factory()->create();
+        $section = Section::factory()->for(User::factory(), 'moderator')->create();
+        $topic = Topic::factory()->for($section)->create();
+
         Post::factory()->count(20)
+            ->for(User::factory(), 'author')
+            ->for(User::factory(), 'author')
             ->create(
-                ['topic_id' => $topic->id,
-                'time' => $faker->dateTimeThisMonth('-2 days')]
+                [
+                    'topic_id' => $topic->id,
+                    'time' => $faker->dateTimeThisMonth('-2 days')
+                ]
             );
 
         // AND the user has read the topic
@@ -88,9 +106,12 @@ class ViewHelperTest extends TestCase
 
         // WHEN a new post is added
         $anotherPost = Post::factory()
+            ->for(User::factory(), 'author')
             ->create(
-                ['topic_id' => $topic->id,
-                'time' => new \DateTime('now')]
+                [
+                    'topic_id' => $topic->id,
+                    'time' => new \DateTime('now')
+                ]
             );
 
         // THEN the topic appears to have new posts to the user
@@ -107,16 +128,20 @@ class ViewHelperTest extends TestCase
         $faker = Factory::create();
 
         // GIVEN we have a user
-         $user = User::factory()->create();
+        $user = User::factory()->create();
         // AND we have a topic
         // with posts
         // AND we have a topic with posts
-        $topic = Topic::factory()->create();
+        $section = Section::factory()->for(User::factory(), 'moderator')->create();
+        $topic = Topic::factory()->for($section)->create();
         Post::factory()
+            ->for(User::factory(), 'author')
             ->count(20)
             ->create(
-                ['topic_id' => $topic->id,
-                'time' => $faker->dateTimeThisMonth('-2 days')]
+                [
+                    'topic_id' => $topic->id,
+                    'time' => $faker->dateTimeThisMonth('-2 days')
+                ]
             );
 
         // AND the user has read the topic
@@ -136,10 +161,11 @@ class ViewHelperTest extends TestCase
         $faker = Factory::create();
 
         // GIVEN we have a user
-         $user = User::factory()->create();
+        $user = User::factory()->create();
 
         // WHEN we add a topic
-        $topic = Topic::factory()->create();
+        $section = Section::factory()->for($user, 'moderator')->create();
+        $topic = Topic::factory()->for($section)->create();
         // THEN the topic appears to have new to the user
         $topicStatus = ViewHelper::getTopicStatus($user, $topic);
 
@@ -154,10 +180,11 @@ class ViewHelperTest extends TestCase
         $faker = Factory::create();
 
         // GIVEN we have a user
-         $user = User::factory()->create();
+        $user = User::factory()->create();
 
         // AND we add a topic
-        $topic = Topic::factory()->create();
+        $section = Section::factory()->for($user, 'moderator')->create();
+        $topic = Topic::factory()->for($section)->create();
 
         // WHEN the user has read the topic
         ViewHelper::updateReadProgress($user, $topic);
@@ -176,10 +203,11 @@ class ViewHelperTest extends TestCase
         $faker = Factory::create();
 
         // GIVEN we have a user
-         $user = User::factory()->create();
+        $user = User::factory()->create();
 
         // AND we add a topic
-        $topic = Topic::factory()->create();
+        $section = Section::factory()->for($user, 'moderator')->create();
+        $topic = Topic::factory()->for($section)->create();
 
         // WHEN the user is unsubscribed from the topic
         ViewHelper::unsubscribeFromTopic($user, $topic);
@@ -198,10 +226,11 @@ class ViewHelperTest extends TestCase
         $faker = Factory::create();
 
         // GIVEN we have a user
-         $user = User::factory()->create();
+        $user = User::factory()->create();
 
         // AND we add a topic
-        $topic = Topic::factory()->create();
+        $section = Section::factory()->for($user, 'moderator')->create();
+        $topic = Topic::factory()->for($section)->create();
 
         // WHEN the user is unsubscribed from the topic
         ViewHelper::unsubscribeFromTopic($user, $topic);
