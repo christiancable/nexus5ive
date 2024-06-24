@@ -25,7 +25,7 @@ class Tree extends Model
      */
     public static function tree()
     {
-        $locations = Section::with('topics:id,title,intro,section_id')->orderBy('title')->get(['id','title','intro']);
+        $locations = Section::with('topics:id,title,intro,section_id')->orderBy('title')->get(['id', 'title', 'intro']);
         $destinations = [];
         $oldenDays = now()->subMonths(12);
         $keyIndex = 0;
@@ -83,5 +83,6 @@ class Tree extends Model
                 return Tree::tree();
             }
         );
+        Log::debug("Finished rebuilding Tree Cache");
     }
 }

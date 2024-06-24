@@ -21,6 +21,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Validator;
 
+use Illuminate\Support\Facades\Log;
+
 class SectionController extends Controller
 {
     public function __construct()
@@ -60,6 +62,7 @@ class SectionController extends Controller
      */
     public function show(Request $request, Section $section = null)
     {
+        Log::debug("Returning " . $section->id . '--' . $section->title);
         if (null == $section) {
             $section = Section::firstOrFail();
         }
@@ -75,15 +78,16 @@ class SectionController extends Controller
         // load some counts too
         $section->loadCount('sections');
 
+        Log::debug('about to update activity');
         ActivityHelper::updateActivity(
             $request->user()->id,
             "Browsing <em>{$section->title}</em>",
             action('Nexus\SectionController@show', ['section' => $section->id])
         );
-
+        Log::debug('can user moderate subsections');
         // if the user can moderate the section then they could potentially update subsections
         if ($section->moderator->id === $request->user()->id) {
-            $potentialModerators = User::all(['id','username'])->pluck('username', 'id')->toArray();
+            $potentialModerators = User::all(['id', 'username'])->pluck('username', 'id')->toArray();
             $moderatedSections = $request->user()
                 ->sections()
                 ->select('title', 'id')
@@ -94,8 +98,12 @@ class SectionController extends Controller
             $potentialModerators = [];
             $moderatedSections = [];
         }
-        $breadcrumbs = BreadcrumbHelper::breadcrumbForSection($section);
+        Log::debug('get breadcrumbs');
+        // $breadcrumbs = BreadcrumbHelper::breadcrumbForSection($section);
 
+        $breadcrumbs = [];
+
+        Log::debug('about to return the view');
         return view('sections.index', compact('section', 'breadcrumbs', 'potentialModerators', 'moderatedSections'));
     }
 

@@ -14,6 +14,7 @@ class CreateSectionTest extends TestCase
 
     /**
      * @test
+     * @group warm
      */
     public function moderatorCanCreateNewSubsection()
     {
@@ -54,7 +55,6 @@ class CreateSectionTest extends TestCase
 
         fwrite(STDOUT, "Visit " . $response->getTargetUrl());
         $response2 = $this->get($response->getTargetUrl());
-        dd('Stop');
 
         $this->get($response->getTargetUrl())
             ->assertSee($newSection->intro)
