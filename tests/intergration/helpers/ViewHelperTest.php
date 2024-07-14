@@ -181,7 +181,7 @@ class ViewHelperTest extends TestCase
          $user = User::factory()->create();
 
         // AND we add a topic
-        $topic = Topic::factory()->create();
+        $topic = Topic::factory()->for($this->home, 'section')->create();
 
         // WHEN the user is unsubscribed from the topic
         ViewHelper::unsubscribeFromTopic($user, $topic);
