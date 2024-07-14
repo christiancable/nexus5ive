@@ -61,6 +61,7 @@ class CreateSectionTest extends TestCase
 
     /**
     * @test
+    * @group wip
     */
     public function userCannotCreateSubsection()
     {
@@ -73,15 +74,16 @@ class CreateSectionTest extends TestCase
         - a user who is not a moderator
         */
         $sysop = User::factory()->create();
-        $home = Section::factory()->create(['parent_id' => null]);
-        $home->moderator()->associate($sysop);
-        $home->save();
+        $home = Section::factory()->for($sysop, 'moderator')->create([
+                'parent_id' => null,
+        ]);
 
         $moderator = User::factory()->create();
-        $section = Section::factory()->create();
-        $section->parent()->associate($home);
-        $section->moderator()->associate($moderator);
-        $section->save();
+        $section = Section::factory()
+            ->for($moderator, 'moderator')
+            ->for($home, 'parent')
+            ->create();
+
 
         $user = User::factory()->create();
 
