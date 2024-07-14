@@ -15,10 +15,10 @@ jobs:
     - name: Redis Server in GitHub Actions
       uses: supercharge/redis-github-action@1.1.0
 
-    - name: Setup PHP 8.1 with composer
+    - name: Setup PHP 8.3 with composer
       uses: shivammathur/setup-php@v2
       with:
-        php-version: '8.1'
+        php-version: '8.3'
         coverage: none
         tools: composer
 
