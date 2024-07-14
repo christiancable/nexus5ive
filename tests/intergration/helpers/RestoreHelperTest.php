@@ -15,28 +15,30 @@ class RestoreHelperTest extends TestCase
 {
     use RefreshDatabase;
 
+    public $sysop;
+    public $home;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->sysop = User::factory()->create();
+        $this->home = Section::factory()->for($this->sysop, 'moderator')->create(['parent_id' => null]);
+    }
     /**
     * @test
     */
     public function restoreTopicToSectionDoesRestoresTopicToSection()
     {
         // GIVEN I have a topic in a section and then that topic is deleted
-        $moderator = User::factory()->create();
-        $section = Section::factory()
-            ->for($moderator, 'moderator')
-            ->create(
-                ['parent_id' => null]
-            );
-
         $topic = Topic::factory()
-            ->for($section, 'section')
+            ->for($this->home, 'section')
             ->create();
 
         $topic->delete();
         $this->assertTrue($topic->trashed());
 
         // WHEN the topic is restored to the section
-        RestoreHelper::restoreTopicToSection($topic, $section);
+        RestoreHelper::restoreTopicToSection($topic, $this->home);
 
         // THEN the topic is restored
         $this->assertFalse($topic->trashed());
@@ -48,17 +50,12 @@ class RestoreHelperTest extends TestCase
     public function restoreTopicToSectionDoesRestoresTopicAndPosts()
     {
         // GIVEN I have a topic with posts in a section
-        $moderator = User::factory()->create();
-        $section = Section::factory()
-            ->for($moderator, 'moderator')
-            ->create(['parent_id' => null]);
-
         $topic = Topic::factory()
-            ->for($section, 'section')
+            ->for($this->home, 'section')
             ->create();
 
         Post::factory()
-            ->for($moderator, 'author')
+            ->for($this->sysop, 'author')
             ->for($topic, 'topic')
             ->count(20)->create();
         $topic_id = $topic->id;
@@ -79,7 +76,7 @@ class RestoreHelperTest extends TestCase
         $this->assertEquals(Topic::withTrashed()->find($topic_id)->posts->count(), 0);
 
         // WHEN the topic is restored to the section
-        RestoreHelper::restoreTopicToSection($topic, $section);
+        RestoreHelper::restoreTopicToSection($topic, $this->home);
 
         // THE the posts and views are restored
         $this->assertEquals($topic->posts->count(), $postsCount);
@@ -94,15 +91,11 @@ class RestoreHelperTest extends TestCase
     public function restoreTopicToSectionDoesRestoresTopicAndViews()
     {
         // GIVEN I have a topic with posts in a section
-        $moderator = User::factory()->create();
-        $section = Section::factory()
-            ->for($moderator, 'moderator')
-            ->create(['parent_id' => null]);
-
         $topic = Topic::factory()
-            ->for($section, 'section')
+            ->for($this->home, 'section')
             ->create();
-        Post::factory()->count(20)->for($moderator, 'author')->for($topic, 'topic')->create();
+
+        Post::factory()->count(20)->for($this->sysop, 'author')->for($topic, 'topic')->create();
         $topic_id = $topic->id;
 
         // AND a user reads that topic
@@ -120,7 +113,7 @@ class RestoreHelperTest extends TestCase
         $this->assertEquals(Topic::withTrashed()->find($topic_id)->views->count(), 0);
 
         // WHEN the topic is restored to the section
-        RestoreHelper::restoreTopicToSection($topic, $section);
+        RestoreHelper::restoreTopicToSection($topic, $this->home);
 
         // THEN the posts and views are restored
         $this->assertEquals($topic->views->count(), $viewsCount);
@@ -135,12 +128,9 @@ class RestoreHelperTest extends TestCase
     public function restoreSectionToSectionDoesRestoreSection()
     {
         // GIVEN we have a section with topics
-        $moderator = User::factory()->create();
-        $home = Section::factory()->for($moderator, 'moderator')->create(['parent_id' => null]);
-
         $section = Section::factory()
-        ->for($home, 'parent')
-        ->for($moderator, 'moderator')
+        ->for($this->home, 'parent')
+        ->for($this->sysop, 'moderator')
         ->create();
         $section_id = $section->id;
 
@@ -149,8 +139,8 @@ class RestoreHelperTest extends TestCase
 
         // AND another section
         $anotherSection = Section::factory()
-        ->for($home, 'parent')
-        ->for($moderator, 'moderator')
+        ->for($this->home, 'parent')
+        ->for($this->sysop, 'moderator')
         ->create();
 
         // WHEN we delete the section
