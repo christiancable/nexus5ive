@@ -114,20 +114,18 @@ class ViewHelperTest extends TestCase
     {
         
 
-        // GIVEN we have a user
-         $user = User::factory()->create();
-        // AND we have a topic
-        // with posts
-        // AND we have a topic with posts
-        $topic = Topic::factory()->create();
+        // GIVEN a topic with some posts
+        $topic = Topic::factory()->for($this->home, 'section')->create();
         Post::factory()
             ->count(20)
+            ->for($topic, 'topic')
+            ->for($this->sysop, 'author')
             ->create(
-                ['topic_id' => $topic->id,
-                'time' => $this->faker->dateTimeThisMonth('-2 days')]
+                ['time' => $this->faker->dateTimeThisMonth('-2 days')]
             );
 
         // AND the user has read the topic
+        $user = User::factory()->create();
         ViewHelper::updateReadProgress($user, $topic);
 
         // THEN the topic appears to have no new posts to the user
