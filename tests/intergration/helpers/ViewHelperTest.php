@@ -112,7 +112,7 @@ class ViewHelperTest extends TestCase
      */
     public function getTopicStatusIndicatesNoNewPostsForTopicWithNoNewPosts()
     {
-        
+
 
         // GIVEN a topic with some posts
         $topic = Topic::factory()->for($this->home, 'section')->create();
@@ -197,13 +197,11 @@ class ViewHelperTest extends TestCase
      */
     public function getTopicStatusReturnsSubscribedWhenUserResubscribes()
     {
-        
-
         // GIVEN we have a user
          $user = User::factory()->create();
 
         // AND we add a topic
-        $topic = Topic::factory()->create();
+        $topic = Topic::factory()->for($this->home, 'section')->create();
 
         // WHEN the user is unsubscribed from the topic
         ViewHelper::unsubscribeFromTopic($user, $topic);
