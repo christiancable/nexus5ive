@@ -62,10 +62,10 @@ class SectionController extends Controller
      */
     public function show(Request $request, Section $section = null)
     {
-        Log::debug("Returning " . $section->id . '--' . $section->title);
         if (null == $section) {
             $section = Section::firstOrFail();
         }
+        Log::debug("Returning " . $section->id . '--' . $section->title);
 
         // lazy eager load relationships
         $section->load(
