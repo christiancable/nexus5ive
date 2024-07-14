@@ -25,22 +25,23 @@ class CreateSectionTest extends TestCase
         - a moderator for the sub section
         */
         $sysop = User::factory()->create();
-        $home = Section::factory()->create(['parent_id' => null]);
-        $home->moderator()->associate($sysop);
-        $home->save();
+        $home = Section::factory()->for($sysop, 'moderator')->create([
+                'parent_id' => null,
+        ]);
 
         $moderator = User::factory()->create();
-        $section = Section::factory()->create();
-        $section->parent()->associate($home);
-        $section->moderator()->associate($moderator);
-        $section->save();
+        $section = Section::factory()
+            ->for($moderator, 'moderator')
+            ->for($home, 'parent')
+            ->create();
 
         /*
         WHEN
         - the moderator creates a new section within the sub section
         */
-
-        $newSection = Section::factory()->make(['parent_id' => $section->id]);
+        $newSection = Section::factory()
+            ->for($section, 'parent')
+            ->make();
 
         $this->actingAs($moderator);
         $response = $this->post('/section', $newSection->toArray());
