@@ -135,13 +135,23 @@ class RestoreHelperTest extends TestCase
     public function restoreSectionToSectionDoesRestoreSection()
     {
         // GIVEN we have a section with topics
-        $number_of_topics = 10;
-        $section = Section::factory()->create();
+        $moderator = User::factory()->create();
+        $home = Section::factory()->for($moderator, 'moderator')->create(['parent_id' => null]);
+
+        $section = Section::factory()
+        ->for($home, 'parent')
+        ->for($moderator, 'moderator')
+        ->create();
         $section_id = $section->id;
-        Topic::factory()->count($number_of_topics)->create(['section_id' => $section_id]);
+
+        $number_of_topics = 10;
+        Topic::factory()->count($number_of_topics)->for($section, 'section')->create();
 
         // AND another section
-        $anotherSection = Section::factory()->create();
+        $anotherSection = Section::factory()
+        ->for($home, 'parent')
+        ->for($moderator, 'moderator')
+        ->create();
 
         // WHEN we delete the section
         $section->delete();
