@@ -139,13 +139,13 @@ class ViewHelperTest extends TestCase
      */
     public function getTopicStatusIndicatesNeverReadForANeverViewedTopic()
     {
-        
-
         // GIVEN we have a user
          $user = User::factory()->create();
 
         // WHEN we add a topic
-        $topic = Topic::factory()->create();
+        $topic = Topic::factory()
+            ->for($this->home, 'section')
+            ->create();
         // THEN the topic appears to have new to the user
         $topicStatus = ViewHelper::getTopicStatus($user, $topic);
 
