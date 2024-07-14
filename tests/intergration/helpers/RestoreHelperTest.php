@@ -21,8 +21,17 @@ class RestoreHelperTest extends TestCase
     public function restoreTopicToSectionDoesRestoresTopicToSection()
     {
         // GIVEN I have a topic in a section and then that topic is deleted
-        $section = Section::factory()->create();
-        $topic = Topic::factory()->create(['section_id' => $section->id]);
+        $moderator = User::factory()->create();
+        $section = Section::factory()
+            ->for($moderator, 'moderator')
+            ->create(
+                ['parent_id' => null]
+            );
+
+        $topic = Topic::factory()
+            ->for($section, 'section')
+            ->create();
+
         $topic->delete();
         $this->assertTrue($topic->trashed());
 
@@ -39,10 +48,21 @@ class RestoreHelperTest extends TestCase
     public function restoreTopicToSectionDoesRestoresTopicAndPosts()
     {
         // GIVEN I have a topic with posts in a section
-        $section = Section::factory()->create();
-        $topic = Topic::factory()->create(['section_id' => $section->id]);
-        Post::factory()->count(20)->create(['topic_id' => $topic->id]);
+        $moderator = User::factory()->create();
+        $section = Section::factory()
+            ->for($moderator, 'moderator')
+            ->create(['parent_id' => null]);
+
+        $topic = Topic::factory()
+            ->for($section, 'section')
+            ->create();
+
+        Post::factory()
+            ->for($moderator, 'author')
+            ->for($topic, 'topic')
+            ->count(20)->create();
         $topic_id = $topic->id;
+
 
         // AND a user reads that topic
         $user = User::factory()->create();
