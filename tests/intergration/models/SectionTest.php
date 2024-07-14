@@ -238,6 +238,7 @@ class SectionTest extends TestCase
 
     /**
      * @test
+     * @group wip
      */
     public function latestPostReturnsMostRecentPostAsPostsAreRemoved()
     {
@@ -246,23 +247,27 @@ class SectionTest extends TestCase
         */
 
         $moderator = User::factory()->create();
-        $section = Section::factory()->create([
-                'parent_id' => null,
-                'user_id' => $moderator->id
-        ]);
-        $topic1 = Topic::factory()->create([
-            'section_id' => $section->id
-        ]);
-        $topic2 = Topic::factory()->create([
-            'section_id' => $section->id
-        ]);
+        $section = Section::factory()
+            ->for($moderator, 'moderator')
+            ->create(['parent_id' => null]);
 
-        $post1 = Post::factory()->create([
-            'topic_id' => $topic1->id
-        ]);
-        $post2 = Post::factory()->create([
-            'topic_id' => $topic2->id
-        ]);
+        $topic1 = Topic::factory()
+            ->for($section, 'section')
+            ->create();
+
+        $topic2 = Topic::factory()
+            ->for($section, 'section')
+            ->create();
+
+        $post1 = Post::factory()
+            ->for($moderator, 'author')
+            ->for($topic1, 'topic')
+            ->create();
+
+        $post2 = Post::factory()
+            ->for($moderator, 'author')
+            ->for($topic2, 'topic')
+            ->create();
 
         // second is the latest
         $this->assertEquals($post2->id, $section->most_recent_post->id);
@@ -290,7 +295,6 @@ class SectionTest extends TestCase
 
      /**
      * @test
-     * @group wip
      */
     public function latestPostReturnsNullWhenTopicWithPreviousLatestPostIsMovedToAnotherSection()
     {
