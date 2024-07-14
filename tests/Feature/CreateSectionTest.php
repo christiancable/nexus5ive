@@ -59,6 +59,7 @@ class CreateSectionTest extends TestCase
         $this->get($response->getTargetUrl())
             ->assertSee($newSection->intro)
             ->assertSee($newSection->title);
+        fwrite(STDOUT, "Visited " . $response->getTargetUrl());
     }
 
     /**

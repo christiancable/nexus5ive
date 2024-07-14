@@ -99,10 +99,14 @@ class SectionController extends Controller
             $moderatedSections = [];
         }
         Log::debug('get breadcrumbs');
-        // $breadcrumbs = BreadcrumbHelper::breadcrumbForSection($section);
+        $breadcrumbs = BreadcrumbHelper::breadcrumbForSection($section);
 
-        $breadcrumbs = [];
 
+
+        Log::debug('data for the view');
+        Log::debug('breadcrumbs' . print_r($breadcrumbs, true));
+        Log::debug('potentialModerators' . print_r($potentialModerators, true));
+        Log::debug('moderatedSections' . print_r($moderatedSections, true));
         Log::debug('about to return the view');
         return view('sections.index', compact('section', 'breadcrumbs', 'potentialModerators', 'moderatedSections'));
     }
