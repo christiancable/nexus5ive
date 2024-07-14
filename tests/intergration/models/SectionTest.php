@@ -13,6 +13,11 @@ class SectionTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function setUp(): void
+    {
+        parent::setUp();
+    }
+
     /**
      * @test
      */
@@ -285,6 +290,7 @@ class SectionTest extends TestCase
 
      /**
      * @test
+     * @group wip
      */
     public function latestPostReturnsNullWhenTopicWithPreviousLatestPostIsMovedToAnotherSection()
     {
@@ -293,18 +299,19 @@ class SectionTest extends TestCase
         */
 
         $moderator = User::factory()->create();
-        $section = Section::factory()->create([
-                'parent_id' => null,
-                'user_id' => $moderator->id
-        ]);
 
-        $topic1 = Topic::factory()->create([
-            'section_id' => $section->id
-        ]);
+        $section = Section::factory()
+            ->for($moderator, 'moderator')
+            ->create(['parent_id' => null]);
 
-        $post1 = Post::factory()->create([
-            'topic_id' => $topic1->id
-        ]);
+        $topic1 = Topic::factory()
+            ->for($section, 'section')
+            ->create();
+
+        $post1 = Post::factory()
+            ->for($moderator, 'author')
+            ->for($topic1, 'topic')
+            ->create();
 
         // post1 is the latest post
         $this->assertEquals($post1->id, $section->most_recent_post->id);
@@ -313,10 +320,10 @@ class SectionTest extends TestCase
         WHEN the topic is moved to another section
         */
 
-        $section2 = Section::factory()->create([
-                'parent_id' => null,
-                'user_id' => $moderator->id
-        ]);
+        $section2 = Section::factory()
+            ->for($moderator, 'moderator')
+            ->create(['parent_id' => null]);
+
         $topic1->update([
             'section_id' => $section2->id
         ]);
