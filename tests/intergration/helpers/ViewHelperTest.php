@@ -157,13 +157,11 @@ class ViewHelperTest extends TestCase
      */
     public function getTopicStatusDoesNotIndicateNeverReadForViewedTopic()
     {
-        
-
         // GIVEN we have a user
          $user = User::factory()->create();
 
         // AND we add a topic
-        $topic = Topic::factory()->create();
+        $topic = Topic::factory()->for($this->home, 'section')->create();
 
         // WHEN the user has read the topic
         ViewHelper::updateReadProgress($user, $topic);
@@ -179,8 +177,6 @@ class ViewHelperTest extends TestCase
      */
     public function getTopicStatusReturnsUnsubscribedWhenUserUnsubscribes()
     {
-        
-
         // GIVEN we have a user
          $user = User::factory()->create();
 
