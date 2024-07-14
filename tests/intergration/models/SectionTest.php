@@ -197,26 +197,26 @@ class SectionTest extends TestCase
         */
 
         $moderator = User::factory()->create();
-        $section = Section::factory()->create([
-                'parent_id' => null,
-                'user_id' => $moderator->id
-        ]);
+        $section = Section::factory()
+            ->for($moderator, 'moderator')
+            ->create(['parent_id' => null]);
 
-        $topic1 = Topic::factory()->create([
-            'section_id' => $section->id
-        ]);
+        $topic1 = Topic::factory()
+            ->for($section, 'section')
+            ->create();
 
-        $topic2 = Topic::factory()->create([
-            'section_id' => $section->id
-        ]);
+        $topic2 = Topic::factory()
+            ->for($section, 'section')
+            ->create();
 
         /*
         WHEN a post is added to one of the topics
         */
 
-        $post1 = Post::factory()->create([
-            'topic_id' => $topic1->id
-        ]);
+        $post1 = Post::factory()
+            ->for($moderator, 'author')
+            ->for($topic1, 'topic')
+            ->create();
 
         /*
         THEN the latest post for that section is that post
@@ -226,9 +226,10 @@ class SectionTest extends TestCase
         /*
         WHEN a second post is added to a topic in that section
         */
-        $post2 = Post::factory()->create([
-            'topic_id' => $topic2->id
-        ]);
+        $post2 = Post::factory()
+            ->for($moderator, 'author')
+            ->for($topic2, 'topic')
+            ->create();
 
         /*
         THEN the latest post for that section becomes that second post
@@ -238,7 +239,6 @@ class SectionTest extends TestCase
 
     /**
      * @test
-     * @group wip
      */
     public function latestPostReturnsMostRecentPostAsPostsAreRemoved()
     {
