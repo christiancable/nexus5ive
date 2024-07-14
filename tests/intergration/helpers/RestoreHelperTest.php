@@ -94,9 +94,15 @@ class RestoreHelperTest extends TestCase
     public function restoreTopicToSectionDoesRestoresTopicAndViews()
     {
         // GIVEN I have a topic with posts in a section
-        $section = Section::factory()->create();
-        $topic = Topic::factory()->create(['section_id' => $section->id]);
-        Post::factory()->count(20)->create(['topic_id' => $topic->id]);
+        $moderator = User::factory()->create();
+        $section = Section::factory()
+            ->for($moderator, 'moderator')
+            ->create(['parent_id' => null]);
+
+        $topic = Topic::factory()
+            ->for($section, 'section')
+            ->create();
+        Post::factory()->count(20)->for($moderator, 'author')->for($topic, 'topic')->create();
         $topic_id = $topic->id;
 
         // AND a user reads that topic
