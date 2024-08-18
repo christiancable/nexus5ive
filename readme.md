@@ -32,7 +32,7 @@ This current version is built using the [Laravel framework](https://laravel.com)
 - `yarn run production`
 - `php artisan nexus:install`
 
-[View the Roadmap](https://github.com/christiancable/nexus5ive/projects/2)
+[View the Roadmap](https://github.com/christiancable/nexus5ive/projects/3)
 
 ## Themes
 
