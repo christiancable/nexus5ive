@@ -37,7 +37,7 @@ jobs:
         touch database/database.sqlite
     
     - name: Generate key
-      run: php artisan key:generate
+      run: php artisan key:generate --env testing
     
     - name: Execute PHP tests (Unit and Feature tests) via PHPUnit
       env:
