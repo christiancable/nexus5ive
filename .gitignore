@@ -18,3 +18,4 @@ composer.lock
 /coverage
 yarn-error.log
 .phpunit.result.cache
+.env.testing
