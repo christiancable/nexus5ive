@@ -13,12 +13,12 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 class NxCodeHelperTest extends TestCase
 {
 
-    private $youTubeHTMLStart = <<< 'HTML'
+    private static $youTubeHTMLStart = <<< 'HTML'
 <div class="video-wrapper">
       <iframe id="youtube-player" src="//www.youtube.com/embed/
 HTML;
 
-    private $youTubeHTMLStop = <<< 'HTML'
+    private static $youTubeHTMLStop = <<< 'HTML'
 ?rel=0&showinfo=0&autohide=1" frameborder="0" allowfullscreen></iframe>
 </div>
 HTML;
@@ -35,8 +35,12 @@ HTML;
         $this->assertEquals($output, $expectedOutput);
     }
 
-    public function providerYouTubeLinksAddEmbedCode()
+    public static function providerYouTubeLinksAddEmbedCode()
     {
+        // need to make these local to the function since static::whatever does not work in static heredoc
+        $youTubeHTMLStart = self::$youTubeHTMLStart;
+        $youTubeHTMLStop = self::$youTubeHTMLStop;
+
         return [
         'blank text' => [
           $input = '',
@@ -45,7 +49,7 @@ HTML;
 
         'single valid youtube link' => [
           $input = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-          $expectedOutput = "{$this->youTubeHTMLStart}dQw4w9WgXcQ{$this->youTubeHTMLStop}",
+          $expectedOutput = "{$youTubeHTMLStart}dQw4w9WgXcQ{$youTubeHTMLStop}",
         ],
 
         'text with 2 valid youtube links' => [
@@ -55,8 +59,8 @@ https://www.youtube.com/watch?v=dQw4w9WgXcQ
 HTML
         ,
           $expectedOutput = <<< HTML
-look here is a video {$this->youTubeHTMLStart}bDOZbvE01Fk{$this->youTubeHTMLStop} and here is another 
-{$this->youTubeHTMLStart}dQw4w9WgXcQ{$this->youTubeHTMLStop}
+look here is a video {$youTubeHTMLStart}bDOZbvE01Fk{$youTubeHTMLStop} and here is another 
+{$youTubeHTMLStart}dQw4w9WgXcQ{$youTubeHTMLStop}
 HTML
         ,
         ],
@@ -74,7 +78,7 @@ HTML
         'Red Hot Chili Peppers - Give It Away - ID with an underscore' => [
           $input = 'https://youtu.be/Mr_uHJPUlO8',
          $expectedOutput = <<< HTML
-{$this->youTubeHTMLStart}Mr_uHJPUlO8{$this->youTubeHTMLStop}
+{$youTubeHTMLStart}Mr_uHJPUlO8{$youTubeHTMLStop}
 HTML
           ,
           ],
@@ -92,7 +96,7 @@ HTML
         $this->assertEquals($expectedOutput, $output);
     }
 
-    public function providerMarkdownExtensions()
+    public static function providerMarkdownExtensions()
     {
         return [
             'blank text' => [
@@ -126,7 +130,7 @@ HTML
         $this->assertEquals($output, $expectedOutput);
     }
 
-    public function providerNxCodeSpoilers()
+    public static function providerNxCodeSpoilers()
     {
         return [
             'spoiler tag' => [
@@ -156,7 +160,7 @@ HTML
         $this->assertEquals($output, $expectedOutput);
     }
 
-    public function providerNxCodeLazyLoad()
+    public static function providerNxCodeLazyLoad()
     {
         return [
             'img tag' => [
