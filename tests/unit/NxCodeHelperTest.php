@@ -96,7 +96,7 @@ HTML
         $this->assertEquals($expectedOutput, $output);
     }
 
-    public function providerMarkdownExtensions()
+    public static function providerMarkdownExtensions()
     {
         return [
             'blank text' => [
@@ -130,7 +130,7 @@ HTML
         $this->assertEquals($output, $expectedOutput);
     }
 
-    public function providerNxCodeSpoilers()
+    public static function providerNxCodeSpoilers()
     {
         return [
             'spoiler tag' => [
@@ -160,7 +160,7 @@ HTML
         $this->assertEquals($output, $expectedOutput);
     }
 
-    public function providerNxCodeLazyLoad()
+    public static function providerNxCodeLazyLoad()
     {
         return [
             'img tag' => [
