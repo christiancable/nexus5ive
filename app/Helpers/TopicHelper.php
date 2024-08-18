@@ -51,7 +51,8 @@ WHERE deleted_at IS NULL
 ORDER BY tt.id desc limit $maxresults
 SQL;
 
-        $allTopicIDs = Arr::pluck(\DB::select(\DB::raw($sql)), 'topic_id');
+        
+        $allTopicIDs = Arr::pluck(\DB::select($sql), 'topic_id');
         // $topics = \App\Topic::with('most_recent_post', 'most_recent_post.author', 'section')
         // removed most_recent_post from the eager loading here as it was killing memory in large forums
         $topics = \App\Topic::with('section')
