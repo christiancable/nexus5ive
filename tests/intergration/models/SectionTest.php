@@ -13,31 +13,35 @@ class SectionTest extends TestCase
 {
     use RefreshDatabase;
 
+    public $home;
+    public $sysop;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->sysop = User::factory()->create();
+        $this->home = Section::factory()
+            ->for($this->sysop, 'moderator')
+            ->create(['parent_id' => null]);
+    }
+
     /**
      * @test
      */
     public function deletingSectionSoftDeletesSectionAndOnlyThatOne()
     {
-        $user = User::factory()->create();
-
         // GIVEN we have a main menu with a subsection
-        $mainmenu = Section::factory()
-            ->create([
-                'parent_id' => null,
-                'user_id' => $user->id,
-                ]);
         $section = Section::factory()
-            ->create([
-                'parent_id' => $mainmenu->id,
-                'user_id' => $user->id,
-                ]);
+            ->for($this->home, 'parent')
+            ->for($this->sysop, 'moderator')
+            ->create();
 
         // AND some other sections
         Section::factory()
-            ->create([
-                'parent_id' => $mainmenu->id,
-                'user_id' => $user->id,
-                ]);
+            ->count(2)
+            ->for($this->home, 'parent')
+            ->for($this->sysop, 'moderator')
+            ->create();
 
         $sectionCount = Section::all()->count();
 
@@ -57,18 +61,16 @@ class SectionTest extends TestCase
      */
     public function deletingSectionSoftDeletesItsTopics()
     {
-        // GIVEN we have a user
-        $user = User::factory()->create();
-
-        // AND we have a section
+        // GIVEN we have a section
         $section = Section::factory()
-            ->create([
-                'parent_id' => null,
-                'user_id' => $user->id,
-                ]);
+            ->for($this->sysop, 'moderator')
+            ->for($this->home, 'parent')
+            ->create();
 
         // AND that section has topics
-        Topic::factory()->create(['section_id' => $section->id]);
+        Topic::factory()
+            ->for($section, 'section')
+            ->create();
         $topicsInSectionCount = $section->topics->count();
 
         $topicCount = Topic::all()->count();
@@ -93,23 +95,18 @@ class SectionTest extends TestCase
      */
     public function deletingSectionSoftDeletesItsSubsections()
     {
-        // given we have a user with a section and that sub section
-         $user = User::factory()->create();
-
-        // AND we have a section
+        // GIVEN we have a section
         $section = Section::factory()
-            ->create([
-                'parent_id' => null,
-                'user_id' => $user->id,
-                ]);
+            ->for($this->sysop, 'moderator')
+            ->for($this->home, 'parent')
+            ->create();
 
-        // with subsections
+        // WITH subsections
         Section::factory()
             ->count(6)
-            ->create([
-                'parent_id' => $section->id,
-                'user_id' => $user->id,
-                ]);
+            ->for($section, 'parent')
+            ->for($this->sysop, 'moderator')
+            ->create();
 
         $subsectionCount = Section::where('parent_id', $section->id)->count();
 
@@ -134,16 +131,10 @@ class SectionTest extends TestCase
         /*
         GIVEN a section with no topics
         */
-
-        $moderator = User::factory()->create();
-        $section = Section::factory()->create([
-                'parent_id' => null,
-                'user_id' => $moderator->id
-        ]);
-
-        /*
-        WHEN
-        */
+        $section = Section::factory()
+            ->for($this->home, 'parent')
+            ->for($this->sysop, 'moderator')
+            ->create();
 
         /*
         THEN the latest post for that section is null
@@ -160,20 +151,18 @@ class SectionTest extends TestCase
         /*
         GIVEN a section with no topics
         */
-
-        $moderator = User::factory()->create();
-        $section = Section::factory()->create([
-                'parent_id' => null,
-                'user_id' => $moderator->id
-        ]);
+        $section = Section::factory()
+            ->for($this->home, 'parent')
+            ->for($this->sysop, 'moderator')
+            ->create();
 
         /*
         WHEN we add topics but no posts
         */
-
-        Topic::factory()->count(10)->create([
-            'section_id' => $section->id
-        ]);
+        Topic::factory()
+            ->count(10)
+            ->for($section, 'section')
+            ->create();
 
         /*
         THEN the latest post for that section is null
@@ -192,26 +181,26 @@ class SectionTest extends TestCase
         */
 
         $moderator = User::factory()->create();
-        $section = Section::factory()->create([
-                'parent_id' => null,
-                'user_id' => $moderator->id
-        ]);
+        $section = Section::factory()
+            ->for($moderator, 'moderator')
+            ->create(['parent_id' => null]);
 
-        $topic1 = Topic::factory()->create([
-            'section_id' => $section->id
-        ]);
+        $topic1 = Topic::factory()
+            ->for($section, 'section')
+            ->create();
 
-        $topic2 = Topic::factory()->create([
-            'section_id' => $section->id
-        ]);
+        $topic2 = Topic::factory()
+            ->for($section, 'section')
+            ->create();
 
         /*
         WHEN a post is added to one of the topics
         */
 
-        $post1 = Post::factory()->create([
-            'topic_id' => $topic1->id
-        ]);
+        $post1 = Post::factory()
+            ->for($moderator, 'author')
+            ->for($topic1, 'topic')
+            ->create();
 
         /*
         THEN the latest post for that section is that post
@@ -221,9 +210,10 @@ class SectionTest extends TestCase
         /*
         WHEN a second post is added to a topic in that section
         */
-        $post2 = Post::factory()->create([
-            'topic_id' => $topic2->id
-        ]);
+        $post2 = Post::factory()
+            ->for($moderator, 'author')
+            ->for($topic2, 'topic')
+            ->create();
 
         /*
         THEN the latest post for that section becomes that second post
@@ -241,23 +231,27 @@ class SectionTest extends TestCase
         */
 
         $moderator = User::factory()->create();
-        $section = Section::factory()->create([
-                'parent_id' => null,
-                'user_id' => $moderator->id
-        ]);
-        $topic1 = Topic::factory()->create([
-            'section_id' => $section->id
-        ]);
-        $topic2 = Topic::factory()->create([
-            'section_id' => $section->id
-        ]);
+        $section = Section::factory()
+            ->for($moderator, 'moderator')
+            ->create(['parent_id' => null]);
 
-        $post1 = Post::factory()->create([
-            'topic_id' => $topic1->id
-        ]);
-        $post2 = Post::factory()->create([
-            'topic_id' => $topic2->id
-        ]);
+        $topic1 = Topic::factory()
+            ->for($section, 'section')
+            ->create();
+
+        $topic2 = Topic::factory()
+            ->for($section, 'section')
+            ->create();
+
+        $post1 = Post::factory()
+            ->for($moderator, 'author')
+            ->for($topic1, 'topic')
+            ->create();
+
+        $post2 = Post::factory()
+            ->for($moderator, 'author')
+            ->for($topic2, 'topic')
+            ->create();
 
         // second is the latest
         $this->assertEquals($post2->id, $section->most_recent_post->id);
@@ -293,18 +287,19 @@ class SectionTest extends TestCase
         */
 
         $moderator = User::factory()->create();
-        $section = Section::factory()->create([
-                'parent_id' => null,
-                'user_id' => $moderator->id
-        ]);
 
-        $topic1 = Topic::factory()->create([
-            'section_id' => $section->id
-        ]);
+        $section = Section::factory()
+            ->for($moderator, 'moderator')
+            ->create(['parent_id' => null]);
 
-        $post1 = Post::factory()->create([
-            'topic_id' => $topic1->id
-        ]);
+        $topic1 = Topic::factory()
+            ->for($section, 'section')
+            ->create();
+
+        $post1 = Post::factory()
+            ->for($moderator, 'author')
+            ->for($topic1, 'topic')
+            ->create();
 
         // post1 is the latest post
         $this->assertEquals($post1->id, $section->most_recent_post->id);
@@ -313,10 +308,10 @@ class SectionTest extends TestCase
         WHEN the topic is moved to another section
         */
 
-        $section2 = Section::factory()->create([
-                'parent_id' => null,
-                'user_id' => $moderator->id
-        ]);
+        $section2 = Section::factory()
+            ->for($moderator, 'moderator')
+            ->create(['parent_id' => null]);
+
         $topic1->update([
             'section_id' => $section2->id
         ]);

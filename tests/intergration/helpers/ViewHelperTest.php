@@ -5,7 +5,7 @@ namespace Tests\Intergration\Helpers;
 use App\User;
 use App\Post;
 use App\Topic;
-use Faker\Factory;
+use App\Section;
 use Tests\TestCase;
 use App\Helpers\ViewHelper;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -14,32 +14,42 @@ class ViewHelperTest extends TestCase
 {
     use RefreshDatabase;
 
+    public $faker;
+    public $sysop;
+    public $home;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->faker = \Faker\Factory::create();
+        $this->sysop = User::factory()->create();
+        $this->home = Section::factory()->for($this->sysop, 'moderator')->create(['parent_id' => null]);
+    }
+
     /**
      * @test
      */
     public function getReadProgressReturnsTimeOfMostRecentlyReadPost()
     {
-        $faker = Factory::create();
-
-        // GIVEN  we have a user
-        $user = User::factory()->create();
-
-        // AND we have a topic with posts
-        $topic = Topic::factory()->create();
+        // GIVEN we have a topic with posts
+        $topic = Topic::factory()->for($this->home, 'section')->create();
         Post::factory()->count(20)
+            ->for($this->sysop, 'author')
+            ->for($topic, 'topic')
             ->create(
-                ['topic_id' => $topic->id,
-                'time' => $faker->dateTimeThisMonth('-2 days')]
+                ['time' => $this->faker->dateTimeThisMonth('-2 days')]
             );
 
         // AND the most recent post being from yesterday
         $newPost = Post::factory()
+            ->for($topic, 'topic')
+            ->for($this->sysop, 'author')
             ->create(
-                ['topic_id' => $topic->id,
-                'time' => $faker->dateTimeThisMonth('-1 days')]
+                ['time' => $this->faker->dateTimeThisMonth('-1 days')]
             );
 
         // WHEN the user reads the topic
+        $user = User::factory()->create();
         ViewHelper::updateReadProgress($user, $topic);
 
         // THEN the date of the most recent post in the topic matches
@@ -51,9 +61,10 @@ class ViewHelperTest extends TestCase
 
         // WHEN a new post is added now
         $anotherPost = Post::factory()
+            ->for($topic, 'topic')
+            ->for($this->sysop, 'author')
             ->create(
-                ['topic_id' => $topic->id,
-                'time' => new \DateTime('now')]
+                ['time' => new \DateTime('now')]
             );
 
         // THEN the date of the most recent post in the topic does not matches
@@ -69,28 +80,25 @@ class ViewHelperTest extends TestCase
      */
     public function getTopicStatusIndicatesNewPostsForTopicWithNewPosts()
     {
-        $faker = Factory::create();
-
-        // GIVEN we have a user
-         $user = User::factory()->create();
-        // AND we have a topic
-        // with posts
-        // AND we have a topic with posts
-        $topic = Topic::factory()->create();
+        // GIVEN we have a topic with some posts
+        $topic = Topic::factory()->for($this->home, 'section')->create();
         Post::factory()->count(20)
+            ->for($this->sysop, 'author')
+            ->for($topic, 'topic')
             ->create(
-                ['topic_id' => $topic->id,
-                'time' => $faker->dateTimeThisMonth('-2 days')]
+                ['time' => $this->faker->dateTimeThisMonth('-2 days')]
             );
 
         // AND the user has read the topic
+        $user = User::factory()->create();
         ViewHelper::updateReadProgress($user, $topic);
 
         // WHEN a new post is added
         $anotherPost = Post::factory()
+            ->for($topic, 'topic')
+            ->for($this->sysop, 'author')
             ->create(
-                ['topic_id' => $topic->id,
-                'time' => new \DateTime('now')]
+                ['time' => new \DateTime('now')]
             );
 
         // THEN the topic appears to have new posts to the user
@@ -104,22 +112,20 @@ class ViewHelperTest extends TestCase
      */
     public function getTopicStatusIndicatesNoNewPostsForTopicWithNoNewPosts()
     {
-        $faker = Factory::create();
 
-        // GIVEN we have a user
-         $user = User::factory()->create();
-        // AND we have a topic
-        // with posts
-        // AND we have a topic with posts
-        $topic = Topic::factory()->create();
+
+        // GIVEN a topic with some posts
+        $topic = Topic::factory()->for($this->home, 'section')->create();
         Post::factory()
             ->count(20)
+            ->for($topic, 'topic')
+            ->for($this->sysop, 'author')
             ->create(
-                ['topic_id' => $topic->id,
-                'time' => $faker->dateTimeThisMonth('-2 days')]
+                ['time' => $this->faker->dateTimeThisMonth('-2 days')]
             );
 
         // AND the user has read the topic
+        $user = User::factory()->create();
         ViewHelper::updateReadProgress($user, $topic);
 
         // THEN the topic appears to have no new posts to the user
@@ -133,13 +139,13 @@ class ViewHelperTest extends TestCase
      */
     public function getTopicStatusIndicatesNeverReadForANeverViewedTopic()
     {
-        $faker = Factory::create();
-
         // GIVEN we have a user
          $user = User::factory()->create();
 
         // WHEN we add a topic
-        $topic = Topic::factory()->create();
+        $topic = Topic::factory()
+            ->for($this->home, 'section')
+            ->create();
         // THEN the topic appears to have new to the user
         $topicStatus = ViewHelper::getTopicStatus($user, $topic);
 
@@ -151,13 +157,11 @@ class ViewHelperTest extends TestCase
      */
     public function getTopicStatusDoesNotIndicateNeverReadForViewedTopic()
     {
-        $faker = Factory::create();
-
         // GIVEN we have a user
          $user = User::factory()->create();
 
         // AND we add a topic
-        $topic = Topic::factory()->create();
+        $topic = Topic::factory()->for($this->home, 'section')->create();
 
         // WHEN the user has read the topic
         ViewHelper::updateReadProgress($user, $topic);
@@ -173,13 +177,11 @@ class ViewHelperTest extends TestCase
      */
     public function getTopicStatusReturnsUnsubscribedWhenUserUnsubscribes()
     {
-        $faker = Factory::create();
-
         // GIVEN we have a user
          $user = User::factory()->create();
 
         // AND we add a topic
-        $topic = Topic::factory()->create();
+        $topic = Topic::factory()->for($this->home, 'section')->create();
 
         // WHEN the user is unsubscribed from the topic
         ViewHelper::unsubscribeFromTopic($user, $topic);
@@ -195,13 +197,11 @@ class ViewHelperTest extends TestCase
      */
     public function getTopicStatusReturnsSubscribedWhenUserResubscribes()
     {
-        $faker = Factory::create();
-
         // GIVEN we have a user
          $user = User::factory()->create();
 
         // AND we add a topic
-        $topic = Topic::factory()->create();
+        $topic = Topic::factory()->for($this->home, 'section')->create();
 
         // WHEN the user is unsubscribed from the topic
         ViewHelper::unsubscribeFromTopic($user, $topic);
