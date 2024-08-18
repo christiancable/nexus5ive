@@ -22,7 +22,7 @@ class MentionHelperTest extends TestCase
         $this->assertEquals($expectedOutput, $output);
     }
 
-    public function provideridentifyMentionedUsersFindsUsernames()
+    public static function provideridentifyMentionedUsersFindsUsernames()
     {
         return [
             'blank post' => [
@@ -54,7 +54,7 @@ class MentionHelperTest extends TestCase
         $this->assertEquals($expectedOutput, $output);
     }
 
-    public function providerHighlightMentionsHighlights()
+    public static function providerHighlightMentionsHighlights()
     {
         return [
             'blank post' => [
