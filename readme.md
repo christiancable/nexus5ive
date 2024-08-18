@@ -64,7 +64,9 @@ Users who use a removed theme have their theme set to the default.
 
 ## Development
 
-A number of useful tasks are included to aid in development.
+Nexus uses [Laravel Sail](https://laravel.com/docs/9.x/sail) for development. 
+
+A number of useful tasks are included to aid in development. Prefix the commands below with `./vendon/bin/sail` where required.
 
 ### Tests
 
@@ -74,7 +76,7 @@ PHP and javascript tests are provided. Coverage is nowhere near complete. Pull r
 
 PHP testing for unit and features are written using phpunit
 
-`yarn phpunit` or with coverage map `yarn coverage`
+`yarn test` or with coverage map `yarn coverage`
 
 The tests are found in _/tests_
 

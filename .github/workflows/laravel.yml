@@ -23,7 +23,7 @@ jobs:
         tools: composer
 
     - name: Copy .env
-      run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+      run: php -r "file_exists('.env.testing') || copy('.env.example', '.env.testing');"
     
     - name: Install PHP Dependencies
       run: composer install -q --no-ansi --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist
@@ -37,7 +37,7 @@ jobs:
         touch database/database.sqlite
     
     - name: Generate key
-      run: php artisan key:generate
+      run: php artisan key:generate --env testing
     
     - name: Execute PHP tests (Unit and Feature tests) via PHPUnit
       env:
