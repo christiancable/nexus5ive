@@ -64,7 +64,7 @@ Users who use a removed theme have their theme set to the default.
 
 ## Development
 
-Nexus uses [Laravel Sail](https://laravel.com/docs/9.x/sail) for development. 
+Nexus uses [Laravel Sail](https://laravel.com/docs/10.x/sail) for development. 
 
 A number of useful tasks are included to aid in development. Prefix the commands below with `./vendon/bin/sail` where required.
 
