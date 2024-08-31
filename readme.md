@@ -94,6 +94,6 @@ Static analysis is provided using the [larastan](https://medium.com/@nunomaduro/
 
 ### Coding Standards
 
-PHP is written to confirm to PSR2. To check the status of all the files within `app` run:
+PHP is written to confirm to Laravel's coding standards. To check the status of all the files within `app` run:
 
-`yarn phpcs`
+`./vendor/bin/pint`
