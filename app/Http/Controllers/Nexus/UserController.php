@@ -6,6 +6,7 @@ use App\Helpers\ActivityHelper;
 use App\Helpers\BreadcrumbHelper;
 use App\Helpers\FlashHelper;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UpdateUser;
 use App\Theme;
 use App\User;
 use Illuminate\Http\Request;
@@ -80,7 +81,7 @@ class UserController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function edit(Request $request, User $user)
+    public function edit(UpdateUser $request, User $user)
     {
         return $this->show($request, $user);
     }
@@ -90,12 +91,13 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, User $user)
+    public function update(UpdateUser $request, User $user)
     {
         $input = $request->all();
 
         // to prevent setting password to an empty string https://trello.com/c/y1WAxwfb
         if ($input['password'] != '') {
+            // password must match confirm 
             $input['password'] = Hash::make($input['password']);
         } else {
             unset($input['password']);
