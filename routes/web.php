@@ -45,15 +45,6 @@ Route::get('api/notificationsCount', ['middleware' => 'auth',  function () {
     return Auth::user()->notificationCount();
 }])->name('api.notificationCount');
 
-
-Route::post('api/users', function (Request $request) {
-    $input = $request->all();
-    $username = $input['query'];
-    $data = \App\User::select('username')->where('username', "LIKE", "%$username%")->orderBy('username', 'asc')->get()->toArray();
-    return response()->json($data);
-})->name('api.users');
-
-
 // Interface partials
 Route::get('interface/toolbar', ['middleware' => 'auth',  function () {
     return response()->view('_toolbar');
