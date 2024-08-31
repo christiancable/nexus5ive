@@ -2,20 +2,21 @@
 
 namespace Tests\Intergration\Helpers;
 
-use App\User;
-use App\Post;
-use App\Topic;
-use App\Section;
-use Tests\TestCase;
-use App\Helpers\ViewHelper;
 use App\Helpers\RestoreHelper;
+use App\Helpers\ViewHelper;
+use App\Post;
+use App\Section;
+use App\Topic;
+use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class RestoreHelperTest extends TestCase
 {
     use RefreshDatabase;
 
     public $sysop;
+
     public $home;
 
     public function setUp(): void
@@ -24,9 +25,10 @@ class RestoreHelperTest extends TestCase
         $this->sysop = User::factory()->create();
         $this->home = Section::factory()->for($this->sysop, 'moderator')->create(['parent_id' => null]);
     }
+
     /**
-    * @test
-    */
+     * @test
+     */
     public function restoreTopicToSectionDoesRestoresTopicToSection()
     {
         // GIVEN I have a topic in a section and then that topic is deleted
@@ -45,8 +47,8 @@ class RestoreHelperTest extends TestCase
     }
 
     /**
-    * @test
-    */
+     * @test
+     */
     public function restoreTopicToSectionDoesRestoresTopicAndPosts()
     {
         // GIVEN I have a topic with posts in a section
@@ -59,7 +61,6 @@ class RestoreHelperTest extends TestCase
             ->for($topic, 'topic')
             ->count(20)->create();
         $topic_id = $topic->id;
-
 
         // AND a user reads that topic
         $user = User::factory()->create();
@@ -86,8 +87,8 @@ class RestoreHelperTest extends TestCase
     }
 
     /**
-    * @test
-    */
+     * @test
+     */
     public function restoreTopicToSectionDoesRestoresTopicAndViews()
     {
         // GIVEN I have a topic with posts in a section
@@ -123,15 +124,15 @@ class RestoreHelperTest extends TestCase
     }
 
     /**
-    * @test
-    */
+     * @test
+     */
     public function restoreSectionToSectionDoesRestoreSection()
     {
         // GIVEN we have a section with topics
         $section = Section::factory()
-        ->for($this->home, 'parent')
-        ->for($this->sysop, 'moderator')
-        ->create();
+            ->for($this->home, 'parent')
+            ->for($this->sysop, 'moderator')
+            ->create();
         $section_id = $section->id;
 
         $number_of_topics = 10;
@@ -139,9 +140,9 @@ class RestoreHelperTest extends TestCase
 
         // AND another section
         $anotherSection = Section::factory()
-        ->for($this->home, 'parent')
-        ->for($this->sysop, 'moderator')
-        ->create();
+            ->for($this->home, 'parent')
+            ->for($this->sysop, 'moderator')
+            ->create();
 
         // WHEN we delete the section
         $section->delete();

@@ -2,19 +2,18 @@
 
 namespace Tests\Feature;
 
-use App\User;
 use App\Section;
-use Tests\TestCase;
+use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Tests\TestCase;
 
 class CreateSectionTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-    * @test
-    */
+     * @test
+     */
     public function moderatorCanCreateNewSubsection()
     {
         /*
@@ -26,7 +25,7 @@ class CreateSectionTest extends TestCase
         */
         $sysop = User::factory()->create();
         $home = Section::factory()->for($sysop, 'moderator')->create([
-                'parent_id' => null,
+            'parent_id' => null,
         ]);
 
         $moderator = User::factory()->create();
@@ -55,13 +54,13 @@ class CreateSectionTest extends TestCase
         $response->assertSessionMissing('errors');
         $response->assertStatus(302);
         $this->get($response->getTargetUrl())
-        ->assertSee($newSection->intro)
-        ->assertSee($newSection->title);
+            ->assertSee($newSection->intro)
+            ->assertSee($newSection->title);
     }
 
     /**
-    * @test
-    */
+     * @test
+     */
     public function userCannotCreateSubsection()
     {
         /*
@@ -74,7 +73,7 @@ class CreateSectionTest extends TestCase
         */
         $sysop = User::factory()->create();
         $home = Section::factory()->for($sysop, 'moderator')->create([
-                'parent_id' => null,
+            'parent_id' => null,
         ]);
 
         $moderator = User::factory()->create();
@@ -82,7 +81,6 @@ class CreateSectionTest extends TestCase
             ->for($moderator, 'moderator')
             ->for($home, 'parent')
             ->create();
-
 
         $user = User::factory()->create();
 
@@ -103,11 +101,11 @@ class CreateSectionTest extends TestCase
     }
 
     /**
-    * @test
-    */
+     * @test
+     */
     public function moderatorCannotCreateInvalidSubsection()
     {
-         /*
+        /*
         GIVEN we have
         - a home section
         - s sysop
@@ -118,7 +116,6 @@ class CreateSectionTest extends TestCase
         $home = Section::factory()
             ->for($sysop, 'moderator')
             ->create(['parent_id' => null]);
-
 
         $moderator = User::factory()->create();
         $section = Section::factory()
@@ -134,7 +131,7 @@ class CreateSectionTest extends TestCase
         $newSection = Section::factory()
             ->make([
                 'parent_id' => 'madeupnumber',
-                'title' => null
+                'title' => null,
             ]);
 
         $this->actingAs($moderator);

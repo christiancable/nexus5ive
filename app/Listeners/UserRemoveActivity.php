@@ -2,13 +2,9 @@
 
 namespace App\Listeners;
 
-use App\User;
-use App\Events;
-use Carbon\Carbon;
 use App\Helpers\ActivityHelper;
+use App\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class UserRemoveActivity
 {

@@ -2,10 +2,8 @@
 
 namespace App\Listeners;
 
-use App\Section;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Events\MostRecentPostForSectionBecameDirty;
+use App\Section;
 
 class DeleteSectionMostRecentPostCache
 {
@@ -22,8 +20,7 @@ class DeleteSectionMostRecentPostCache
     /**
      * Handle the event.
      *
-     * @param  MostRecentPostForSectionBecameDirty $event
-     * @return  void
+     * @return void
      */
     public function handle(MostRecentPostForSectionBecameDirty $event)
     {

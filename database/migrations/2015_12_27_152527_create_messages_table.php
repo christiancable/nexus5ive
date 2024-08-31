@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class CreateMessagesTable extends Migration
 {
@@ -16,7 +16,7 @@ class CreateMessagesTable extends Migration
             $table->increments('id');
 
             $table->integer('user_id')->unsigned();
-             $table->integer('author_id')->unsigned();
+            $table->integer('author_id')->unsigned();
 
             $table->foreign('user_id')
                 ->references('id')

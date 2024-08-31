@@ -2,18 +2,13 @@
 
 namespace Tests\Unit;
 
-use Tests\TestCase;
 use App\Helpers\MentionHelper;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 // phpcs:disable Generic.Files.LineLength
 class MentionHelperTest extends TestCase
 {
-
     /**
-     *
      * @dataProvider provideridentifyMentionedUsersFindsUsernames
      **/
     public function testIdentifyMentionsFindsUsernames($input, $expectedOutput)
@@ -45,9 +40,8 @@ class MentionHelperTest extends TestCase
     }
 
     /**
-    *
-    * @dataProvider providerHighlightMentionsHighlights
-    **/
+     * @dataProvider providerHighlightMentionsHighlights
+     **/
     public function testHighlightMentionsHighlights($input, $expectedOutput)
     {
         $output = MentionHelper::highlightMentions($input);
@@ -63,20 +57,20 @@ class MentionHelperTest extends TestCase
             ],
             'single mention' => [
                 $input = 'hey @christiancable how are you?',
-                $expectedOutput = <<< HTML
+                $expectedOutput = <<< 'HTML'
 hey <span class="text-muted">@</span><mark><strong><a href="/users/christiancable">christiancable</a></strong></mark> how are you?
 HTML
-            ,
+                ,
             ],
             'multiple mentions' => [
                 $input = 'hey @christiancable have you seen @AgentOrange',
-                $expectedOutput = <<< HTML
+                $expectedOutput = <<< 'HTML'
 hey <span class="text-muted">@</span><mark><strong><a href="/users/christiancable">christiancable</a></strong></mark> have you seen <span class="text-muted">@</span><mark><strong><a href="/users/AgentOrange">AgentOrange</a></strong></mark>
 HTML
             ],
             'mention with html' => [
                 $input = '<p>@christiancable</p>',
-                $expectedOutput = <<< HTML
+                $expectedOutput = <<< 'HTML'
 <p><span class="text-muted">@</span><mark><strong><a href="/users/christiancable">christiancable</a></strong></mark></p>
 HTML
             ],

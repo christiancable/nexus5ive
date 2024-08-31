@@ -2,23 +2,19 @@
 
 namespace App\Http\Controllers\Nexus;
 
-use App\Post;
-use App\Topic;
-use App\Section;
-use App\Http\Requests;
-use Illuminate\View\View;
-use App\Helpers\ViewHelper;
-use App\Helpers\FlashHelper;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use App\Helpers\ActivityHelper;
-use App\Http\Requests\StoreTopic;
 use App\Helpers\BreadcrumbHelper;
-use App\Http\Requests\UpdateTopic;
+use App\Helpers\FlashHelper;
+use App\Helpers\ViewHelper;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\RedirectResponse;
+use App\Http\Requests\StoreTopic;
 use App\Http\Requests\SubscribeTopic;
-use Illuminate\Support\Facades\Validator;
+use App\Http\Requests\UpdateTopic;
+use App\Section;
+use App\Topic;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class TopicController extends Controller
 {
@@ -31,7 +27,6 @@ class TopicController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreTopic  $request
      * @return RedirectResponse
      */
     public function store(StoreTopic $request)
@@ -39,14 +34,13 @@ class TopicController extends Controller
         $section = Section::findOrFail($request->validated()['section_id']);
         $this->authorize('create', [Topic::class, $section]);
         $topic = Topic::create($request->validated());
+
         return redirect(action('Nexus\SectionController@show', ['section' => $topic->section_id]));
     }
 
     /**
      * Display the specified resource.
      *
-     * @param Request $request
-     * @param Topic  $topic
      * @return View
      */
     public function show(Request $request, Topic $topic)
@@ -80,7 +74,7 @@ class TopicController extends Controller
         }
 
         // get the previously read progress so we can indicate this in the view
-        $readProgress =  ViewHelper::getReadProgress($request->user(), $topic);
+        $readProgress = ViewHelper::getReadProgress($request->user(), $topic);
 
         // get the subscription status
         $topicStatus = ViewHelper::getTopicStatus($request->user(), $topic);
@@ -94,7 +88,6 @@ class TopicController extends Controller
             action('Nexus\TopicController@show', ['topic' => $topic->id])
         );
 
-
         // if replying then include a copy of what we are replying to
         $replyingTo = null;
         if ($request->reply && $topic->most_recent_post) {
@@ -106,8 +99,8 @@ class TopicController extends Controller
             }
         }
 
-
         $breadcrumbs = BreadcrumbHelper::breadcrumbForTopic($topic);
+
         return view(
             'topics.index',
             compact(
@@ -126,8 +119,6 @@ class TopicController extends Controller
     /**
      * Update the topic
      *
-     * @param UpdateTopic $request
-     * @param Topic $topic
      * @return RedirectResponse
      */
     public function update(UpdateTopic $request, Topic $topic)
@@ -151,8 +142,6 @@ class TopicController extends Controller
     /**
      * destroy the topic
      *
-     * @param Request $request
-     * @param Topic $topic
      * @return RedirectResponse
      */
     public function destroy(Request $request, Topic $topic)
@@ -163,6 +152,7 @@ class TopicController extends Controller
         $topic->delete();
 
         $redirect = action('Nexus\SectionController@show', ['section' => $section_id]);
+
         return redirect($redirect);
     }
 
@@ -170,8 +160,6 @@ class TopicController extends Controller
      * updateSubscription
      * toggles a users subscription to the topic
      *
-     * @param SubscribeTopic $request
-     * @param Topic $topic
      * @return RedirectResponse
      */
     public function updateSubscription(SubscribeTopic $request, Topic $topic)
@@ -186,7 +174,8 @@ class TopicController extends Controller
         }
 
         FlashHelper::showAlert($message, 'success');
-        return  redirect()->route('topic.show', ['topic' => $topic->id]);
+
+        return redirect()->route('topic.show', ['topic' => $topic->id]);
     }
 
     /**
@@ -194,7 +183,6 @@ class TopicController extends Controller
      *
      * update the latest read time for each subscribed topic
      *
-     * @param Request $request
      * @return RedirectResponse
      */
     public function markAllSubscribedTopicsAsRead(Request $request)

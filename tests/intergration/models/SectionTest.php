@@ -2,18 +2,19 @@
 
 namespace Tests\Intergration\Models;
 
-use App\User;
 use App\Post;
-use App\Topic;
 use App\Section;
-use Tests\TestCase;
+use App\Topic;
+use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class SectionTest extends TestCase
 {
     use RefreshDatabase;
 
     public $home;
+
     public $sysop;
 
     public function setUp(): void
@@ -277,7 +278,7 @@ class SectionTest extends TestCase
         $this->assertEquals(null, $section->most_recent_post);
     }
 
-     /**
+    /**
      * @test
      */
     public function latestPostReturnsNullWhenTopicWithPreviousLatestPostIsMovedToAnotherSection()
@@ -313,7 +314,7 @@ class SectionTest extends TestCase
             ->create(['parent_id' => null]);
 
         $topic1->update([
-            'section_id' => $section2->id
+            'section_id' => $section2->id,
         ]);
 
         /*

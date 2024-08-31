@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\User;
 use App\Section;
+use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class SectionPolicy
@@ -13,8 +13,6 @@ class SectionPolicy
     /**
      * Determine whether the user can view the section.
      *
-     * @param  User  $user
-     * @param  Section  $section
      * @return mixed
      */
     public function view(User $user, Section $section)
@@ -25,22 +23,18 @@ class SectionPolicy
     /**
      * a user can create a section if they moderate the current section
      *
-     * @param User $user
-     * @param Section $currentSection
      * @return bool
      */
     public function create(User $user, Section $currentSection)
     {
-         return $user->id === $currentSection->moderator->id;
+        return $user->id === $currentSection->moderator->id;
     }
 
     /**
-    * a section can only be updated by the moderator or the moderator of the parent section
-    *
-    * @param  User  $user
-    * @param  Section  $section
-    * @return bool
-    */
+     * a section can only be updated by the moderator or the moderator of the parent section
+     *
+     * @return bool
+     */
     public function update(User $user, Section $section)
     {
         if ($user->id === $section->moderator->id) {
@@ -58,14 +52,11 @@ class SectionPolicy
     }
 
     /**
-    * can a user move the section into the destinationSection
-    *   - only if the user moderates the sections parent and the destination section
-    *
-    * @param  User  $user
-    * @param  Section  $section
-    * @param  Section  $destinationSection
-    * @return bool
-    */
+     * can a user move the section into the destinationSection
+     *   - only if the user moderates the sections parent and the destination section
+     *
+     * @return bool
+     */
     public function move(User $user, Section $section, Section $destinationSection)
     {
         return $user->id === $section->parent->moderator->id && $user->id === $destinationSection->moderator->id;
@@ -74,8 +65,7 @@ class SectionPolicy
     /**
      * Determine whether the user can delete the section.
      * - a user can delete a section if they are the moderator of the parent section
-     * @param  User  $user
-     * @param  Section  $section
+     *
      * @return bool
      */
     public function delete(User $user, Section $section)
@@ -90,9 +80,6 @@ class SectionPolicy
      * - moderates the trashed section
      * - moderates the destination section
      *
-     * @param  User  $user
-     * @param  Section  $trashedSection
-     * @param  Section  $destinationSection
      * @return bool
      */
     public function restore(User $user, Section $trashedSection, Section $destinationSection)

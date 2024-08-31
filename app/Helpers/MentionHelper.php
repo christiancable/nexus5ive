@@ -5,10 +5,11 @@ namespace App\Helpers;
 class MentionHelper
 {
     private static $mentionPattern = '/(?<=[\W]|^)@(\w+)/';
-     /**
+
+    /**
      * searches for @user mentions in text
      *
-     * @param  string $text
+     * @param  string  $text
      * @return array of usernames
      */
     public static function identifyMentions($text)
@@ -22,6 +23,7 @@ class MentionHelper
         } else {
             $return = [];
         }
+
         return $return;
     }
 
@@ -37,14 +39,16 @@ class MentionHelper
     }
 
     /**
-    * added css to highlight @mentions to text
-    * @param string $text
-    * @return string $text
-    */
+     * added css to highlight @mentions to text
+     *
+     * @param  string  $text
+     * @return string $text
+     */
     public static function highlightMentions($text)
     {
         $replacement = '<span class="text-muted">@</span><mark><strong><a href="/users/${1}">${1}</a></strong></mark>';
         $highlightedText = preg_replace(self::$mentionPattern, $replacement, $text);
+
         return $highlightedText;
     }
 }

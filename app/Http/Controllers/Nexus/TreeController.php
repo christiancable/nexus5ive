@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers\Nexus;
 
-use App\Tree;
-use App\Section;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Tree;
 use Illuminate\Support\Facades\Cache;
 
 class TreeController extends Controller
@@ -17,11 +15,10 @@ class TreeController extends Controller
     }
 
     /**
-    * Display the specified resource.
-    *
-    * @param  \App\Tree  $tree
-    * @return Array
-    */
+     * Display the specified resource.
+     *
+     * @return array
+     */
     public function show(Tree $tree)
     {
         return Cache::rememberForever('tree', function () {

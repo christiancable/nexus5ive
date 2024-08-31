@@ -1,15 +1,15 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class AddAdditionalUsersFields extends Migration
 {
     /**
-    * Run the migrations.
-    *
-    * @return void
-    */
+     * Run the migrations.
+     *
+     * @return void
+     */
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
@@ -30,21 +30,22 @@ class AddAdditionalUsersFields extends Migration
             $table->string('ipaddress')->nullable()->default('127.0.0.1');
             $table->string('currentActivity')->nullable();
             $table->timestamp('latestLogin')->nullable();
-            
+
             //
         });
     }
-    
+
     /**
-    * Reverse the migrations.
-    * SQLite requires that each dropped column is a separate operation
-    * @return void
-    */
+     * Reverse the migrations.
+     * SQLite requires that each dropped column is a separate operation
+     *
+     * @return void
+     */
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('username');
-        });        
+        });
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('popname');
         });

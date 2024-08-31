@@ -7,10 +7,10 @@ use Illuminate\Foundation\Http\FormRequest;
 class StoreSection extends FormRequest
 {
     /**
-    * The key to be used for the view error bag.
-    *
-    * @var string
-    */
+     * The key to be used for the view error bag.
+     *
+     * @var string
+     */
     protected $errorBag = 'sectionCreate';
 
     /**
@@ -31,15 +31,15 @@ class StoreSection extends FormRequest
     public function rules()
     {
         return [
-            "parent_id" => 'required|numeric|exists:sections,id',
-            "title" => 'required',
+            'parent_id' => 'required|numeric|exists:sections,id',
+            'title' => 'required',
         ];
     }
 
     public function messages()
     {
         return [
-            'title.required' => 'Section title required'
+            'title.required' => 'Section title required',
         ];
     }
 }

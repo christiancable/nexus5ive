@@ -8,9 +8,9 @@ class UpdateUser extends FormRequest
 {
     /**
      * The key to be used for the view error bag.
-    *
-    * @var string
-    */
+     *
+     * @var string
+     */
     protected $errorBag = 'userUpdate';
 
     /**
@@ -31,8 +31,8 @@ class UpdateUser extends FormRequest
     public function rules()
     {
         return [
-            'id'    => 'required|exists:users,id',
-            'email' => 'required|unique:users,email,' . request('id'),
+            'id' => 'required|exists:users,id',
+            'email' => 'required|unique:users,email,'.request('id'),
             'password' => 'confirmed',
         ];
     }

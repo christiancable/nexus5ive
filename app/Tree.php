@@ -2,9 +2,9 @@
 
 namespace App;
 
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 
 /**
  * App\Tree
@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Tree newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Tree newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Tree query()
+ *
  * @mixin \Eloquent
  */
 class Tree extends Model
@@ -25,7 +26,7 @@ class Tree extends Model
      */
     public static function tree()
     {
-        $locations = Section::with('topics:id,title,intro,section_id')->orderBy('title')->get(['id','title','intro']);
+        $locations = Section::with('topics:id,title,intro,section_id')->orderBy('title')->get(['id', 'title', 'intro']);
         $destinations = [];
         $oldenDays = now()->subMonths(12);
         $keyIndex = 0;
@@ -40,12 +41,12 @@ class Tree extends Model
                 $recent = false;
             }
             $destinations[] = [
-                'key'   => $keyIndex,
-                'id'    => $section['id'],
+                'key' => $keyIndex,
+                'id' => $section['id'],
                 'title' => $section['title'],
                 'intro' => $section['intro'],
                 'is_section' => true,
-                'is_recent' => $recent
+                'is_recent' => $recent,
             ];
             foreach ($section['topics'] as $topic) {
                 $keyIndex++;
@@ -59,12 +60,12 @@ class Tree extends Model
                 }
 
                 $destinations[] = [
-                    'key'   => $keyIndex,
-                    'id'    => $topic['id'],
+                    'key' => $keyIndex,
+                    'id' => $topic['id'],
                     'title' => $topic['title'],
                     'intro' => $topic['intro'],
                     'is_section' => false,
-                    'is_recent' => $recent
+                    'is_recent' => $recent,
                 ];
             }
         }
@@ -74,7 +75,7 @@ class Tree extends Model
 
     public static function rebuild()
     {
-        Log::debug("Rebuilding Tree Cache");
+        Log::debug('Rebuilding Tree Cache');
 
         Cache::forget('tree');
         Cache::rememberForever(

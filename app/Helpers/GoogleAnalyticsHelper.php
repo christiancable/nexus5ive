@@ -13,10 +13,10 @@ class GoogleAnalyticsHelper
      **/
     public static function onClickEvent($category, $label, $action = 'Click')
     {
-        $return = "";
+        $return = '';
 
         if (env('GOOGLE_ANAYTICS_ACTIVATE') == 'true') {
-            $return =  "onClick=\"ga('send', 'event', '$category', '$action', '$label');\"";
+            $return = "onClick=\"ga('send', 'event', '$category', '$action', '$label');\"";
         }
 
         return $return;

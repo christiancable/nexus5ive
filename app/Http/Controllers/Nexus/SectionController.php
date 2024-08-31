@@ -2,24 +2,18 @@
 
 namespace App\Http\Controllers\Nexus;
 
-use App\User;
-use App\View;
-use App\Section;
-use App\Http\Requests;
-use Illuminate\Support\Arr;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use App\Helpers\ActivityHelper;
+use App\Helpers\BreadcrumbHelper;
 use App\Helpers\FlashHelper;
 use App\Helpers\TopicHelper;
-use App\Helpers\ActivityHelper;
-use Illuminate\Validation\Rule;
-use App\Helpers\BreadcrumbHelper;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreSection;
 use App\Http\Requests\UpdateSection;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
+use App\Section;
+use App\User;
+use App\View;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Request;
 
 class SectionController extends Controller
 {
@@ -32,7 +26,6 @@ class SectionController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreSection  $request
      * @return RedirectResponse
      */
     public function store(StoreSection $request)
@@ -41,26 +34,26 @@ class SectionController extends Controller
         $this->authorize('create', [Section::class, $parentSection]);
 
         $section = Section::create([
-            'user_id'   => $request->user()->id,
+            'user_id' => $request->user()->id,
             'parent_id' => request('parent_id'),
-            'title'     => request('title'),
-            'intro'     => request('intro')
+            'title' => request('title'),
+            'intro' => request('intro'),
         ]);
 
         $redirect = action('Nexus\SectionController@show', ['section' => $section->id]);
+
         return redirect($redirect);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param Request $request
-     * @param Section $section optional
+     * @param  Section  $section  optional
      * @return \Illuminate\View\View
      */
-    public function show(Request $request, Section $section = null)
+    public function show(Request $request, ?Section $section = null)
     {
-        if (null == $section) {
+        if ($section == null) {
             $section = Section::firstOrFail();
         }
 
@@ -83,7 +76,7 @@ class SectionController extends Controller
 
         // if the user can moderate the section then they could potentially update subsections
         if ($section->moderator->id === $request->user()->id) {
-            $potentialModerators = User::all(['id','username'])->pluck('username', 'id')->toArray();
+            $potentialModerators = User::all(['id', 'username'])->pluck('username', 'id')->toArray();
             $moderatedSections = $request->user()
                 ->sections()
                 ->select('title', 'id')
@@ -102,25 +95,23 @@ class SectionController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param UpdateSection $request
-     * @param Section $section
      * @return RedirectResponse
      */
     public function update(UpdateSection $request, Section $section)
     {
         $formName = "section{$section->id}";
         $updatedSectionDetails = [
-            "id"        => $section->id,
-            "intro"     => $request->validated()['form'][$formName]['intro'],
-            "parent_id" => $request->validated()['form'][$formName]['parent_id'],
-            "title"     => $request->validated()['form'][$formName]['title'],
-            "user_id"   => $request->validated()['form'][$formName]['user_id'],
-            "weight"    => $request->validated()['form'][$formName]['weight']
+            'id' => $section->id,
+            'intro' => $request->validated()['form'][$formName]['intro'],
+            'parent_id' => $request->validated()['form'][$formName]['parent_id'],
+            'title' => $request->validated()['form'][$formName]['title'],
+            'user_id' => $request->validated()['form'][$formName]['user_id'],
+            'weight' => $request->validated()['form'][$formName]['weight'],
         ];
 
         // do not set parent for home section
         if ($section->is_home) {
-            $updatedSectionDetails["parent_id"] = null;
+            $updatedSectionDetails['parent_id'] = null;
         }
 
         if ($updatedSectionDetails['parent_id'] == $section->parent_id) {
@@ -145,8 +136,6 @@ class SectionController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param Request $request
-     * @param Section $section
      * @return RedirectResponse
      */
     public function destroy(Request $request, Section $section)
@@ -161,9 +150,9 @@ class SectionController extends Controller
 
         $section->delete();
         $redirect = action('Nexus\SectionController@show', ['section' => $parent_id]);
+
         return redirect($redirect);
     }
-
 
     /**
      * Shows the Latest Posts screen
@@ -174,7 +163,7 @@ class SectionController extends Controller
     {
         $heading = 'Latest Posts';
         $icon = 'pulse';
-        $lead = "The freshest posts from across " . config('nexus.name');
+        $lead = 'The freshest posts from across '.config('nexus.name');
         $topics = TopicHelper::recentTopics();
         $breadcrumbs = BreadcrumbHelper::breadcumbForUtility($heading);
 
@@ -194,7 +183,7 @@ class SectionController extends Controller
             ->get();
 
         $updatedView = $views->first(function ($view) {
-            return ($view->latest_view_date->timestamp != $view->topic->most_recent_post_time->timestamp);
+            return $view->latest_view_date->timestamp != $view->topic->most_recent_post_time->timestamp;
         });
 
         if ($updatedView != null) {

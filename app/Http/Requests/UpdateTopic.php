@@ -25,16 +25,16 @@ class UpdateTopic extends FormRequest
     {
         $id = $this->request->all()['id'] ?? '';
         $formName = "topicUpdate{$id}";
-        $this->errorBag = 'topicUpdate' . $id;
+        $this->errorBag = 'topicUpdate'.$id;
 
         return [
-            $formName . ".id"          => 'required|numeric',
-            $formName . ".id"          => 'exists:topics,id',
-            $formName . ".title"       => 'required',
-            $formName . ".intro"       => 'required',
-            $formName . ".section_id"  => 'required|numeric',
-            $formName . ".section_id"  => 'exists:sections,id',
-            $formName . ".weight"      => 'required|numeric',
+            $formName.'.id' => 'required|numeric',
+            $formName.'.id' => 'exists:topics,id',
+            $formName.'.title' => 'required',
+            $formName.'.intro' => 'required',
+            $formName.'.section_id' => 'required|numeric',
+            $formName.'.section_id' => 'exists:sections,id',
+            $formName.'.weight' => 'required|numeric',
         ];
     }
 
@@ -44,8 +44,8 @@ class UpdateTopic extends FormRequest
         $formName = "topicUpdate{$id}";
 
         return [
-            $formName . ".title.required" => 'Title is required. Think of this as the subject to be discussed',
-            $formName . ".intro.required" => 'Introduction is required. Give a brief introduction to your topic'
+            $formName.'.title.required' => 'Title is required. Think of this as the subject to be discussed',
+            $formName.'.intro.required' => 'Introduction is required. Give a brief introduction to your topic',
         ];
     }
 }

@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class CreateTopicsTable extends Migration
 {
@@ -21,7 +21,7 @@ class CreateTopicsTable extends Migration
             $table->text('title');
             $table->mediumText('intro')->nullable();
 
-           // relationships
+            // relationships
             $table->integer('section_id')->unsigned();
 
             $table->foreign('section_id')
@@ -30,7 +30,7 @@ class CreateTopicsTable extends Migration
 
             $table->boolean('secret')->default(false);
             $table->boolean('readonly')->default(false);
-            
+
             $table->integer('weight')->default(0);
             $table->timestamps();
         });

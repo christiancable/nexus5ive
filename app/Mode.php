@@ -15,8 +15,8 @@ class Mode extends Model
      * @var array
      */
     protected $casts = [
-        'active'     => 'bool',
-        'override'   => 'bool',
+        'active' => 'bool',
+        'override' => 'bool',
     ];
 
     public function theme()

@@ -16,17 +16,16 @@ class UserPresenter
 
     /**
      * Create a new Presenter instance.
-     *
-     * @param User $user
      */
     public function __construct(User $user)
     {
         $this->user = $user;
     }
+
     /**
      * Handle dynamic property calls.
      *
-     * @param  string $property
+     * @param  string  $property
      * @return mixed
      */
     public function __get($property)
@@ -46,6 +45,7 @@ class UserPresenter
         $html = <<< HTML
 <span class="text-muted">@</span><mark><strong><a href="$url">{$this->user->username}</a></strong></mark>
 HTML;
+
         return $html;
     }
 }

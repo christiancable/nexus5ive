@@ -2,20 +2,22 @@
 
 namespace Tests\Intergration\Helpers;
 
-use App\User;
-use App\Post;
-use App\Topic;
-use App\Section;
-use Tests\TestCase;
 use App\Helpers\ViewHelper;
+use App\Post;
+use App\Section;
+use App\Topic;
+use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class ViewHelperTest extends TestCase
 {
     use RefreshDatabase;
 
     public $faker;
+
     public $sysop;
+
     public $home;
 
     public function setUp(): void
@@ -113,7 +115,6 @@ class ViewHelperTest extends TestCase
     public function getTopicStatusIndicatesNoNewPostsForTopicWithNoNewPosts()
     {
 
-
         // GIVEN a topic with some posts
         $topic = Topic::factory()->for($this->home, 'section')->create();
         Post::factory()
@@ -140,7 +141,7 @@ class ViewHelperTest extends TestCase
     public function getTopicStatusIndicatesNeverReadForANeverViewedTopic()
     {
         // GIVEN we have a user
-         $user = User::factory()->create();
+        $user = User::factory()->create();
 
         // WHEN we add a topic
         $topic = Topic::factory()
@@ -158,7 +159,7 @@ class ViewHelperTest extends TestCase
     public function getTopicStatusDoesNotIndicateNeverReadForViewedTopic()
     {
         // GIVEN we have a user
-         $user = User::factory()->create();
+        $user = User::factory()->create();
 
         // AND we add a topic
         $topic = Topic::factory()->for($this->home, 'section')->create();
@@ -178,7 +179,7 @@ class ViewHelperTest extends TestCase
     public function getTopicStatusReturnsUnsubscribedWhenUserUnsubscribes()
     {
         // GIVEN we have a user
-         $user = User::factory()->create();
+        $user = User::factory()->create();
 
         // AND we add a topic
         $topic = Topic::factory()->for($this->home, 'section')->create();
@@ -198,7 +199,7 @@ class ViewHelperTest extends TestCase
     public function getTopicStatusReturnsSubscribedWhenUserResubscribes()
     {
         // GIVEN we have a user
-         $user = User::factory()->create();
+        $user = User::factory()->create();
 
         // AND we add a topic
         $topic = Topic::factory()->for($this->home, 'section')->create();

@@ -2,16 +2,14 @@
 
 namespace App;
 
-use App\Post;
-use App\Section;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Log;
+use App\Events\MostRecentPostForSectionBecameDirty;
 use App\Events\TreeCacheBecameDirty;
-use Illuminate\Support\Facades\Event;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Events\MostRecentPostForSectionBecameDirty;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Log;
 
 /**
  * App\Topic
@@ -33,6 +31,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property-read \App\Section $section
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\View[] $views
  * @property-read int|null $views_count
+ *
  * @method static bool|null forceDelete()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Topic newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Topic newQuery()
@@ -51,6 +50,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Topic whereWeight($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Topic withTrashed()
  * @method static \Illuminate\Database\Query\Builder|\App\Topic withoutTrashed()
+ *
  * @mixin \Eloquent
  */
 class Topic extends Model
@@ -68,7 +68,7 @@ class Topic extends Model
         'secret',
         'readonly',
         'weight',
-        'section_id'
+        'section_id',
     ];
 
     public static function boot()
@@ -85,35 +85,34 @@ class Topic extends Model
             Log::notice("Deleting Topic $topic->title - $topic->id");
             foreach ($children as $child) {
                 if ($topic->$child()) {
-                        Log::info(" - removing topic->$child");
-                        $topic->$child()->delete();
+                    Log::info(" - removing topic->$child");
+                    $topic->$child()->delete();
                 }
             }
         });
 
         // forget the tree cache when a topic changes, is created or destroyed
         Topic::deleted(function () {
-            event(new TreeCacheBecameDirty());
+            event(new TreeCacheBecameDirty);
         });
         Topic::updated(function ($topic) {
             $original_section_id = $topic->getOriginal('section_id');
             event(new MostRecentPostForSectionBecameDirty($original_section_id));
-            event(new TreeCacheBecameDirty());
+            event(new TreeCacheBecameDirty);
         });
         Topic::created(function () {
-            event(new TreeCacheBecameDirty());
+            event(new TreeCacheBecameDirty);
         });
 
         // add scope for most recent post
         static::addGlobalScope('with_most_recent_post', function ($query) {
             $query->addSelect(['most_recent_post_id' => Post::select('id')
-            ->whereColumn('topic_id', 'topics.id')
-            ->latest()
-            ->take(1)
+                ->whereColumn('topic_id', 'topics.id')
+                ->latest()
+                ->take(1),
             ]);
         });
     }
-
 
     /**
      * returns the time of the most recent post
@@ -129,7 +128,6 @@ class Topic extends Model
             ->orderBy('time', 'desc')
             ->first();
 
-
         if ($latestPost) {
             $result = $latestPost->time;
         } else {
@@ -142,7 +140,7 @@ class Topic extends Model
     // phpcs:disable PSR1.Methods.CamelCapsMethodName
     public function most_recent_post()
     {
-         // phpcs:enable
+        // phpcs:enable
         return $this->belongsTo(Post::class);
     }
 
@@ -152,7 +150,6 @@ class Topic extends Model
     {
         return $this->belongsTo(\App\Section::class);
     }
-
 
     // posts
     public function posts()

@@ -3,11 +3,10 @@
 namespace Tests\Feature;
 
 use App\Mode;
-use App\User;
 use App\Section;
-use Tests\TestCase;
+use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Tests\TestCase;
 
 class ModeTest extends TestCase
 {
@@ -32,6 +31,7 @@ class ModeTest extends TestCase
      * Only administrators can access the admin section
      *
      * @test
+     *
      * @group mode
      */
     public function sysopsCanAccessAdminSection()
@@ -44,6 +44,7 @@ class ModeTest extends TestCase
      * Non-administrators cannot access the admin section
      *
      * @test
+     *
      * @group mode
      */
     public function nonSysopsCannotAccessAdminSection()

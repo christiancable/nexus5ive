@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class SubscribeTopic extends FormRequest
 {
@@ -27,8 +27,8 @@ class SubscribeTopic extends FormRequest
         return [
             'command' => [
                 'required',
-                Rule::In(['unsubscribe','subscribe'])
-            ]
+                Rule::In(['unsubscribe', 'subscribe']),
+            ],
         ];
     }
 }

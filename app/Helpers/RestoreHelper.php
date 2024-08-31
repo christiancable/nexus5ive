@@ -21,7 +21,7 @@ class RestoreHelper
     {
         foreach ($deletedSection->trashedTopics as $trashedTopic) {
             self::restoreTopicToSection($trashedTopic, $deletedSection);
-        };
+        }
         $deletedSection->restore();
 
         $deletedSection->parent_id = $destinationSection->id;

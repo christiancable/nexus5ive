@@ -2,10 +2,10 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\Facades\Event;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Event;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -23,10 +23,10 @@ class EventServiceProvider extends ServiceProvider
             SendEmailVerificationNotification::class,
         ],
         \App\Events\UserCreated::class => [
-            \App\Listeners\LogUnverifiedUser::class
+            \App\Listeners\LogUnverifiedUser::class,
         ],
         \Illuminate\Auth\Events\Verified::class => [
-            \App\Listeners\LogVerifiedUser::class
+            \App\Listeners\LogVerifiedUser::class,
         ],
 
         // user activities
@@ -39,7 +39,7 @@ class EventServiceProvider extends ServiceProvider
 
         // manage caches
         \App\Events\MostRecentPostForSectionBecameDirty::class => [
-            \App\Listeners\DeleteSectionMostRecentPostCache::class
+            \App\Listeners\DeleteSectionMostRecentPostCache::class,
         ],
         \App\Events\TreeCacheBecameDirty::class => [
             \App\Listeners\DeleteTreeCache::class,

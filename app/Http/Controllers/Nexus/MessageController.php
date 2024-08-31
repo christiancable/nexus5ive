@@ -2,18 +2,15 @@
 
 namespace App\Http\Controllers\Nexus;
 
-use App\User;
-use App\Message;
-use App\Http\Requests;
-use Illuminate\View\View;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use App\Helpers\ActivityHelper;
 use App\Helpers\BreadcrumbHelper;
-use App\Http\Requests\StoreMessage;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreMessage;
+use App\Message;
+use App\User;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class MessageController extends Controller
 {
@@ -25,7 +22,9 @@ class MessageController extends Controller
 
     /**
      * Displays a list of messages sent to the logged in user
+     *
      * @todo - generate $activeUsers array from a list of active users
+     *
      * @return View
      */
     public function index(Request $request, $selected = null)
@@ -52,7 +51,7 @@ class MessageController extends Controller
 
         ActivityHelper::updateActivity(
             $request->user()->id,
-            "Viewing <em>Inbox</em>",
+            'Viewing <em>Inbox</em>',
             action('Nexus\MessageController@index')
         );
 
@@ -65,7 +64,6 @@ class MessageController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  StoreMessage $request
      * @return RedirectResponse
      */
     public function store(StoreMessage $request)

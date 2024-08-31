@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class AddReveseTopicToUsersTable extends Migration
 {
@@ -13,7 +13,7 @@ class AddReveseTopicToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-              $table->boolean('viewLatestPostFirst')->default(false);
+            $table->boolean('viewLatestPostFirst')->default(false);
         });
     }
 
