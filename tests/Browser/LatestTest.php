@@ -2,23 +2,26 @@
 
 namespace Tests\Browser;
 
-use App\User;
-use App\Post;
-use App\Topic;
-use App\Section;
-use Tests\DuskTestCase;
-use Laravel\Dusk\Browser;
 use App\Helpers\NxCodeHelper;
+use App\Post;
+use App\Section;
+use App\Topic;
+use App\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Tests\DuskTestCase;
 
 class LatestTest extends DuskTestCase
 {
     use DatabaseMigrations;
 
     protected $user;
+
     protected $home;
+
     protected $topic;
+
     protected $post;
+
     protected $postPreview;
 
     protected function setUp(): void
@@ -31,10 +34,10 @@ class LatestTest extends DuskTestCase
             'user_id' => $this->user->id,
         ]);
         $this->topic = Topic::factory()->create([
-            'section_id' => $this->home->id
+            'section_id' => $this->home->id,
         ]);
         $this->emptyTopic = Topic::factory()->create([
-            'section_id' => $this->home->id
+            'section_id' => $this->home->id,
         ]);
         $this->post = Post::factory()->create([
             'topic_id' => $this->topic->id,
@@ -60,8 +63,8 @@ class LatestTest extends DuskTestCase
 
         $this->browse(function ($browser) use ($user, $postPreview) {
             $browser->loginAs($user)
-                    ->visit('/section/latest')
-                    ->assertSee($postPreview);
+                ->visit('/section/latest')
+                ->assertSee($postPreview);
         });
     }
 
@@ -83,12 +86,12 @@ class LatestTest extends DuskTestCase
 
         $this->browse(function ($browser) use ($user, $topic, $postPreview) {
             $browser->loginAs($user)
-                    ->visit('/topic/' . $topic->id)
-                    ->press('Unsubscribe from this topic');
+                ->visit('/topic/'.$topic->id)
+                ->press('Unsubscribe from this topic');
 
             $browser->loginAs($user)
-                    ->visit('/section/latest/')
-                    ->assertDontSee($postPreview);
+                ->visit('/section/latest/')
+                ->assertDontSee($postPreview);
         });
     }
 
@@ -107,8 +110,8 @@ class LatestTest extends DuskTestCase
 
         $this->browse(function ($browser) use ($user, $emptyTopic) {
             $browser->loginAs($user)
-                    ->visit('/section/latest/')
-                    ->assertDontSee($emptyTopic->title);
+                ->visit('/section/latest/')
+                ->assertDontSee($emptyTopic->title);
         });
     }
 
@@ -133,8 +136,8 @@ class LatestTest extends DuskTestCase
 
         $this->browse(function ($browser) use ($user, $emptyTopic) {
             $browser->loginAs($user)
-                    ->visit('/section/latest/')
-                    ->assertSee($emptyTopic->title);
+                ->visit('/section/latest/')
+                ->assertSee($emptyTopic->title);
         });
     }
 }

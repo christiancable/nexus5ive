@@ -1,9 +1,9 @@
 <?php
 
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateThemesTable extends Migration
 {
@@ -23,14 +23,14 @@ class CreateThemesTable extends Migration
 
         // want a known timestamp so tests do not change the database each run
         $themeTimestamp = new Carbon('last day of October 1975', 'Europe/London');
-        
+
         // create a default theme
         $theme = App\Theme::firstOrCreate([
             'name' => 'Default',
             'path' => '/css/app.css',
             'created_at' => $themeTimestamp->format('Y-m-d H:i:s'),
             'updated_at' => $themeTimestamp->format('Y-m-d H:i:s'),
-         ]);
+        ]);
     }
 
     /**

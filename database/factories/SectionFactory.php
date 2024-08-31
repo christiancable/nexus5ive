@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Section;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class SectionFactory extends Factory

@@ -8,9 +8,9 @@ class StoreMessage extends FormRequest
 {
     /**
      * The key to be used for the view error bag.
-    *
-    * @var string
-    */
+     *
+     * @var string
+     */
     protected $errorBag = 'messageStore';
 
     /**
@@ -32,14 +32,14 @@ class StoreMessage extends FormRequest
     {
         return [
             'text' => 'required',
-            'user_id' => 'required|numeric|exists:users,id'
+            'user_id' => 'required|numeric|exists:users,id',
         ];
     }
 
     public function messages()
     {
         return [
-            'text.required' => 'Sending empty messages is a little creepy!'
+            'text.required' => 'Sending empty messages is a little creepy!',
         ];
     }
 }

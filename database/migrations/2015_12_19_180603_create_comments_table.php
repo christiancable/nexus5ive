@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class CreateCommentsTable extends Migration
 {
@@ -20,7 +20,7 @@ class CreateCommentsTable extends Migration
             // relationships
             $table->integer('author_id')->unsigned();
             $table->integer('user_id')->unsigned();
-            
+
             $table->foreign('author_id')
                 ->references('id')
                 ->on('users')->onDelete('cascade');

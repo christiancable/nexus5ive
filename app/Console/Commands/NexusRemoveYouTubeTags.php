@@ -44,7 +44,7 @@ class NexusRemoveYouTubeTags extends Command
             '[YouTube-]',
             '[-youtube]',
             '[-YOUTUBE]',
-            '[-YouTube]'
+            '[-YouTube]',
         ];
 
         $replacementCount = 0;

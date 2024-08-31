@@ -39,7 +39,7 @@ class NexusRebuildTreeCache extends Command
     public function handle()
     {
 
-        $this->line("Rebuilding Tree Cache");
+        $this->line('Rebuilding Tree Cache');
         Tree::rebuild();
     }
 }

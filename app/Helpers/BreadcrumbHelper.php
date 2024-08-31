@@ -2,9 +2,9 @@
 
 namespace App\Helpers;
 
-use App\User;
-use App\Topic;
 use App\Section;
+use App\Topic;
+use App\User;
 
 /*
    helper methods for dealing with breadcrumbs
@@ -15,7 +15,6 @@ class BreadcrumbHelper
     /**
      * breadcrumbForTopic
      *
-     * @param Topic $topic
      * @return array
      */
     public static function breadcrumbForTopic(Topic $topic)
@@ -39,7 +38,6 @@ class BreadcrumbHelper
     }
 
     /**
-     * @param Section $section
      * @return array
      */
     public static function breadcrumbForSection(Section $section)
@@ -58,6 +56,7 @@ class BreadcrumbHelper
             $breadcrumbs[] = $crumb;
             $section = $section->parent;
         }
+
         return array_reverse($breadcrumbs);
     }
 
@@ -65,7 +64,7 @@ class BreadcrumbHelper
      * generates a fake breadcrumb trail for a page which isn't
      * a topic or a section
      *
-     * @param string $location
+     * @param  string  $location
      * @return array
      */
     public static function breadcumbForUtility($location)
@@ -87,7 +86,6 @@ class BreadcrumbHelper
     /**
      * generates a breadcrumb trail for a user profile
      *
-     * @param User $user
      * @return array
      */
     public static function breadcrumbForUser(User $user)
@@ -112,7 +110,6 @@ class BreadcrumbHelper
     /**
      * generates a breadcrumb trail for a user to user chat
      *
-     * @param String $username
      * @return array
      */
     public static function breadcrumbForChat(string $username)

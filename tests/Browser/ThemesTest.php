@@ -2,20 +2,22 @@
 
 namespace Tests\Browser;
 
-use App\User;
-use App\Theme;
 use App\Section;
-use Tests\DuskTestCase;
-use Laravel\Dusk\Browser;
+use App\Theme;
+use App\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Tests\DuskTestCase;
 
 class ThemesTest extends DuskTestCase
 {
     use DatabaseMigrations;
 
     public $defaultTheme;
+
     public $user;
+
     public $home;
+
     public $alternativeTheme;
 
     protected function setUp(): void
@@ -28,8 +30,8 @@ class ThemesTest extends DuskTestCase
         $this->home = Section::factory()
             ->create(
                 [
-                'parent_id' => null,
-                'user_id' => $this->user->id,
+                    'parent_id' => null,
+                    'user_id' => $this->user->id,
                 ]
             );
     }
@@ -45,9 +47,9 @@ class ThemesTest extends DuskTestCase
         $this->assertEquals($this->user->theme->id, $this->defaultTheme->id);
     }
 
-     /**
-      * @test
-      */
+    /**
+     * @test
+     */
     public function userCanSeeWhichThemeTheyUse()
     {
 
@@ -59,7 +61,7 @@ class ThemesTest extends DuskTestCase
                 // when the user views their profile
                 // the user can see which theme they have
                 $browser->loginAs($user)
-                    ->visit('/users/' . $user->username)
+                    ->visit('/users/'.$user->username)
                     ->assertSelected('@theme_select', $defaultTheme->id);
             }
         );
@@ -67,6 +69,7 @@ class ThemesTest extends DuskTestCase
 
     /**
      * @test
+     *
      * @group ugh
      */
     public function userCanChangeTheme()
@@ -76,17 +79,17 @@ class ThemesTest extends DuskTestCase
 
         // AND we have an alternative theme
         $alternativeTheme = $this->alternativeTheme;
-    
+
         $this->browse(
             function ($browser) use ($user, $alternativeTheme) {
                 // WHEN the user views their profile
                 // and they select a different theme
                 $browser->loginAs($user)
-                    ->visit('/users/' . $user->username)
+                    ->visit('/users/'.$user->username)
                     ->assertSelectHasOption('@theme_select', $alternativeTheme->id)
                     ->select('@theme_select', $alternativeTheme->id)
                     ->press('Save Changes')
-                    ->visit('/users/' . $user->username)
+                    ->visit('/users/'.$user->username)
                     // THEN we see that theme is selected on next visit
                     ->assertSelected('@theme_select', $alternativeTheme->id);
             }

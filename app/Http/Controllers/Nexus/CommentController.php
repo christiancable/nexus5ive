@@ -3,12 +3,10 @@
 namespace App\Http\Controllers\Nexus;
 
 use App\Comment;
-use App\Http\Requests;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use App\Http\Requests\StoreComment;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreComment;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
@@ -21,7 +19,6 @@ class CommentController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  StoreComment $request
      * @return RedirectResponse
      */
     public function store(StoreComment $request)
@@ -38,14 +35,12 @@ class CommentController extends Controller
 
         Comment::create($input);
 
-        return redirect("/users/" . $input['redirect_user'] . '#comments');
+        return redirect('/users/'.$input['redirect_user'].'#comments');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param Request $request
-     * @param Comment $comment
      * @return RedirectResponse
      */
     public function destroy(Request $request, Comment $comment)
@@ -59,12 +54,12 @@ class CommentController extends Controller
     /**
      * removes all comments belonging to the logged in user
      *
-     * @param Request $request
      * @return RedirectResponse - redirection to the calling page
      */
     public function destroyAll(Request $request)
     {
         $request->user()->clearComments();
+
         return back();
     }
 }

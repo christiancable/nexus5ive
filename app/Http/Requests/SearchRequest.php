@@ -7,10 +7,10 @@ use Illuminate\Foundation\Http\FormRequest;
 class SearchRequest extends FormRequest
 {
     /**
-    * The key to be used for the view error bag.
-    *
-    * @var string
-    */
+     * The key to be used for the view error bag.
+     *
+     * @var string
+     */
     protected $errorBag = 'submitSearch';
 
     /**
@@ -31,7 +31,7 @@ class SearchRequest extends FormRequest
     public function rules()
     {
         return [
-              'text' => 'required'
+            'text' => 'required',
         ];
     }
 }

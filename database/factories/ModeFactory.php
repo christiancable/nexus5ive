@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Mode;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ModeFactory extends Factory

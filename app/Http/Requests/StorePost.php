@@ -8,9 +8,9 @@ class StorePost extends FormRequest
 {
     /**
      * The key to be used for the view error bag.
-    *
-    * @var string
-    */
+     *
+     * @var string
+     */
     protected $errorBag = 'postStore';
 
     /**
@@ -31,16 +31,16 @@ class StorePost extends FormRequest
     public function rules()
     {
         return [
-                'text'     => 'required',
-                'topic_id' => 'required|exists:topics,id',
-                'title'    => 'nullable'
-            ];
+            'text' => 'required',
+            'topic_id' => 'required|exists:topics,id',
+            'title' => 'nullable',
+        ];
     }
 
     public function messages()
     {
         return [
-            "text.required" => 'Text is required. You cannot leave empty posts'
+            'text.required' => 'Text is required. You cannot leave empty posts',
         ];
     }
 }

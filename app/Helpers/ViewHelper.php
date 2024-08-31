@@ -2,9 +2,9 @@
 
 namespace App\Helpers;
 
-use App\View;
-use App\User;
 use App\Topic;
+use App\User;
+use App\View;
 
 class ViewHelper
 {
@@ -15,9 +15,9 @@ class ViewHelper
     {
         $progress = View::where('topic_id', $topic->id)->where('user_id', $user->id)->first();
 
-        if (!$progress) {
+        if (! $progress) {
             // first time viewing this topic
-            $progress = new View();
+            $progress = new View;
             $progress->user_id = $user->id;
             $progress->topic_id = $topic->id;
             $progress->latest_view_date = $topic->most_recent_post_time;
@@ -47,21 +47,20 @@ class ViewHelper
         return $result;
     }
 
-
     /**
      * reports if a given topic has been updated since the a user last read
      *
-     * @param  User $user - the user
-     * @param  Topic $topic - a topic
-     * @return boolean has the topic being updated or not
+     * @param  User  $user  - the user
+     * @param  Topic  $topic  - a topic
+     * @return bool has the topic being updated or not
      */
     public static function topicHasUnreadPosts(User $user, Topic $topic)
     {
         $return = true;
-        $mostRecentlyReadPostDate =  \App\Helpers\ViewHelper::getReadProgress($user, $topic);
+        $mostRecentlyReadPostDate = \App\Helpers\ViewHelper::getReadProgress($user, $topic);
 
         if ($mostRecentlyReadPostDate) {
-            if ($mostRecentlyReadPostDate <> $topic->most_recent_post_time) {
+            if ($mostRecentlyReadPostDate != $topic->most_recent_post_time) {
                 $return = true;
             } else {
                 $return = false;
@@ -70,7 +69,7 @@ class ViewHelper
             $return = false;
         }
 
-        if (!$topic->most_recent_post_time) {
+        if (! $topic->most_recent_post_time) {
             $return = false;
         }
 
@@ -80,8 +79,8 @@ class ViewHelper
     /**
      * reports on the status of a given topic for a user
      *
-     * @param  User $user - the user
-     * @param  Topic $topic - a topic
+     * @param  User  $user  - the user
+     * @param  Topic  $topic  - a topic
      * @return array - of status values
      */
     public static function getTopicStatus(User $user, Topic $topic)
@@ -92,14 +91,14 @@ class ViewHelper
             'unsubscribed' => false,
         ];
 
-        $mostRecentlyReadPostDate =  \App\Helpers\ViewHelper::getReadProgress($user, $topic);
+        $mostRecentlyReadPostDate = \App\Helpers\ViewHelper::getReadProgress($user, $topic);
         $mostRecentPostDate = $topic->most_recent_post_time;
 
         $view = View::where('topic_id', $topic->id)->where('user_id', $user->id)->first();
 
         if ($view !== null) {
             if ($view->unsubscribed != 0) {
-                 $status['unsubscribed'] = true;
+                $status['unsubscribed'] = true;
             }
 
             if ($mostRecentPostDate !== false && $mostRecentlyReadPostDate !== false) {
@@ -125,7 +124,7 @@ class ViewHelper
             $progress->unsubscribed = true;
             $progress->update();
         } else {
-            $progress = new View();
+            $progress = new View;
             $progress->user_id = $user->id;
             $progress->topic_id = $topic->id;
             $progress->latest_view_date = $topic->most_recent_post_time;
@@ -145,7 +144,7 @@ class ViewHelper
             $progress->unsubscribed = false;
             $progress->update();
         } else {
-            $progress = new View();
+            $progress = new View;
             $progress->user_id = $user->id;
             $progress->topic_id = $topic->id;
             $progress->latest_view_date = $topic->most_recent_post_time;

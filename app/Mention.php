@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $deleted_at
  * @property-read \App\Post $post
  * @property-read \App\User $user
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Mention newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Mention newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Mention query()
@@ -26,6 +27,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Mention whereRead($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Mention whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Mention whereUserId($value)
+ *
  * @mixin \Eloquent
  */
 class Mention extends Model

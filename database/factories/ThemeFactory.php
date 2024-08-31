@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Theme;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ThemeFactory extends Factory

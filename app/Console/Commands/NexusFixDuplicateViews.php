@@ -47,8 +47,8 @@ class NexusFixDuplicateViews extends Command
             foreach ($sortedViews as $view) {
                 if ($previousView) {
                     if ($view->topic_id === $previousView->topic_id) {
-                        $this->info("Cur\t" . $view);
-                        $this->info("Pre\t" . $previousView . "\n");
+                        $this->info("Cur\t".$view);
+                        $this->info("Pre\t".$previousView."\n");
                         $view->delete();
                         $view = null;
                     }

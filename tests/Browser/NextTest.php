@@ -2,26 +2,30 @@
 
 namespace Tests\Browser;
 
-use App\User;
 use App\Post;
-use App\Topic;
 use App\Section;
-use Tests\DuskTestCase;
-use Laravel\Dusk\Browser;
+use App\Topic;
+use App\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Tests\DuskTestCase;
 
 class NextTest extends DuskTestCase
 {
     use DatabaseMigrations;
-
     use DatabaseMigrations;
 
     protected $user;
+
     protected $home;
+
     protected $topic;
+
     protected $post;
+
     protected $postPreview;
+
     protected $noTopicsMsg = 'No updated topics found. Why not start a new conversation or read more sections?';
+
     protected $newTopicsMsg = 'People have been talking! New posts found in ';
 
     protected function setUp(): void
@@ -54,16 +58,15 @@ class NextTest extends DuskTestCase
         ]);
 
         $this->topic1 = Topic::factory()->create([
-            'section_id' => $this->home->id
+            'section_id' => $this->home->id,
         ]);
         $this->topic2 = Topic::factory()->create([
-            'section_id' => $this->home->id
+            'section_id' => $this->home->id,
         ]);
     }
 
     /**
      * @test
-
      */
     public function userCanJumpToNextUpdatedTopic()
     {
@@ -87,10 +90,10 @@ class NextTest extends DuskTestCase
 
         $this->browse(function ($browser) use ($user, $newTopicsMsg, $topic1) {
             $browser->loginAs($user)
-                    ->visit('/')
-                    ->press('@toolbar-next')
-                    ->assertPathIs('/section/' . $topic1->section->id)
-                    ->assertSee($newTopicsMsg . $topic1->title);
+                ->visit('/')
+                ->press('@toolbar-next')
+                ->assertPathIs('/section/'.$topic1->section->id)
+                ->assertSee($newTopicsMsg.$topic1->title);
         });
     }
 
@@ -110,10 +113,10 @@ class NextTest extends DuskTestCase
 
         $this->browse(function ($browser) use ($user, $noTopicsMsg) {
             $browser->loginAs($user)
-                    ->visit('/')
-                    ->press('@toolbar-next')
-                    ->assertPathIs('/')
-                    ->assertSee($noTopicsMsg);
+                ->visit('/')
+                ->press('@toolbar-next')
+                ->assertPathIs('/')
+                ->assertSee($noTopicsMsg);
         });
     }
 
@@ -141,10 +144,10 @@ class NextTest extends DuskTestCase
 
         $this->browse(function ($browser) use ($user, $noTopicsMsg) {
             $browser->loginAs($user)
-                    ->visit('/')
-                    ->press('@toolbar-next')
-                    ->assertPathIs('/')
-                    ->assertSee($noTopicsMsg);
+                ->visit('/')
+                ->press('@toolbar-next')
+                ->assertPathIs('/')
+                ->assertSee($noTopicsMsg);
         });
     }
 
@@ -174,11 +177,11 @@ class NextTest extends DuskTestCase
 
         $this->browse(function ($browser) use ($user, $noTopicsMsg) {
             $browser->loginAs($user)
-                    ->visit('/')
-                    ->press('@toolbar-next')
-                    ->clickLink('mark all subscribed topics as read')
-                    ->press('@toolbar-next')
-                    ->assertSee($noTopicsMsg);
+                ->visit('/')
+                ->press('@toolbar-next')
+                ->clickLink('mark all subscribed topics as read')
+                ->press('@toolbar-next')
+                ->assertSee($noTopicsMsg);
         });
     }
 }

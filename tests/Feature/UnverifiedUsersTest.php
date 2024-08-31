@@ -4,10 +4,8 @@ namespace Tests\Feature;
 
 use App\User;
 use Carbon\Carbon;
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Tests\TestCase;
 
 class UnverifiedUsersTest extends TestCase
 {
@@ -19,7 +17,7 @@ class UnverifiedUsersTest extends TestCase
     public function whenAUserIsVerifiedTheyAreAddedToTheVerifiedUserList()
     {
         $unverifiedUser = User::factory()->create([
-           'email_verified_at' => null
+            'email_verified_at' => null,
         ]);
         $userCount = User::verified()->get()->count();
 
@@ -36,7 +34,7 @@ class UnverifiedUsersTest extends TestCase
     public function unverifiedUsersDoNotAppearInVerifiedUserList()
     {
         $unverifiedUser = User::factory()->create([
-           'email_verified_at' => null
+            'email_verified_at' => null,
         ]);
 
         $allUsers = User::verified()->get();
@@ -52,7 +50,7 @@ class UnverifiedUsersTest extends TestCase
     public function verifiedUsersDoNotAppearInUnverifiedUserList()
     {
         $verifiedUser = User::factory()->create([
-           'email_verified_at' => Carbon::now()
+            'email_verified_at' => Carbon::now(),
         ]);
 
         $unverifiedUsers = User::unverified()->get();

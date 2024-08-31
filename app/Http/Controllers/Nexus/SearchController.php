@@ -2,19 +2,18 @@
 
 namespace App\Http\Controllers\Nexus;
 
-use App\Post;
-use App\Http\Requests;
-use Illuminate\View\View;
-use Illuminate\Http\Request;
 use App\Helpers\ActivityHelper;
 use App\Helpers\BreadcrumbHelper;
-use App\Http\Requests\SearchRequest;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\SearchRequest;
+use App\Post;
+use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class SearchController extends Controller
 {
     private static $stopWords = [
-        'the','and','an','of',
+        'the', 'and', 'an', 'of',
     ];
 
     public function __construct()
@@ -26,7 +25,6 @@ class SearchController extends Controller
     /**
      * Display a search page
      *
-     * @param Request $request
      * @return View
      */
     public function index(Request $request)
@@ -37,7 +35,7 @@ class SearchController extends Controller
 
         ActivityHelper::updateActivity(
             $request->user()->id,
-            "Searching",
+            'Searching',
             action('Nexus\SearchController@index')
         );
 
@@ -62,8 +60,7 @@ class SearchController extends Controller
      * perform a search against all the posts and
      * return some results
      *
-     * @param Request $request
-     * @param String $text
+     * @param  string  $text
      * @return View
      *
      * @todo - ignore word order
@@ -84,7 +81,7 @@ pattern;
         $matches = false;
         preg_match($pattern, $text, $matches);
 
-        if (!$matches) {
+        if (! $matches) {
             // set initial results as nothing
             $results = false;
 
@@ -94,7 +91,7 @@ pattern;
 
             // remove stop words here
             foreach ($rawSearchTerms as $word) {
-                if (!in_array(strtolower($word), self::$stopWords)) {
+                if (! in_array(strtolower($word), self::$stopWords)) {
                     $searchTerms[] = $word;
                 }
             }
@@ -126,7 +123,7 @@ pattern;
 
         ActivityHelper::updateActivity(
             $request->user()->id,
-            "Searching",
+            'Searching',
             action('Nexus\SearchController@index')
         );
 

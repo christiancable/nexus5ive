@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon $updated_at
  * @property-read \App\User $author
  * @property-read \App\User $user
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Message newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Message newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Message query()
@@ -28,11 +29,12 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Message whereTime($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Message whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Message whereUserId($value)
+ *
  * @mixin \Eloquent
  */
 class Message extends Model
 {
-    protected $fillable = ['user_id','author_id','text','read', 'time'];
+    protected $fillable = ['user_id', 'author_id', 'text', 'read', 'time'];
 
     protected $casts = [
         'read' => 'boolean',

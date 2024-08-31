@@ -2,20 +2,20 @@
 
 namespace Tests\Browser;
 
-use App\User;
-use App\Post;
-use App\Topic;
 use App\Section;
-use Tests\DuskTestCase;
-use Laravel\Dusk\Browser;
+use App\Topic;
+use App\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Tests\DuskTestCase;
 
 class SubscriptionTest extends DuskTestCase
 {
     use DatabaseMigrations;
 
     protected $user;
+
     protected $home;
+
     protected $topic;
 
     protected function setUp(): void
@@ -28,7 +28,7 @@ class SubscriptionTest extends DuskTestCase
             'user_id' => $this->user->id,
         ]);
         $this->topic = Topic::factory()->create([
-            'section_id' => $this->home->id
+            'section_id' => $this->home->id,
         ]);
     }
 
@@ -49,10 +49,10 @@ class SubscriptionTest extends DuskTestCase
 
         $this->browse(function ($browser) use ($user, $topic) {
             $browser->loginAs($user)
-                    ->visit('/topic/' . $topic->id)
-                    ->press('Unsubscribe from this topic')
-                    ->visit('/topic/' . $topic->id)
-                    ->assertSee('Subscribe to this topic');
+                ->visit('/topic/'.$topic->id)
+                ->press('Unsubscribe from this topic')
+                ->visit('/topic/'.$topic->id)
+                ->assertSee('Subscribe to this topic');
         });
     }
 
@@ -74,10 +74,10 @@ class SubscriptionTest extends DuskTestCase
         \App\Helpers\ViewHelper::unsubscribeFromTopic($user, $topic);
         $this->browse(function ($browser) use ($user, $topic) {
             $browser->loginAs($user)
-                    ->visit('/topic/' . $topic->id)
-                    ->press('Subscribe to this topic')
-                    ->visit('/topic/' . $topic->id)
-                    ->assertSee('Unsubscribe from this topic');
+                ->visit('/topic/'.$topic->id)
+                ->press('Subscribe to this topic')
+                ->visit('/topic/'.$topic->id)
+                ->assertSee('Unsubscribe from this topic');
         });
     }
 }

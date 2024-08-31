@@ -1,19 +1,17 @@
 <?php
 
-use Illuminate\Http\Request;
-
 use App\Http\Controllers\Nexus\ActivityController;
 use App\Http\Controllers\Nexus\ChatApiController;
-use App\Http\Controllers\Nexus\MentionController;
-use App\Http\Controllers\Nexus\CommentController;
-use App\Http\Controllers\Nexus\RestoreController;
-use App\Http\Controllers\Nexus\SectionController;
-use App\Http\Controllers\Nexus\NotificationsController;
-use App\Http\Controllers\Nexus\SearchController;
-use App\Http\Controllers\Nexus\TopicController;
-use App\Http\Controllers\Nexus\ModeController;
-use App\Http\Controllers\Nexus\PostController;
 use App\Http\Controllers\Nexus\ChatController;
+use App\Http\Controllers\Nexus\CommentController;
+use App\Http\Controllers\Nexus\MentionController;
+use App\Http\Controllers\Nexus\ModeController;
+use App\Http\Controllers\Nexus\NotificationsController;
+use App\Http\Controllers\Nexus\PostController;
+use App\Http\Controllers\Nexus\RestoreController;
+use App\Http\Controllers\Nexus\SearchController;
+use App\Http\Controllers\Nexus\SectionController;
+use App\Http\Controllers\Nexus\TopicController;
 use App\Http\Controllers\Nexus\TreeController;
 use App\Http\Controllers\Nexus\UserController;
 
@@ -41,16 +39,12 @@ if (config('nexus.allow_registrations') === true) {
     Route::redirect('register', 'login');
 }
 
-
 // Notifications
 Route::get('api/notificationsCount', [NotificationsController::class, 'notificationCount'])->middleware('auth')->name('api.notificationCount');
 Route::get('interface/toolbar', [NotificationsController::class, 'toolbar'])->middleware('auth')->name('interface.toolbar');
 
-
-
 // uers
 Route::resource('users', UserController::class);
-
 
 // special sections
 Route::get('/', [SectionController::class, 'show']);

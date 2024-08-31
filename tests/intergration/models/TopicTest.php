@@ -3,18 +3,20 @@
 namespace Tests\Intergration\Models;
 
 use App\Post;
-use App\User;
-use App\Topic;
 use App\Section;
-use Tests\TestCase;
+use App\Topic;
+use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class TopicTest extends TestCase
 {
     use RefreshDatabase;
 
     public $faker;
+
     public $sysop;
+
     public $home;
 
     public function setUp(): void

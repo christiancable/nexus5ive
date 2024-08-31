@@ -2,17 +2,13 @@
 
 namespace Tests\Unit;
 
-use Tests\TestCase;
-use App\Helpers\NxCodeHelper;
 use App\Helpers\MarkdownHelper;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use App\Helpers\NxCodeHelper;
+use Tests\TestCase;
 
 // phpcs:disable Generic.Files.LineLength
 class NxCodeHelperTest extends TestCase
 {
-
     private static $youTubeHTMLStart = <<< 'HTML'
 <div class="video-wrapper">
       <iframe id="youtube-player" src="//www.youtube.com/embed/
@@ -42,46 +38,46 @@ HTML;
         $youTubeHTMLStop = self::$youTubeHTMLStop;
 
         return [
-        'blank text' => [
-          $input = '',
-          $expectedOutput = '',
-        ],
+            'blank text' => [
+                $input = '',
+                $expectedOutput = '',
+            ],
 
-        'single valid youtube link' => [
-          $input = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-          $expectedOutput = "{$youTubeHTMLStart}dQw4w9WgXcQ{$youTubeHTMLStop}",
-        ],
+            'single valid youtube link' => [
+                $input = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+                $expectedOutput = "{$youTubeHTMLStart}dQw4w9WgXcQ{$youTubeHTMLStop}",
+            ],
 
-        'text with 2 valid youtube links' => [
-          $input = <<< 'HTML'
+            'text with 2 valid youtube links' => [
+                $input = <<< 'HTML'
 look here is a video https://www.youtube.com/watch?v=bDOZbvE01Fk and here is another 
 https://www.youtube.com/watch?v=dQw4w9WgXcQ
 HTML
-        ,
-          $expectedOutput = <<< HTML
+                ,
+                $expectedOutput = <<< HTML
 look here is a video {$youTubeHTMLStart}bDOZbvE01Fk{$youTubeHTMLStop} and here is another 
 {$youTubeHTMLStart}dQw4w9WgXcQ{$youTubeHTMLStop}
 HTML
-        ,
-        ],
+                ,
+            ],
 
-        'no content' => [
-          $input = '',
-          $expectedOutput = '',
-        ],
+            'no content' => [
+                $input = '',
+                $expectedOutput = '',
+            ],
 
-        'not a youtube link' => [
-          $input = 'this is a video https://vimeo.com/87031388',
-          $expectedOutput = 'this is a video https://vimeo.com/87031388',
-          ],
+            'not a youtube link' => [
+                $input = 'this is a video https://vimeo.com/87031388',
+                $expectedOutput = 'this is a video https://vimeo.com/87031388',
+            ],
 
-        'Red Hot Chili Peppers - Give It Away - ID with an underscore' => [
-          $input = 'https://youtu.be/Mr_uHJPUlO8',
-         $expectedOutput = <<< HTML
+            'Red Hot Chili Peppers - Give It Away - ID with an underscore' => [
+                $input = 'https://youtu.be/Mr_uHJPUlO8',
+                $expectedOutput = <<< HTML
 {$youTubeHTMLStart}Mr_uHJPUlO8{$youTubeHTMLStop}
 HTML
-          ,
-          ],
+                ,
+            ],
         ];
     }
 
@@ -118,7 +114,6 @@ HTML
         ];
     }
 
-
     /**
      * test custom markdown extensions
      *
@@ -138,11 +133,11 @@ HTML
                 $expectedOutput = 'Oh my <span class="spoiler">Brad Pitt is Edward Norton!</span>',
             ],
             'multiple spoiler tags' => [
-                $input = <<< TEXT
+                $input = <<< 'TEXT'
 Oh my [spoiler-]Brad Pitt is Edward Norton![-spoiler] and [spoiler-]it was Earth all along[-spoiler]
 TEXT
-            ,
-                $expectedOutput = <<< HTML
+                ,
+                $expectedOutput = <<< 'HTML'
 Oh my <span class="spoiler">Brad Pitt is Edward Norton!</span> and <span class="spoiler">it was Earth all along</span>
 HTML
             ],
@@ -165,16 +160,16 @@ HTML
         return [
             'img tag' => [
                 $input = '<img src="http://imageshack.com/a/img923/5082/NdPfqk.png" alt="image" target="_blank" />',
-                $expectedOutput = <<< HTML
+                $expectedOutput = <<< 'HTML'
 <img class="b-lazy" src="placeholder.jpg" data-src="http://imageshack.com/a/img923/5082/NdPfqk.png" alt="image" target="_blank" />
 HTML
             ],
             'multiple img tags' => [
-                $input = <<< HTML
+                $input = <<< 'HTML'
 <img src="http://imageshack.com/a/img923/5082/NdPfqk.png" alt="image" target="_blank"/> and then this happened <img src="http://imageshack.com/a/img923/5082/NdPfqk.png" alt="image" target="_blank"/>
 HTML
                 ,
-                $expectedOutput = <<< HTML
+                $expectedOutput = <<< 'HTML'
 <img class="b-lazy" src="placeholder.jpg" data-src="http://imageshack.com/a/img923/5082/NdPfqk.png" alt="image" target="_blank"/> and then this happened <img class="b-lazy" src="placeholder.jpg" data-src="http://imageshack.com/a/img923/5082/NdPfqk.png" alt="image" target="_blank"/>
 HTML
             ],

@@ -9,7 +9,8 @@ class TopicHelper
 {
     /**
      * returns a string of the route to a post within a topic, respects pagination
-     * @param Post $post - a post within a topic
+     *
+     * @param  Post  $post  - a post within a topic
      * @return string
      */
     public static function routeToPost(Post $post)
@@ -27,6 +28,7 @@ class TopicHelper
                 'page' => $page,
             ]
         );
+
         return $route;
     }
 
@@ -51,12 +53,11 @@ WHERE deleted_at IS NULL
 ORDER BY tt.id desc limit $maxresults
 SQL;
 
-        
         $allTopicIDs = Arr::pluck(\DB::select($sql), 'topic_id');
         // $topics = \App\Topic::with('most_recent_post', 'most_recent_post.author', 'section')
         // removed most_recent_post from the eager loading here as it was killing memory in large forums
         $topics = \App\Topic::with('section')
-        ->whereIn('id', $allTopicIDs)->get();
+            ->whereIn('id', $allTopicIDs)->get();
 
         // sorting here rather than in SQL because FIELD is MySQL only and so fails tests
         $sortedTopics = $topics->sortBy(function ($model) use ($allTopicIDs) {

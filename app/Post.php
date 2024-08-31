@@ -2,10 +2,10 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Events\MostRecentPostForSectionBecameDirty;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * App\Post
@@ -25,6 +25,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property-read \App\User $author
  * @property-read \App\User|null $editor
  * @property-read \App\Topic $topic
+ *
  * @method static bool|null forceDelete()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Post newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Post newQuery()
@@ -45,6 +46,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Post whereUserId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Post withTrashed()
  * @method static \Illuminate\Database\Query\Builder|\App\Post withoutTrashed()
+ *
  * @mixin \Eloquent
  */
 class Post extends Model
@@ -54,10 +56,10 @@ class Post extends Model
 
     protected $casts = [
         'deleted_at' => 'datetime',
-        'time'       => 'datetime',
+        'time' => 'datetime',
     ];
 
-    protected $fillable = ['title','text','time','popname','html','user_id','topic_id','update_user_id'];
+    protected $fillable = ['title', 'text', 'time', 'popname', 'html', 'user_id', 'topic_id', 'update_user_id'];
 
     public static function boot()
     {

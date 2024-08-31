@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers\Nexus;
 
-use App\Topic;
-use App\Section;
-use App\Http\Requests;
-use Illuminate\View\View;
-use Illuminate\Http\Request;
-use App\Helpers\RestoreHelper;
 use App\Helpers\BreadcrumbHelper;
+use App\Helpers\RestoreHelper;
 use App\Http\Controllers\Controller;
+use App\Section;
+use App\Topic;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class RestoreController extends Controller
 {
@@ -54,12 +53,10 @@ class RestoreController extends Controller
         return view('restore.index', compact('trashedSections', 'trashedTopics', 'breadcrumbs', 'destinationSections'));
     }
 
-
     /**
      * Restore a trashed section
      *
-     * @param  Request  $request
-     * @param int $id - the trashed section
+     * @param  int  $id  - the trashed section
      * @return RedirectResponse
      */
     public function section(Request $request, $id)
@@ -71,14 +68,14 @@ class RestoreController extends Controller
         RestoreHelper::restoreSectionToSection($trashedSection, $destinationSection);
 
         $redirect = action('Nexus\SectionController@show', ['section' => $trashedSection->id]);
+
         return redirect($redirect);
     }
 
     /**
      * Restore a trashed topic
      *
-     * @param  Request  $request
-     * @param int $id - the trashed topic
+     * @param  int  $id  - the trashed topic
      * @return RedirectResponse
      */
     public function topic(Request $request, $id)
@@ -90,6 +87,7 @@ class RestoreController extends Controller
         RestoreHelper::restoreTopicToSection($trashedTopic, $destinationSection);
 
         $redirect = action('Nexus\SectionController@show', ['section' => $destinationSection->id]);
+
         return redirect($redirect);
     }
 }

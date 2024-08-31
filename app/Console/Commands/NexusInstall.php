@@ -3,12 +3,11 @@
 namespace App\Console\Commands;
 
 use App\Mode;
-use App\User;
-use App\Topic;
-use App\Theme;
-use Exception;
 use App\Section;
-use Carbon\Carbon;
+use App\Theme;
+use App\Topic;
+use App\User;
+use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Hash;
 
@@ -49,7 +48,7 @@ class NexusInstall extends Command
         $this->info('Creating administrator, default mode, section and first topic...');
         $administrator = User::first();
 
-        if (!$administrator) {
+        if (! $administrator) {
             $this->info("Please enter in values for the administrator account. Don't worry You can change this later.");
             $username = $this->ask('Username');
             $email = $this->ask('Email Address');
@@ -57,18 +56,18 @@ class NexusInstall extends Command
 
             $administrator = User::factory()->make(
                 [
-                'username'      => $username,
-                'name'          => 'Administrator',
-                'email'         => $email,
-                'password'      => Hash::make($password),
-                'administrator' => true,
+                    'username' => $username,
+                    'name' => 'Administrator',
+                    'email' => $email,
+                    'password' => Hash::make($password),
+                    'administrator' => true,
                 ]
             );
 
             try {
                 $administrator->save();
             } catch (Exception $e) {
-                $this->error('Failed to add administrator ' . $e);
+                $this->error('Failed to add administrator '.$e);
             }
         } else {
             $this->error('There is already a user account');
@@ -76,13 +75,13 @@ class NexusInstall extends Command
 
         $mainMenu = Section::first();
 
-        if (!$mainMenu) {
+        if (! $mainMenu) {
             $this->info("Please enter in values for the main menu. Don't worry You can change this later.");
             $title = $this->ask('Title');
 
             $mainMenu = Section::factory()->make(
                 [
-                'title' => $title
+                    'title' => $title,
                 ]
             );
             $mainMenu->moderator()->associate($administrator);
@@ -91,7 +90,7 @@ class NexusInstall extends Command
             try {
                 $mainMenu->save();
             } catch (Exception $e) {
-                $this->error('Failed to add main menu ' . $e);
+                $this->error('Failed to add main menu '.$e);
             }
         } else {
             $this->error('There is already a main menu');
@@ -99,13 +98,13 @@ class NexusInstall extends Command
 
         $firstTopic = Topic::first();
 
-        if (!$firstTopic) {
+        if (! $firstTopic) {
             $this->info("Please enter in values for the first topic. Don't worry You can change this later.");
             $title = $this->ask('Title');
 
             $firstTopic = Topic::factory()->make(
                 [
-                'title' => $title
+                    'title' => $title,
                 ]
             );
 
@@ -114,7 +113,7 @@ class NexusInstall extends Command
             try {
                 $firstTopic->save();
             } catch (Exception $e) {
-                $this->error('Failed to add first topic ' . $e);
+                $this->error('Failed to add first topic '.$e);
             }
         } else {
             $this->error('There is already a topic');
@@ -122,18 +121,18 @@ class NexusInstall extends Command
 
         $defaultMode = Mode::first();
 
-        if (!$defaultMode) {
+        if (! $defaultMode) {
             $defaultMode = Mode::factory()->make(
                 // @codingStandardsIgnoreStart
                 [
                     'name' => 'Default',
-                    'welcome' => <<< HTML
+                    'welcome' => <<< 'HTML'
  <span class="lead">There are those who believe that **spodding** here began out there, far across the network, with tribes of users who may have been the forefathers of the _Prestoneites_, or the _Facebookers_, or the _Twitters_.</span>
 
 That they may have been the architects of the great forums, or the lost civilizations of _Monochrome_ or _anonyMUD_. Some believe that there may yet be brothers of man who even now fight to survive somewhere beyond the screen...                    
 HTML,
                     'active' => true,
-                    'override' => false
+                    'override' => false,
                 ]
                 // @codingStandardsIgnoreEnd
             );
@@ -142,7 +141,7 @@ HTML,
                 $defaultMode->theme()->associate(Theme::first());
                 $defaultMode->save();
             } catch (Exception $e) {
-                $this->error('Failed to add default mode ' . $e);
+                $this->error('Failed to add default mode '.$e);
             }
         }
     }

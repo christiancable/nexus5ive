@@ -2,11 +2,8 @@
 
 namespace App\Listeners;
 
-use App\User;
 use App\Events\UserCreated;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class LogUnverifiedUser
 {
@@ -23,7 +20,6 @@ class LogUnverifiedUser
     /**
      * Handle the event.
      *
-     * @param  UserCreated  $event
      * @return void
      */
     public function handle(UserCreated $event)

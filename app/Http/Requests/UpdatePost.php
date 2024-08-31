@@ -24,11 +24,11 @@ class UpdatePost extends FormRequest
     public function rules()
     {
         $id = $this->request->all()['id'] ?? '';
-        $this->errorBag = 'postUpdate' . $id;
+        $this->errorBag = 'postUpdate'.$id;
 
         return [
-            "form.$id.text"     => 'required',
-            "form.$id.title"    => 'nullable'
+            "form.$id.text" => 'required',
+            "form.$id.title" => 'nullable',
         ];
     }
 
@@ -37,7 +37,7 @@ class UpdatePost extends FormRequest
         $id = $this->request->all()['id'] ?? '';
 
         return [
-            "form.$id.text.required" => 'Posts cannot be empty'
+            "form.$id.text.required" => 'Posts cannot be empty',
         ];
     }
 }
