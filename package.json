@@ -12,8 +12,6 @@
     "phpunit": "vendor/bin/phpunit",
     "dusk": "php artisan dusk",
     "coverage": "vendor/bin/phpunit --coverage-html coverage",
-    "phpcs": "vendor/bin/phpcs --standard=psr12 app",
-    "phpcbf": "vendor/bin/phpcbf --standard=psr12 ",
     "larastan": "vendor/bin/phpstan analyse"
   },
   "devDependencies": {
