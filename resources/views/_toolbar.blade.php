@@ -83,7 +83,9 @@ $notificationCount = $profileNotificationCount + $mentionCount;
                   <form class="form-inline" action="{{action('Nexus\MentionController@destroyAll')}}" method="POST">
                   @csrf
                   {{ method_field('DELETE') }}
-                    {!! Form::button('<span class="oi oi-check"></span> Clear All Mentions</button>', ['Type' => 'Submit', 'class' => 'btn btn-link dropdown-item', 'id' => 'Clear All Mentions', 'dusk' => 'mentions-clear' ]) !!}
+                    <button type="submit" class="btn btn-link dropdown-item" id="Clear All Mentions" dusk="mentions-clear">
+                        <span class="oi oi-check"></span> Clear All Mentions
+                    </button>
                   </form>
               </div>
             </li>
