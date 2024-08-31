@@ -8,6 +8,7 @@ use App\Http\Controllers\Nexus\MentionController;
 use App\Http\Controllers\Nexus\CommentController;
 use App\Http\Controllers\Nexus\RestoreController;
 use App\Http\Controllers\Nexus\SectionController;
+use App\Http\Controllers\Nexus\NotificationsController;
 use App\Http\Controllers\Nexus\SearchController;
 use App\Http\Controllers\Nexus\TopicController;
 use App\Http\Controllers\Nexus\ModeController;
@@ -40,24 +41,11 @@ if (config('nexus.allow_registrations') === true) {
     Route::redirect('register', 'login');
 }
 
-// API
-Route::get('api/notificationsCount', ['middleware' => 'auth',  function () {
-    return Auth::user()->notificationCount();
-}])->name('api.notificationCount');
 
+// Notifications
+Route::get('api/notificationsCount', [NotificationsController::class, 'notificationCount'])->middleware('auth')->name('api.notificationCount');
+Route::get('interface/toolbar', [NotificationsController::class, 'toolbar'])->middleware('auth')->name('interface.toolbar');
 
-Route::post('api/users', function (Request $request) {
-    $input = $request->all();
-    $username = $input['query'];
-    $data = \App\User::select('username')->where('username', "LIKE", "%$username%")->orderBy('username', 'asc')->get()->toArray();
-    return response()->json($data);
-})->name('api.users');
-
-
-// Interface partials
-Route::get('interface/toolbar', ['middleware' => 'auth',  function () {
-    return response()->view('_toolbar');
-}])->name('interface.toolbar');
 
 
 // uers
