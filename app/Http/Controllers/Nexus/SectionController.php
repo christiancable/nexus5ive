@@ -46,18 +46,22 @@ class SectionController extends Controller
     }
 
     /**
+     * Display the index of sections which in this case is our BBS home
+     */
+    public function index(Request $request)
+    {
+        $section = Section::firstOrFail();
+        return redirect(action('Nexus\SectionController@show', ['section' => $section->id]));
+    }
+    /**
      * Display the specified resource.
      *
      * @param  Section  $section  optional
      * @return \Illuminate\View\View
      */
-    public function show(Request $request, ?Section $section = null)
+    public function show(Request $request, Section $section)
     {
-        if ($section == null) {
-            $section = Section::firstOrFail();
-        }
-
-        // lazy eager load relationships
+         // lazy eager load relationships
         $section->load(
             'moderator:id,username',
             'sections.moderator:id,username',
