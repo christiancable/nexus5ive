@@ -9,6 +9,7 @@ use App\Section;
 use App\Topic;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class RestoreHelperTest extends TestCase
@@ -27,7 +28,7 @@ class RestoreHelperTest extends TestCase
     }
 
     #[Test]
-    public function restoreTopicToSectionDoesRestoresTopicToSection()
+    public function restoreTopicToSectionDoesRestoresTopicToSection(): void
     {
         // GIVEN I have a topic in a section and then that topic is deleted
         $topic = Topic::factory()
@@ -45,7 +46,7 @@ class RestoreHelperTest extends TestCase
     }
 
     #[Test]
-    public function restoreTopicToSectionDoesRestoresTopicAndPosts()
+    public function restoreTopicToSectionDoesRestoresTopicAndPosts(): void
     {
         // GIVEN I have a topic with posts in a section
         $topic = Topic::factory()
@@ -83,7 +84,7 @@ class RestoreHelperTest extends TestCase
     }
 
     #[Test]
-    public function restoreTopicToSectionDoesRestoresTopicAndViews()
+    public function restoreTopicToSectionDoesRestoresTopicAndViews(): void
     {
         // GIVEN I have a topic with posts in a section
         $topic = Topic::factory()
@@ -118,7 +119,7 @@ class RestoreHelperTest extends TestCase
     }
 
     #[Test]
-    public function restoreSectionToSectionDoesRestoreSection()
+    public function restoreSectionToSectionDoesRestoreSection(): void
     {
         // GIVEN we have a section with topics
         $section = Section::factory()

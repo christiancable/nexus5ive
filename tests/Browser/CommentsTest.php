@@ -6,6 +6,7 @@ use App\Comment;
 use App\Section;
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\DuskTestCase;
 
 class CommentsTest extends DuskTestCase
@@ -35,7 +36,8 @@ class CommentsTest extends DuskTestCase
     /*
     * a given user can clear a comment from their profile page
     */
-    public function testUserCanClearSingleComment()
+    #[Test]
+    public function testUserCanClearSingleComment(): void
     {
         $user = $this->user;
 
@@ -76,7 +78,8 @@ class CommentsTest extends DuskTestCase
     /*
     * a given user can clear all comments from their profile page
     */
-    public function testUserCanClearAllComments()
+    #[Test]
+    public function testUserCanClearAllComments(): void
     {
         $user = $this->user;
 

@@ -7,6 +7,7 @@ use App\Section;
 use App\Topic;
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\DuskTestCase;
 
 class NextTest extends DuskTestCase
@@ -21,6 +22,14 @@ class NextTest extends DuskTestCase
     protected $topic;
 
     protected $post;
+
+    protected $section1;
+
+    protected $section2;
+
+    protected $topic1;
+
+    protected $topic2;
 
     protected $postPreview;
 
@@ -66,7 +75,7 @@ class NextTest extends DuskTestCase
     }
 
     #[Test]
-    public function userCanJumpToNextUpdatedTopic()
+    public function userCanJumpToNextUpdatedTopic(): void
     {
         /*
         GIVEN we have a bbs with sections and topic which the user is subscribed to
@@ -96,7 +105,7 @@ class NextTest extends DuskTestCase
     }
 
     #[Test]
-    public function userDoesNotJumpToTopicWhenNoTopicHasBeenUpdated()
+    public function userDoesNotJumpToTopicWhenNoTopicHasBeenUpdated(): void
     {
         /*
         GIVEN we have a bbs with sections and no unread topics
@@ -117,7 +126,7 @@ class NextTest extends DuskTestCase
     }
 
     #[Test]
-    public function userDoesNotJumpToNextUnsubscribedTopic()
+    public function userDoesNotJumpToNextUnsubscribedTopic(): void
     {
         /*
         GIVEN we have a bbs with sections and a topic which is unsubscribed from
@@ -146,7 +155,7 @@ class NextTest extends DuskTestCase
     }
 
     #[Test]
-    public function userCanMarkAllSubscribedTopicsAsRead()
+    public function userCanMarkAllSubscribedTopicsAsRead(): void
     {
         /*
         GIVEN there is an updated topic

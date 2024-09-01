@@ -7,6 +7,7 @@ use App\Section;
 use App\Topic;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class TopicTest extends TestCase
@@ -30,7 +31,7 @@ class TopicTest extends TestCase
     }
 
     #[Test]
-    public function deletingTopicSoftDeletesItsPosts()
+    public function deletingTopicSoftDeletesItsPosts(): void
     {
         // GIVEN we have a topic with posts
         $topic = Topic::factory()
@@ -59,7 +60,7 @@ class TopicTest extends TestCase
     }
 
     #[Test]
-    public function mostRecentPostTimeReturnsTimeOfLatestPost()
+    public function mostRecentPostTimeReturnsTimeOfLatestPost(): void
     {
         // GIVEN we have a topic with posts
         $topic = Topic::factory()

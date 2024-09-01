@@ -7,6 +7,7 @@ use App\Section;
 use App\Topic;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class SectionTest extends TestCase
@@ -27,7 +28,7 @@ class SectionTest extends TestCase
     }
 
     #[Test]
-    public function deletingSectionSoftDeletesSectionAndOnlyThatOne()
+    public function deletingSectionSoftDeletesSectionAndOnlyThatOne(): void
     {
         // GIVEN we have a main menu with a subsection
         $section = Section::factory()
@@ -56,7 +57,7 @@ class SectionTest extends TestCase
     }
 
     #[Test]
-    public function deletingSectionSoftDeletesItsTopics()
+    public function deletingSectionSoftDeletesItsTopics(): void
     {
         // GIVEN we have a section
         $section = Section::factory()
@@ -88,7 +89,7 @@ class SectionTest extends TestCase
     }
 
     #[Test]
-    public function deletingSectionSoftDeletesItsSubsections()
+    public function deletingSectionSoftDeletesItsSubsections(): void
     {
         // GIVEN we have a section
         $section = Section::factory()
@@ -119,7 +120,7 @@ class SectionTest extends TestCase
     }
 
     #[Test]
-    public function latestPostIsNullWhenTheSectionHasNoTopics()
+    public function latestPostIsNullWhenTheSectionHasNoTopics(): void
     {
         /*
         GIVEN a section with no topics
@@ -137,7 +138,7 @@ class SectionTest extends TestCase
     }
 
     #[Test]
-    public function latestPostIsNullWhenTheTopicsHaveNoPosts()
+    public function latestPostIsNullWhenTheTopicsHaveNoPosts(): void
     {
         /*
         GIVEN a section with no topics
@@ -163,7 +164,7 @@ class SectionTest extends TestCase
     }
 
     #[Test]
-    public function latestPostReturnsMostRecentPostAsNewPostsAreAdded()
+    public function latestPostReturnsMostRecentPostAsNewPostsAreAdded(): void
     {
         /*
         GIVEN a section with topics
@@ -211,7 +212,7 @@ class SectionTest extends TestCase
     }
 
     #[Test]
-    public function latestPostReturnsMostRecentPostAsPostsAreRemoved()
+    public function latestPostReturnsMostRecentPostAsPostsAreRemoved(): void
     {
         /*
         GIVEN a section with topics, and a first and second post
@@ -265,7 +266,7 @@ class SectionTest extends TestCase
     }
 
     #[Test]
-    public function latestPostReturnsNullWhenTopicWithPreviousLatestPostIsMovedToAnotherSection()
+    public function latestPostReturnsNullWhenTopicWithPreviousLatestPostIsMovedToAnotherSection(): void
     {
         /*
         GIVEN a section with a topic with a post which is the latest post for that section

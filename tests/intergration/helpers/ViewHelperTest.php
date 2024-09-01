@@ -8,6 +8,7 @@ use App\Section;
 use App\Topic;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class ViewHelperTest extends TestCase
@@ -29,7 +30,7 @@ class ViewHelperTest extends TestCase
     }
 
     #[Test]
-    public function getReadProgressReturnsTimeOfMostRecentlyReadPost()
+    public function getReadProgressReturnsTimeOfMostRecentlyReadPost(): void
     {
         // GIVEN we have a topic with posts
         $topic = Topic::factory()->for($this->home, 'section')->create();
@@ -76,7 +77,7 @@ class ViewHelperTest extends TestCase
     }
 
     #[Test]
-    public function getTopicStatusIndicatesNewPostsForTopicWithNewPosts()
+    public function getTopicStatusIndicatesNewPostsForTopicWithNewPosts(): void
     {
         // GIVEN we have a topic with some posts
         $topic = Topic::factory()->for($this->home, 'section')->create();
@@ -106,7 +107,7 @@ class ViewHelperTest extends TestCase
     }
 
     #[Test]
-    public function getTopicStatusIndicatesNoNewPostsForTopicWithNoNewPosts()
+    public function getTopicStatusIndicatesNoNewPostsForTopicWithNoNewPosts(): void
     {
 
         // GIVEN a topic with some posts
@@ -130,7 +131,7 @@ class ViewHelperTest extends TestCase
     }
 
     #[Test]
-    public function getTopicStatusIndicatesNeverReadForANeverViewedTopic()
+    public function getTopicStatusIndicatesNeverReadForANeverViewedTopic(): void
     {
         // GIVEN we have a user
         $user = User::factory()->create();
@@ -146,7 +147,7 @@ class ViewHelperTest extends TestCase
     }
 
     #[Test]
-    public function getTopicStatusDoesNotIndicateNeverReadForViewedTopic()
+    public function getTopicStatusDoesNotIndicateNeverReadForViewedTopic(): void
     {
         // GIVEN we have a user
         $user = User::factory()->create();
@@ -164,7 +165,7 @@ class ViewHelperTest extends TestCase
     }
 
     #[Test]
-    public function getTopicStatusReturnsUnsubscribedWhenUserUnsubscribes()
+    public function getTopicStatusReturnsUnsubscribedWhenUserUnsubscribes(): void
     {
         // GIVEN we have a user
         $user = User::factory()->create();
@@ -182,7 +183,7 @@ class ViewHelperTest extends TestCase
     }
 
     #[Test]
-    public function getTopicStatusReturnsSubscribedWhenUserResubscribes()
+    public function getTopicStatusReturnsSubscribedWhenUserResubscribes(): void
     {
         // GIVEN we have a user
         $user = User::factory()->create();

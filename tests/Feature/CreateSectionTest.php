@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Section;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class CreateSectionTest extends TestCase
@@ -12,7 +13,7 @@ class CreateSectionTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function moderatorCanCreateNewSubsection()
+    public function moderatorCanCreateNewSubsection(): void
     {
         /*
         GIVEN we have
@@ -57,7 +58,7 @@ class CreateSectionTest extends TestCase
     }
 
     #[Test]
-    public function userCannotCreateSubsection()
+    public function userCannotCreateSubsection(): void
     {
         /*
         GIVEN we have
@@ -97,7 +98,7 @@ class CreateSectionTest extends TestCase
     }
 
     #[Test]
-    public function moderatorCannotCreateInvalidSubsection()
+    public function moderatorCannotCreateInvalidSubsection(): void
     {
         /*
         GIVEN we have

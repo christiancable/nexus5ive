@@ -10,13 +10,13 @@ use Tests\TestCase;
 class MentionHelperTest extends TestCase
 {
     #[DataProvider('provideridentifyMentionedUsersFindsUsernames')]
-    public function testIdentifyMentionsFindsUsernames($input, $expectedOutput)
+    public function testIdentifyMentionsFindsUsernames($input, $expectedOutput): void
     {
         $output = MentionHelper::identifyMentions($input);
         $this->assertEquals($expectedOutput, $output);
     }
 
-    public static function provideridentifyMentionedUsersFindsUsernames()
+    public static function provideridentifyMentionedUsersFindsUsernames(): array
     {
         return [
             'blank post' => [
@@ -39,13 +39,13 @@ class MentionHelperTest extends TestCase
     }
 
     #[DataProvider('providerHighlightMentionsHighlights')]
-    public function testHighlightMentionsHighlights($input, $expectedOutput)
+    public function testHighlightMentionsHighlights($input, $expectedOutput): void
     {
         $output = MentionHelper::highlightMentions($input);
         $this->assertEquals($expectedOutput, $output);
     }
 
-    public static function providerHighlightMentionsHighlights()
+    public static function providerHighlightMentionsHighlights(): array
     {
         return [
             'blank post' => [
