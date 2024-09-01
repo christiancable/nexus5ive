@@ -26,9 +26,7 @@ class SectionTest extends TestCase
             ->create(['parent_id' => null]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function deletingSectionSoftDeletesSectionAndOnlyThatOne()
     {
         // GIVEN we have a main menu with a subsection
@@ -57,9 +55,7 @@ class SectionTest extends TestCase
         $this->assertTrue($section->trashed());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function deletingSectionSoftDeletesItsTopics()
     {
         // GIVEN we have a section
@@ -91,9 +87,7 @@ class SectionTest extends TestCase
         $this->assertEquals(Topic::withTrashed()->where('section_id', $section->id)->count(), $topicsInSectionCount);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function deletingSectionSoftDeletesItsSubsections()
     {
         // GIVEN we have a section
@@ -124,9 +118,7 @@ class SectionTest extends TestCase
         $this->assertEquals(Section::withTrashed()->where('parent_id', $section->id)->count(), $subsectionCount);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function latestPostIsNullWhenTheSectionHasNoTopics()
     {
         /*
@@ -144,9 +136,7 @@ class SectionTest extends TestCase
         $this->assertNull($section->most_recent_post);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function latestPostIsNullWhenTheTopicsHaveNoPosts()
     {
         /*
@@ -172,9 +162,7 @@ class SectionTest extends TestCase
         $this->assertNull($section->most_recent_post);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function latestPostReturnsMostRecentPostAsNewPostsAreAdded()
     {
         /*
@@ -222,9 +210,7 @@ class SectionTest extends TestCase
         $this->assertEquals($post2->id, $section->most_recent_post->id);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function latestPostReturnsMostRecentPostAsPostsAreRemoved()
     {
         /*
@@ -278,9 +264,7 @@ class SectionTest extends TestCase
         $this->assertEquals(null, $section->most_recent_post);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function latestPostReturnsNullWhenTopicWithPreviousLatestPostIsMovedToAnotherSection()
     {
         /*

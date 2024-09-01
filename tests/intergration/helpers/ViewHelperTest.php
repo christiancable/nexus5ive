@@ -28,9 +28,7 @@ class ViewHelperTest extends TestCase
         $this->home = Section::factory()->for($this->sysop, 'moderator')->create(['parent_id' => null]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getReadProgressReturnsTimeOfMostRecentlyReadPost()
     {
         // GIVEN we have a topic with posts
@@ -77,9 +75,7 @@ class ViewHelperTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getTopicStatusIndicatesNewPostsForTopicWithNewPosts()
     {
         // GIVEN we have a topic with some posts
@@ -109,9 +105,7 @@ class ViewHelperTest extends TestCase
         $this->assertTrue($topicStatus['new_posts']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getTopicStatusIndicatesNoNewPostsForTopicWithNoNewPosts()
     {
 
@@ -135,9 +129,7 @@ class ViewHelperTest extends TestCase
         $this->assertFalse($topicStatus['new_posts']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getTopicStatusIndicatesNeverReadForANeverViewedTopic()
     {
         // GIVEN we have a user
@@ -153,9 +145,7 @@ class ViewHelperTest extends TestCase
         $this->assertTrue($topicStatus['never_read']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getTopicStatusDoesNotIndicateNeverReadForViewedTopic()
     {
         // GIVEN we have a user
@@ -173,9 +163,7 @@ class ViewHelperTest extends TestCase
         $this->assertFalse($topicStatus['never_read']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getTopicStatusReturnsUnsubscribedWhenUserUnsubscribes()
     {
         // GIVEN we have a user
@@ -193,9 +181,7 @@ class ViewHelperTest extends TestCase
         $this->assertTrue($topicStatus['unsubscribed']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getTopicStatusReturnsSubscribedWhenUserResubscribes()
     {
         // GIVEN we have a user

@@ -36,9 +36,7 @@ class ThemesTest extends DuskTestCase
             );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function newUserHasDefaultTheme()
     {
         // given we have a default theme
@@ -47,9 +45,7 @@ class ThemesTest extends DuskTestCase
         $this->assertEquals($this->user->theme->id, $this->defaultTheme->id);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function userCanSeeWhichThemeTheyUse()
     {
 
@@ -67,11 +63,7 @@ class ThemesTest extends DuskTestCase
         );
     }
 
-    /**
-     * @test
-     *
-     * @group ugh
-     */
+    #[Test]
     public function userCanChangeTheme()
     {
         // GIVEN we have a user and a default theme

@@ -47,9 +47,7 @@ class LatestTest extends DuskTestCase
         $this->postPreview = substr(strip_tags(NxCodeHelper::nxDecode($this->post->text)), 0, 140);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function userSeesPostPreviewForTopicWithPosts()
     {
         /*
@@ -68,9 +66,7 @@ class LatestTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function userDoesNotSeePostPreviewForUnsubscribedTopicWithPosts()
     {
         /*
@@ -95,9 +91,7 @@ class LatestTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function userCanNotSeeEmptyTopicListedInLatest()
     {
         /*
@@ -115,9 +109,7 @@ class LatestTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function userCanSeePostedToTopicListedInLatest()
     {
         /*

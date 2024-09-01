@@ -11,9 +11,7 @@ class UnverifiedUsersTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function whenAUserIsVerifiedTheyAreAddedToTheVerifiedUserList()
     {
         $unverifiedUser = User::factory()->create([
@@ -28,9 +26,7 @@ class UnverifiedUsersTest extends TestCase
         $this->assertEquals($userCount + 1, $newUserCount);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function unverifiedUsersDoNotAppearInVerifiedUserList()
     {
         $unverifiedUser = User::factory()->create([
@@ -44,9 +40,7 @@ class UnverifiedUsersTest extends TestCase
         $this->assertEquals($count, 0);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function verifiedUsersDoNotAppearInUnverifiedUserList()
     {
         $verifiedUser = User::factory()->create([

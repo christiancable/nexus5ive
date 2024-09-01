@@ -32,9 +32,7 @@ class SubscriptionTest extends DuskTestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function userCanUnsubscribeFromTopic()
     {
         /*
@@ -56,9 +54,7 @@ class SubscriptionTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function userCanResubscribeToTopic()
     {
         /*

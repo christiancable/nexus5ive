@@ -36,9 +36,7 @@ class MentionsTest extends DuskTestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function userWithNoMentionsDoesNotSeeOptionToClearMentions()
     {
         $user = $this->user;
@@ -50,9 +48,7 @@ class MentionsTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function userWithMentionsCanSeeTheyHaveMentions()
     {
         // GIVEN we have a user with no mentions
@@ -73,9 +69,7 @@ class MentionsTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function userWithMentionsCanClearMentions()
     {
         // GIVEN we have a user with no mentions

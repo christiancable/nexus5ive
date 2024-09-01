@@ -49,9 +49,7 @@ class SectionInfoTest extends DuskTestCase
         Artisan::call('cache:clear');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function sectionInfoShowsWhichTopicHasTheMostRecentPost()
     {
         /*
@@ -77,9 +75,7 @@ class SectionInfoTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function sectionWithNoTopicsShowsNoTopicAsHavingTheMostRecentPost()
     {
         /*
@@ -98,9 +94,7 @@ class SectionInfoTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function sectionInfoUpdatesLatestPostFoundInWhenNewPostsAreAdded()
     {
         /*

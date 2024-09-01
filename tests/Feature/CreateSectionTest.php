@@ -11,9 +11,7 @@ class CreateSectionTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function moderatorCanCreateNewSubsection()
     {
         /*
@@ -58,9 +56,7 @@ class CreateSectionTest extends TestCase
             ->assertSee($newSection->title);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function userCannotCreateSubsection()
     {
         /*
@@ -100,9 +96,7 @@ class CreateSectionTest extends TestCase
         $response->assertStatus(403);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function moderatorCannotCreateInvalidSubsection()
     {
         /*

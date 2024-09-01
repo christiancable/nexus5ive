@@ -65,9 +65,7 @@ class NextTest extends DuskTestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function userCanJumpToNextUpdatedTopic()
     {
         /*
@@ -97,9 +95,7 @@ class NextTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function userDoesNotJumpToTopicWhenNoTopicHasBeenUpdated()
     {
         /*
@@ -120,9 +116,7 @@ class NextTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function userDoesNotJumpToNextUnsubscribedTopic()
     {
         /*
@@ -151,9 +145,7 @@ class NextTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function userCanMarkAllSubscribedTopicsAsRead()
     {
         /*

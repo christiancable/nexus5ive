@@ -26,9 +26,7 @@ class RestoreHelperTest extends TestCase
         $this->home = Section::factory()->for($this->sysop, 'moderator')->create(['parent_id' => null]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function restoreTopicToSectionDoesRestoresTopicToSection()
     {
         // GIVEN I have a topic in a section and then that topic is deleted
@@ -46,9 +44,7 @@ class RestoreHelperTest extends TestCase
         $this->assertFalse($topic->trashed());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function restoreTopicToSectionDoesRestoresTopicAndPosts()
     {
         // GIVEN I have a topic with posts in a section
@@ -86,9 +82,7 @@ class RestoreHelperTest extends TestCase
         $this->assertFalse($topic->trashed());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function restoreTopicToSectionDoesRestoresTopicAndViews()
     {
         // GIVEN I have a topic with posts in a section
@@ -123,9 +117,7 @@ class RestoreHelperTest extends TestCase
         $this->assertFalse($topic->trashed());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function restoreSectionToSectionDoesRestoreSection()
     {
         // GIVEN we have a section with topics

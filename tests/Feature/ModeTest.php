@@ -6,6 +6,7 @@ use App\Mode;
 use App\Section;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Group;
 use Tests\TestCase;
 
 class ModeTest extends TestCase
@@ -29,11 +30,9 @@ class ModeTest extends TestCase
 
     /**
      * Only administrators can access the admin section
-     *
-     * @test
-     *
-     * @group mode
      */
+    #[Test]
+    //Group['mode']
     public function sysopsCanAccessAdminSection()
     {
         $sysop = User::factory()->create(['administrator' => true]);
@@ -42,11 +41,9 @@ class ModeTest extends TestCase
 
     /**
      * Non-administrators cannot access the admin section
-     *
-     * @test
-     *
-     * @group mode
      */
+    #[Test]
+    #[Group('mode')]
     public function nonSysopsCannotAccessAdminSection()
     {
         $user = User::factory()->create();

@@ -29,9 +29,7 @@ class TopicTest extends TestCase
             ->create(['parent_id' => null]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function deletingTopicSoftDeletesItsPosts()
     {
         // GIVEN we have a topic with posts
@@ -60,9 +58,7 @@ class TopicTest extends TestCase
         $this->assertEquals(Post::withTrashed()->where('topic_id', $topic->id)->count(), 20);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function mostRecentPostTimeReturnsTimeOfLatestPost()
     {
         // GIVEN we have a topic with posts

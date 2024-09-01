@@ -3,14 +3,13 @@
 namespace Tests\Unit;
 
 use App\Helpers\MentionHelper;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
 // phpcs:disable Generic.Files.LineLength
 class MentionHelperTest extends TestCase
 {
-    /**
-     * @dataProvider provideridentifyMentionedUsersFindsUsernames
-     **/
+    #[DataProvider('provideridentifyMentionedUsersFindsUsernames')]
     public function testIdentifyMentionsFindsUsernames($input, $expectedOutput)
     {
         $output = MentionHelper::identifyMentions($input);
@@ -39,9 +38,7 @@ class MentionHelperTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider providerHighlightMentionsHighlights
-     **/
+    #[DataProvider('providerHighlightMentionsHighlights')]
     public function testHighlightMentionsHighlights($input, $expectedOutput)
     {
         $output = MentionHelper::highlightMentions($input);
