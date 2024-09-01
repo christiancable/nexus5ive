@@ -39,6 +39,6 @@
     @endif
 </div>
 
-@if ($errors->has($errorBag))
-    @include('forms._errors', ['errors' => $errors->get($errorBag)])
+@if ($errors->$errorBag->any())
+    @include('forms._errors', ['errors' => $errors->$errorBag->all()])
 @endif
