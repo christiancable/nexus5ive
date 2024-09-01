@@ -47,8 +47,9 @@ Route::get('interface/toolbar', [NotificationsController::class, 'toolbar'])->mi
 Route::resource('users', UserController::class);
 
 // special sections
-Route::get('/', [SectionController::class, 'show']);
-Route::get('/home', [SectionController::class, 'show']);
+Route::get('/', [SectionController::class, 'index']);
+Route::get('/home', [SectionController::class, 'index']);
+
 Route::get('leap', [SectionController::class, 'leap']);
 Route::get('/section/latest', [SectionController::class, 'latest']);
 

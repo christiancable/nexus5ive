@@ -110,7 +110,7 @@ class NextTest extends DuskTestCase
         /*
         GIVEN we have a bbs with sections and no unread topics
         WHEN user clicks 'Next'
-        THEN user stays on the current section
+        THEN the user jumps to the home section
         AND use sees the no updated topics found message
         */
         $user = $this->user;
@@ -120,7 +120,7 @@ class NextTest extends DuskTestCase
             $browser->loginAs($user)
                 ->visit('/')
                 ->press('@toolbar-next')
-                ->assertPathIs('/')
+                ->assertPathIs('/section/'.$this->home->id)
                 ->assertSee($noTopicsMsg);
         });
     }
@@ -149,7 +149,7 @@ class NextTest extends DuskTestCase
             $browser->loginAs($user)
                 ->visit('/')
                 ->press('@toolbar-next')
-                ->assertPathIs('/')
+                ->assertPathIs('/section/'.$this->home->id)
                 ->assertSee($noTopicsMsg);
         });
     }

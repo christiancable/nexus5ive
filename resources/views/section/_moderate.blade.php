@@ -20,7 +20,6 @@ if ($showErrors) {
   'editTabLink' => "#subsection-edit-" . $subSection->id
 ])
 
-<?php // var_dump($destinations) ?>
 {{-- tab content --}}
 <div class="tab-content" id="subsection-{{$subSection->id}}-tabContent">
   <div class="tab-pane fade {{$viewTabClass}}" id="subsection-view-{{$subSection->id}}" role="tabpanel" aria-labelledby="subsection-view-{{$subSection->id}}-tab">
