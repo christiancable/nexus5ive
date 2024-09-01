@@ -51,8 +51,10 @@ class SectionController extends Controller
     public function index(Request $request)
     {
         $section = Section::firstOrFail();
+
         return redirect(action('Nexus\SectionController@show', ['section' => $section->id]));
     }
+
     /**
      * Display the specified resource.
      *
@@ -61,7 +63,7 @@ class SectionController extends Controller
      */
     public function show(Request $request, Section $section)
     {
-         // lazy eager load relationships
+        // lazy eager load relationships
         $section->load(
             'moderator:id,username',
             'sections.moderator:id,username',
@@ -218,7 +220,10 @@ Markdown;
             FlashHelper::showAlert($message, 'warning');
 
             // redirect to main menu
-            return redirect('/');
+
+            $home = Section::firstOrFail();
+
+            return redirect(action('Nexus\SectionController@show', ['section' => $home->id]));
         }
     }
 }
