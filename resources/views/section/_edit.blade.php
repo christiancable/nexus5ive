@@ -1,7 +1,7 @@
-<?php
+@php
     $errorBag = 'sectionUpdate' . $subSection->id;
     $formName = 'section' . $subSection->id;
-?>
+@endphp
 
 {{-- this is for moderators to edit sub sections --}}
 <div class="card border-0 bg-transparent">
@@ -69,7 +69,6 @@
     </form>
 </div>
 
-@if ($errors->has($errorBag))
-    @include('forms._errors', ['errors' => $errors->get($errorBag)])
+@if ($errors->$errorBag->any())
+    @include('forms._errors', ['errors' => $errors->$errorBag->all()])
 @endif
-</div>
