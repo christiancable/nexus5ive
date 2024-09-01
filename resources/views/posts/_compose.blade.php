@@ -1,14 +1,12 @@
-{!! Form::open(['url' => 'posts']) !!}
-
-
-{!! Form::hidden('topic_id', $topic->id) !!}
+<form action="{{ url('posts') }}" method="POST">
+    @csrf
+    <input type="hidden" name="topic_id" value="{{ $topic->id }}">
 
     <div class="form-group">
-        {!! Form::text('title', null, ['class'=> 'form-control', 'placeholder'=>'Subject']) !!}
+        <input type="text" name="title" class="form-control" placeholder="Subject">
     </div>
 
     <div class="form-group">
-        {!! Form::textarea('text', null, ['class'=> 'form-control', 'id'=>'postText']) !!}
+        <textarea name="text" class="form-control" id="postText"></textarea>
     </div>
-
-
+</form>

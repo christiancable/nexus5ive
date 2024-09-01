@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class CreateSectionsTable extends Migration
 {
@@ -25,7 +25,7 @@ class CreateSectionsTable extends Migration
                 ->references('id')
                 ->on('users')->onDelete('cascade');
 
-             $table->foreign('parent_id')
+            $table->foreign('parent_id')
                 ->references('id')
                 ->on('sections')->onDelete('cascade');
             // delete child sections when the parent is removed

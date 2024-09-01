@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \App\Topic $topic
  * @property-read \App\User $user
+ *
  * @method static bool|null forceDelete()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\View newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\View newQuery()
@@ -34,6 +35,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\View whereUserId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\View withTrashed()
  * @method static \Illuminate\Database\Query\Builder|\App\View withoutTrashed()
+ *
  * @mixin \Eloquent
  */
 class View extends Model
@@ -41,9 +43,9 @@ class View extends Model
     use SoftDeletes;
 
     protected $casts = [
-        'unsubscribed'      => 'boolean',
-        'latest_view_date'  => 'datetime',
-        'deleted_at'        => 'datetime',
+        'unsubscribed' => 'boolean',
+        'latest_view_date' => 'datetime',
+        'deleted_at' => 'datetime',
     ];
 
     public function user()

@@ -2,14 +2,14 @@
 
 namespace App;
 
-use Illuminate\Support\Str;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Log;
 use App\Events\TreeCacheBecameDirty;
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 /**
  * App\Section
@@ -30,6 +30,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Section[] $sections
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Topic[] $topics
  * @property-read int|null $topics_count
+ *
  * @method static bool|null forceDelete()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Section newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Section newQuery()
@@ -47,6 +48,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Section whereWeight($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Section withTrashed()
  * @method static \Illuminate\Database\Query\Builder|\App\Section withoutTrashed()
+ *
  * @mixin \Eloquent
  */
 class Section extends Model
@@ -58,7 +60,7 @@ class Section extends Model
         'deleted_at' => 'datetime',
     ];
 
-    protected $fillable = ['id','title','intro','user_id','parent_id', 'weight'];
+    protected $fillable = ['id', 'title', 'intro', 'user_id', 'parent_id', 'weight'];
 
     public static function boot()
     {
@@ -85,13 +87,13 @@ class Section extends Model
         });
 
         Section::deleted(function () {
-            event(new TreeCacheBecameDirty());
+            event(new TreeCacheBecameDirty);
         });
         Section::updated(function () {
-            event(new TreeCacheBecameDirty());
+            event(new TreeCacheBecameDirty);
         });
         Section::created(function () {
-            event(new TreeCacheBecameDirty());
+            event(new TreeCacheBecameDirty);
         });
     }
 
@@ -114,13 +116,12 @@ class Section extends Model
         return $this->hasMany(\App\Section::class, 'parent_id', 'id')->orderBy('weight', 'asc');
     }
 
-
     /**
-    * @return Collection - all descendant sections
-    */
+     * @return Collection - all descendant sections
+     */
     public function allChildSections()
     {
-        $allChildSections = new Collection();
+        $allChildSections = new Collection;
         foreach ($this->sections as $child) {
             $allChildSections->prepend($child);
             $allChildSections = self::listChildren($child, $allChildSections);
@@ -129,19 +130,19 @@ class Section extends Model
         return $allChildSections;
     }
 
-
     private static function listChildren(Section $section, $children)
     {
         foreach ($section->sections as $child) {
             $children->prepend($child);
             $children = self::listChildren($child, $children);
         }
+
         return $children;
     }
 
     public function getIsHomeAttribute()
     {
-        return null === $this->parent_id;
+        return $this->parent_id === null;
     }
 
     // topics
@@ -150,18 +151,16 @@ class Section extends Model
         return $this->hasMany(\App\Topic::class)->orderBy('weight', 'asc');
     }
 
-
     public function trashedTopics()
     {
         return $this->topics()->onlyTrashed()->orderBy('weight', 'asc');
     }
 
-
     // posts
 
     public function getMostRecentPostAttribute()
     {
-        $cacheKey = 'mostRecentPost' . $this->id;
+        $cacheKey = 'mostRecentPost'.$this->id;
 
         return Cache::rememberForever(
             $cacheKey,
@@ -173,7 +172,7 @@ class Section extends Model
 
     public static function forgetMostRecentPostAttribute($section_id = null)
     {
-        $cacheKey = 'mostRecentPost' . $section_id;
+        $cacheKey = 'mostRecentPost'.$section_id;
         Cache::forget($cacheKey);
     }
 
@@ -181,18 +180,19 @@ class Section extends Model
      * recalculateMostRecentPost
      *
      * @todo rewrite this logic to be more like the topic scope
+     *
      * @return Post|null - the most recent post for the section or null
      */
     private function recalculateMostRecentPost()
     {
         $topicIDs = Topic::withoutGlobalScope('with_most_recent_post')->select('id')
             ->where('section_id', $this->id)->get()->toArray();
-        if (0 == count($topicIDs)) {
+        if (count($topicIDs) == 0) {
             return null;
         }
 
         $postID = Post::select('id')->whereIn('topic_id', $topicIDs)->orderBy('id', 'desc')->get()->first();
-        if (!$postID) {
+        if (! $postID) {
             return null;
         }
 

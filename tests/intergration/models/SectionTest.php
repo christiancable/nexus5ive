@@ -2,18 +2,20 @@
 
 namespace Tests\Intergration\Models;
 
-use App\User;
 use App\Post;
-use App\Topic;
 use App\Section;
-use Tests\TestCase;
+use App\Topic;
+use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
+use Tests\TestCase;
 
 class SectionTest extends TestCase
 {
     use RefreshDatabase;
 
     public $home;
+
     public $sysop;
 
     public function setUp(): void
@@ -25,10 +27,8 @@ class SectionTest extends TestCase
             ->create(['parent_id' => null]);
     }
 
-    /**
-     * @test
-     */
-    public function deletingSectionSoftDeletesSectionAndOnlyThatOne()
+    #[Test]
+    public function deletingSectionSoftDeletesSectionAndOnlyThatOne(): void
     {
         // GIVEN we have a main menu with a subsection
         $section = Section::factory()
@@ -56,10 +56,8 @@ class SectionTest extends TestCase
         $this->assertTrue($section->trashed());
     }
 
-    /**
-     * @test
-     */
-    public function deletingSectionSoftDeletesItsTopics()
+    #[Test]
+    public function deletingSectionSoftDeletesItsTopics(): void
     {
         // GIVEN we have a section
         $section = Section::factory()
@@ -90,10 +88,8 @@ class SectionTest extends TestCase
         $this->assertEquals(Topic::withTrashed()->where('section_id', $section->id)->count(), $topicsInSectionCount);
     }
 
-    /**
-     * @test
-     */
-    public function deletingSectionSoftDeletesItsSubsections()
+    #[Test]
+    public function deletingSectionSoftDeletesItsSubsections(): void
     {
         // GIVEN we have a section
         $section = Section::factory()
@@ -123,10 +119,8 @@ class SectionTest extends TestCase
         $this->assertEquals(Section::withTrashed()->where('parent_id', $section->id)->count(), $subsectionCount);
     }
 
-    /**
-     * @test
-     */
-    public function latestPostIsNullWhenTheSectionHasNoTopics()
+    #[Test]
+    public function latestPostIsNullWhenTheSectionHasNoTopics(): void
     {
         /*
         GIVEN a section with no topics
@@ -143,10 +137,8 @@ class SectionTest extends TestCase
         $this->assertNull($section->most_recent_post);
     }
 
-    /**
-     * @test
-     */
-    public function latestPostIsNullWhenTheTopicsHaveNoPosts()
+    #[Test]
+    public function latestPostIsNullWhenTheTopicsHaveNoPosts(): void
     {
         /*
         GIVEN a section with no topics
@@ -171,10 +163,8 @@ class SectionTest extends TestCase
         $this->assertNull($section->most_recent_post);
     }
 
-    /**
-     * @test
-     */
-    public function latestPostReturnsMostRecentPostAsNewPostsAreAdded()
+    #[Test]
+    public function latestPostReturnsMostRecentPostAsNewPostsAreAdded(): void
     {
         /*
         GIVEN a section with topics
@@ -221,10 +211,8 @@ class SectionTest extends TestCase
         $this->assertEquals($post2->id, $section->most_recent_post->id);
     }
 
-    /**
-     * @test
-     */
-    public function latestPostReturnsMostRecentPostAsPostsAreRemoved()
+    #[Test]
+    public function latestPostReturnsMostRecentPostAsPostsAreRemoved(): void
     {
         /*
         GIVEN a section with topics, and a first and second post
@@ -277,10 +265,8 @@ class SectionTest extends TestCase
         $this->assertEquals(null, $section->most_recent_post);
     }
 
-     /**
-     * @test
-     */
-    public function latestPostReturnsNullWhenTopicWithPreviousLatestPostIsMovedToAnotherSection()
+    #[Test]
+    public function latestPostReturnsNullWhenTopicWithPreviousLatestPostIsMovedToAnotherSection(): void
     {
         /*
         GIVEN a section with a topic with a post which is the latest post for that section
@@ -313,7 +299,7 @@ class SectionTest extends TestCase
             ->create(['parent_id' => null]);
 
         $topic1->update([
-            'section_id' => $section2->id
+            'section_id' => $section2->id,
         ]);
 
         /*

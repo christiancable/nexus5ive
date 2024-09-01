@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class CreatePostsTable extends Migration
 {
@@ -14,13 +14,13 @@ class CreatePostsTable extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->increments('id');
-            
+
             $table->text('title')->nullable();
             $table->longText('text')->nullable();
             $table->timestamp('time');
             $table->text('popname')->nullable();
             $table->boolean('html')->default(false);
-            
+
             $table->integer('user_id')->unsigned();
             $table->integer('topic_id')->unsigned();
             $table->integer('update_user_id')->unsigned()->nullable()->default(null);

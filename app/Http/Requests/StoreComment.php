@@ -8,11 +8,10 @@ class StoreComment extends FormRequest
 {
     /**
      * The key to be used for the view error bag.
-    *
-    * @var string
-    */
+     *
+     * @var string
+     */
     protected $errorBag = 'commentCreate';
-
 
     /**
      * Determine if the user is authorized to make this request.

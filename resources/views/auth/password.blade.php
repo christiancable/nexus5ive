@@ -4,14 +4,13 @@
 <div class="container">
   <div class="col-md-6">
 
-    {!! Form::open(array('url' => '/password/email', 'class' => 'form')) !!}
+    <form action="/password/email" method="POST" class="form">
 
     <h1>Recover Your Password</h1>
 
     @if (count($errors) > 0)
     <div class="alert alert-danger">
-      There were some problems recovering your password:
-      <br />
+      There were some problems recovering your password:<br />
       <ul>
         @foreach ($errors->all() as $error)
         <li>{{ $error }}</li>
@@ -21,20 +20,18 @@
     @endif
 
     <div class="form-group">
-      {!! Form::label('email', 'Your E-mail Address') !!}
-      {!! Form::text('email', null, 
-      array('class'=>'form-control', 'placeholder'=>'E-mail')) !!}
+      <label for="email">Your E-mail Address</label>
+      <input type="text" name="email" class="form-control" placeholder="E-mail">
     </div>
 
     <div class="form-group">
-      {!! Form::submit('E-mail Password Reset Link', 
-      array('class'=>'btn btn-primary')) !!}
+      <button type="submit" class="btn btn-primary">E-mail Password Reset Link</button>
     </div>
-    {!! Form::close() !!}
+    </form>
+
     @if (config('nexus.admin_email'))
     <a href="mailto:{{config('nexus.admin_email')}}?subject=Password Help!">Forgotten your username or using a different email address?</a>
     @endif
-</div> <!-- .container -->
-  </div>
+  </div> <!-- .container -->
 </div>
 @endsection

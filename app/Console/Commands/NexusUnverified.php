@@ -5,7 +5,6 @@
  *  unverified for at least {--age} days
  *
  *  nexus:unverified remove {--confirm} {--age=30}
- *
  */
 
 namespace App\Console\Commands;
@@ -62,6 +61,7 @@ class NexusUnverified extends Command
             ->whereDate('created_at', '<', Carbon::now()->subDays($this->age)->toDateTimeString())
             ->get();
     }
+
     /**
      * Create a new command instance.
      *
@@ -72,7 +72,6 @@ class NexusUnverified extends Command
         parent::__construct();
     }
 
-
     /**
      * Execute the console command.
      *
@@ -81,23 +80,24 @@ class NexusUnverified extends Command
     public function handle()
     {
         if ($this->option('age') && is_numeric($this->option('age'))) {
-            $this->age = (int)$this->option('age');
+            $this->age = (int) $this->option('age');
         }
 
         $this->unverifiedUsers = $this->getUnverifiedUsers();
 
-        $this->line("Remove Unverified Users");
-        $this->line("=======================");
+        $this->line('Remove Unverified Users');
+        $this->line('=======================');
         foreach ($this->unverifiedUsers as $user) {
             $this->info("* {$user->username}");
         }
 
         $unverifiedUsersCount = count($this->unverifiedUsers);
-        if (!$this->option('confirm')) {
+        if (! $this->option('confirm')) {
             $confirm = $this->ask("Remove these unverified $unverifiedUsersCount users? (yes/no)");
 
             if ($confirm != 'yes') {
                 $this->info('Not removing any users');
+
                 return;
             }
         }

@@ -64,7 +64,7 @@ Users who use a removed theme have their theme set to the default.
 
 ## Development
 
-Nexus uses [Laravel Sail](https://laravel.com/docs/10.x/sail) for development. 
+Nexus uses [Laravel Sail](https://laravel.com/docs/11.x/sail) for development.
 
 A number of useful tasks are included to aid in development. Prefix the commands below with `./vendon/bin/sail` where required.
 
@@ -94,6 +94,6 @@ Static analysis is provided using the [larastan](https://medium.com/@nunomaduro/
 
 ### Coding Standards
 
-PHP is written to confirm to PSR2. To check the status of all the files within `app` run:
+PHP is written to confirm to Laravel's coding standards. To check the status of all the files within `app` run:
 
-`yarn phpcs`
+`./vendor/bin/pint app`

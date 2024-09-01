@@ -2,23 +2,29 @@
 
 namespace Tests\Browser;
 
-use App\User;
-use App\Post;
-use App\Topic;
-use App\Section;
-use Tests\DuskTestCase;
-use Laravel\Dusk\Browser;
 use App\Helpers\NxCodeHelper;
+use App\Post;
+use App\Section;
+use App\Topic;
+use App\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use PHPUnit\Framework\Attributes\Test;
+use Tests\DuskTestCase;
 
 class LatestTest extends DuskTestCase
 {
     use DatabaseMigrations;
 
     protected $user;
+
     protected $home;
+
     protected $topic;
+
+    protected $emptyTopic;
+
     protected $post;
+
     protected $postPreview;
 
     protected function setUp(): void
@@ -31,10 +37,10 @@ class LatestTest extends DuskTestCase
             'user_id' => $this->user->id,
         ]);
         $this->topic = Topic::factory()->create([
-            'section_id' => $this->home->id
+            'section_id' => $this->home->id,
         ]);
         $this->emptyTopic = Topic::factory()->create([
-            'section_id' => $this->home->id
+            'section_id' => $this->home->id,
         ]);
         $this->post = Post::factory()->create([
             'topic_id' => $this->topic->id,
@@ -44,10 +50,8 @@ class LatestTest extends DuskTestCase
         $this->postPreview = substr(strip_tags(NxCodeHelper::nxDecode($this->post->text)), 0, 140);
     }
 
-    /**
-     * @test
-     */
-    public function userSeesPostPreviewForTopicWithPosts()
+    #[Test]
+    public function userSeesPostPreviewForTopicWithPosts(): void
     {
         /*
         GIVEN we have a topic with posts
@@ -60,15 +64,13 @@ class LatestTest extends DuskTestCase
 
         $this->browse(function ($browser) use ($user, $postPreview) {
             $browser->loginAs($user)
-                    ->visit('/section/latest')
-                    ->assertSee($postPreview);
+                ->visit('/section/latest')
+                ->assertSee($postPreview);
         });
     }
 
-    /**
-     * @test
-     */
-    public function userDoesNotSeePostPreviewForUnsubscribedTopicWithPosts()
+    #[Test]
+    public function userDoesNotSeePostPreviewForUnsubscribedTopicWithPosts(): void
     {
         /*
         GIVEN we have a topic with posts
@@ -83,19 +85,17 @@ class LatestTest extends DuskTestCase
 
         $this->browse(function ($browser) use ($user, $topic, $postPreview) {
             $browser->loginAs($user)
-                    ->visit('/topic/' . $topic->id)
-                    ->press('Unsubscribe from this topic');
+                ->visit('/topic/'.$topic->id)
+                ->press('Unsubscribe from this topic');
 
             $browser->loginAs($user)
-                    ->visit('/section/latest/')
-                    ->assertDontSee($postPreview);
+                ->visit('/section/latest/')
+                ->assertDontSee($postPreview);
         });
     }
 
-    /**
-     * @test
-     */
-    public function userCanNotSeeEmptyTopicListedInLatest()
+    #[Test]
+    public function userCanNotSeeEmptyTopicListedInLatest(): void
     {
         /*
         GIVEN we have a topic with no posts
@@ -107,15 +107,13 @@ class LatestTest extends DuskTestCase
 
         $this->browse(function ($browser) use ($user, $emptyTopic) {
             $browser->loginAs($user)
-                    ->visit('/section/latest/')
-                    ->assertDontSee($emptyTopic->title);
+                ->visit('/section/latest/')
+                ->assertDontSee($emptyTopic->title);
         });
     }
 
-    /**
-     * @test
-     */
-    public function userCanSeePostedToTopicListedInLatest()
+    #[Test]
+    public function userCanSeePostedToTopicListedInLatest(): void
     {
         /*
         GIVEN we have a topic with no posts
@@ -133,8 +131,8 @@ class LatestTest extends DuskTestCase
 
         $this->browse(function ($browser) use ($user, $emptyTopic) {
             $browser->loginAs($user)
-                    ->visit('/section/latest/')
-                    ->assertSee($emptyTopic->title);
+                ->visit('/section/latest/')
+                ->assertSee($emptyTopic->title);
         });
     }
 }

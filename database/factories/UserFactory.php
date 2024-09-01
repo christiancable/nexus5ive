@@ -2,11 +2,10 @@
 
 namespace Database\Factories;
 
-use App\User;
 use App\Theme;
 use Carbon\Carbon;
-use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 class UserFactory extends Factory
 {
@@ -26,7 +25,7 @@ class UserFactory extends Factory
             'theme_id' => function () {
                 return Theme::firstOrFail()->id;
             },
-            'email_verified_at' => Carbon::now()
+            'email_verified_at' => Carbon::now(),
         ];
     }
 }

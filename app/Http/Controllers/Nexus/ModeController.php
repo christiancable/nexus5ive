@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\Nexus;
 
+use App\Helpers\ActivityHelper;
+use App\Helpers\BreadcrumbHelper;
+use App\Helpers\FlashHelper;
+use App\Http\Controllers\Controller;
 use App\Mode;
 use App\Theme;
 use Illuminate\Http\Request;
-use App\Helpers\FlashHelper;
-use App\Helpers\ActivityHelper;
-use App\Helpers\BreadcrumbHelper;
-use Illuminate\Support\Facades\Log;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Validator;
 
@@ -28,7 +27,6 @@ class ModeController extends Controller
         $this->authorizeResource(Mode::class, 'mode');
     }
 
-
     /**
      * Display a listing of the resource.
      *
@@ -38,7 +36,7 @@ class ModeController extends Controller
     {
         ActivityHelper::updateActivity(
             $request->user()->id,
-            "Settings",
+            'Settings',
         );
         $breadcrumbs = BreadcrumbHelper::breadcumbForUtility('Settings');
 
@@ -48,7 +46,7 @@ class ModeController extends Controller
                 'currentMode' => Mode::where('active', 1)->first() ?? Mode::first(),
                 'modes' => Mode::all()->keyBy('id'),
                 'themes' => Theme::all()->keyBy('id'),
-                'breadcrumbs' => $breadcrumbs
+                'breadcrumbs' => $breadcrumbs,
             ],
         );
     }
@@ -66,7 +64,6 @@ class ModeController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -77,7 +74,6 @@ class ModeController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Mode $mode
      * @return \Illuminate\Http\Response
      */
     public function show(Mode $mode)
@@ -88,7 +84,6 @@ class ModeController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Mode $mode
      * @return \Illuminate\Http\Response
      */
     public function edit(Mode $mode)
@@ -99,8 +94,6 @@ class ModeController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \App\Mode                $mode
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Mode $mode)
@@ -111,7 +104,6 @@ class ModeController extends Controller
     /**
      * Handle form submission and pass input onto activate or update
      *
-     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function handle(Request $request)
@@ -119,22 +111,23 @@ class ModeController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-            'mode' => [
-                'required',
-                'exists:App\Mode,id',
-            ],
-            'welcome' => 'required',
-            'theme_id' => 'exists:App\Theme,id',
-            'action'    => [
-                'required',
-                'in:update,activate'
-            ],
-            'theme_override' => 'sometimes',
+                'mode' => [
+                    'required',
+                    'exists:App\Mode,id',
+                ],
+                'welcome' => 'required',
+                'theme_id' => 'exists:App\Theme,id',
+                'action' => [
+                    'required',
+                    'in:update,activate',
+                ],
+                'theme_override' => 'sometimes',
             ],
         );
 
         if ($validator->fails()) {
             FlashHelper::showAlert('Unable to update mode', 'warning');
+
             return back();
         }
 
@@ -155,13 +148,14 @@ class ModeController extends Controller
 
             default:
                 $message = [
-                'body'  =>  'nothing happened',
-                'status' => 'warning'
+                    'body' => 'nothing happened',
+                    'status' => 'warning',
                 ];
                 break;
         }
 
         FlashHelper::showAlert($message['body'], $message['status']);
+
         return back();
     }
 
@@ -169,9 +163,6 @@ class ModeController extends Controller
      * activate
      *
      * sets the Mode as the default
-     *
-     * @param  Mode $mode
-     * @return array
      */
     private function activate(Mode $mode): array
     {
@@ -187,7 +178,7 @@ class ModeController extends Controller
 
         return [
             'body' => trim($message),
-            'status'  => 'success'
+            'status' => 'success',
         ];
     }
 
@@ -195,10 +186,6 @@ class ModeController extends Controller
      * updateMode
      *
      * saves changes to the Mode
-     *
-     * @param  Mode  $mode
-     * @param  array $updates
-     * @return array
      */
     private function updateMode(Mode $mode, array $updates): array
     {
@@ -217,14 +204,13 @@ class ModeController extends Controller
 
         return [
             'body' => trim($message),
-            'status'  => 'success'
+            'status' => 'success',
         ];
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Mode $mode
      * @return \Illuminate\Http\Response
      */
     public function destroy(Mode $mode)

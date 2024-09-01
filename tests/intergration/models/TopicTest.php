@@ -3,18 +3,21 @@
 namespace Tests\Intergration\Models;
 
 use App\Post;
-use App\User;
-use App\Topic;
 use App\Section;
-use Tests\TestCase;
+use App\Topic;
+use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
+use Tests\TestCase;
 
 class TopicTest extends TestCase
 {
     use RefreshDatabase;
 
     public $faker;
+
     public $sysop;
+
     public $home;
 
     public function setUp(): void
@@ -27,10 +30,8 @@ class TopicTest extends TestCase
             ->create(['parent_id' => null]);
     }
 
-    /**
-     * @test
-     */
-    public function deletingTopicSoftDeletesItsPosts()
+    #[Test]
+    public function deletingTopicSoftDeletesItsPosts(): void
     {
         // GIVEN we have a topic with posts
         $topic = Topic::factory()
@@ -58,10 +59,8 @@ class TopicTest extends TestCase
         $this->assertEquals(Post::withTrashed()->where('topic_id', $topic->id)->count(), 20);
     }
 
-    /**
-     * @test
-     */
-    public function mostRecentPostTimeReturnsTimeOfLatestPost()
+    #[Test]
+    public function mostRecentPostTimeReturnsTimeOfLatestPost(): void
     {
         // GIVEN we have a topic with posts
         $topic = Topic::factory()

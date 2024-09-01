@@ -2,8 +2,8 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * App\Comment
@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property \Illuminate\Support\Carbon $updated_at
  * @property-read \App\User $author
  * @property-read \App\User $user
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Comment newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Comment newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Comment query()
@@ -27,13 +28,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Comment whereText($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Comment whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Comment whereUserId($value)
+ *
  * @mixin \Eloquent
  */
 class Comment extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id','author_id','text','read'];
+    protected $fillable = ['user_id', 'author_id', 'text', 'read'];
 
     protected $casts = [
         'read' => 'boolean',

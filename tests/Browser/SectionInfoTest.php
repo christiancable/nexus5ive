@@ -2,23 +2,28 @@
 
 namespace Tests\Browser;
 
-use App\User;
 use App\Post;
-use App\Topic;
 use App\Section;
-use Tests\DuskTestCase;
-use Laravel\Dusk\Browser;
-use Illuminate\Support\Facades\Artisan;
+use App\Topic;
+use App\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Support\Facades\Artisan;
+use Laravel\Dusk\Browser;
+use PHPUnit\Framework\Attributes\Test;
+use Tests\DuskTestCase;
 
 class SectionInfoTest extends DuskTestCase
 {
     use DatabaseMigrations;
 
     protected $user;
+
     protected $home;
+
     protected $subSection;
+
     protected $topicInSubSection;
+
     protected $anotherTopicInSubSection;
 
     protected function setUp(): void
@@ -27,28 +32,26 @@ class SectionInfoTest extends DuskTestCase
 
         $this->user = User::factory()->create();
         $this->home = Section::factory()->create([
-           'parent_id' => null,
-           'user_id' => $this->user->id,
+            'parent_id' => null,
+            'user_id' => $this->user->id,
         ]);
         $this->subSection = Section::factory()->create([
-           'parent_id' => $this->home,
-           'user_id' => $this->user->id,
+            'parent_id' => $this->home,
+            'user_id' => $this->user->id,
         ]);
         $this->topicInSubSection = Topic::factory()->create([
-           'section_id' => $this->subSection->id
+            'section_id' => $this->subSection->id,
         ]);
         $this->anotherTopicInSubSection = Topic::factory()->create([
-           'section_id' => $this->subSection->id
+            'section_id' => $this->subSection->id,
         ]);
 
         // we cache the latest post info so clear the cache between tests
         Artisan::call('cache:clear');
     }
 
-    /**
-     * @test
-     */
-    public function sectionInfoShowsWhichTopicHasTheMostRecentPost()
+    #[Test]
+    public function sectionInfoShowsWhichTopicHasTheMostRecentPost(): void
     {
         /*
         GIVEN we have a section with a sub-section
@@ -68,16 +71,13 @@ class SectionInfoTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($user, $home, $topicInSubSection) {
             $browser->loginAs($user)
-                    ->visit('/section/' . $home->id)
-                    ->assertSee('Latest Post in ' . $topicInSubSection->title);
+                ->visit('/section/'.$home->id)
+                ->assertSee('Latest Post in '.$topicInSubSection->title);
         });
     }
 
-
-    /**
-     * @test
-     */
-    public function sectionWithNoTopicsShowsNoTopicAsHavingTheMostRecentPost()
+    #[Test]
+    public function sectionWithNoTopicsShowsNoTopicAsHavingTheMostRecentPost(): void
     {
         /*
         GIVEN we have a section with a sub-section
@@ -90,16 +90,13 @@ class SectionInfoTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($user, $home) {
             $browser->loginAs($user)
-                    ->visit('/section/' . $home->id)
-                    ->assertDontSee('Latest Post in ');
+                ->visit('/section/'.$home->id)
+                ->assertDontSee('Latest Post in ');
         });
     }
 
-
-    /**
-     * @test
-     */
-    public function sectionInfoUpdatesLatestPostFoundInWhenNewPostsAreAdded()
+    #[Test]
+    public function sectionInfoUpdatesLatestPostFoundInWhenNewPostsAreAdded(): void
     {
         /*
         GIVEN we have a section with a sub-section
@@ -113,8 +110,8 @@ class SectionInfoTest extends DuskTestCase
         $home = $this->home;
 
         $newPost = Post::factory()->create([
-           'topic_id' => $this->topicInSubSection->id,
-           'user_id' => $this->user->id,
+            'topic_id' => $this->topicInSubSection->id,
+            'user_id' => $this->user->id,
         ]);
 
         $topicInSubSection = $this->topicInSubSection;
@@ -122,8 +119,8 @@ class SectionInfoTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($user, $home, $topicInSubSection, $anotherTopicInSubSection) {
             $browser->loginAs($user)
-                    ->visit('/section/' . $home->id)
-                    ->assertSee('Latest Post in ' . $topicInSubSection->title);
+                ->visit('/section/'.$home->id)
+                ->assertSee('Latest Post in '.$topicInSubSection->title);
 
             $anotherNewPost = Post::factory()->create([
                 'topic_id' => $anotherTopicInSubSection->id,
@@ -131,8 +128,8 @@ class SectionInfoTest extends DuskTestCase
             ]);
 
             $browser->loginAs($user)
-                    ->visit('/section/' . $home->id)
-                    ->assertSee('Latest Post in ' . $anotherTopicInSubSection->title);
+                ->visit('/section/'.$home->id)
+                ->assertSee('Latest Post in '.$anotherTopicInSubSection->title);
         });
     }
 }

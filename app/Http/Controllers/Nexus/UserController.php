@@ -2,20 +2,15 @@
 
 namespace App\Http\Controllers\Nexus;
 
-use App\User;
-use App\Theme;
-use App\Http\Requests;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use App\Helpers\FlashHelper;
 use App\Helpers\ActivityHelper;
 use App\Helpers\BreadcrumbHelper;
-use App\Http\Requests\UpdateUser;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Auth;
+use App\Helpers\FlashHelper;
 use App\Http\Controllers\Controller;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Http\Requests\UpdateUser;
+use App\Theme;
+use App\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -32,11 +27,11 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $users =  User::select('username', 'name', 'popname', 'latestLogin', 'totalPosts', 'totalVisits')
+        $users = User::select('username', 'name', 'popname', 'latestLogin', 'totalPosts', 'totalVisits')
             ->verified()->orderBy('username', 'asc')->get();
         ActivityHelper::updateActivity(
             $request->user()->id,
-            "Viewing list of Users",
+            'Viewing list of Users',
             action('Nexus\UserController@index')
         );
         $breadcrumbs = BreadcrumbHelper::breadcumbForUtility('Users');
@@ -47,8 +42,6 @@ class UserController extends Controller
     /**
      * show a user
      *
-     * @param  Request $request
-     * @param  User    $user
      * @return \Illuminate\View\View
      */
     public function show(Request $request, User $user)
@@ -86,11 +79,9 @@ class UserController extends Controller
      * edit
      * this just forwards to the $this->show because edit and show are combined
      *
-     * @param  Request $request
-     * @param  User    $user
      * @return \Illuminate\View\View
      */
-    public function edit(Request $request, User $user)
+    public function edit(UpdateUser $request, User $user)
     {
         return $this->show($request, $user);
     }
@@ -98,16 +89,15 @@ class UserController extends Controller
     /**
      * Update the user
      *
-     * @param  Request $request
-     * @param  User    $user
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, User $user)
+    public function update(UpdateUser $request, User $user)
     {
         $input = $request->all();
 
         // to prevent setting password to an empty string https://trello.com/c/y1WAxwfb
-        if ($input['password'] <> '') {
+        if ($input['password'] != '') {
+            // password must match confirm
             $input['password'] = Hash::make($input['password']);
         } else {
             unset($input['password']);

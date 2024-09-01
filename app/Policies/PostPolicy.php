@@ -2,9 +2,9 @@
 
 namespace App\Policies;
 
-use App\User;
 use App\Post;
 use App\Topic;
+use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class PostPolicy
@@ -14,8 +14,6 @@ class PostPolicy
     /**
      * Determine whether the user can view the post.
      *
-     * @param  User  $user
-     * @param  Post  $post
      * @return mixed
      */
     public function view(User $user, Post $post)
@@ -26,8 +24,6 @@ class PostPolicy
     /**
      * Determine whether the user can create posts.
      *
-     * @param  User  $user
-     * @param  Topic  $topic
      * @return bool
      */
     public function create(User $user, Topic $topic)
@@ -43,7 +39,7 @@ class PostPolicy
         }
 
         // other users can only create posts of the topic is not ready only
-        if (!$topic->readonly) {
+        if (! $topic->readonly) {
             return true;
         }
 
@@ -58,8 +54,6 @@ class PostPolicy
      * - bbs administrator
      * - the creator of the post within X seconds if that post is the most recent in the topic
      *
-     * @param  User  $user
-     * @param  Post  $post
      * @return bool
      */
     public function update(User $user, Post $post)
@@ -91,8 +85,6 @@ class PostPolicy
     /**
      * Determine whether the user can delete the post.
      *
-     * @param  User  $user
-     * @param  Post  $post
      * @return bool
      */
     public function delete(User $user, Post $post)

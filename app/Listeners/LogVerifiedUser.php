@@ -2,10 +2,8 @@
 
 namespace App\Listeners;
 
-use Illuminate\Support\Facades\Log;
 use Illuminate\Auth\Events\Verified;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\Log;
 
 class LogVerifiedUser
 {
@@ -22,7 +20,6 @@ class LogVerifiedUser
     /**
      * Handle the event.
      *
-     * @param  Verified  $event
      * @return void
      */
     public function handle(Verified $event)

@@ -3,16 +3,15 @@
 namespace App\Helpers;
 
 /**
-* a class to return standard chunks of text
-*
-**/
-
+ * a class to return standard chunks of text
+ *
+ **/
 class BoilerplateHelper
 {
     public static function formattingHelp()
     {
 
-        $helpText = <<<TEXT
+        $helpText = <<<'TEXT'
 <strong>Basics</strong>
 <pre>
 some **bold** text

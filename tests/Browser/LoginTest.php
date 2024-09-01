@@ -3,10 +3,9 @@
 namespace Tests\Browser;
 
 use App\User;
-use Tests\DuskTestCase;
-use Laravel\Dusk\Browser;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Support\Facades\Hash;
+use Tests\DuskTestCase;
 
 class LoginTest extends DuskTestCase
 {
@@ -14,10 +13,8 @@ class LoginTest extends DuskTestCase
 
     /**
      * A Dusk test example.
-     *
-     * @return void
      */
-    public function testBasicExample()
+    public function testBasicExample(): void
     {
         $user = User::factory()->create([
             'password' => Hash::make('password'),
@@ -25,10 +22,10 @@ class LoginTest extends DuskTestCase
 
         $this->browse(function ($browser) use ($user) {
             $browser->visit('/')
-                    ->type('username', $user->username)
-                    ->type('password', 'password')
-                    ->press('Log In')
-                    ->assertPathIs('/');
+                ->type('username', $user->username)
+                ->type('password', 'password')
+                ->press('Log In')
+                ->assertPathIs('/');
         });
     }
 }

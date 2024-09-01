@@ -2,9 +2,9 @@
 
 namespace App\Policies;
 
-use App\User;
-use App\Topic;
 use App\Section;
+use App\Topic;
+use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class TopicPolicy
@@ -14,8 +14,6 @@ class TopicPolicy
     /**
      * Determine whether the user can view the topic.
      *
-     * @param  User  $user
-     * @param  Topic  $topic
      * @return mixed
      */
     public function view(User $user, Topic $topic)
@@ -28,8 +26,6 @@ class TopicPolicy
      * Topics can be created by the moderator of the current section or bbs
      * administrators
      *
-     * @param   User  $user
-     * @param   Section $section
      * @return mixed
      */
     public function create(User $user, Section $section)
@@ -53,8 +49,6 @@ class TopicPolicy
      * - the moderator of the section
      * - a bbs administrator
      *
-     * @param  User  $user
-     * @param  Topic  $topic
      * @return mixed
      */
     public function update(User $user, Topic $topic)
@@ -73,9 +67,6 @@ class TopicPolicy
      * - & the moderator of the destination section
      * - or a bbs administrator
      *
-     * @param User $user
-     * @param Topic $topic
-     * @param Section $destinationSection
      * @return bool
      */
     public function move(User $user, Topic $topic, Section $destinationSection)
@@ -94,8 +85,6 @@ class TopicPolicy
      * - they are the topic moderator
      * - OR they are an administrator
      *
-     * @param  User  $user
-     * @param  Topic  $topic
      * @return mixed
      */
     public function delete(User $user, Topic $topic)
@@ -114,9 +103,6 @@ class TopicPolicy
      * - the moderator of the topic's parent section
      * - the moderator of the destination section
      *
-     * @param  User  $user
-     * @param  Topic  $trashedTopic
-     * @param  Section  $destinationSection
      * @return bool
      */
     public function restore(User $user, Topic $trashedTopic, Section $destinationSection)

@@ -1,45 +1,35 @@
 <?php
-    $formName = 'section'.$section->id;
+    $formName = 'section' . $section->id;
     $errorBag = 'sectionUpdate' . $section->id;
 ?>
-{!! Form::open(
-    array(
-        'route'     => ['section.update', $section->id],
-        'class'     => 'form',
-        'method'    => 'PATCH',
-        'name'      => $formName,
-        )
-    ) 
-!!}
 
-{!! Form::hidden('id', $section->id) !!}
-{!! Form::hidden("form[$formName][id]", $section->id) !!}
-{!! Form::hidden("form[$formName][parent_id]", $section->parent_id) !!}
-{!! Form::hidden("form[$formName][user_id]", $section->user_id) !!}
-{!! Form::hidden("form[$formName][weight]", $section->weight) !!}
+<form action="{{ route('section.update', $section->id) }}" method="POST" class="form" name="{{ $formName }}">
+    @csrf
+    @method('PATCH')
 
-<div class="form-group">
-    {!! Form::text("form[$formName][title]", $section->title, ['class'=> 'form-control', 'placeholder'=>'Title']) !!}
-</div>
+    <input type="hidden" name="id" value="{{ $section->id }}">
+    <input type="hidden" name="form[{{ $formName }}][id]" value="{{ $section->id }}">
+    <input type="hidden" name="form[{{ $formName }}][parent_id]" value="{{ $section->parent_id }}">
+    <input type="hidden" name="form[{{ $formName }}][user_id]" value="{{ $section->user_id }}">
+    <input type="hidden" name="form[{{ $formName }}][weight]" value="{{ $section->weight }}">
 
-<div class="form-group">
-    {!! Form::textarea("form[$formName][intro]", $section->intro, ['class'=> 'form-control']) !!}
-</div>
+    <div class="form-group">
+        <input type="text" name="form[{{ $formName }}][title]" value="{{ $section->title }}" class="form-control" placeholder="Title">
+    </div>
 
-<div class="d-flex justify-content-end">    
-    
+    <div class="form-group">
+        <textarea name="form[{{ $formName }}][intro]" class="form-control">{{ $section->intro }}</textarea>
+    </div>
+
+    <div class="d-flex justify-content-end">    
         <div class="form-group">          
-            {!! Form::button("<span class='oi oi-pencil mr-2'></span>Save Changes",
-                    array(
-                        'type'  => 'submit',
-                        'class' => "btn btn-success"
-                        )
-            ) !!}
+            <button type="submit" class="btn btn-success">
+                <span class='oi oi-pencil mr-2'></span>Save Changes
+            </button>
         </div>
-    
-</div>
-{!! Form::close() !!}
+    </div>
+</form>
 
-@if ($errors->$errorBag->any())
-    @include('forms._errors', ['errors' => $errors->$errorBag->all()])
-@endif 
+@if ($errors->has($errorBag))
+    @include('forms._errors', ['errors' => $errors->get($errorBag)])
+@endif
