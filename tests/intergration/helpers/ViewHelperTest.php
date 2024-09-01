@@ -8,6 +8,7 @@ use App\Section;
 use App\Topic;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class ViewHelperTest extends TestCase
@@ -28,10 +29,8 @@ class ViewHelperTest extends TestCase
         $this->home = Section::factory()->for($this->sysop, 'moderator')->create(['parent_id' => null]);
     }
 
-    /**
-     * @test
-     */
-    public function getReadProgressReturnsTimeOfMostRecentlyReadPost()
+    #[Test]
+    public function getReadProgressReturnsTimeOfMostRecentlyReadPost(): void
     {
         // GIVEN we have a topic with posts
         $topic = Topic::factory()->for($this->home, 'section')->create();
@@ -77,10 +76,8 @@ class ViewHelperTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
-    public function getTopicStatusIndicatesNewPostsForTopicWithNewPosts()
+    #[Test]
+    public function getTopicStatusIndicatesNewPostsForTopicWithNewPosts(): void
     {
         // GIVEN we have a topic with some posts
         $topic = Topic::factory()->for($this->home, 'section')->create();
@@ -109,10 +106,8 @@ class ViewHelperTest extends TestCase
         $this->assertTrue($topicStatus['new_posts']);
     }
 
-    /**
-     * @test
-     */
-    public function getTopicStatusIndicatesNoNewPostsForTopicWithNoNewPosts()
+    #[Test]
+    public function getTopicStatusIndicatesNoNewPostsForTopicWithNoNewPosts(): void
     {
 
         // GIVEN a topic with some posts
@@ -135,10 +130,8 @@ class ViewHelperTest extends TestCase
         $this->assertFalse($topicStatus['new_posts']);
     }
 
-    /**
-     * @test
-     */
-    public function getTopicStatusIndicatesNeverReadForANeverViewedTopic()
+    #[Test]
+    public function getTopicStatusIndicatesNeverReadForANeverViewedTopic(): void
     {
         // GIVEN we have a user
         $user = User::factory()->create();
@@ -153,10 +146,8 @@ class ViewHelperTest extends TestCase
         $this->assertTrue($topicStatus['never_read']);
     }
 
-    /**
-     * @test
-     */
-    public function getTopicStatusDoesNotIndicateNeverReadForViewedTopic()
+    #[Test]
+    public function getTopicStatusDoesNotIndicateNeverReadForViewedTopic(): void
     {
         // GIVEN we have a user
         $user = User::factory()->create();
@@ -173,10 +164,8 @@ class ViewHelperTest extends TestCase
         $this->assertFalse($topicStatus['never_read']);
     }
 
-    /**
-     * @test
-     */
-    public function getTopicStatusReturnsUnsubscribedWhenUserUnsubscribes()
+    #[Test]
+    public function getTopicStatusReturnsUnsubscribedWhenUserUnsubscribes(): void
     {
         // GIVEN we have a user
         $user = User::factory()->create();
@@ -193,10 +182,8 @@ class ViewHelperTest extends TestCase
         $this->assertTrue($topicStatus['unsubscribed']);
     }
 
-    /**
-     * @test
-     */
-    public function getTopicStatusReturnsSubscribedWhenUserResubscribes()
+    #[Test]
+    public function getTopicStatusReturnsSubscribedWhenUserResubscribes(): void
     {
         // GIVEN we have a user
         $user = User::factory()->create();

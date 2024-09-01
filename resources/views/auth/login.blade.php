@@ -26,38 +26,39 @@
     </div>
     @endif
 
-    <div class="form-group">
-      {!! Form::label('username', 'Username', ['class' => 'sr-only']) !!}
-      <div class="input-group">
+<div class="form-group">
+    <label for="username" class="sr-only">Username</label>
+    <div class="input-group">
         <div class="input-group-prepend">
-          <div class="input-group-text"><span class="oi oi-person"></span></div>
+            <div class="input-group-text"><span class="oi oi-person"></span></div>
         </div>
-        {!! Form::text('username', null, ['class'=>'form-control', 'placeholder'=>'Username']) !!}
-      </div>
+        <input type="text" name="username" class="form-control" placeholder="Username">
     </div>
+</div>
 
-    <div class="form-group">
-      {!! Form::label('Password', 'password', ['class' => 'sr-only']) !!}
-      <div class="input-group">
+<div class="form-group">
+    <label for="password" class="sr-only">Password</label>
+    <div class="input-group">
         <div class="input-group-prepend">
-          <div class="input-group-text"><span class="oi oi-key"></span></div>
+            <div class="input-group-text"><span class="oi oi-key"></span></div>
         </div>
-        {!! Form::password('password', ['class'=>'form-control', 'placeholder'=>'Password']) !!}
-      </div>
+        <input type="password" name="password" class="form-control" placeholder="Password">
     </div>
+</div>
 
-    <div class="form-group">
-      {!! Form::submit('Log In', array('class'=>'btn btn-primary')) !!}
-    </div>
+<div class="form-group">
+    <button type="submit" class="btn btn-primary">Log In</button>
+</div>
 
-    <div class="form-group">
-      <div class="form-check">
-      {!! Form::checkbox('remember', true, null, ['class' => 'form-check-input', 'id' => 'remember']) !!}
-      {!! Form::label('remember','Remember me', ['class' => 'form-check-label']) !!}
-      </div>
+<div class="form-group">
+    <div class="form-check">
+        <input type="checkbox" name="remember" id="remember" class="form-check-input">
+        <label for="remember" class="form-check-label">Remember me</label>
     </div>
-    {!! Form::close() !!}
-  </div> <!-- .col-md -->
+</div>
+</form>
+</div> <!-- .col-md -->
+
   
   <div class="col-lg">
     @if ($mode)

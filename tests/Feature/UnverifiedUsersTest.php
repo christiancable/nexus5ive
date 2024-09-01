@@ -5,16 +5,15 @@ namespace Tests\Feature;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class UnverifiedUsersTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * @test
-     */
-    public function whenAUserIsVerifiedTheyAreAddedToTheVerifiedUserList()
+    #[Test]
+    public function whenAUserIsVerifiedTheyAreAddedToTheVerifiedUserList(): void
     {
         $unverifiedUser = User::factory()->create([
             'email_verified_at' => null,
@@ -28,10 +27,8 @@ class UnverifiedUsersTest extends TestCase
         $this->assertEquals($userCount + 1, $newUserCount);
     }
 
-    /**
-     * @test
-     */
-    public function unverifiedUsersDoNotAppearInVerifiedUserList()
+    #[Test]
+    public function unverifiedUsersDoNotAppearInVerifiedUserList(): void
     {
         $unverifiedUser = User::factory()->create([
             'email_verified_at' => null,
@@ -44,10 +41,8 @@ class UnverifiedUsersTest extends TestCase
         $this->assertEquals($count, 0);
     }
 
-    /**
-     * @test
-     */
-    public function verifiedUsersDoNotAppearInUnverifiedUserList()
+    #[Test]
+    public function verifiedUsersDoNotAppearInUnverifiedUserList(): void
     {
         $verifiedUser = User::factory()->create([
             'email_verified_at' => Carbon::now(),

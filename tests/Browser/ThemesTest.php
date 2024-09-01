@@ -6,6 +6,7 @@ use App\Section;
 use App\Theme;
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\DuskTestCase;
 
 class ThemesTest extends DuskTestCase
@@ -36,10 +37,8 @@ class ThemesTest extends DuskTestCase
             );
     }
 
-    /**
-     * @test
-     */
-    public function newUserHasDefaultTheme()
+    #[Test]
+    public function newUserHasDefaultTheme(): void
     {
         // given we have a default theme
         // and a new user
@@ -47,10 +46,8 @@ class ThemesTest extends DuskTestCase
         $this->assertEquals($this->user->theme->id, $this->defaultTheme->id);
     }
 
-    /**
-     * @test
-     */
-    public function userCanSeeWhichThemeTheyUse()
+    #[Test]
+    public function userCanSeeWhichThemeTheyUse(): void
     {
 
         $user = $this->user;
@@ -67,12 +64,8 @@ class ThemesTest extends DuskTestCase
         );
     }
 
-    /**
-     * @test
-     *
-     * @group ugh
-     */
-    public function userCanChangeTheme()
+    #[Test]
+    public function userCanChangeTheme(): void
     {
         // GIVEN we have a user and a default theme
         $user = $this->user;

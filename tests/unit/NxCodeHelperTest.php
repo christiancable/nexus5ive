@@ -4,6 +4,7 @@ namespace Tests\Unit;
 
 use App\Helpers\MarkdownHelper;
 use App\Helpers\NxCodeHelper;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
 // phpcs:disable Generic.Files.LineLength
@@ -22,16 +23,15 @@ HTML;
     /**
      * test to see if youtube links
      * are replaced with suitable youtube embed HTML
-     *
-     * @dataProvider providerYouTubeLinksAddEmbedCode
      */
-    public function testYouTubeLinksAddEmbedCode($input, $expectedOutput)
+    #[DataProvider('providerYouTubeLinksAddEmbedCode')]
+    public function testYouTubeLinksAddEmbedCode($input, $expectedOutput): void
     {
         $output = NxCodeHelper::embedYouTube($input);
         $this->assertEquals($output, $expectedOutput);
     }
 
-    public static function providerYouTubeLinksAddEmbedCode()
+    public static function providerYouTubeLinksAddEmbedCode(): array
     {
         // need to make these local to the function since static::whatever does not work in static heredoc
         $youTubeHTMLStart = self::$youTubeHTMLStart;
@@ -50,12 +50,12 @@ HTML;
 
             'text with 2 valid youtube links' => [
                 $input = <<< 'HTML'
-look here is a video https://www.youtube.com/watch?v=bDOZbvE01Fk and here is another 
+look here is a video https://www.youtube.com/watch?v=bDOZbvE01Fk and here is another
 https://www.youtube.com/watch?v=dQw4w9WgXcQ
 HTML
                 ,
                 $expectedOutput = <<< HTML
-look here is a video {$youTubeHTMLStart}bDOZbvE01Fk{$youTubeHTMLStop} and here is another 
+look here is a video {$youTubeHTMLStart}bDOZbvE01Fk{$youTubeHTMLStop} and here is another
 {$youTubeHTMLStart}dQw4w9WgXcQ{$youTubeHTMLStop}
 HTML
                 ,
@@ -83,9 +83,8 @@ HTML
 
     /**
      * test custom markdown extensions
-     *
-     * @dataProvider providerMarkdownExtensions
      */
+    #[DataProvider('providerMarkdownExtensions')]
     public function testMarkdownExtensions($input, $expectedOutput)
     {
         $output = MarkdownHelper::markdown($input);
@@ -116,9 +115,8 @@ HTML
 
     /**
      * test custom markdown extensions
-     *
-     * @dataProvider providerNxCodeSpoilers
      */
+    #[DataProvider('providerNxCodeSpoilers')]
     public function testNxCodeSpoiler($input, $expectedOutput)
     {
         $output = NxCodeHelper::spoilerTags($input);
@@ -146,9 +144,8 @@ HTML
 
     /**
      * test addition of lazy load class
-     *
-     * @dataProvider providerNxCodeLazyLoad
      */
+    #[DataProvider('providerNxCodeLazyLoad')]
     public function testNxLazyLoad($input, $expectedOutput)
     {
         $output = NxCodeHelper::lazyLoadClass($input, 'placeholder.jpg');

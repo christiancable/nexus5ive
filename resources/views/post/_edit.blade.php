@@ -4,57 +4,41 @@
 ?>
 
 <div class="mb-3">
-    {!! Form::open(
-        array(
-            'route'     => ['posts.update', $post->id],
-            'class'     => 'form',
-            'method'    => 'PATCH',
-            'name'      => $formName,
-            )
-    ) !!}
-    {!! Form::hidden('id', $post->id) !!}
+    <form action="{{ route('posts.update', $post->id) }}" method="POST" class="form" name="{{ $formName }}">
+        @csrf
+        @method('PATCH')
+        <input type="hidden" name="id" value="{{ $post->id }}">
 
-    <div class="form-group">
-        {!! Form::text("form[$formName][title]", $post->title, ['class'=> 'form-control', 'placeholder'=>'Subject']) !!}
-    </div>
+        <div class="form-group">
+            <input type="text" name="form[{{ $formName }}][title]" value="{{ $post->title }}" class="form-control" placeholder="Subject">
+        </div>
 
-    <div class="form-group">
-        {!! Form::textarea("form[$formName][text]", $post->text, ['class'=> 'form-control']) !!}
-    </div>
+        <div class="form-group">
+            <textarea name="form[{{ $formName }}][text]" class="form-control">{{ $post->text }}</textarea>
+        </div>
 
-
-    <div class="d-flex flex-row-reverse bd-highlight">    
-        
-            <div class="form-group ml-2">          
-                {!! Form::button("<span class='oi oi-pencil mr-2'></span>Save Changes",
-                    array(
-                        'type'  => 'submit',
-                        'class' => "btn btn-success"
-                        )
-                ) !!}
+        <div class="d-flex flex-row-reverse bd-highlight">
+            <div class="form-group ml-2">
+                <button type="submit" class="btn btn-success">
+                    <span class='oi oi-pencil mr-2'></span>Save Changes
+                </button>
             </div>
-            {!! Form::close() !!}
-            
-            @if ($allowDelete)
-                <form action="{{action('Nexus\PostController@destroy', ['post' => $post->id])}}" method="POST">
-                    <div class="form-group">
-                        @csrf
-                        {{ method_field('DELETE') }}
+        </div>
+    </form>
 
-                        {!! Form::button("<span class='oi oi-delete mr-2'></span>Delete",
-                            array(
-                                'type'  => 'submit',
-                                'class' => "btn btn-danger"
-                                )
-                        ) !!}
-                    </div>
-                {!! Form::close() !!}
-            @endif
-    </div>
+    @if ($allowDelete)
+        <form action="{{ route('posts.destroy', ['post' => $post->id]) }}" method="POST">
+            @csrf
+            @method('DELETE')
+            <div class="form-group">
+                <button type="submit" class="btn btn-danger">
+                    <span class='oi oi-delete mr-2'></span>Delete
+                </button>
+            </div>
+        </form>
+    @endif
 </div>
 
-
-@if ($errors->$errorBag->any())
-    @include('forms._errors', ['errors' => $errors->$errorBag->all()])
-@endif 
-
+@if ($errors->has($errorBag))
+    @include('forms._errors', ['errors' => $errors->get($errorBag)])
+@endif

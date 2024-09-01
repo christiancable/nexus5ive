@@ -9,6 +9,7 @@ use App\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\Artisan;
 use Laravel\Dusk\Browser;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\DuskTestCase;
 
 class SectionInfoTest extends DuskTestCase
@@ -49,10 +50,8 @@ class SectionInfoTest extends DuskTestCase
         Artisan::call('cache:clear');
     }
 
-    /**
-     * @test
-     */
-    public function sectionInfoShowsWhichTopicHasTheMostRecentPost()
+    #[Test]
+    public function sectionInfoShowsWhichTopicHasTheMostRecentPost(): void
     {
         /*
         GIVEN we have a section with a sub-section
@@ -77,10 +76,8 @@ class SectionInfoTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function sectionWithNoTopicsShowsNoTopicAsHavingTheMostRecentPost()
+    #[Test]
+    public function sectionWithNoTopicsShowsNoTopicAsHavingTheMostRecentPost(): void
     {
         /*
         GIVEN we have a section with a sub-section
@@ -98,10 +95,8 @@ class SectionInfoTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function sectionInfoUpdatesLatestPostFoundInWhenNewPostsAreAdded()
+    #[Test]
+    public function sectionInfoUpdatesLatestPostFoundInWhenNewPostsAreAdded(): void
     {
         /*
         GIVEN we have a section with a sub-section

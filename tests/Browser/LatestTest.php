@@ -8,6 +8,7 @@ use App\Section;
 use App\Topic;
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\DuskTestCase;
 
 class LatestTest extends DuskTestCase
@@ -19,6 +20,8 @@ class LatestTest extends DuskTestCase
     protected $home;
 
     protected $topic;
+
+    protected $emptyTopic;
 
     protected $post;
 
@@ -47,10 +50,8 @@ class LatestTest extends DuskTestCase
         $this->postPreview = substr(strip_tags(NxCodeHelper::nxDecode($this->post->text)), 0, 140);
     }
 
-    /**
-     * @test
-     */
-    public function userSeesPostPreviewForTopicWithPosts()
+    #[Test]
+    public function userSeesPostPreviewForTopicWithPosts(): void
     {
         /*
         GIVEN we have a topic with posts
@@ -68,10 +69,8 @@ class LatestTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function userDoesNotSeePostPreviewForUnsubscribedTopicWithPosts()
+    #[Test]
+    public function userDoesNotSeePostPreviewForUnsubscribedTopicWithPosts(): void
     {
         /*
         GIVEN we have a topic with posts
@@ -95,10 +94,8 @@ class LatestTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function userCanNotSeeEmptyTopicListedInLatest()
+    #[Test]
+    public function userCanNotSeeEmptyTopicListedInLatest(): void
     {
         /*
         GIVEN we have a topic with no posts
@@ -115,10 +112,8 @@ class LatestTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function userCanSeePostedToTopicListedInLatest()
+    #[Test]
+    public function userCanSeePostedToTopicListedInLatest(): void
     {
         /*
         GIVEN we have a topic with no posts

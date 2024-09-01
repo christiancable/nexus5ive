@@ -1,56 +1,50 @@
-{!! 
-    Form::open(array(
-        'route' => ['topic.store'],
-        'class' => 'form'
-    )) 
-!!}
-{!! Form::hidden("section_id", $section->id) !!}
-{!! Form::hidden("secret", 0) !!}  
-{!! Form::hidden("readonly", 0) !!}
+<form action="{{ route('topic.store') }}" method="POST" class="form">
+    @csrf
+    <input type="hidden" name="section_id" value="{{ $section->id }}">
+    <input type="hidden" name="secret" value="0">
+    <input type="hidden" name="readonly" value="0">
 
-<div class="form-group">    
-    {!! Form::label("title",'Title', ['class' => 'sr-only']) !!}
-    {!! Form::text("title", null, ['class'=> 'form-control', 'placeholder' => 'Title'])!!}
-</div>
-<div class="form-group">
-    {!! Form::label("intro",'Introduction', ['class' => 'sr-only']) !!}
-    {!! Form::textarea("intro", null, ['class'=> 'form-control', 'rows' => '3', 'placeholder' => 'Introduction'])!!}
-</div>
-
-<div class="d-md-flex justify-content-md-between">
-    <fieldset>
-        <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="1" id="secret" name="secret">
-            <label class="form-check-label" for="secret">Anonymous</label>
-        </div>
-
-        <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="1" id="readonly" name="readonly">
-            <label class="form-check-label" for="readonly">Read Only</label>    
-        </div>
-    </fieldset>
-
-    <div class="form-group form-inline">
-        <label class="mr-sm-2" for="weight">Order</label>
-            {!! Form::selectRange("weight", 0, 10, null, ['class' => 'form-control custom-select']) !!}
-        </select>
+    <div class="form-group">    
+        <label for="title" class="sr-only">Title</label>
+        <input type="text" name="title" class="form-control" placeholder="Title">
     </div>
-</div>
+    <div class="form-group">
+        <label for="intro" class="sr-only">Introduction</label>
+        <textarea name="intro" class="form-control" rows="3" placeholder="Introduction"></textarea>
+    </div>
 
-<div class="d-flex flex-row-reverse bd-highlight">    
-        <div class="form-group ml-2">          
-            {!! Form::button("<span class='oi oi-plus mr-2'></span>Add Topic",
-                array(
-                    'type'  => 'submit',
-                    'class' => "btn btn-success"
-                    )
-            ) !!}
+    <div class="d-md-flex justify-content-md-between">
+        <fieldset>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="1" id="secret" name="secret">
+                <label class="form-check-label" for="secret">Anonymous</label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="1" id="readonly" name="readonly">
+                <label class="form-check-label" for="readonly">Read Only</label>
+            </div>
+        </fieldset>
+
+        <div class="form-group form-inline">
+            <label for="weight" class="mr-sm-2">Order</label>
+            <select name="weight" class="form-control custom-select">
+                @for ($i = 0; $i <= 10; $i++)
+                    <option value="{{ $i }}">{{ $i }}</option>
+                @endfor
+            </select>
         </div>
-</div>
+    </div>
 
-{!! Form::close() !!}
-
+    <div class="d-flex flex-row-reverse bd-highlight">    
+        <div class="form-group ml-2">          
+            <button type="submit" class="btn btn-success">
+                <span class='oi oi-plus mr-2'></span>Add Topic
+            </button>
+        </div>
+    </div>
+</form>
 
 @if ($errors->topicCreate->all())
-@include('forms._errors', ['errors' => $errors->topicCreate->all(), 'formContainer' => 'addTopic'])
+    @include('forms._errors', ['errors' => $errors->topicCreate->all(), 'formContainer' => 'addTopic'])
 @endif

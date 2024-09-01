@@ -7,6 +7,7 @@ use App\Section;
 use App\Topic;
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\DuskTestCase;
 
 class MentionsTest extends DuskTestCase
@@ -36,10 +37,8 @@ class MentionsTest extends DuskTestCase
         ]);
     }
 
-    /**
-     * @test
-     */
-    public function userWithNoMentionsDoesNotSeeOptionToClearMentions()
+    #[Test]
+    public function userWithNoMentionsDoesNotSeeOptionToClearMentions(): void
     {
         $user = $this->user;
 
@@ -50,10 +49,8 @@ class MentionsTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function userWithMentionsCanSeeTheyHaveMentions()
+    #[Test]
+    public function userWithMentionsCanSeeTheyHaveMentions(): void
     {
         // GIVEN we have a user with no mentions
         $user = $this->user;
@@ -73,10 +70,8 @@ class MentionsTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function userWithMentionsCanClearMentions()
+    #[Test]
+    public function userWithMentionsCanClearMentions(): void
     {
         // GIVEN we have a user with no mentions
         $user = $this->user;

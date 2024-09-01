@@ -9,6 +9,7 @@ use App\Section;
 use App\Topic;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class RestoreHelperTest extends TestCase
@@ -26,10 +27,8 @@ class RestoreHelperTest extends TestCase
         $this->home = Section::factory()->for($this->sysop, 'moderator')->create(['parent_id' => null]);
     }
 
-    /**
-     * @test
-     */
-    public function restoreTopicToSectionDoesRestoresTopicToSection()
+    #[Test]
+    public function restoreTopicToSectionDoesRestoresTopicToSection(): void
     {
         // GIVEN I have a topic in a section and then that topic is deleted
         $topic = Topic::factory()
@@ -46,10 +45,8 @@ class RestoreHelperTest extends TestCase
         $this->assertFalse($topic->trashed());
     }
 
-    /**
-     * @test
-     */
-    public function restoreTopicToSectionDoesRestoresTopicAndPosts()
+    #[Test]
+    public function restoreTopicToSectionDoesRestoresTopicAndPosts(): void
     {
         // GIVEN I have a topic with posts in a section
         $topic = Topic::factory()
@@ -86,10 +83,8 @@ class RestoreHelperTest extends TestCase
         $this->assertFalse($topic->trashed());
     }
 
-    /**
-     * @test
-     */
-    public function restoreTopicToSectionDoesRestoresTopicAndViews()
+    #[Test]
+    public function restoreTopicToSectionDoesRestoresTopicAndViews(): void
     {
         // GIVEN I have a topic with posts in a section
         $topic = Topic::factory()
@@ -123,10 +118,8 @@ class RestoreHelperTest extends TestCase
         $this->assertFalse($topic->trashed());
     }
 
-    /**
-     * @test
-     */
-    public function restoreSectionToSectionDoesRestoreSection()
+    #[Test]
+    public function restoreSectionToSectionDoesRestoreSection(): void
     {
         // GIVEN we have a section with topics
         $section = Section::factory()

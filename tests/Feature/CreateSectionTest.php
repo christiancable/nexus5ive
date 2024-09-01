@@ -5,16 +5,15 @@ namespace Tests\Feature;
 use App\Section;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class CreateSectionTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * @test
-     */
-    public function moderatorCanCreateNewSubsection()
+    #[Test]
+    public function moderatorCanCreateNewSubsection(): void
     {
         /*
         GIVEN we have
@@ -58,10 +57,8 @@ class CreateSectionTest extends TestCase
             ->assertSee($newSection->title);
     }
 
-    /**
-     * @test
-     */
-    public function userCannotCreateSubsection()
+    #[Test]
+    public function userCannotCreateSubsection(): void
     {
         /*
         GIVEN we have
@@ -100,10 +97,8 @@ class CreateSectionTest extends TestCase
         $response->assertStatus(403);
     }
 
-    /**
-     * @test
-     */
-    public function moderatorCannotCreateInvalidSubsection()
+    #[Test]
+    public function moderatorCannotCreateInvalidSubsection(): void
     {
         /*
         GIVEN we have

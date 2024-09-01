@@ -6,6 +6,7 @@ use App\Section;
 use App\Topic;
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\DuskTestCase;
 
 class SubscriptionTest extends DuskTestCase
@@ -32,10 +33,8 @@ class SubscriptionTest extends DuskTestCase
         ]);
     }
 
-    /**
-     * @test
-     */
-    public function userCanUnsubscribeFromTopic()
+    #[Test]
+    public function userCanUnsubscribeFromTopic(): void
     {
         /*
         GIVEN a user, a section, a topic
@@ -56,10 +55,8 @@ class SubscriptionTest extends DuskTestCase
         });
     }
 
-    /**
-     * @test
-     */
-    public function userCanResubscribeToTopic()
+    #[Test]
+    public function userCanResubscribeToTopic(): void
     {
         /*
         GIVEN a user, a section, a topic which the user is unsubscribed from
