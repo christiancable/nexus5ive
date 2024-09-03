@@ -2,7 +2,7 @@
   <div>
     <form>
       <div class="form-group" role="search">
-        <input v-model="searchTerm" class="form-control" placeholder="Search for a user" autofocus>
+        <input v-model="searchTerm" class="form-control" placeholder="Search for a user" autofocus dusk="user-filter">
       </div>
     </form>
 
