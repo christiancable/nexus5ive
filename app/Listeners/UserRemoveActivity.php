@@ -2,16 +2,13 @@
 
 namespace App\Listeners;
 
-use App\Helpers\ActivityHelper;
-use App\User;
 use Illuminate\Support\Facades\Auth;
+use App\Helpers\ActivityHelper;
 
 class UserRemoveActivity
 {
     /**
-     * Create the event handler.
-     *
-     * @return void
+     * Create the event listener.
      */
     public function __construct()
     {
@@ -20,10 +17,8 @@ class UserRemoveActivity
 
     /**
      * wwhen a user logs out then remove their current activity
-     *
-     * @return void
      */
-    public function handle()
+    public function handle(object $event): void
     {
         $user = Auth::user();
         ActivityHelper::removeActivity($user->id);

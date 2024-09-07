@@ -2,15 +2,12 @@
 
 namespace App\Listeners;
 
-use App\Events\MostRecentPostForSectionBecameDirty;
 use App\Section;
 
 class DeleteSectionMostRecentPostCache
 {
     /**
      * Create the event listener.
-     *
-     * @return void
      */
     public function __construct()
     {
@@ -19,10 +16,8 @@ class DeleteSectionMostRecentPostCache
 
     /**
      * Handle the event.
-     *
-     * @return void
      */
-    public function handle(MostRecentPostForSectionBecameDirty $event)
+    public function handle(object $event): void
     {
         Section::forgetMostRecentPostAttribute($event->section_id);
     }

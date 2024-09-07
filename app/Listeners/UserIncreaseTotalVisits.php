@@ -8,9 +8,7 @@ use Illuminate\Support\Facades\Auth;
 class UserIncreaseTotalVisits
 {
     /**
-     * Create the event handler.
-     *
-     * @return void
+     * Create the event listener.
      */
     public function __construct()
     {
@@ -19,10 +17,8 @@ class UserIncreaseTotalVisits
 
     /**
      * Handle the event.
-     *
-     * @return void
      */
-    public function handle()
+    public function handle(object $event): void
     {
         $user = Auth::user();
         $user->latestLogin = Carbon::now();

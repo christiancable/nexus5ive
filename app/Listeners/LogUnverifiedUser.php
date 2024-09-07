@@ -2,7 +2,6 @@
 
 namespace App\Listeners;
 
-use App\Events\UserCreated;
 use Illuminate\Support\Facades\Log;
 
 class LogUnverifiedUser
@@ -22,7 +21,7 @@ class LogUnverifiedUser
      *
      * @return void
      */
-    public function handle(UserCreated $event)
+    public function handle(object $event): void
     {
         Log::notice("User created: {$event->user->username} - {$event->user->email}");
     }
