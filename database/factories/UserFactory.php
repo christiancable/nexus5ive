@@ -28,9 +28,9 @@ class UserFactory extends Factory
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
             'username' => fake()->unique()->username(),
-            'theme_id' => function () {
-                return Theme::firstOrFail()->id;
-            },
+            // 'theme_id' => function () {
+            //     return Theme::firstOrFail()->id;
+            // },
         ];
     }
 
