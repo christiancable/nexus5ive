@@ -21,16 +21,18 @@ class CreateThemesTable extends Migration
             $table->timestamps();
         });
 
+        // TODO add this to a seed
+        
         // want a known timestamp so tests do not change the database each run
-        $themeTimestamp = new Carbon('last day of October 1975', 'Europe/London');
+        // $themeTimestamp = new Carbon('last day of October 1975', 'Europe/London');
 
         // create a default theme
-        $theme = App\Theme::firstOrCreate([
-            'name' => 'Default',
-            'path' => '/css/app.css',
-            'created_at' => $themeTimestamp->format('Y-m-d H:i:s'),
-            'updated_at' => $themeTimestamp->format('Y-m-d H:i:s'),
-        ]);
+        // $theme = App\Theme::firstOrCreate([
+        //     'name' => 'Default',
+        //     'path' => '/css/app.css',
+        //     'created_at' => $themeTimestamp->format('Y-m-d H:i:s'),
+        //     'updated_at' => $themeTimestamp->format('Y-m-d H:i:s'),
+        // ]);
     }
 
     /**
