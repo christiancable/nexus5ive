@@ -11,11 +11,17 @@ use Illuminate\Support\ServiceProvider;
 class AppServiceProvider extends ServiceProvider
 {
     /**
-     * Bootstrap any application services.
-     *
-     * @return void
+     * Register any application services.
      */
-    public function boot()
+    public function register(): void
+    {
+        //
+    }
+
+    /**
+     * Bootstrap any application services.
+     */
+    public function boot(): void
     {
         // share bbs mode to all views
         // wrap in try because this isn't aways run when we have a db
@@ -33,15 +39,5 @@ class AppServiceProvider extends ServiceProvider
 
         // use bootstrap for pagination
         Paginator::useBootstrap();
-    }
-
-    /**
-     * Register any application services.
-     *
-     * @return void
-     */
-    public function register()
-    {
-        //
     }
 }

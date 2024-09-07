@@ -5,22 +5,28 @@ namespace Database\Factories;
 use App\Theme;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 class UserFactory extends Factory
 {
     /**
+     * The current password being used by the factory.
+     */
+    protected static ?string $password;
+
+    /**
      * Define the model's default state.
      *
-     * @return array
+     * @return array<string, mixed>
      */
-    public function definition()
+    public function definition(): array
     {
         return [
-            'name' => $this->faker->name,
+            'name' => fake()->name(),
             'username' => $this->faker->unique()->username,
-            'email' => $this->faker->email,
-            'password' => Str::random(10),
+            'email' => fake()->unique()->safeEmail(),
+            'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
             'theme_id' => function () {
                 return Theme::firstOrFail()->id;

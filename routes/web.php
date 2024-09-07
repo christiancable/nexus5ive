@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Nexus\ActivityController;
 use App\Http\Controllers\Nexus\ChatApiController;
 use App\Http\Controllers\Nexus\ChatController;
@@ -54,7 +55,7 @@ Route::get('leap', [SectionController::class, 'leap']);
 Route::get('/section/latest', [SectionController::class, 'latest']);
 
 // sections
-Route::resource('section', SectionController::class);
+Route::resource('section', SectionController::class)->middleware(['auth', 'verified']);
 
 // topics
 Route::delete('topic/{topic}', [TopicController::class, 'destroy']);
