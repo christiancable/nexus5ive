@@ -2,6 +2,7 @@
 
 namespace App\Listeners;
 
+use App\Events\MostRecentPostForSectionBecameDirty;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use App\Models\Section;
@@ -23,7 +24,7 @@ class DeleteSectionMostRecentPostCache
      *
      * @return void
      */
-    public function handle(object $event)
+    public function handle(MostRecentPostForSectionBecameDirty $event)
     {
         Section::forgetMostRecentPostAttribute($event->section_id);
     }
