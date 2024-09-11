@@ -2,9 +2,9 @@
 
 namespace Tests\Feature;
 
-use App\Mode;
-use App\Section;
-use App\User;
+use App\Models\Mode;
+use App\Models\Section;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
