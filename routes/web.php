@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Nexus\ActivityController;
+use App\Http\Controllers\Nexus\ChatApiController;
 use App\Http\Controllers\Nexus\ChatController;
 use App\Http\Controllers\Nexus\CommentController;
 use App\Http\Controllers\Nexus\MentionController;
@@ -68,35 +69,27 @@ Route::middleware(['auth', 'verified'])->group(function () {
     /* @mentions */
     Route::delete('mentions', [MentionController::class, 'destroyAll']);
 
+    /* messages */
+    Route::get('chat/{username}', [ChatController::class, 'conversation']);
+    Route::post('chat/{username}', [ChatController::class, 'store']);
+    Route::resource('chat', ChatController::class);
+    Route::get('chats/{username}', [ChatApiController::class, 'show']);
+    Route::get('chats', [ChatApiController::class, 'index']);
+    Route::get('chatsusers', [ChatApiController::class, 'chatPartnerIndex']);
+
+    /* Search */
+    Route::get('search', [SearchController::class, 'index']);
+    Route::get('search/{text}', [SearchController::class, 'find']);
+    Route::post('search', [SearchController::class, 'submitSearch']);
+
     /* misc */
     Route::get('updateSubscriptions', [TopicController::class, 'markAllSubscribedTopicsAsRead']);
+    Route::resource('here', ActivityController::class);
+
+    // restore
+    Route::resource('archive', RestoreController::class);
+    Route::post('archive/section/{section}', [RestoreController::class, 'section'])
+        ->name('archive.section');
+    Route::post('archive/topic/{topic}', [RestoreController::class, 'topic'])
+        ->name('archive.topic');
 });
-
-// special sections
-
-// users
-
-// activities
-Route::resource('here', ActivityController::class);
-
-// search
-Route::get('search', [SearchController::class, 'index']);
-Route::get('search/{text}', [SearchController::class, 'find']);
-Route::post('search', [SearchController::class, 'submitSearch']);
-
-// conversations
-Route::get('chat/{username}', [ChatController::class, 'conversation']);
-Route::post('chat/{username}', [ChatController::class, 'store']);
-Route::resource('chat', ChatController::class);
-
-// chat refactor for vue
-Route::get('chats/{username}', [ChatApiController::class, 'show']);
-Route::get('chats', [ChatApiController::class, 'index']);
-Route::get('chatsusers', [ChatApiController::class, 'chatPartnerIndex']);
-
-// restore
-Route::resource('archive', RestoreController::class);
-Route::post('archive/section/{section}', [RestoreController::class, 'section'])
-    ->name('archive.section');
-Route::post('archive/topic/{topic}', [RestoreController::class, 'topic'])
-    ->name('archive.topic');
