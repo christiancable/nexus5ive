@@ -3,10 +3,8 @@
 namespace App\Helpers;
 
 use App\Models\Activity;
-use Exception;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Log;
 
 /*
    helper methods for dealing with activities
@@ -52,11 +50,6 @@ class ActivityHelper
      */
     public static function removeActivity($user_id)
     {
-        try {
-            $activity = Activity::where('user_id', $user_id)->firstOrFail();
-            $activity->delete();
-        } catch (Exception $e) {
-            Log::notice('Tried to remove non-existent activity: '.$e);
-        }
+        Activity::where('user_id', $user_id)->delete();
     }
 }
