@@ -67,6 +67,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     /* @mentions */
     Route::delete('mentions', [MentionController::class, 'destroyAll']);
+
+    /* misc */
+    Route::get('updateSubscriptions', [TopicController::class, 'markAllSubscribedTopicsAsRead']);
 });
 
 // special sections

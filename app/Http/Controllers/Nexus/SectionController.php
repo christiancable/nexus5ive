@@ -128,7 +128,6 @@ class SectionController extends Controller
             $destinationSection = Section::findOrFail($updatedSectionDetails['parent_id']);
         }
 
-
         if ($updatedSectionDetails['parent_id'] != $section->parent_id) {
             // can the user move the section?
             if ($request->user()->cannot('move', [$section, $destinationSection])) {
@@ -215,7 +214,7 @@ Markdown;
 
             // redirect to the parent section of the unread topic
             return redirect()->action(
-                'Nexus\SectionController@show',
+                'App\Http\Controllers\Nexus\SectionController@show',
                 ['section' => $destinationTopic->section->id]
             );
         } else {
