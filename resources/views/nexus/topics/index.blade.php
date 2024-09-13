@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('nexus.layouts.master')
 
 @section('meta')
 <title>{{$topic->title}}</title>
@@ -10,15 +10,15 @@
 
 @section('content')
 <div class="container">
-    @include('shared._heading',
+    @include('nexus.shared._heading',
     [
         $heading = $topic->title,
         $lead = $topic->intro
     ])
     <section class="d-flex flex-row-reverse justify-content-between">
-        @include('topics._subscribe', compact('topic','unsubscribed'))
+        @include('nexus.topics._subscribe', compact('topic','unsubscribed'))
         @if($topic->section->moderator->id === Auth::user()->id)
-            @include('shared._editToggle')
+            @include('nexus.shared._editToggle')
         @endif
     </section>
 </div>
@@ -40,7 +40,7 @@
 
     {{-- show post box --}}
     @if (Auth::user()->viewLatestPostFirst) 
-    @include('topics._addpost', compact('postsChunk', 'readonly', 'replyingTo'))
+    @include('nexus.topics._addpost', compact('postsChunk', 'readonly', 'replyingTo'))
     @endif
 
     {{-- render posts --}}
@@ -79,7 +79,7 @@
 
     {{-- show post box --}}
     @if (!Auth::user()->viewLatestPostFirst) 
-        @include('topics._addpost', compact('postsChunk', 'readonly', 'replyingTo'))
+        @include('nexus.topics._addpost', compact('postsChunk', 'readonly', 'replyingTo'))
     @endif
     {!! $postsChunk->render() !!}
     </div>

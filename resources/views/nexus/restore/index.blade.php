@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('nexus.layouts.master')
 
 @section('meta')
 <title>Restore</title>
@@ -12,7 +12,7 @@
 
 <div class="container">
 
-@include('shared._heading', [
+@include('nexus.shared._heading', [
             $heading = 'Your Archive',
             $lead = '"_But you know what? It\'s never too late to get it back._"',
             $introduction = "These are your archived sections and topics. They only visible to you until you restore them."

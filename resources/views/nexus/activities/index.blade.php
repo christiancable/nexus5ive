@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('nexus.layouts.master')
 
 @section('meta')
 <title>Who is Online</title>
@@ -12,7 +12,7 @@
 
 <div class="container">
 
-    @include('shared._heading', [$heading = 'Who is Online', $lead = 'Hell is other people', $icon = 'globe'])
+    @include('nexus.shared._heading', [$heading = 'Who is Online', $lead = 'Hell is other people', $icon = 'globe'])
 
     <div>
         @if (count($activities))

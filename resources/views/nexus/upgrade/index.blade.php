@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('nexus.layouts.master')
 
 @section('meta')
 <title>View Users</title>

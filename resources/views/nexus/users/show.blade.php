@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('nexus.layouts.master')
 
 @section('breadcrumbs')
 @include('nexus._breadcrumbs', $breadcrumbs)
@@ -12,12 +12,12 @@
     <div class="container">
 
         @if (Auth::user()->id == $user->id)
-            @include('shared._heading', [
+            @include('nexus.shared._heading', [
                 $heading = $user->username
             ])
             @include('users._edit', $user)
         @else
-            @include('shared._heading', [
+            @include('nexus.shared._heading', [
                 $heading = $user->username,
                 $lead = $user->name,
                 $introduction = $user->popname

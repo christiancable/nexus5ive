@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('nexus.layouts.master')
 
 @section('meta')
 <title>{{config('nexus.name')}} - Reset your password</title>

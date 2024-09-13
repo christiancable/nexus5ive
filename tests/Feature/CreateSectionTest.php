@@ -22,12 +22,12 @@ class CreateSectionTest extends TestCase
         - a sub section
         - a moderator for the sub section
         */
-        $sysop = User::factory()->create();
+        $sysop = User::factory()->forTheme()->create();
         $home = Section::factory()->for($sysop, 'moderator')->create([
             'parent_id' => null,
         ]);
 
-        $moderator = User::factory()->create();
+        $moderator = User::factory()->forTheme()->create();
         $section = Section::factory()
             ->for($moderator, 'moderator')
             ->for($home, 'parent')

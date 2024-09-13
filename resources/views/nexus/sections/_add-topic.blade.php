@@ -9,7 +9,7 @@
     </div>
     <div id="addTopicForm" class="collapse {{ ($errors->topicCreate->all()) ? "show" : "" }}" aria-labelledby="addTopicHeading" data-parent="#addTopic">
       <div class="card-body">
-          @include('topics._create', $section)
+          @include('nexus.topics._create', $section)
       </div>
     </div>
   </div>

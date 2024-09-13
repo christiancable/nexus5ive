@@ -9,7 +9,7 @@
     </div>
     <div id="addSectionForm" class="collapse {{ ($errors->sectionCreate->all()) ? "show" : "" }}" aria-labelledby="addSectionHeading" data-parent="#addSection">
       <div class="card-body">
-          @include('sections._create', $section)
+          @include('nexus.sections._create', $section)
       </div>
     </div>
   </div>

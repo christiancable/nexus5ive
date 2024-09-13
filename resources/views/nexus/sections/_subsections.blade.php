@@ -23,10 +23,10 @@ $subSectionCount = 0;
         $destinations = \Auth::user()->sections->diff($allChildSections)->pluck('title','id')->toArray();
         $parentSectionID = $section->id;
         ?>
-        @include('section._moderate', compact('subSection', 'destinations', 'potentialModerators', 'parentSectionID'))
+        @include('nexus.section._moderate', compact('subSection', 'destinations', 'potentialModerators', 'parentSectionID'))
         {{-- don't wrap sub sections for moderators  --}}
     @else
-        @include('section._view', $subSection)
+        @include('nexus.section._view', $subSection)
 
         {{-- non-moderators get a card desk layout --}}
         {{-- wrap sub-sections: 1 col for sm, 2 for md, 3 for lg --}}

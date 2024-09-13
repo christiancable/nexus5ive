@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Nexus\ModeController;
 use App\Http\Controllers\Nexus\SectionController;
+use App\Http\Controllers\Nexus\TopicController;
 use App\Http\Controllers\Nexus\SearchController;
 use App\Http\Controllers\Nexus\RestoreController;
 use App\Http\Controllers\Nexus\ChatController;
@@ -31,24 +32,33 @@ require __DIR__.'/auth.php';
 
 // above default laravel stuff 
 
-// admin
 
-Route::middleware(['auth', EnsureUserIsAdmin::class])->group(function() {
-    Route::resource('admin', ModeController::class);
-    Route::post('admin', [ModeController::class, 'handle'])
-        ->name('mode.handle');
+Route::middleware(['auth', 'verified'])->group(function() {
+    /* Admin */
+    Route::middleware([EnsureUserIsAdmin::class])->group(function() {
+        Route::resource('admin', ModeController::class);
+        Route::post('admin', [ModeController::class, 'handle'])
+            ->name('mode.handle');
+    });
+
+
+    /* Sections */
+    Route::get('/', [SectionController::class, 'index']);
+    Route::get('/home', [SectionController::class, 'index']); 
+    Route::get('leap', [SectionController::class, 'leap']);
+    Route::get('/section/latest', [SectionController::class, 'latest'])->name('latest');
+    
+    Route::resource('section', SectionController::class);
+
+    /* Topics */
+    Route::delete('topic/{topic}', [TopicController::class, 'destroy']);
+    Route::post('/topic/{topic}/subscribe', [TopicController::class, 'updateSubscription'])
+        ->name('topic.updateSubscription');
+    Route::resource('topic', TopicController::class);
 });
 
 
 // special sections
-Route::get('/', [SectionController::class, 'index']);
-Route::get('/home', [SectionController::class, 'index']);
-
-Route::get('leap', [SectionController::class, 'leap']);
-Route::get('/section/latest', [SectionController::class, 'latest'])->name('latest');
-
-// sections
-Route::resource('section', SectionController::class);
 
 
 // users

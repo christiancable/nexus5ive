@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('nexus.layouts.master')
 
 @section('meta')
     <title>Search Results</title>
@@ -11,7 +11,7 @@
 @section('content')
 
 <div class="container">
-    @include('shared._heading', [
+    @include('nexus.shared._heading', [
         'heading' => 'Search', 
         'lead' => 'Find old posts and half remembered dreams', 
         'introduction' => 'Tip: surround phrases in quotes like this "that was no dream"', 

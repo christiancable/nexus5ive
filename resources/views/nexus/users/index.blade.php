@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('nexus.layouts.master')
 
 @section('breadcrumbs')
 @include('nexus._breadcrumbs', $breadcrumbs)
@@ -11,7 +11,7 @@
 @section('content')
 
 <div class="container">
-    @include('shared._heading', [$heading = 'Users', $lead = '"I fight for the Users"', $icon = 'people'])    
+    @include('nexus.shared._heading', [$heading = 'Users', $lead = '"I fight for the Users"', $icon = 'people'])    
 </div>
 
 <div class="container" id="users-list">

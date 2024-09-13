@@ -10,7 +10,7 @@ if ($showErrors) {
 ?>
 
 {{-- tab top --}}
-@include('shared._tabtop', [
+@include('nexus.shared._tabtop', [
   'id' => "post-" . $post->id,
   'viewTabId' => "view-" . $post->id . "-tab",
   'viewTabLink' => "#view-" . $post->id,
