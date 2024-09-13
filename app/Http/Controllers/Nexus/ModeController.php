@@ -15,19 +15,6 @@ use Illuminate\Support\Facades\Validator;
 class ModeController extends Controller
 {
     /**
-     * __construct
-     * allowed users are auth, verified, sysops
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        // $this->middleware('auth');
-        // $this->middleware('verified');
-        // $this->authorizeResource(Mode::class, 'mode');
-    }
-
-    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response

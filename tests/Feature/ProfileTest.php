@@ -6,6 +6,10 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
+
+use Illuminate\Support\Facades\Log;
+
+
 class ProfileTest extends TestCase
 {
     use RefreshDatabase;
@@ -66,17 +70,19 @@ class ProfileTest extends TestCase
         $user = User::factory()->create();
 
         $response = $this
-            ->actingAs($user)
-            ->delete('/profile', [
-                'password' => 'password',
-            ]);
-
+        ->actingAs($user)
+        ->delete('/profile', [
+            'password' => 'password',
+        ]);
+        
         $response
-            ->assertSessionHasNoErrors()
-            ->assertRedirect('/');
-
+        ->assertSessionHasNoErrors()
+        ->assertRedirect('/');
+        
         $this->assertGuest();
-        $this->assertNull($user->fresh());
+        // $this->assertNull($user->fresh());
+        // users in nexus are only soft deleted
+        $this->assertSoftDeleted('users', ['id' => $user->id]);
     }
 
     public function test_correct_password_must_be_provided_to_delete_account(): void
