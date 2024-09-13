@@ -2,9 +2,9 @@
 
 namespace Tests\Browser;
 
-use App\Section;
-use App\Theme;
-use App\User;
+use App\Models\Section;
+use App\Models\Theme;
+use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\DuskTestCase;
