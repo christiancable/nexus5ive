@@ -2,9 +2,9 @@
 
 namespace App\Helpers;
 
-use App\Section;
-use App\Topic;
-use App\User;
+use App\Models\Section;
+use App\Models\Topic;
+use App\Models\User;
 
 /*
    helper methods for dealing with breadcrumbs
@@ -69,13 +69,16 @@ class BreadcrumbHelper
      */
     public static function breadcumbForUtility($location)
     {
+        // TODO
+        return []; 
+
         $breadcrumbs = [];
         $crumb = [];
         $crumb['title'] = $location;
         $crumb['route'] = null;
         $breadcrumbs[] = $crumb;
 
-        $section = \App\Section::first(['id', 'title']);
+        $section = Section::first(['id', 'title']);
         $crumb['title'] = $section->title;
         $crumb['route'] = action('Nexus\SectionController@show', ['section' => $section->id]);
         $breadcrumbs[] = $crumb;
@@ -99,7 +102,7 @@ class BreadcrumbHelper
         $crumb['route'] = action('Nexus\UserController@index');
         $breadcrumbs[] = $crumb;
 
-        $section = \App\Section::first();
+        $section = Section::first();
         $crumb['title'] = $section->title;
         $crumb['route'] = action('Nexus\SectionController@show', ['section' => $section->id]);
         $breadcrumbs[] = $crumb;
@@ -123,7 +126,7 @@ class BreadcrumbHelper
         $crumb['route'] = action('Nexus\ChatController@index');
         $breadcrumbs[] = $crumb;
 
-        $section = \App\Section::first();
+        $section = Section::first();
         $crumb['title'] = $section->title;
         $crumb['route'] = action('Nexus\SectionController@show', ['section' => $section->id]);
         $breadcrumbs[] = $crumb;

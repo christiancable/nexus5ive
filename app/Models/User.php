@@ -176,12 +176,12 @@ class User extends Authenticatable
 
     public function activity()
     {
-        return $this->hasOne(\App\Activity::class);
+        return $this->hasOne(Activity::class);
     }
 
     public function theme()
     {
-        return $this->belongsTo(\App\Theme::class);
+        return $this->belongsTo(Theme::class);
     }
 
     /*
@@ -237,9 +237,9 @@ class User extends Authenticatable
         $this->mentions()->delete();
     }
 
-    public function addMention(\App\Post $post)
+    public function addMention(Post $post)
     {
-        $mention = new \App\Mention;
+        $mention = new Mention;
         $mention->user_id = $this->id;
         $mention->post_id = $post->id;
         $this->mentions()->save($mention);
@@ -290,5 +290,10 @@ class User extends Authenticatable
     public function scopeUnverified($query)
     {
         return $query->where('email_verified_at', '=', null);
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->administrator == true;
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Helpers;
 
-use App\Activity;
+use App\Models\Activity;
 use Exception;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;

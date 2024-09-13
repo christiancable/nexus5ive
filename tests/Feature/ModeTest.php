@@ -26,7 +26,7 @@ class ModeTest extends TestCase
         ]);
 
         // we need at least one mode
-        $defaultMode = Mode::factory()->create();
+        $defaultMode = Mode::factory()->forTheme()->create();
     }
 
     /**
@@ -36,7 +36,7 @@ class ModeTest extends TestCase
     #[Group('mode')]
     public function sysopsCanAccessAdminSection(): void
     {
-        $sysop = User::factory()->create(['administrator' => true]);
+        $sysop = User::factory()->forTheme()->create(['administrator' => true]);
         $this->actingAs($sysop)->get('/admin')->assertSuccessful();
     }
 
@@ -47,7 +47,7 @@ class ModeTest extends TestCase
     #[Group('mode')]
     public function nonSysopsCannotAccessAdminSection(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->forTheme()->create();
         $this->actingAs($user)->get('/admin')->assertStatus(403);
     }
 }
