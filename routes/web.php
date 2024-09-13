@@ -4,6 +4,7 @@ use App\Http\Controllers\Nexus\ActivityController;
 use App\Http\Controllers\Nexus\ChatController;
 use App\Http\Controllers\Nexus\CommentController;
 use App\Http\Controllers\Nexus\ModeController;
+use App\Http\Controllers\Nexus\PostController;
 use App\Http\Controllers\Nexus\RestoreController;
 use App\Http\Controllers\Nexus\SearchController;
 use App\Http\Controllers\Nexus\SectionController;
@@ -59,6 +60,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('comments/{comment}', [CommentController::class, 'destroy']);
     Route::resource('comments', CommentController::class);
 
+    /* Posts */
+    Route::delete('posts/{post}', [PostController::class, 'destroy']);
+    Route::resource('posts', PostController::class);
 });
 
 // special sections
