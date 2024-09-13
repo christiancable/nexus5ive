@@ -26,8 +26,6 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-
-
 require __DIR__.'/auth.php';
 
 // above default laravel stuff 
@@ -47,7 +45,6 @@ Route::middleware(['auth', 'verified'])->group(function() {
     Route::get('/home', [SectionController::class, 'index']); 
     Route::get('leap', [SectionController::class, 'leap']);
     Route::get('/section/latest', [SectionController::class, 'latest'])->name('latest');
-    
     Route::resource('section', SectionController::class);
 
     /* Topics */
@@ -55,6 +52,9 @@ Route::middleware(['auth', 'verified'])->group(function() {
     Route::post('/topic/{topic}/subscribe', [TopicController::class, 'updateSubscription'])
         ->name('topic.updateSubscription');
     Route::resource('topic', TopicController::class);
+
+    /* Users */
+    Route::resource('users', UserController::class);
 });
 
 
@@ -62,7 +62,6 @@ Route::middleware(['auth', 'verified'])->group(function() {
 
 
 // users
-Route::resource('users', UserController::class);
 
 // activities
 Route::resource('here', ActivityController::class);

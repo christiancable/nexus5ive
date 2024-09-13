@@ -68,23 +68,20 @@ class ThemesTest extends DuskTestCase
     public function userCanChangeTheme(): void
     {
         // GIVEN we have a user and a default theme
-        $user = $this->user;
-
         // AND we have an alternative theme
-        $alternativeTheme = $this->alternativeTheme;
-
+    
         $this->browse(
-            function ($browser) use ($user, $alternativeTheme) {
+            function ($browser) {
                 // WHEN the user views their profile
                 // and they select a different theme
-                $browser->loginAs($user)
-                    ->visit('/users/'.$user->username)
-                    ->assertSelectHasOption('@theme_select', $alternativeTheme->id)
-                    ->select('@theme_select', $alternativeTheme->id)
+                $browser->loginAs($this->user)
+                    ->visit('/users/'.$this->user->username)
+                    ->assertSelectHasOption('@theme_select', $this->alternativeTheme->id)
+                    ->select('@theme_select', $this->alternativeTheme->id)
                     ->press('Save Changes')
-                    ->visit('/users/'.$user->username)
+                    ->visit('/users/'.$this->user->username)
                     // THEN we see that theme is selected on next visit
-                    ->assertSelected('@theme_select', $alternativeTheme->id);
+                    ->assertSelected('@theme_select', $this->alternativeTheme->id);
             }
         );
     }
