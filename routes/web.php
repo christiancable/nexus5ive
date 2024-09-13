@@ -3,6 +3,7 @@
 use App\Http\Controllers\Nexus\ActivityController;
 use App\Http\Controllers\Nexus\ChatController;
 use App\Http\Controllers\Nexus\CommentController;
+use App\Http\Controllers\Nexus\MentionController;
 use App\Http\Controllers\Nexus\ModeController;
 use App\Http\Controllers\Nexus\PostController;
 use App\Http\Controllers\Nexus\RestoreController;
@@ -63,6 +64,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     /* Posts */
     Route::delete('posts/{post}', [PostController::class, 'destroy']);
     Route::resource('posts', PostController::class);
+
+    /* @mentions */
+    Route::delete('mentions', [MentionController::class, 'destroyAll']);
 });
 
 // special sections
