@@ -1,17 +1,17 @@
 <?php
 
+use App\Http\Controllers\Nexus\ActivityController;
+use App\Http\Controllers\Nexus\ChatController;
+use App\Http\Controllers\Nexus\CommentController;
 use App\Http\Controllers\Nexus\ModeController;
+use App\Http\Controllers\Nexus\RestoreController;
+use App\Http\Controllers\Nexus\SearchController;
 use App\Http\Controllers\Nexus\SectionController;
 use App\Http\Controllers\Nexus\TopicController;
-use App\Http\Controllers\Nexus\SearchController;
-use App\Http\Controllers\Nexus\RestoreController;
-use App\Http\Controllers\Nexus\ChatController;
 use App\Http\Controllers\Nexus\UserController;
-use App\Http\Controllers\Nexus\ActivityController;
 use App\Http\Controllers\ProfileController;
-use Illuminate\Support\Facades\Route;
-
 use App\Http\Middleware\EnsureUserIsAdmin;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
@@ -28,21 +28,19 @@ Route::middleware('auth')->group(function () {
 });
 require __DIR__.'/auth.php';
 
-// above default laravel stuff 
+// above default laravel stuff
 
-
-Route::middleware(['auth', 'verified'])->group(function() {
+Route::middleware(['auth', 'verified'])->group(function () {
     /* Admin */
-    Route::middleware([EnsureUserIsAdmin::class])->group(function() {
+    Route::middleware([EnsureUserIsAdmin::class])->group(function () {
         Route::resource('admin', ModeController::class);
         Route::post('admin', [ModeController::class, 'handle'])
             ->name('mode.handle');
     });
 
-
     /* Sections */
     Route::get('/', [SectionController::class, 'index']);
-    Route::get('/home', [SectionController::class, 'index']); 
+    Route::get('/home', [SectionController::class, 'index']);
     Route::get('leap', [SectionController::class, 'leap']);
     Route::get('/section/latest', [SectionController::class, 'latest'])->name('latest');
     Route::resource('section', SectionController::class);
@@ -55,11 +53,15 @@ Route::middleware(['auth', 'verified'])->group(function() {
 
     /* Users */
     Route::resource('users', UserController::class);
+
+    /* Comments */
+    Route::delete('comments', [CommentController::class, 'destroyAll']);
+    Route::delete('comments/{comment}', [CommentController::class, 'destroy']);
+    Route::resource('comments', CommentController::class);
+
 });
 
-
 // special sections
-
 
 // users
 
@@ -71,7 +73,6 @@ Route::get('search', [SearchController::class, 'index']);
 Route::get('search/{text}', [SearchController::class, 'find']);
 Route::post('search', [SearchController::class, 'submitSearch']);
 
-
 // conversations
 Route::get('chat/{username}', [ChatController::class, 'conversation']);
 Route::post('chat/{username}', [ChatController::class, 'store']);
@@ -81,7 +82,6 @@ Route::resource('chat', ChatController::class);
 Route::get('chats/{username}', [ChatApiController::class, 'show']);
 Route::get('chats', [ChatApiController::class, 'index']);
 Route::get('chatsusers', [ChatApiController::class, 'chatPartnerIndex']);
-
 
 // restore
 Route::resource('archive', RestoreController::class);
