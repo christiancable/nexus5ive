@@ -35,7 +35,7 @@
 <div class="collapse" id="sections">
 	@if ($trashedSections->count() != 0)
     @foreach($trashedSections as $section)
-        @include('restore.section', $section)
+        @include('nexus.restore.section', $section)
     @endforeach    
 	@else 
   
@@ -59,7 +59,7 @@
 	@if ($trashedTopics->count() != 0)
 
       @foreach($trashedTopics as $topic)
-          @include('restore.topic', $topic)
+          @include('nexus.restore.topic', $topic)
       @endforeach    
 
 	@else 

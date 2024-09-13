@@ -28,7 +28,7 @@
                 </thead>
                 <tbody>
                     @foreach ($activities as $activity)
-                    @include('activities._read', $activity)
+                    @include('nexus.activities._read', $activity)
                     @endforeach
                 </tbody>
             </table>

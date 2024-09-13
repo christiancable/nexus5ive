@@ -13,7 +13,7 @@
     </dl>
 
     <div class="col">
-          @include('users._score', $user)
+          @include('nexus.users._score', $user)
     </div>
 
 </div>

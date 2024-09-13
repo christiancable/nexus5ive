@@ -62,7 +62,7 @@
         <div class="container">
             
             @foreach($paginatedResults as $result) 
-                @include('search._result', ['result' => $result])
+                @include('nexus.search._result', ['result' => $result])
             @endforeach
             {!! $paginatedResults->render() !!}
             

@@ -21,5 +21,5 @@
 </form>
 
 @if ($errors->sectionCreate->any())
-    @include('forms._errors', ['errors' => $errors->sectionCreate->all(), 'formContainer' => 'addSection'])
+    @include('nexus.forms._errors', ['errors' => $errors->sectionCreate->all(), 'formContainer' => 'addSection'])
 @endif

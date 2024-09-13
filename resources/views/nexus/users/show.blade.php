@@ -15,34 +15,34 @@
             @include('nexus.shared._heading', [
                 $heading = $user->username
             ])
-            @include('users._edit', $user)
+            @include('nexus.users._edit', $user)
         @else
             @include('nexus.shared._heading', [
                 $heading = $user->username,
                 $lead = $user->name,
                 $introduction = $user->popname
             ])
-            @include('users._read', $user)
+            @include('nexus.users._read', $user)
         @endif
 
         <h2 id="comments">Comments</h2>
 
-        @include('comments.create', $user)
+        @include('nexus.comments.create', $user)
 
         @if (count($comments))
             <table class="table table-striped">
                 <tbody>           
                 @foreach ($comments as $comment)
                     @if (Auth::user()->id == $user->id)
-                        @include('comments._edit', $comment)
+                        @include('nexus.comments._edit', $comment)
                     @else 
-                        @include('comments._read', $comment)
+                        @include('nexus.comments._read', $comment)
                     @endif 
                 @endforeach
                 </tbody>
             </table>
             @if (Auth::user()->id == $user->id)
-                @include('comments._clear', $user)
+                @include('nexus.comments._clear', $user)
             @endif
             {{ $comments->links() }}
         @endif

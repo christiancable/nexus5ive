@@ -21,9 +21,9 @@ if ($showErrors) {
 {{-- tab content --}}
 <div class="tab-content" id="post-{{$post->id}}-tabContent">
   <div class="tab-pane fade {{$viewTabClass}}" id="view-{{$post->id}}" role="tabpanel" aria-labelledby="view-{{$post->id}}-tab">
-    @include('post._view', $post)
+    @include('nexus.post._view', $post)
   </div>
   <div class="tab-pane fade {{$editTabClass}}" id="edit-{{$post->id}}" role="tabpanel" aria-labelledby="view-{{$post->id}}-tab">
-     @include('post._edit', [$post, $allowDelete])
+     @include('nexus.post._edit', [$post, $allowDelete])
   </div>
 </div>

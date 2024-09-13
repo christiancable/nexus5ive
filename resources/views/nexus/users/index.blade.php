@@ -24,7 +24,7 @@
 
         @foreach ($users as $user)        
 
-            @include('users._panel', $user)
+            @include('nexus.users._panel', $user)
 
             {{-- non-moderators get a card desk layout --}}
             {{-- wrap sub-sections: 1 col for sm, 2 for md, 3 for lg --}}

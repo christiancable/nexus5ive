@@ -1,5 +1,5 @@
 @if ($errors->userUpdate->any())
-    @include('forms._errors', ['errors' => $errors->userUpdate->all()])
+    @include('nexus.forms._errors', ['errors' => $errors->userUpdate->all()])
 @endif
 <form action="{{ route('users.update', $user->username) }}" method="POST" class="form" enctype="multipart/form-data">
     @csrf
@@ -88,7 +88,7 @@
     </div>
 
     <div class="col">
-        @include('users._score', $user)
+        @include('nexus.users._score', $user)
     </div>
 </div>
 

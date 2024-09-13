@@ -46,5 +46,5 @@
 </form>
 
 @if ($errors->topicCreate->all())
-    @include('forms._errors', ['errors' => $errors->topicCreate->all(), 'formContainer' => 'addTopic'])
+    @include('nexus.forms._errors', ['errors' => $errors->topicCreate->all(), 'formContainer' => 'addTopic'])
 @endif

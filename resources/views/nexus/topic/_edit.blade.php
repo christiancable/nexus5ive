@@ -84,5 +84,5 @@
 </form>
 
 @if ($errors->$errorBag->any())
-    @include('forms._errors', ['errors' => $errors->$errorBag->all()])
+    @include('nexus.forms._errors', ['errors' => $errors->$errorBag->all()])
 @endif

@@ -59,7 +59,7 @@
     @forelse($postsArray as $post) 
         <?php $allowDelete = true ?>
         @if($topic->section->moderator->id === Auth::user()->id)
-            @include('post._moderate', compact('post', 'readProgress'))
+            @include('nexus.post._moderate', compact('post', 'readProgress'))
         @else 
         {{-- if we are on the last post and we are the author and it is recent then display the moderate view so a user can edit their post --}}
         @if (($post['id'] == $latestPost['id']) && ($post->author->id == Auth::user()->id) && ($post->time->diffInSeconds() <= config('nexus.recent_edit') )) 
@@ -67,9 +67,9 @@
                     $forceCogMenu = true; //show cog menu for recent post
                     $allowDelete = false; 
                 ?>
-                @include('post._moderate', compact('post', 'readProgress', 'allowDelete'))
+                @include('nexus.post._moderate', compact('post', 'readProgress', 'allowDelete'))
         @else
-            @include('post._view', compact('post', 'readProgress', 'userCanSeeSecrets'))
+            @include('nexus.post._view', compact('post', 'readProgress', 'userCanSeeSecrets'))
         @endif
         @endif 
 
