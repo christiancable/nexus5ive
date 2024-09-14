@@ -1,7 +1,3 @@
-@php
-    $mode  = App\Models\Mode::active()->first();
-@endphp
-
 @auth
     @if ($mode)
         @if ($mode->override)

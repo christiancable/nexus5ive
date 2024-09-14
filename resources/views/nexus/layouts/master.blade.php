@@ -23,7 +23,6 @@
 
     @include('nexus._mode')
 
-
     <link rel="apple-touch-icon" href="/apple-touch.png">
   </head>
 

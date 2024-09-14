@@ -61,7 +61,7 @@
 
   
   <div class="col-lg">
-    @if ($mode)
+    @if ($mode ?? false)
     {!! App\Helpers\NxCodeHelper::nxDecode($mode->welcome) !!}
     @endif 
   </div> <!-- .col-md -->

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\AddBBSModeToView;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -11,7 +12,10 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //
+        // ensure that the bbs mode is shared with all views
+        $middleware->web(append: [
+            AddBBSModeToView::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
