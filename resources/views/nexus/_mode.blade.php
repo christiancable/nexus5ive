@@ -14,7 +14,7 @@
     @if ($mode)
         @include('nexus._theme', ['theme' => $mode->theme])
     @else 
-        <link rel="stylesheet" href="{{ mix('/css/app.css') }}">
+        @vite(['resources/css/app.css'])
     @endif
 @endguest
 

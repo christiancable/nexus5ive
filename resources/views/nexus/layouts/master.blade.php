@@ -32,7 +32,8 @@
         </script>
     @endauth
 
-    <script src="{{ mix('js/app.js') }}" defer></script>
+    @vite(['resources/js/app.js'])
+
 
 
     @include('nexus._mode')
