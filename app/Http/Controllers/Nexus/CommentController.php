@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Nexus;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreComment;
+use App\Http\Requests\Nexus\StoreComment;
 use App\Models\Comment;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;

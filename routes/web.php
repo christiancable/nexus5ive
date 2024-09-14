@@ -13,7 +13,6 @@ use App\Http\Controllers\Nexus\SectionController;
 use App\Http\Controllers\Nexus\TopicController;
 use App\Http\Controllers\Nexus\UserController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Middleware\AddBBSModeToView;
 use App\Http\Middleware\EnsureUserIsAdmin;
 use Illuminate\Support\Facades\Route;
 
@@ -31,9 +30,7 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// Route::middleware(['AddBBSModeToView'])->ground(function (){
 require __DIR__.'/auth.php';
-// });
 
 // above default laravel stuff
 
