@@ -18,6 +18,8 @@
 
 <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17"></script>
 
+@livewireStyles
+
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -62,5 +64,6 @@
 
         @include('nexus._googleanaytics')
     </div>
+    @livewireScripts
   </body>
 </html>

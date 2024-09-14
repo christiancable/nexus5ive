@@ -5,14 +5,7 @@
 @endif 
 
 <?php $help = App\Helpers\BoilerplateHelper::formattingHelp();?>
-<div id="app" v-cloak>
-  <post-compose
-    :topic="{{json_encode($topic)}}"
-    :reply="{{json_encode($replyingTo)}}"
-    help="{{$help}}"
-    >
-  </post-compose>
-</div>
+@livewire('post-compose', ['topic' => $topic, 'reply' => $replyingTo, 'help' => $help])
 
 
 
