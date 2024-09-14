@@ -2,10 +2,12 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
-
-use Illuminate\Support\Facades\View;
+use App\Models\Mode;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\View;
+use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -22,7 +24,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-           // share bbs mode to all views
+        // share bbs mode to all views
         // wrap in try because this isn't aways run when we have a db
         // @todo make this bit suck less
         try {
@@ -31,9 +33,9 @@ class AppServiceProvider extends ServiceProvider
                 return Mode::active()->with('theme')->first();
             });
         } catch (\Throwable $th) {
+            Log::info('Failed to fetch mode '.print_r($th, true));
             $mode = null;
         }
-
         View::share('mode', $mode);
 
         // use bootstrap for pagination

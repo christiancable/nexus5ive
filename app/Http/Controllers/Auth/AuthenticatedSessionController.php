@@ -16,7 +16,8 @@ class AuthenticatedSessionController extends Controller
      */
     public function create(): View
     {
-        return view('auth.login');
+        // changed from framework default
+        return view('nexus.auth.login');
     }
 
     /**
@@ -28,6 +29,7 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        // todo?
         return redirect()->intended(route('dashboard', absolute: false));
     }
 
