@@ -69,9 +69,6 @@ class BreadcrumbHelper
      */
     public static function breadcumbForUtility($location)
     {
-        // TODO
-        return []; 
-
         $breadcrumbs = [];
         $crumb = [];
         $crumb['title'] = $location;
