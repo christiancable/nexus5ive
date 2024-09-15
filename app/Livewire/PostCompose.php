@@ -39,6 +39,7 @@ class PostCompose extends Component
 
     public function save(Request $request)
     {
+        Log::info("saving post");
         if ($request->user()->cannot('create', [Post::class, $this->topic])) {
             abort(403);
         }

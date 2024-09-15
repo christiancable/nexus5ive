@@ -1,4 +1,4 @@
-<form method="POST" action="" wire:submit.prevent="save">
+<form method="POST" wire:submit.prevent="save">
     <!-- Nav tabs -->
     <ul class="nav nav-tabs mb-3" id="myTab" role="tablist">
         <li class="nav-item">
@@ -48,7 +48,6 @@
     <div class="d-none d-md-flex justify-content-between">
         <div class="form-group">
             <input class="btn btn-primary form-control" type="submit" value="Add Comment"
-                wire:click="save"
                 {{-- @if (empty($postText)) disabled @endif --}}
                  />
         </div>
@@ -63,7 +62,6 @@
     <div class="d-md-none">
         <div class="form-group">
             <input class="btn btn-primary form-control" type="submit" value="Add Comment"
-                wire:click="save"
                 {{-- @if (empty($postText)) disabled @endif  --}}
                 />
         </div>
