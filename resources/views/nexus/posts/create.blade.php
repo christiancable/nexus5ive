@@ -4,8 +4,7 @@
   </div>
 @endif 
 
-<?php $help = App\Helpers\BoilerplateHelper::formattingHelp();?>
-@livewire('post-compose', ['topic' => $topic, 'reply' => $replyingTo, 'help' => $help])
+@livewire('post-compose', ['topic' => $topic, 'reply' => $replyingTo])
 
 
 

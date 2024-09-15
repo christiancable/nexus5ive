@@ -1,4 +1,4 @@
-<form method="POST" action="" wire:submit.prevent="sendPost">
+<form method="POST" action="" wire:submit.prevent="save">
     <!-- Nav tabs -->
     <ul class="nav nav-tabs mb-3" id="myTab" role="tablist">
         <li class="nav-item">
@@ -15,20 +15,27 @@
     <div class="tab-content">
         
         <div role="tabpanel" class="tab-pane @if($composeActive) active @endif" id="postEdit">
-            <input name="topic_id" value="{{ $topic->id }}" type="hidden" />
             <div class="form-group">
-                <input class="form-control" placeholder="Subject" name="title" type="text" wire:model="postTitle" />
+                <input class="form-control" placeholder="Subject" name="title" type="text" wire:model="title" />
             </div>
 
             <div class="form-group">
-                <textarea class="form-control" id="postText" name="text" cols="50" rows="10" wire:model="postText"
-                    ref="postText"></textarea>
+                <textarea class="form-control" id="text" name="text" cols="50" rows="10" wire:model="text"
+                    ref="text"></textarea>
             </div>
 
-            <div v-if="errors" class="alert alert-danger">
+            
+        
+
+            @error('text')
+            <div class="alert alert-danger">
                 <p>(╯°□°）╯︵ ┻━┻</p>
                 <p>Only a monster would leave an <strong>empty comment!</strong></p>
             </div>
+
+            @enderror
+
+
         </div>
 
 
@@ -41,8 +48,9 @@
     <div class="d-none d-md-flex justify-content-between">
         <div class="form-group">
             <input class="btn btn-primary form-control" type="submit" value="Add Comment"
-                wire:click="sendPost"
-                @if (empty($postText)) disabled @endif />
+                wire:click="save"
+                {{-- @if (empty($postText)) disabled @endif --}}
+                 />
         </div>
 
         <a tabindex="0" class="small text-muted" role="button" data-html="true" data-placement="left"
@@ -55,8 +63,9 @@
     <div class="d-md-none">
         <div class="form-group">
             <input class="btn btn-primary form-control" type="submit" value="Add Comment"
-                wire:click="sendPost"
-                @if (empty($postText)) disabled @endif />
+                wire:click="save"
+                {{-- @if (empty($postText)) disabled @endif  --}}
+                />
         </div>
     </div>
 
