@@ -60,7 +60,7 @@
         </div>
 
         <a tabindex="0" class="small text-muted" role="button" data-html="true" data-placement="left"
-            data-toggle="popover" data-trigger="focus" title="Formating Help" :data-content="help">
+            data-toggle="popover" data-trigger="focus" title="Formating Help" data-content="{!! $help !!}">
             <u>Formatting Help</u>
         </a>
     </div>
@@ -82,7 +82,10 @@
             </a>
         </p>
         <div class="collapse" id="collapseExample">
-            <div class="card card-body mb-4" v-html="help"></div>
+            <div class="card card-body mb-4">{!! $help !!}</div>
         </div>
     </div>
 </form>
+<script>
+$('[data-toggle="popover"]').popover();
+</script>

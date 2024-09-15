@@ -29,7 +29,7 @@ class PostCompose extends Component
 
     public function mount()
     {
-        $help = BoilerplateHelper::formattingHelp();
+        $this->help = BoilerplateHelper::formattingHelp();
         if ($this->reply) {
 
             $re = '/(^)/m';
