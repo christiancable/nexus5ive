@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
+use App\Helpers\NxCodeHelper;
 
 class PostCompose extends Component
 {
@@ -11,6 +12,8 @@ class PostCompose extends Component
     public $postTitle = '';
     public $postPreview = 'hello';
 
+    public $previewActive = false; 
+    public $composeActive = true;
     public $topic;
     public $reply;
     public $help;
@@ -25,8 +28,16 @@ class PostCompose extends Component
         Log::info('Post message');
     }
 
-    public function updatePreview()
+    public function showCompose()
     {
-        $this->postPreview = $this->postText;
+        $this->previewActive = false;
+        $this->composeActive = true;
+    }
+
+    public function showPreview()
+    {
+        $this->postPreview = NxCodeHelper::nxDecode($this->postText);
+        $this->previewActive = true; 
+        $this->composeActive = false;
     }
 }

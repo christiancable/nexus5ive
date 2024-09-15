@@ -2,19 +2,20 @@
     <!-- Nav tabs -->
     <ul class="nav nav-tabs mb-3" id="myTab" role="tablist">
         <li class="nav-item">
-            <a class="nav-link active" id="compose-tab" data-toggle="tab" href="#postEdit" role="tab"
-                aria-controls="home" aria-selected="true">Compose</a>
+            <a class="nav-link @if($composeActive) active @endif" id="compose-tab"  href="#postEdit" role="tab"
+                aria-controls="home" aria-selected="true" wire:click="showCompose">Compose</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#postPreview" role="tab"
-                aria-controls="profile" aria-selected="false" wire:click.stop="updatePreview">Preview</a>
+            <a class="nav-link @if($previewActive) active @endif" id="profile-tab"  href="#postPreview" role="tab"
+                aria-controls="profile" aria-selected="false" wire:click="showPreview">Preview</a>
         </li>
     </ul>
 
     <!-- Tab panes -->
     <div class="tab-content">
-        <div role="tabpanel" class="tab-pane active" id="postEdit">
-            <input name="topic_id" :value="topic.id" type="hidden" />
+        
+        <div role="tabpanel" class="tab-pane @if($composeActive) active @endif" id="postEdit">
+            <input name="topic_id" value="{{ $topic->id }}" type="hidden" />
             <div class="form-group">
                 <input class="form-control" placeholder="Subject" name="title" type="text" wire:model="postTitle" />
             </div>
@@ -30,8 +31,9 @@
             </div>
         </div>
 
-        <div role="tabpanel" class="tab-pane" id="postPreview">
-            <div> {{ $postPreview }} </div>
+
+        <div role="tabpanel" class="tab-pane @if($previewActive) active @endif" id="postPreview">
+            <div> {!! $postPreview !!} </div>
         </div>
     </div>
 
