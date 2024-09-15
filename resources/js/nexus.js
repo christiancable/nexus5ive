@@ -1,19 +1,25 @@
 /* event listeners */
-
 // spoiler tag show/hide
-$("span.spoiler").click(function() {
-  $(this).toggleClass("spoiler");
+document.querySelectorAll("span.spoiler").forEach(spoiler => {
+  spoiler.addEventListener("click", function() {
+      this.classList.toggle("spoiler");
+  });
 });
 
 // disclosure toggle
-$(".disclose").click(function(e) {
-  let heading = $(e.target).find("span.oi");
-  if (heading) {
-    heading.toggleClass("oi-chevron-right oi-chevron-bottom");
-  }
+document.querySelectorAll(".disclose").forEach(disclosure => {
+  disclosure.addEventListener("click", function(e) {
+      const heading = e.target.querySelector("span.oi");
+      if (heading) {
+          heading.classList.toggle("oi-chevron-right");
+          heading.classList.toggle("oi-chevron-bottom");
+      }
+  });
 });
 
-//toggle cog-menu
-$("#cog-menu-toggle").click(function(e) {
-  $(".cog-menu").toggleClass("d-none");
-}); 
+// toggle cog-menu
+document.getElementById("cog-menu-toggle").addEventListener("click", function() {
+  document.querySelectorAll(".cog-menu").forEach(menu => {
+    menu.classList.toggle("d-none");
+  });
+});
