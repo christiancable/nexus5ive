@@ -1,0 +1,62 @@
+// Typography
+$headings-font-family: 'Michroma', cursive;
+$font-family-sans-serif: "Michroma", sans-serif;
+
+$font-size-base: 0.9rem;
+$line-height-base: 1.6;
+
+// colours
+$black: #000;
+$body-bg: $black;
+$green: rgb(0, 162, 53);
+$blue: rgb(0, 151, 242);
+$body-color: $green;
+$headings-color: $blue;
+$hr-border-color: rgb(0, 87, 140);
+$mark-bg: $black;
+$card-bg: $black;
+$card-border-color: rgba(51, 122,183, 100);
+$border-width: 5px;
+$border-radius: 0.8rem;
+$breadcrumb-bg: $black;
+$orange: #fd7e14;
+$info: $orange;
+
+
+// custom styles
+
+#top-toolbar {
+  border-bottom-color: $orange !important;
+}
+#top-toolbar .navbar {
+  background-color: $black !important;
+  color: $orange;
+
+  * {
+    color: $orange;
+  }
+
+  .navbar-toggler-icon {
+    background-color: $orange;
+  }
+    
+}
+
+.dropdown-menu {
+  background-color: $black !important;
+
+  * {
+    color: $orange !important;
+  }
+}
+
+.accordion .card {
+  border-color: $green !important;
+  $border-radius: 0rem;
+
+  .card-header {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-color: $green !important;
+  }
+}

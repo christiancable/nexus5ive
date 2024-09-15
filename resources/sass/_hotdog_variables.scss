@@ -1,0 +1,54 @@
+// hotdog
+$red: #ff0102;
+$yellow: #ffff00;
+$black: #000000;
+$gray: #c6c6c6;
+$white:  #ffffff;
+
+
+$theme-colors: (
+  "primary":    $black,
+  "secondary":  $yellow,
+  "success":   $red,
+  "info":       $gray,
+  "warning":    $yellow,
+  "danger":    $white,
+  "light":      $gray,
+  "dark":      $red
+);
+
+// body
+$body-bg: $red;
+$body-color: $black;
+
+// cards
+$card-bg: $yellow;
+$card-cap-bg: $red;
+
+$card-border-width: 0.5rem;
+$card-border-color: $black;
+
+// card footer
+$card-cap-bg: $gray;
+
+// buttons
+
+// navbar
+$navbar-dark-brand-color: $white;
+$navbar-dark-brand-hover-color: $white;
+$navbar-dark-color: $white;
+$navbar-dark-hover-color: $white;
+
+// breadcrumbs
+
+$breadcrumb-bg: $yellow;
+$breadcrumb-divider-color: $black;
+$breadcrumb-active-color: $gray;
+
+// Typography
+$headings-font-family: 'VT323', monospace;
+// $headings-font-weight: 900;
+$font-family-sans-serif: Roboto,  Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+$font-size-base: 1rem;
+$line-height-base: 1.6;
+$text-muted: $black;
