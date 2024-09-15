@@ -30,6 +30,20 @@ class PostCompose extends Component
     public function mount()
     {
         $help = BoilerplateHelper::formattingHelp();
+        if ($this->reply) {
+
+            $re = '/(^)/m';
+            $str = $this->reply['text'];
+            $subst = "> ";
+            $replyText = preg_replace($re, $subst, $str);
+        
+            $this->text = <<< MARKDOWN
+            @{$this->reply['username']}
+            $replyText
+
+
+            MARKDOWN;
+        }
     }
 
     public function render()
@@ -57,8 +71,6 @@ class PostCompose extends Component
 
         // scan post for mentions
         MentionHelper::makeMentions($post);
-
-
 
         $redirect = action([TopicController::class, 'show'], ['topic' => $post->topic_id]);
 

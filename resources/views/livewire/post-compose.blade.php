@@ -40,7 +40,14 @@
 
 
         <div role="tabpanel" class="tab-pane @if($previewActive) active @endif" id="postPreview">
-            <div> {!! $postPreview !!} </div>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <p class="card-text">
+                        {!! $postPreview !!}
+                    </p>
+                </div>
+            </div>
+
         </div>
     </div>
 
