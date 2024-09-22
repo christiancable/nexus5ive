@@ -16,7 +16,7 @@
         
         <div role="tabpanel" class="tab-pane @if($composeActive) active @endif" id="postEdit">
             <div class="form-group">
-                <input class="form-control" placeholder="Subject" name="title" type="text" wire:model="title" />
+                <input class="form-control" placeholder="Subject" id="title" name="title" type="text" wire:model="title" />
             </div>
 
             <div class="form-group">
@@ -30,7 +30,7 @@
             @error('text')
             <div class="alert alert-danger">
                 <p>(╯°□°）╯︵ ┻━┻</p>
-                <p>Only a monster would leave an <strong>empty comment!</strong></p>
+                <p>{!! __('nexus.validation.post.empty') !!}</p>
             </div>
 
             @enderror
@@ -54,8 +54,8 @@
     <!-- buttons and help - medium screens and above -->
     <div class="d-none d-md-flex justify-content-between">
         <div class="form-group">
-            <input class="btn btn-primary form-control" type="submit" value="Add Comment"
-                {{-- @if (empty($postText)) disabled @endif --}}
+            <input dusk="addCommentBtn" class="btn btn-primary form-control" type="submit" value="Add Comment"
+                @if (!$buttonActive) disabled @endif
                  />
         </div>
 
@@ -69,7 +69,7 @@
     <div class="d-md-none">
         <div class="form-group">
             <input class="btn btn-primary form-control" type="submit" value="Add Comment"
-                {{-- @if (empty($postText)) disabled @endif  --}}
+                @if (!$buttonActive) disabled @endif
                 />
         </div>
     </div>

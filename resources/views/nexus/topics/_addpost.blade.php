@@ -1,7 +1,7 @@
     {{-- add new post section --}}
     @if($readonly === true) 
         <div class="alert alert-danger" role="alert">
-            <p><strong>This topic is closed</strong>. You cannot make a new comment.</p>
+            <p>{!!__('nexus.topic.closed')!!}</p>
         </div>
     @else 
         {{-- only show the post box if we are on the first page --}}

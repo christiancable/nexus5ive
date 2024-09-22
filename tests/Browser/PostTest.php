@@ -3,11 +3,11 @@
 namespace Tests\Browser;
 
 use App\Http\Controllers\Nexus\TopicController;
-use App\Models\Post;
 use App\Models\Section;
 use App\Models\Topic;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Laravel\Dusk\Browser;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\DuskTestCase;
 
@@ -26,6 +26,8 @@ class PostTest extends DuskTestCase
     protected Section $subSection;
 
     protected Topic $topic;
+
+    protected Topic $closedTopic;
 
     protected function setUp(): void
     {
@@ -46,35 +48,118 @@ class PostTest extends DuskTestCase
         $this->topic = Topic::factory()
             ->for($this->subSection, 'section')
             ->create();
+
+        $this->closedTopic = Topic::factory()
+            ->for($this->subSection, 'section')
+            ->create([
+                'readonly' => true,
+            ]);
     }
 
     #[Test]
     public function userCanPostInTopic(): void
     {
-        /*
-        user can compose the post
-        press the button
-        see the post in the redirected page
-        */
         $this->browse(function ($browser) {
+            $title = 'Hello Everyone!';
+            $text = 'this is a test go back to sleep';
+
             $browser->loginAs($this->normalUser)
+                // when a user visits a topic and leaves a post
                 ->visit(action([TopicController::class, 'show'], ['topic' => $this->topic]))
-                ->type('title', 'Hello Everyone!')
-                ->type('text', 'this is a text post to say hello')
-                ->waitForLiveWire(function ($browser) {
+                ->type('title', $title)
+                ->type('text', $text)
+                ->waitForReload(function (Browser $browser) {
                     $browser->press('Add Comment');
                 })
-                ->screenshot('testing');
-
-            // see title in .card-title and text in .card-text
+                // then the form is empty
+                ->assertSeeNothingIn('#text')
+                ->assertSeeNothingIn('#title')
+                // and the post is seen within the topic
+                ->assertSeeIn('.card-title', $title)
+                ->assertSee($text);
         });
     }
 
-    public function userCannotPostInReadOnlyTopic(): void {}
+    #[Test]
+    public function userCannotPostInReadOnlyTopic(): void
+    {
+        $this->browse(function ($browser) {
+            $title = 'Hello Everyone!';
+            $text = 'this is a test go back to sleep';
 
-    public function ownerCanPostInReadOnlyTopicWithWarning(): void {}
+            $browser->loginAs($this->normalUser)
+                // when a user visits a topic and leaves a post
+                ->visit(action([TopicController::class, 'show'], ['topic' => $this->closedTopic]))
+                ->assertDontSee('Add Comment')
+                ->assertSee(strip_tags(__('nexus.topic.closed')));
+        });
+    }
 
-    public function adminCanPostInReadOnlyTopicWithWarning(): void {}
+    #[Test]
+    public function ownerCanPostInReadOnlyTopicWithWarning(): void
+    {
+        $this->browse(function ($browser) {
+            $title = 'Hello Everyone!';
+            $text = 'this is a test go back to sleep';
 
-    public function userCannotPostEmptyPostInTopic(): void {}
+            $browser->loginAs($this->moderator)
+                // when a moderator visits a read only topic and leaves a post
+                ->visit(action([TopicController::class, 'show'], ['topic' => $this->closedTopic]))
+                // they see a notice that the topic is closed but can post
+                ->assertSee(strip_tags(__('nexus.topic.closed.moderator')))
+                ->type('title', $title)
+                ->type('text', $text)
+                ->waitForReload(function (Browser $browser) {
+                    $browser->press('Add Comment');
+                })
+                // then the form is empty
+                ->assertSeeNothingIn('#text')
+                ->assertSeeNothingIn('#title')
+                // and the post is seen within the topic
+                ->assertSeeIn('.card-title', $title)
+                ->assertSee($text);
+        });
+    }
+
+    #[Test]
+    public function adminCanPostInReadOnlyTopicWithWarning(): void
+    {
+        $this->browse(function ($browser) {
+            $title = 'Hello Everyone!';
+            $text = 'this is a test go back to sleep';
+
+            $browser->loginAs($this->sysop)
+                // when a sysop visits a read only topic and leaves a post
+                ->visit(action([TopicController::class, 'show'], ['topic' => $this->closedTopic]))
+                // they see a notice that the topic is closed but can post
+                ->assertSee(strip_tags(__('nexus.topic.closed.moderator')))
+                ->type('title', $title)
+                ->type('text', $text)
+                ->waitForReload(function (Browser $browser) {
+                    $browser->press('Add Comment');
+                })
+                // then the form is empty
+                ->assertSeeNothingIn('#text')
+                ->assertSeeNothingIn('#title')
+                // and the post is seen within the topic
+                ->assertSeeIn('.card-title', $title)
+                ->assertSee($text);
+        });
+    }
+
+    #[Test]
+    public function userCannotPostEmptyPostInTopic(): void
+    {
+        $this->browse(function ($browser) {
+            $title = 'Hello Everyone!';
+
+            $browser->loginAs($this->normalUser)
+                // when a user visits a topic and leaves a post
+                ->visit(action([TopicController::class, 'show'], ['topic' => $this->topic]))
+                ->type('title', $title)
+                ->press('Add Comment')
+                ->waitFor('.alert')
+                ->assertSee(strip_tags(__('nexus.validation.post.empty')));
+        });
+    }
 }

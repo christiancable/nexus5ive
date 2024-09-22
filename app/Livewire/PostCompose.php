@@ -2,16 +2,15 @@
 
 namespace App\Livewire;
 
-use Illuminate\Support\Facades\Log;
-use Livewire\Component;
-use Livewire\Attributes\Validate;
-use App\Helpers\NxCodeHelper;
 use App\Helpers\BoilerplateHelper;
+use App\Helpers\MentionHelper;
+use App\Helpers\NxCodeHelper;
+use App\Http\Controllers\Nexus\TopicController;
 use App\Models\Post;
 use Illuminate\Http\Request;
-use App\Helpers\MentionHelper;
 use Illuminate\Support\Carbon;
-use App\Http\Controllers\Nexus\TopicController;
+use Livewire\Attributes\Validate;
+use Livewire\Component;
 
 class PostCompose extends Component
 {
@@ -21,10 +20,17 @@ class PostCompose extends Component
     public $text = '';
 
     public $postPreview = '';
+
     public $previewActive = false;
+
     public $composeActive = true;
+
+    public $buttonActive = true;
+
     public $topic;
+
     public $reply;
+
     public $help;
 
     public function mount()
@@ -34,9 +40,9 @@ class PostCompose extends Component
 
             $re = '/(^)/m';
             $str = $this->reply['text'];
-            $subst = "> ";
+            $subst = '> ';
             $replyText = preg_replace($re, $subst, $str);
-        
+
             $this->text = <<< MARKDOWN
             @{$this->reply['username']}
             $replyText
@@ -53,7 +59,8 @@ class PostCompose extends Component
 
     public function save(Request $request)
     {
-        Log::info("saving post");
+        $this->buttonActive = false;
+
         if ($request->user()->cannot('create', [Post::class, $this->topic])) {
             abort(403);
         }
@@ -76,8 +83,9 @@ class PostCompose extends Component
 
         if ($request->user()->viewLatestPostFirst) {
             // @todo this does not redirect as expected
-            $redirect .= '#' . $post->id;
-        }    
+            $redirect .= '#'.$post->id;
+        }
+
         return redirect()->to($redirect);
     }
 

@@ -1,6 +1,6 @@
 @if($topic->readonly) 
   <div class="alert alert-warning" role="alert">
-      <p><strong>This topic is closed</strong> but you are allowed to post because you can moderate this section.</p>
+      <p>{!!__('nexus.topic.closed.moderator')!!}</p>
   </div>
 @endif 
 
