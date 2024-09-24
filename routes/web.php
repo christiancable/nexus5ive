@@ -20,9 +20,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -43,7 +43,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 
     /* Sections */
-    Route::get('/', [SectionController::class, 'index']);
+    Route::get('/', [SectionController::class, 'index'])->name('dashboard');
     Route::get('/home', [SectionController::class, 'index']);
     Route::get('leap', [SectionController::class, 'leap']);
     Route::get('/section/latest', [SectionController::class, 'latest'])->name('latest');
