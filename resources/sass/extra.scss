@@ -3,12 +3,12 @@
 /* ------ */
 
 // Open Iconic icon font
-@import "~open-iconic/font/css/open-iconic-bootstrap.scss";
+@import "open-iconic/font/css/open-iconic-bootstrap.scss";
 
 // Import Bootstrap mixins and variables
-@import "~bootstrap/scss/functions";
-@import "~bootstrap/scss/variables";
-@import "~bootstrap/scss/mixins/_breakpoints";
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/mixins/_breakpoints";
 
 $body-color: #f5f8fa !default;
 
