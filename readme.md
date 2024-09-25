@@ -1,66 +1,99 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Nexus 5ive
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+                       ÛÛ
+    ÛÛÛ   ÛÛ   ÛÛÛÛÛÛÛ   ÛÛ   ÛÛ   ÛÛ   ÛÛ   ÛÛÛÛÛÛÛ
+    ÛÛÛÛ  ÛÛ°  ÛÛ°°°°°°   ÛÛ ÛÛ°°  ÛÛ°  ÛÛ°  ÛÛ°°°°°°
+    ÛÛ°ÛÛ ÛÛ°  ÛÛÛÛ        ÛÛÛ°°   ÛÛ°  ÛÛ°  ÛÛÛÛÛÛÛ   5
+    ÛÛ° ÛÛÛÛ°  ÛÛ°°°      ÛÛ°ÛÛ    ÛÛ°  ÛÛ°   °°°°ÛÛ°
+    ÛÛ°  ÛÛÛ°  ÛÛÛÛÛÛÛ   ÛÛ°° ÛÛ    ÛÛÛÛÛ°°  ÛÛÛÛÛÛÛ°
+     °°   °°°   °°°°°°°   °°   ÛÛ    °°°°°    °°°°°°°
+                                °°
 
-## About Laravel
+Written by [Christian Cable](http://christiancable.co.uk).
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+This is the code that powers the _old-school style_ injoke of a BBS at [https://nexus5.org.uk](https://nexus5.org.uk).
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+The web version of Nexus has run in one form or another since the ultra-futuristic year of _2001_. It was inspired by the [UCLAN](https://www.uclan.ac.uk) CompSoc BBS of the mid-90s where I happily misspent much of my university days.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+This current version is built using the [Laravel framework](https://laravel.com) by Taylor Otwell
 
-## Learning Laravel
+## Build Status
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+![Build Status](https://github.com/christiancable/nexus5ive/workflows/Tests/badge.svg?branch=master)
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Install Steps
 
-## Laravel Sponsors
+- `composer install`
+- `cp .evn.example .env`
+- Edit .env; add your datbase info and sensible values for the NEXUS\_\*
+- `php artisan migrate`
+- `yarn`
+- `yarn run production`
+- `php artisan nexus:install`
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+[View the Roadmap](https://github.com/christiancable/nexus5ive/projects/3)
 
-### Premium Partners
+## Themes
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+Nexus supports bootstrap themes.
+These can be externally hosted css files (such as the excellent ones at [Bootswatch](https://bootswatch.com/)) or built within nexus. Nexus ships with a Default theme and an example 'Excelsior' theme.
 
-## Contributing
+To enable the Excelsior theme
+`php artisan nexus:theme add --name=Excelsior --path='/css/excelsior.css'`
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+To add external themes from Bootswatch...
 
-## Code of Conduct
+```
+php artisan nexus:theme add --name=darkly  --path='https://bootswatch.com/4/darkly/bootstrap.min.css'
+php artisan nexus:theme add --name=slate   --path='https://bootswatch.com/4/slate/bootstrap.min.css'
+php artisan nexus:theme add --name=united  --path='https://bootswatch.com/4/united/bootstrap.min.css'
+php artisan nexus:theme add --name=solar   --path='https://bootswatch.com/4/solar/bootstrap.min.css'
+php artisan nexus:theme add --name=sketchy --path='https://bootswatch.com/4/sketchy/bootstrap.min.css'
+php artisan nexus:theme add --name=materia --path='https://bootswatch.com/4/materia/bootstrap.min.css'
+php artisan nexus:theme add --name=minty   --path='https://bootswatch.com/4/minty/bootstrap.min.css'
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Themes can be removed by
 
-## Security Vulnerabilities
+```
+php artisan nexus:theme remove --name=minty
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Users who use a removed theme have their theme set to the default.
 
-## License
+## Development
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Nexus uses [Laravel Sail](https://laravel.com/docs/11.x/sail) for development.
+
+A number of useful tasks are included to aid in development. Prefix the commands below with `./vendon/bin/sail` where required.
+
+### Tests
+
+PHP and javascript tests are provided. Coverage is nowhere near complete. Pull requests here are _extremely_ welcome.
+
+##### PHP
+
+PHP testing for unit and features are written using phpunit
+
+`yarn test` or with coverage map `yarn coverage`
+
+The tests are found in _/tests_
+
+#### Javascript
+
+JS tests are written using mocha.
+
+The tests are found in _/test/js/_
+
+### Static Analysis
+
+Static analysis is provided using the [larastan](https://medium.com/@nunomaduro/introducing-larastan-alpha-c7582ff366a6) package. To run an analysis of the code run:
+
+`yarn larastan`
+
+### Coding Standards
+
+PHP is written to confirm to Laravel's coding standards. To check the status of all the files within `app` run:
+
+`./vendor/bin/pint app`
