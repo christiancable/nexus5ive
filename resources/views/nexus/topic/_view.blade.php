@@ -4,17 +4,17 @@ $status = \App\Helpers\ViewHelper::getTopicStatus(Auth::user(), $topic);
 // display style
 
 $textClass = 'text-primary';
-$icon = 'oi oi-comment-square';
+$icon = 'default';
 
 if ($status['unsubscribed']) {
+    $icon = 'unsubscribed';
     $textClass = 'text-muted';
-    $icon = 'oi oi-thumb-down'; 
 } elseif ($status['new_posts']) { 
+    $icon = 'new_posts';
     $textClass = 'text-danger';
-    $icon = 'oi oi-fire';
 } elseif ($status['never_read']) {
+    $icon = 'never_read';
     $textClass = 'text-success';
-    $icon = 'oi oi oi-star';
 }
 
 
@@ -33,7 +33,26 @@ $topicLink = action('App\Http\Controllers\Nexus\TopicController@show', ['topic' 
   <div class="card-body">
 
     <a href="{{$topicLink}}">
-        <h2 class="card-title"><span class="{{$textClass}} {{$icon}}"></span> {{$topic->title}}</h2>
+        <h2 class="card-title">
+        
+        @switch($icon)
+            @case('unsubscribed')
+                <x-heroicon-s-hand-thumb-down class="icon_topic {{$textClass}} " />
+                @break
+            
+            @case('new_posts')
+                <x-heroicon-s-fire class="icon_topic {{$textClass}}" />
+                @break
+
+            @case('never_read')
+                <x-heroicon-s-star class="icon_topic {{$textClass}}" />
+                @break
+
+            @default
+                <x-heroicon-s-chat-bubble-bottom-center-text class="icon_topic {{$textClass}}" /> 
+        @endswitch
+        {{$topic->title}}    
+        </h2>
     </a>
     <p class="card-text">{!! App\Helpers\NxCodeHelper::nxDecode($topic->intro) !!}</p>
 

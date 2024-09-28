@@ -3,7 +3,6 @@
 /* ------ */
 
 // Open Iconic icon font
-@import "open-iconic/font/css/open-iconic-bootstrap.scss";
 
 // Import Bootstrap mixins and variables
 @import "bootstrap/scss/functions";
@@ -11,6 +10,12 @@
 @import "bootstrap/scss/mixins/_breakpoints";
 
 $body-color: #f5f8fa !default;
+
+/* hero icons */
+.icon_topic {  
+  width: 3rem;
+  height: 3rem;
+}
 
 /* blockquote */
 blockquote {
