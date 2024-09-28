@@ -1,24 +1,5 @@
-@props(['title', 'status', 'link'])
-
-@php
-    $textClass = 'text-primary';
-    $icon = 'default';
-
-    if ($status['unsubscribed']) {
-        $icon = 'unsubscribed';
-        $textClass = 'text-muted';
-    } elseif ($status['new_posts']) {
-        $icon = 'new_posts';
-        $textClass = 'text-danger';
-    } elseif ($status['never_read']) {
-        $icon = 'never_read';
-        $textClass = 'text-success';
-    }
-@endphp
-
 <a href="{{ $link }}">
     <h2 class="card-title">
-
         @switch($icon)
             @case('unsubscribed')
                 <x-heroicon-s-hand-thumb-down class="icon_topic {{ $textClass }} " />
