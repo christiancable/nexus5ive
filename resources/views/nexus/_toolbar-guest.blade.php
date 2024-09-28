@@ -25,7 +25,9 @@
 				@if (config('nexus.allow_registrations'))
 				<ul class="navbar-nav ml-auto">
 					<li class="nav-item">
-						<a class=" btn btn-primary" href="{{ route('register') }}"><span class="oi oi-aperture mr-2"></span>{{ __('Join') }}</a>
+						<a class=" btn btn-primary" href="{{ route('register') }}">
+						 <x-heroicon-s-rocket-launch class="icon_mini mr-1" aria-hidden="true" />
+						{{ __('Join') }}</a>
 					</li>
 				</ul>
 				@endif 
