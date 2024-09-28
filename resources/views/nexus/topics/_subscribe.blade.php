@@ -1,11 +1,13 @@
 <form action="{{ route('topic.updateSubscription', ['topic' => $topic->id]) }}" method="POST" class="form">
     @csrf
     <button class="btn btn-link">
-        @if($unsubscribed)
-            <span class="oi oi-check text-success" aria-hidden="true"></span><span> Subscribe to this topic</span>
+        @if ($unsubscribed)
+            <x-heroicon-s-check class="icon_mini mr-1 text-success" aria-hidden="true" />
+            <span>Subscribe to this topic</span>
             <input type="hidden" name="command" value="subscribe">
         @else
-            <span class="oi oi-x text-danger" aria-hidden="true"></span><span> Unsubscribe from this topic</span>
+            <x-heroicon-s-x-mark class="icon_mini mr-1 text-danger" aria-hidden="true" />
+            <span>Unsubscribe from this topic</span>
             <input type="hidden" name="command" value="unsubscribe">
         @endif
     </button>
