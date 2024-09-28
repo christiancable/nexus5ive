@@ -78,7 +78,8 @@
         <p>
             <a data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false"
                 aria-controls="collapseExample">
-                <span class="oi oi-chevron-right mr-1"></span>Formatting Help
+                <x-heroicon-m-chevron-right class="icon_mini mr-1"/>
+                Formatting Help
             </a>
         </p>
         <div class="collapse" id="collapseExample">
