@@ -163,7 +163,7 @@ $notificationCount = $profileNotificationCount + $mentionCount;
                             <form class="form-inline" action="{{ url('/logout') }}" method="POST">
                                 @csrf
                                 <button class="btn btn-link dropdown-item"><x-heroicon-s-arrow-left-start-on-rectangle
-                                        class="icon_mini mr-1" aria-hidden="true" />Logout </button>
+                                        class="icon_mini mr-1" aria-hidden="true" />Logout</button>
                             </form>
                         </div>
                     </li>
