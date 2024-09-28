@@ -18,16 +18,15 @@ $errorBag = 'postUpdate' . $post->id;
             <textarea name="form[{{ $formName }}][text]" class="form-control">{{ $post->text }}</textarea>
         </div>
 
-        <div class="d-flex flex-row-reverse bd-highlight">
+        <div class="d-flex flex-row-reverse justify-content-between bd-highlight">
             <div class="form-group ml-2">
                 <x-button class="btn-success" type="success">
                     <x-heroicon-s-pencil class="icon_mini mr-1" aria-hidden="true" />Save Changes
                 </x-button>
             </div>
-        </div>
-    </form>
-
-    @if ($allowDelete)
+        </form>
+        
+        @if ($allowDelete)
         <form action="{{ route('posts.destroy', ['post' => $post->id]) }}" method="POST">
             @csrf
             @method('DELETE')
@@ -38,6 +37,10 @@ $errorBag = 'postUpdate' . $post->id;
             </div>
         </form>
     @endif
+        
+        
+        </div>
+        
 </div>
 
 @if ($errors->$errorBag->any())
