@@ -12,7 +12,11 @@
 
 <div class="container">
 
-    @include('nexus.shared._heading', [$heading = 'Who is Online', $lead = 'Hell is other people', $icon = 'globe'])
+    <x-heading heading="Who is Online" lead="Hell is other people">
+        <x-slot:icon>
+            <x-heroicon-s-globe-europe-africa class="icon_large mr-1" aria-hidden="true" />
+        </x-slot>
+    </x-heading>
 
     <div>
         @if (count($activities))

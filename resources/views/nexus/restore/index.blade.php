@@ -12,14 +12,17 @@
 
     <div class="container">
 
-        @include('nexus.shared._heading', [
-            ($heading = 'Your Archive'),
-            ($lead = '"_But you know what? It\'s never too late to get it back._"'),
-            ($introduction =
-                'These are your archived sections and topics. They only visible to you until you restore them.'),
-        ])
+        <x-heading 
+            heading="Your Archive"
+            lead="_But you know what? It's never too late to get it back._"
+            introduction='These are your archived sections and topics. They only visible to you until you restore them.'
+            >
+            <x-slot:icon>
+                <x-heroicon-s-archive-box class="icon_large mr-1" aria-hidden="true" />
+            </x-slot>
+        </x-heading>
 
-
+    
         @if ($destinationSections->count() == 0)
             <div class="alert alert-warning">
                 You cannot restore any sections or topics because you do not moderate any place to restore them to. Sorry!

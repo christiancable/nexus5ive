@@ -10,11 +10,9 @@
 
 @section('content')
 <div class="container">
-    @include('nexus.shared._heading',
-    [
-        $heading = $topic->title,
-        $lead = $topic->intro
-    ])
+
+    <x-heading heading="{{ $topic->title }}" lead="{{ $topic->intro }}"/>
+
     <section class="d-flex flex-row-reverse justify-content-between">
         @include('nexus.topics._subscribe', compact('topic','unsubscribed'))
         @if($topic->section->moderator->id === Auth::user()->id)

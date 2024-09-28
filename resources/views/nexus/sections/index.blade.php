@@ -23,11 +23,8 @@ $moderator = Auth::user()->id === $section->user_id;
         @include('nexus.section-heading._moderate', $section)
         
     @else
-        @include('nexus.shared._heading', [
-            $heading = $section->title,
-            $lead = $section->intro,
-            $introduction = "Moderated by: {$section->moderator->present()->profileLink}"
-        ])
+        <x-heading heading="{{ $section->title }}" lead="{{ $section->intro }}"
+        introduction="Moderated by: {!! $section->moderator->present()->profileLink !!}" />
     @endif 
 
 

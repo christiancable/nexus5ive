@@ -10,9 +10,11 @@
 
 @section('content')
     <div class="container">
-        @include('nexus.shared._heading',[
-        $heading = 'Settings',
-        $lead = 'Change settings for the entire BBS'])
+        <x-heading heading="Settings" lead="Change settings for the entire BBS">
+            <x-slot:icon>
+                <x-heroicon-s-wrench class="icon_large mr-1" aria-hidden="true" />
+            </x-slot>
+        </x-heading>
     </div>
 
     <div class="container">
@@ -44,5 +46,4 @@
             </form>
         </div>
     </div>
-
 @endsection

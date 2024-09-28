@@ -11,7 +11,11 @@
 @section('content')
 
 <div class="container">
-    @include('nexus.shared._heading', [$heading = 'Messages', $lead = 'Modem Talking', $icon = 'chat'])    
+    <x-heading heading="Messages" lead="Modem Talking">
+        <x-slot:icon>
+            <x-heroicon-s-chat-bubble-left-right class="icon_large mr-1" aria-hidden="true" />
+        </x-slot>
+    </x-heading>
 </div>
 
 <div class="container" id="app">
