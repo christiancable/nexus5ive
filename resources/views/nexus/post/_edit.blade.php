@@ -1,6 +1,6 @@
 <?php
-    $formName = $post->id;
-    $errorBag = 'postUpdate' . $post->id;
+$formName = $post->id;
+$errorBag = 'postUpdate' . $post->id;
 ?>
 
 <div class="mb-3">
@@ -10,7 +10,8 @@
         <input type="hidden" name="id" value="{{ $post->id }}">
 
         <div class="form-group">
-            <input type="text" name="form[{{ $formName }}][title]" value="{{ $post->title }}" class="form-control" placeholder="Subject">
+            <input type="text" name="form[{{ $formName }}][title]" value="{{ $post->title }}"
+                class="form-control" placeholder="Subject">
         </div>
 
         <div class="form-group">
@@ -19,9 +20,9 @@
 
         <div class="d-flex flex-row-reverse bd-highlight">
             <div class="form-group ml-2">
-                <button type="submit" class="btn btn-success">
-                    <span class='oi oi-pencil mr-2'></span>Save Changes
-                </button>
+                <x-button class="btn-success" type="success">
+                    <x-heroicon-s-pencil class="icon_mini mr-1" aria-hidden="true" />Save Changes
+                </x-button>
             </div>
         </div>
     </form>
@@ -31,9 +32,9 @@
             @csrf
             @method('DELETE')
             <div class="form-group">
-                <button type="submit" class="btn btn-danger">
-                    <span class='oi oi-delete mr-2'></span>Delete
-                </button>
+                <x-button class="btn-danger" type="success">
+                    <x-heroicon-s-trash class="icon_mini mr-1" aria-hidden="true" />Delete
+                </x-button>
             </div>
         </form>
     @endif

@@ -13,7 +13,8 @@
         <form action="{{action('App\Http\Controllers\Nexus\CommentController@destroy', ['comment' => $comment->id])}}" method="POST">
         @csrf
         @method('DELETE')
-            <button class="btn btn-danger"><span class="oi oi-trash" aria-hidden="true"></span> Delete </button>
+            <button class="btn btn-danger">
+            <x-heroicon-s-trash class="icon_mini mr-1" aria-hidden="true" />Delete</button>
         </form>
     </td>
 </tr>
