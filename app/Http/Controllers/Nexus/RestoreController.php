@@ -80,7 +80,10 @@ class RestoreController extends Controller
         $trashedTopic = Topic::onlyTrashed()->findOrFail($id);
         $destinationSection = Section::findOrFail($request->destination);
 
-        $this->authorize('restore', [Topic::class, $trashedTopic, $destinationSection]);
+        if ($request->user()->cannot('restore', [$trashedTopic, $destinationSection])) {
+            abort(403);
+        }
+
         RestoreHelper::restoreTopicToSection($trashedTopic, $destinationSection);
 
         $redirect = action('App\Http\Controllers\Nexus\SectionController@show', ['section' => $destinationSection->id]);
