@@ -1,22 +1,6 @@
 <?php
 $status = \App\Helpers\ViewHelper::getTopicStatus(Auth::user(), $topic);
 
-// display style
-
-$textClass = 'text-primary';
-$icon = 'oi oi-comment-square';
-
-if ($status['unsubscribed']) {
-    $textClass = 'text-muted';
-    $icon = 'oi oi-thumb-down'; 
-} elseif ($status['new_posts']) { 
-    $textClass = 'text-danger';
-    $icon = 'oi oi-fire';
-} elseif ($status['never_read']) {
-    $textClass = 'text-success';
-    $icon = 'oi oi oi-star';
-}
-
 // author display - hide author for anon topics
 $authorLink = $topic->most_recent_post->author->present()->profileLink;
 if ($topic->secret == true) {
@@ -40,9 +24,8 @@ $topicLink = action('App\Http\Controllers\Nexus\TopicController@show', ['topic' 
 
 <div class="card mb-3">
         <div class="card-header">
-        <a href="{{$topicLink}}">
-            <h2 class="card-title"><span class="{{$textClass}} {{$icon}}"></span> {{$topic->title}}</h2>
-        </a>
+        <x-topic-heading title="{{ $topic->title }}" :link=$topicLink :status=$status />
+        
         <small class="card-subtitle mb-2 text-muted">
             Latest post {{$topic->most_recent_post->time->diffForHumans()}} by
             {!! $authorLink !!} in 
