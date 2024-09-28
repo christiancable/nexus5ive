@@ -148,7 +148,7 @@ HTML
     #[DataProvider('providerNxCodeLazyLoad')]
     public function testNxLazyLoad($input, $expectedOutput)
     {
-        $output = NxCodeHelper::lazyLoadClass($input, 'placeholder.jpg');
+        $output = NxCodeHelper::lazyLoadAttribute($input);
         $this->assertEquals($output, $expectedOutput);
     }
 
@@ -158,7 +158,7 @@ HTML
             'img tag' => [
                 $input = '<img src="http://imageshack.com/a/img923/5082/NdPfqk.png" alt="image" target="_blank" />',
                 $expectedOutput = <<< 'HTML'
-<img class="b-lazy" src="placeholder.jpg" data-src="http://imageshack.com/a/img923/5082/NdPfqk.png" alt="image" target="_blank" />
+<img loading="lazy" src="http://imageshack.com/a/img923/5082/NdPfqk.png" alt="image" target="_blank" />
 HTML
             ],
             'multiple img tags' => [
@@ -167,7 +167,7 @@ HTML
 HTML
                 ,
                 $expectedOutput = <<< 'HTML'
-<img class="b-lazy" src="placeholder.jpg" data-src="http://imageshack.com/a/img923/5082/NdPfqk.png" alt="image" target="_blank"/> and then this happened <img class="b-lazy" src="placeholder.jpg" data-src="http://imageshack.com/a/img923/5082/NdPfqk.png" alt="image" target="_blank"/>
+<img loading="lazy" src="http://imageshack.com/a/img923/5082/NdPfqk.png" alt="image" target="_blank"/> and then this happened <img loading="lazy" src="http://imageshack.com/a/img923/5082/NdPfqk.png" alt="image" target="_blank"/>
 HTML
             ],
         ];

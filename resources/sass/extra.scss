@@ -74,16 +74,6 @@ blockquote {
   left: 0;
 }
 
-/* lazy loading */
-.b-lazy {
-  &.b-error {
-    filter: blur(2px) grayscale(100);
-    opacity: 0.1;
-    transform: rotate(-10deg);
-    transition: 0.3s ease-in-out;
-  }
-}
-
 /* to fix overly large images used in topic intros */
 img {
   max-width: 100%;
