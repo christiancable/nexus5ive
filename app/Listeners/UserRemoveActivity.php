@@ -7,7 +7,6 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Auth\Events\Logout;
 use App\Helpers\ActivityHelper;
-use App\User;
 
 class UserRemoveActivity
 {
