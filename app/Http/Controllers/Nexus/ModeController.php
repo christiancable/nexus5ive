@@ -30,9 +30,9 @@ class ModeController extends Controller
         return view(
             'nexus.modes.index',
             [
-                'currentMode' => Mode::where('active', 1)->first() ?? Mode::first(),
-                'modes' => Mode::all()->keyBy('id'),
-                'themes' => Theme::all()->keyBy('id'),
+                // 'currentMode' => Mode::where('active', 1)->first() ?? Mode::first(),
+                // 'modes' => Mode::all()->keyBy('id'),
+                // 'themes' => Theme::all()->keyBy('id'),
                 'breadcrumbs' => $breadcrumbs,
             ],
         );
