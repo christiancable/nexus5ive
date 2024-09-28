@@ -1,4 +1,8 @@
+// js for bootstrap popups etc
+import 'bootstrap';
+
 /* event listeners */
+
 // spoiler tag show/hide
 document.querySelectorAll("span.spoiler").forEach(spoiler => {
   spoiler.addEventListener("click", function() {
