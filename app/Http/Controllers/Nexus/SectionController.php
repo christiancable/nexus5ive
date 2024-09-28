@@ -171,12 +171,10 @@ class SectionController extends Controller
     public function latest()
     {
         $heading = 'Latest Posts';
-        $icon = 'pulse';
-        $lead = 'The freshest posts from across '.config('nexus.name');
         $topics = TopicHelper::recentTopics();
         $breadcrumbs = BreadcrumbHelper::breadcumbForUtility($heading);
 
-        return view('nexus.topics.unread', compact('topics', 'heading', 'lead', 'icon', 'breadcrumbs'));
+        return view('nexus.topics.unread', compact('topics', 'breadcrumbs'));
     }
 
     /**
