@@ -1,10 +1,9 @@
-<button 
-    type="button"
+<x-button 
     class="btn btn-outline-info mb-3"
     data-toggle="button"
     aria-pressed="false"
     autocomplete="off"
     id="cog-menu-toggle">
-    <span class="oi oi-cog"></span>
+    <x-heroicon-o-cog-6-tooth class="icon_mini" aria-hidden="true" />
     <span class="sr-only">Edit</span>
-</button>
+</x-button>

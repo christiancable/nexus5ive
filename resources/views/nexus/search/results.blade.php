@@ -28,10 +28,11 @@
 
         <div class="row">    
             <div class="col-sm-12">
-                <div class="form-group">          
-                    <button type="submit" class="btn pull-right btn-primary col-12 col-sm-3">
-                        <span class='oi oi-magnifying-glass'></span>&nbsp;&nbsp;Search
-                    </button>
+                <div class="form-group">
+                    <x-button type="submit" class="btn-primary">
+                        <x-heroicon-s-magnifying-glass class="icon_mini mr-1" aria-hidden="true" />
+                        Search
+                    </x-button>          
                 </div>
             </div>
         </div>

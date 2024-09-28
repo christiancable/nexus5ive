@@ -4,7 +4,7 @@
     <input type="hidden" name="secret" value="0">
     <input type="hidden" name="readonly" value="0">
 
-    <div class="form-group">    
+    <div class="form-group">
         <label for="title" class="sr-only">Title</label>
         <input type="text" name="title" class="form-control" placeholder="Title">
     </div>
@@ -36,15 +36,18 @@
         </div>
     </div>
 
-    <div class="d-flex flex-row-reverse bd-highlight">    
-        <div class="form-group ml-2">          
-            <button type="submit" class="btn btn-success">
-                <span class='oi oi-plus mr-2'></span>Add Topic
-            </button>
+    <div class="d-flex flex-row-reverse bd-highlight">
+        <div class="form-group ml-2">
+            <x-button type="submit" class="btn btn-success">
+                <x-heroicon-s-document-plus class="icon_mini mr-1" aria-hidden="true" />Add Topic
+            </x-button>
         </div>
     </div>
 </form>
 
 @if ($errors->topicCreate->all())
-    @include('nexus.forms._errors', ['errors' => $errors->topicCreate->all(), 'formContainer' => 'addTopic'])
+    @include('nexus.forms._errors', [
+        'errors' => $errors->topicCreate->all(),
+        'formContainer' => 'addTopic',
+    ])
 @endif
