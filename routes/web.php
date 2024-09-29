@@ -38,8 +38,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     /* Admin */
     Route::middleware([EnsureUserIsAdmin::class])->group(function () {
         Route::resource('admin', ModeController::class);
-        Route::post('admin', [ModeController::class, 'handle'])
-            ->name('mode.handle');
     });
 
     /* Sections */
