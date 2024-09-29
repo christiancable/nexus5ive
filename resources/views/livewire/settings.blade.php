@@ -14,17 +14,19 @@
                 <div class="form-group">
                     <label>Mode</label>
                     
-                    <select name="mode" class="custom-select" id="mode" wire:model="selectedMode"  wire:change="updateCurrentMode">
+                    <select name="mode" class="custom-select" id="mode" wire:model="selectedMode"  wire:change="changeCurrentMode">
                         @foreach($modes as $mode)
                             <option value="{{$mode->id}}">{{$mode->name}}</option>
                         @endforeach
                     </select>
+                    <div class="text-danger">@error('selectedMode') {{ $message }} @enderror</div>
                 </div>
 
                 <div class="form-group">
                     <label for="welcome">Login Screen Welcome</label>
                     <textarea class="form-control" id="welcome" name="welcome" cols="40" rows="5"
-                        wire:model="welcomeText"></textarea>
+                        wire:model="welcome"></textarea>
+                    <div class="text-danger">@error('welcome') {{ $message }} @enderror</div>
                 </div>
 
                 {{-- make this match the mode --}}
@@ -35,14 +37,19 @@
                             <option value="{{$theme->id}}">{{$theme->name}}</option>
                         @endforeach
                     </select>
+                    <div class="text-danger">@error('selectedTheme') {{ $message }} @enderror</div>
                 </div>
 
                 <div class="form-group">
                     <label for="theme_override">All users use this theme</label>
                     <input name="theme_override" id="theme_override" type="checkbox" value="true"
-                        v-model="modes[selected_mode_id]['override']" />
+                        wire:model="override" />
                 </div>
             </span>
+            <div class="form-group d-flex">
+                    <x-button class="btn-success mr-2" type="submit" wire:click="save">Update mode</x-button>
+                    <x-button class="btn-primary" wire:click="setBBSMode">Set BBS mode</x-button>
+                </div>
         </div>
     </div>
 </span>
