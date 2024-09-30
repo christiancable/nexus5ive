@@ -26,7 +26,7 @@
     @else 
         @if (config('nexus.bootstrap_theme'))
                 <link rel="stylesheet" href="{{config('nexus.bootstrap_theme')}}">
-                @vite(['resources/css/extra.css'])
+                @vite(['resources/sass/extra.scss'])
         @else
             @vite(['resources/css/app.css'])
   

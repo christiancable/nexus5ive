@@ -158,8 +158,8 @@ class PostTest extends DuskTestCase
                 ->visit(action([TopicController::class, 'show'], ['topic' => $this->topic]))
                 ->type('title', $title)
                 ->press('Add Comment')
-                ->waitFor('.alert')
-                ->assertSee(strip_tags(__('nexus.validation.post.empty')));
+                ->waitFor('.alert-danger')
+                ->assertSeeIn('.alert-danger', strip_tags(__('nexus.validation.post.empty')));
         });
     }
 }

@@ -6,6 +6,7 @@ export default defineConfig({
         laravel({
             input: [
                 'resources/sass/legacy.scss', // legacy bootstrap
+                'resources/sass/extra.scss', // legacy extras
                 'resources/css/app.css', // default
                 'resources/js/app.js',
             ],

@@ -14,7 +14,7 @@ class FlashHelper
     public static function showAlert($message, $level = 'info')
     {
         $headerMessage = [
-            'body' => Str::markdown($message),
+            'body' => $message,
             'level' => $level,
         ];
         Session::flash('headerAlert', $headerMessage);
