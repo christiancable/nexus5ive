@@ -21,9 +21,12 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
+        // this logic instead becomes showing the view for the userlist
+
         $users = User::select('username', 'name', 'popname', 'latestLogin', 'totalPosts', 'totalVisits')
             ->verified()->orderBy('username', 'asc')->get();
-        ActivityHelper::updateActivity(
+        
+            ActivityHelper::updateActivity(
             $request->user()->id,
             'Viewing list of Users',
             action('App\Http\Controllers\Nexus\UserController@index')

@@ -18,12 +18,9 @@
     </div>
 
     <div class="container" id="users-list">
+        @livewire('userlist', ['users' => $users])
 
-        <div id="app" v-cloak>
-            <userlist :users="{{ json_encode($users) }}"></userlist>
-        </div>
-
-        <div class="replace-with-vue card-deck v-cloak">
+        <div class="replace-with-vue card-deck">
 
             @foreach ($users as $user)
                 @include('nexus.users._panel', $user)
