@@ -78,6 +78,7 @@ class UsersTest extends DuskTestCase
 
                 // WHEN we filter by the name of the user
                     ->type('@user-filter', $name)
+                    ->pause(1000)
                 // THEN we see $user
                     ->assertSee($user->name)
                 // AND not the sysop or moderator
@@ -86,12 +87,14 @@ class UsersTest extends DuskTestCase
 
                 // WHEN we fiter by text which will not be matched
                     ->type('@user-filter', 'this-is-unlikely-to-be-randomly-matched')
+                    ->pause(1000)
                 // THEN we see the no users found message
                     ->assertSee('No users found found for ')
 
                 // WHEN we delete the filter test - do not know why enter is needed here
                     ->type('@user-filter', '')
                     ->keys('@user-filter', '{enter}')
+                    ->pause(1000)
                 // THEN we see all the users
                     ->assertSee($this->sysop->name)
                     ->assertSee($this->moderator->name)

@@ -1,14 +1,22 @@
 <div>
-    <p>this is where the userlist will appear</p>
-    <input wire:model.live="search">
- 
-     @foreach ($this->users as $user)
-        <div>{{ $user->name }}</div>
+
+    <div role="search" class="form-group">
+        <input wire:model.live="search" placeholder="Search for a user" autofocus="autofocus" class="form-control"
+            dusk="user-filter">
+    </div>
+
+    {{-- <div class="card-deck"> --}}
+    @foreach ($this->users as $key => $user)
+        <x-user-card :user="$user" />
     @endforeach
 
 
-    @foreach($users as $user)
-        <li>{{ $user->username}}</li>
-    @endforeach
-    {{-- To attain knowledge, add things every day; To attain wisdom, subtract things every day. --}}
+    @if(count($this->users) === 0)
+        <div class="alert alert-info" role="alert">
+            <p>
+                No users found found for <strong>{{ $search }}</strong>
+            </p>
+        </div>
+    @endif
+    {{-- </div> --}}
 </div>
