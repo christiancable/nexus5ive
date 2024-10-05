@@ -5,18 +5,19 @@
             dusk="user-filter">
     </div>
 
-    {{-- <div class="card-deck"> --}}
-    @foreach ($this->users as $key => $user)
-        <x-user-card :user="$user" />
-    @endforeach
+    @if (count($this->users) > 0)
+        <div class="row" dusk="user-grid">
+            @foreach ($this->users as $key => $user)
+                <x-user-card :user="$user" />
+            @endforeach
+        </div>
+    @endif
 
-
-    @if(count($this->users) === 0)
-        <div class="alert alert-info" role="alert">
+    @if (count($this->users) === 0)
+        <div class="alert alert-info" dusk="no-users-found" role="alert">
             <p>
                 No users found found for <strong>{{ $search }}</strong>
             </p>
         </div>
     @endif
-    {{-- </div> --}}
 </div>

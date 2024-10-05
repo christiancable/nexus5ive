@@ -74,29 +74,30 @@ class UsersTest extends DuskTestCase
                     ->assertSee($this->sysop->name)
                     ->assertSee($this->moderator->name)
                     ->assertSee($user->name)
-                    ->screenshot('one')
 
-                // WHEN we filter by the name of the user
+                    // WHEN we filter by the name of the user
                     ->type('@user-filter', $name)
                     ->pause(1000)
-                // THEN we see $user
+                    // THEN we see $user
                     ->assertSee($user->name)
-                // AND not the sysop or moderator
+                    // AND not the sysop or moderator
                     ->assertDontSee($this->sysop->name)
                     ->assertDontSee($this->moderator->name)
 
-                // WHEN we fiter by text which will not be matched
+                    // WHEN we fiter by text which will not be matched
                     ->type('@user-filter', 'this-is-unlikely-to-be-randomly-matched')
-                    ->pause(1000)
-                // THEN we see the no users found message
+                    ->waitForText('No users found found for ')
+                    // THEN we see the no users found message
                     ->assertSee('No users found found for ')
 
-                // WHEN we delete the filter test - do not know why enter is needed here
-                    ->type('@user-filter', '')
-                    ->keys('@user-filter', '{enter}')
-                    ->pause(1000)
-                // THEN we see all the users
-                    ->assertSee($this->sysop->name)
+                    // WHEN we delete the filter test - do not know why enter is needed here
+                    ->clear('@user-filter')
+                    ->assertVisible('@no-users-found')
+                    
+                    
+                                    
+                    // THEN we see all the users
+                    ->assertSee('@user-grid', $this->sysop->name)
                     ->assertSee($this->moderator->name)
                     ->assertSee($user->name);
             }
