@@ -8,12 +8,6 @@ use Illuminate\Http\Request;
 
 class MentionController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-        $this->middleware('verified');
-    }
-
     /**
      * Remove all mentions for the logged-in user
      *

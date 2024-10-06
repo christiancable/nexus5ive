@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Helpers;
+use App\Models\Post;
+use App\Models\User;
 
 class MentionHelper
 {
@@ -27,11 +29,11 @@ class MentionHelper
         return $return;
     }
 
-    public static function makeMentions(\App\Post $post)
+    public static function makeMentions(Post $post)
     {
         $users = self::identifyMentions($post->text);
         foreach ($users as $username) {
-            $user = \App\User::where('username', $username)->first();
+            $user = User::where('username', $username)->first();
             if ($user) {
                 $user->addMention($post);
             }

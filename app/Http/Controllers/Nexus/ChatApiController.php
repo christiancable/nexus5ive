@@ -3,18 +3,12 @@
 namespace App\Http\Controllers\Nexus;
 
 use App\Http\Controllers\Controller;
-use App\Message;
-use App\User;
+use App\Models\Message;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class ChatApiController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-        $this->middleware('verified');
-    }
-
     /**
      * Return a list of all conversations containing the authenticated user.
      *

@@ -9,13 +9,13 @@ class ThemeFactory extends Factory
     /**
      * Define the model's default state.
      *
-     * @return array
+     * @return array<string, mixed>
      */
-    public function definition()
+    public function definition(): array
     {
         return [
-            'path' => $this->faker->url,
-            'name' => $this->faker->unique()->word,
+            'path' => fake()->url(),
+            'name' => fake()->unique()->word(),
         ];
     }
 }
