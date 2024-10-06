@@ -16,7 +16,7 @@
     @if (count($this->users) === 0)
         <div class="alert alert-info" dusk="no-users-found" role="alert">
             <p>
-                No users found found for <strong>{{ $search }}</strong>
+                No users found for <strong>{{ $search }}</strong>
             </p>
         </div>
     @endif
