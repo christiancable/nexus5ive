@@ -63,9 +63,7 @@ class UsersTest extends DuskTestCase
     public function userListCanBeFiltered()
     {
         $name = 'Sir Professor Doctor Test';
-        $user = User::factory()->create(
-            ['name' => $name]
-        );
+        $user = User::factory()->create(['name' => $name]);
 
         $this->browse(
             function ($browser) use ($user, $name) {
@@ -77,27 +75,29 @@ class UsersTest extends DuskTestCase
 
                     // WHEN we filter by the name of the user
                     ->type('@user-filter', $name)
-                    ->pause(1000)
+                    ->pause(1000) // Allow time for the input to trigger the search
                     // THEN we see $user
                     ->assertSee($user->name)
                     // AND not the sysop or moderator
                     ->assertDontSee($this->sysop->name)
                     ->assertDontSee($this->moderator->name)
 
-                    // WHEN we fiter by text which will not be matched
+                    // WHEN we filter by text which will not be matched
                     ->type('@user-filter', 'this-is-unlikely-to-be-randomly-matched')
-                    ->waitForText('No users found found for ')
+                    ->waitForText('No users found for ')
                     // THEN we see the no users found message
-                    ->assertSee('No users found found for ')
+                    ->assertSee('No users found for ')
 
-                    // WHEN we delete the filter test - do not know why enter is needed here
+                    // WHEN we clear the filter
                     ->clear('@user-filter')
-                    ->assertVisible('@no-users-found')
-                    
-                    
-                                    
+                    // Simulate typing an empty string to trigger the change
+                    ->type('@user-filter', ' ') // Ensure the input is an empry string to trigger the js event change magic to happen due to how .live works
+                    // Wait until the no users found message disappears
+                    ->waitUntilMissingText('No users found for ')
+                    // AND wait for user grid to be visible
+                    ->waitFor('@user-grid')
                     // THEN we see all the users
-                    ->assertSee('@user-grid', $this->sysop->name)
+                    ->assertSee($this->sysop->name)
                     ->assertSee($this->moderator->name)
                     ->assertSee($user->name);
             }
