@@ -21,8 +21,7 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $users = User::select('username', 'name', 'popname', 'latestLogin', 'totalPosts', 'totalVisits')
-            ->verified()->orderBy('username', 'asc')->get();
+        // this logic instead becomes showing the view for the userlist
         ActivityHelper::updateActivity(
             $request->user()->id,
             'Viewing list of Users',
@@ -30,7 +29,7 @@ class UserController extends Controller
         );
         $breadcrumbs = BreadcrumbHelper::breadcumbForUtility('Users');
 
-        return view('nexus.users.index', compact('users', 'breadcrumbs'));
+        return view('nexus.users.index', compact('breadcrumbs'));
     }
 
     /**
@@ -91,7 +90,7 @@ class UserController extends Controller
         if ($request->user()->cannot('update', $user)) {
             abort(403);
         }
-        
+
         // to prevent setting password to an empty string https://trello.com/c/y1WAxwfb
         if ($input['password'] != '') {
             // password must match confirm
