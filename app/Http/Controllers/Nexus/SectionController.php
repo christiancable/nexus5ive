@@ -168,11 +168,17 @@ class SectionController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function latest()
+    public function latest(Request $request)
     {
         $heading = 'Latest Posts';
         $topics = TopicHelper::recentTopics();
         $breadcrumbs = BreadcrumbHelper::breadcumbForUtility($heading);
+
+        ActivityHelper::updateActivity(
+            $request->user()->id,
+            'Viewing <em>Latest posts</em>',
+            action('App\Http\Controllers\Nexus\SectionController@latest')
+        );
 
         return view('nexus.topics.unread', compact('topics', 'breadcrumbs'));
     }
