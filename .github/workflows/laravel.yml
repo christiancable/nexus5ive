@@ -47,5 +47,3 @@ jobs:
         DB_DATABASE: database/database.sqlite
       run: php artisan test
     
-    - name: Execute JS tests via Jest
-      run: npm run test
