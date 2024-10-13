@@ -5,7 +5,7 @@ namespace App\Livewire;
 use Illuminate\Http\Request;
 use Livewire\Component;
 
-class Notifications extends Component
+class Mentions extends Component
 {
     public $mentionsCount;
 
@@ -36,6 +36,6 @@ class Notifications extends Component
 
     public function render()
     {
-        return view('livewire.notifications');
+        return view('livewire.mentions');
     }
 }
