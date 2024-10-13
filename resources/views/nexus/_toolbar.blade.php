@@ -5,11 +5,8 @@ $sectionsCount = $authUser->sections_count;
 $commentsCount = $authUser->newCommentCount();
 $messagesCount = $authUser->newMessageCount();
 
-$mentions = $authUser->mentions;
-$mentionCount = count($mentions);
-
 $profileNotificationCount = $commentsCount + $messagesCount;
-$notificationCount = $profileNotificationCount + $mentionCount;
+$notificationCount = $profileNotificationCount;
 ?>
 <div id="top-toolbar" class="border-bottom mb-3">
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary navbar-transparent">
@@ -73,44 +70,8 @@ $notificationCount = $profileNotificationCount + $mentionCount;
                 </ul>
 
 
-
-                @if ($mentionCount > 0)
-                    <ul class="nav navbar-nav ml-auto">
-                        <li class="dropdown nav-item">
-                            <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown" role="button"
-                                aria-haspopup="true" aria-expanded="false" id="mentiondropdown"
-                                dusk='mentions-menu-toggle'>
-                                <x-heroicon-s-bell-alert class="icon_mini mr-1" aria-hidden="true" />
-                                <span class="badge  badge-danger" dusk='mentions-count'>{{ $mentionCount }}</span>
-                            </a>
-
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="mentiondropdown">
-                                @foreach ($mentions as $mention)
-                                    <a class="dropdown-item"
-                                        href="{{ App\Helpers\TopicHelper::routeToPost($mention->post) }}">
-                                        <strong>{{ $mention->post->author->username }}</strong> mentioned you in
-                                        <strong>{{ $mention->post->topic->title }}</strong>
-                                    </a>
-                                @endforeach
-                                <div role="separator" class="dropdown-divider"></div>
-
-                                <form class="form-inline"
-                                    action="{{ action('App\Http\Controllers\Nexus\MentionController@destroyAll') }}"
-                                    method="POST">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-link dropdown-item" id="Clear All Mentions"
-                                        dusk="mentions-clear">
-                                        <x-heroicon-s-check class="icon_mini mr-1" aria-hidden="true" />Clear All
-                                        Mentions
-                                    </button>
-                                </form>
-                            </div>
-                        </li>
-                    </ul>
-                @endif
-
-
+                <livewire:mentions />
+            
                 <ul class="nav navbar-nav">
                     <li class="dropdown nav-item">
 
