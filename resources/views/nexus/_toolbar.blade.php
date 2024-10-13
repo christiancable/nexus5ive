@@ -52,14 +52,8 @@
                             Online</a>
                     </li>
 
+                    <livewire:searchMenu />
 
-                    <span id="navigationApp" v-cloak><search-menu></search-menu></span>
-                    <li class="nav-item replace-with-vue">
-                        <a {!! App\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Search') !!}
-                            href="{{ action('App\Http\Controllers\Nexus\SearchController@index') }}"
-                            class="nav-link mr-1">
-                            <x-heroicon-s-magnifying-glass class="icon_mini mr-1" aria-hidden="true" />Search</a>
-                    </li>
                 </ul>
 
                 <livewire:mentions />
