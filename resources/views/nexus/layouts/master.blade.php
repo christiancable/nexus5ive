@@ -19,6 +19,7 @@
      @auth
         <script type="text/javascript">
             (function() {
+                // TODO update this so that it is in seconds 
                 window.notificationPoll = {{config('nexus.notification_check_interval')}}
             })();
         </script>
