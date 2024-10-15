@@ -18,20 +18,5 @@
     </x-heading>
 </div>
 
-<div class="container" id="app">
-    <div class="row">
-        <div class="col-lg-3 d-none d-lg-block">
-            <chat-list current-chat="{{$currentPartner}}"></chat-list>
-        </div>
-    
-        <div class="col-lg-9 d-flex flex-column chat-container">   
-        <chat-conversation current-chat="{{$currentPartner}}" username="{!! Auth::user()->username !!}"></chat-conversation>
-      
-    </div>
-</div>
-
-{{-- <script>
-    // scroll the chat window down
-    document.getElementById("chat-content").scrollTop = 100000000000;
-</script>  --}}
+<livewire:chat />
 @endsection
