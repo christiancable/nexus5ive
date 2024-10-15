@@ -177,39 +177,7 @@ $footer-navigation-space-lg: 0;
   right: 2px;
   border: 1.5px solid white;
 }
-.user_info {
-  margin-top: auto;
-  margin-bottom: auto;
-  margin-left: 15px;
-}
-.user_info span {
-  font-size: 18px;
-  color: #464646;
-}
-.user_info p {
-  font-size: 10px;
-  color: rgba(0, 0, 0, 0.6);
-}
-.msg_cotainer {
-  // margin-top: auto;
-  // margin-bottom: auto;
-  // margin-left: 10px;
-  // border-radius: 25px;
-  background-color: #007bff;
-  color: #fff;
-  // padding: 10px;
-  // position: relative;
-}
-.msg_cotainer_send {
-  // margin-top: auto;
-  // margin-bottom: auto;
-  // margin-right: 10px;
-  // border-radius: 25px;
-  background-color: #28a745;
-  color: #fff;
-  // padding: 10px;
-  // position: relative;
-}
+
 .msg_time {
   position: absolute;
   left: 0;
@@ -229,4 +197,16 @@ $footer-navigation-space-lg: 0;
 }
 
 
+.msg_author {
+  background-color: #28a745;
+  color: #fff;
+  border-radius: 50px; /* This is similar to rounded-pill */
+  border-bottom-right-radius: 0; /* Remove rounding from bottom-left corner */
+}
 
+.msg_receiver {
+  background-color: #007bff;
+  color: #fff;
+  border-radius: 50px; /* This is similar to rounded-pill */
+  border-bottom-left-radius: 0; /* Remove rounding from bottom-left corner */
+}

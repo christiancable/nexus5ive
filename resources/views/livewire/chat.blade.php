@@ -6,7 +6,7 @@
                     <h5 class="mb-0">Users</h5>
                 </div>
                 <div class="card-body contacts_body">
-                    <ul class="contacts list-unstyled">
+                    <ul class="contacts list-group list-group-flush">
                         @foreach($users as $user)
                             <x-chat.user :user="$user" :active="$selectedUser && $selectedUser->id == $user->id" />
                         @endforeach
@@ -40,7 +40,7 @@
                                    class="form-control type_msg" placeholder="Type your message...">
                             <div class="input-group-append">
                                 <button wire:click="sendMessage" class="btn btn-primary send_btn" type="button">
-                                    <i class="fas fa-paper-plane"></i>
+                                <x-heroicon-s-paper-airplane class="icon_mini" />
                                 </button>
                             </div>
                         </div>
