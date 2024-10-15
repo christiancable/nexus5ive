@@ -1,5 +1,0 @@
-suites:
-    main:
-        namespace: Nexus
-        psr4_prefix: Nexus
-        src_path: app

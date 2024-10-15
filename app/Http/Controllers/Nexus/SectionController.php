@@ -7,22 +7,16 @@ use App\Helpers\BreadcrumbHelper;
 use App\Helpers\FlashHelper;
 use App\Helpers\TopicHelper;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreSection;
-use App\Http\Requests\UpdateSection;
-use App\Section;
-use App\User;
-use App\View;
+use App\Http\Requests\Nexus\StoreSection;
+use App\Http\Requests\Nexus\UpdateSection;
+use App\Models\Section;
+use App\Models\User;
+use App\Models\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class SectionController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-        $this->middleware('verified');
-    }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -31,7 +25,10 @@ class SectionController extends Controller
     public function store(StoreSection $request)
     {
         $parentSection = Section::findOrFail(request('parent_id'));
-        $this->authorize('create', [Section::class, $parentSection]);
+
+        if ($request->user()->cannot('create', $parentSection)) {
+            abort(403);
+        }
 
         $section = Section::create([
             'user_id' => $request->user()->id,
@@ -40,7 +37,7 @@ class SectionController extends Controller
             'intro' => request('intro'),
         ]);
 
-        $redirect = action('Nexus\SectionController@show', ['section' => $section->id]);
+        $redirect = action('App\Http\Controllers\Nexus\SectionController@show', ['section' => $section->id]);
 
         return redirect($redirect);
     }
@@ -52,7 +49,7 @@ class SectionController extends Controller
     {
         $section = Section::firstOrFail();
 
-        return redirect(action('Nexus\SectionController@show', ['section' => $section->id]));
+        return redirect(action('App\Http\Controllers\Nexus\SectionController@show', ['section' => $section->id]));
     }
 
     /**
@@ -77,7 +74,7 @@ class SectionController extends Controller
         ActivityHelper::updateActivity(
             $request->user()->id,
             "Browsing <em>{$section->title}</em>",
-            action('Nexus\SectionController@show', ['section' => $section->id])
+            action('App\Http\Controllers\Nexus\SectionController@show', ['section' => $section->id])
         );
 
         // if the user can moderate the section then they could potentially update subsections
@@ -95,7 +92,7 @@ class SectionController extends Controller
         }
         $breadcrumbs = BreadcrumbHelper::breadcrumbForSection($section);
 
-        return view('sections.index', compact('section', 'breadcrumbs', 'potentialModerators', 'moderatedSections'));
+        return view('nexus.sections.index', compact('section', 'breadcrumbs', 'potentialModerators', 'moderatedSections'));
     }
 
     /**
@@ -105,6 +102,11 @@ class SectionController extends Controller
      */
     public function update(UpdateSection $request, Section $section)
     {
+        // can user update the details?
+        if ($request->user()->cannot('update', $section)) {
+            abort(403);
+        }
+
         $formName = "section{$section->id}";
         $updatedSectionDetails = [
             'id' => $section->id,
@@ -126,12 +128,11 @@ class SectionController extends Controller
             $destinationSection = Section::findOrFail($updatedSectionDetails['parent_id']);
         }
 
-        // can user update the details?
-        $this->authorize('update', $section);
-
         if ($updatedSectionDetails['parent_id'] != $section->parent_id) {
             // can the user move the section?
-            $this->authorize('move', [Section::class, $section, $destinationSection]);
+            if ($request->user()->cannot('move', [$section, $destinationSection])) {
+                abort(403);
+            }
         }
 
         $section->update($updatedSectionDetails);
@@ -146,16 +147,18 @@ class SectionController extends Controller
      */
     public function destroy(Request $request, Section $section)
     {
-        $parent_id = $section->parent_id;
+        if ($request->user()->cannot('delete', $section)) {
+            abort(403);
+        }
 
-        $this->authorize('delete', $section);
+        $parent_id = $section->parent_id;
 
         // the deleting user takes the section into their archive
         $section->user_id = $request->user()->id;
         $section->save();
 
         $section->delete();
-        $redirect = action('Nexus\SectionController@show', ['section' => $parent_id]);
+        $redirect = action('App\Http\Controllers\Nexus\SectionController@show', ['section' => $parent_id]);
 
         return redirect($redirect);
     }
@@ -165,15 +168,19 @@ class SectionController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function latest()
+    public function latest(Request $request)
     {
         $heading = 'Latest Posts';
-        $icon = 'pulse';
-        $lead = 'The freshest posts from across '.config('nexus.name');
         $topics = TopicHelper::recentTopics();
         $breadcrumbs = BreadcrumbHelper::breadcumbForUtility($heading);
 
-        return view('topics.unread', compact('topics', 'heading', 'lead', 'icon', 'breadcrumbs'));
+        ActivityHelper::updateActivity(
+            $request->user()->id,
+            'Viewing <em>Latest posts</em>',
+            action('App\Http\Controllers\Nexus\SectionController@latest')
+        );
+
+        return view('nexus.topics.unread', compact('topics', 'breadcrumbs'));
     }
 
     /**
@@ -196,11 +203,11 @@ class SectionController extends Controller
             $destinationTopic = $updatedView->topic;
 
             // set alert
-            $topicURL = action('Nexus\TopicController@show', ['topic' => $destinationTopic->id]);
+            $topicURL = action('App\Http\Controllers\Nexus\TopicController@show', ['topic' => $destinationTopic->id]);
             // force the url to be relative so we don't later make this open in the new window
             $topicURL = str_replace(url('/'), '', $topicURL);
             $topicTitle = $destinationTopic->title;
-            $subscribeAllURL = action('Nexus\TopicController@markAllSubscribedTopicsAsRead');
+            $subscribeAllURL = action('App\Http\Controllers\Nexus\TopicController@markAllSubscribedTopicsAsRead');
             $subscribeAllURL = str_replace(url('/'), '', $subscribeAllURL);
             $message = <<< Markdown
 People have been talking! New posts found in **[$topicTitle]($topicURL)**
@@ -211,7 +218,7 @@ Markdown;
 
             // redirect to the parent section of the unread topic
             return redirect()->action(
-                'Nexus\SectionController@show',
+                'App\Http\Controllers\Nexus\SectionController@show',
                 ['section' => $destinationTopic->section->id]
             );
         } else {
@@ -223,7 +230,7 @@ Markdown;
 
             $home = Section::firstOrFail();
 
-            return redirect(action('Nexus\SectionController@show', ['section' => $home->id]));
+            return redirect(action('App\Http\Controllers\Nexus\SectionController@show', ['section' => $home->id]));
         }
     }
 }

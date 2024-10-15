@@ -5,20 +5,14 @@ namespace App\Http\Controllers\Nexus;
 use App\Helpers\ActivityHelper;
 use App\Helpers\BreadcrumbHelper;
 use App\Http\Controllers\Controller;
-use App\Message;
-use App\User;
+use App\Models\Message;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class ChatController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-        $this->middleware('verified');
-    }
-
     public function index(Request $request)
     {
         return $this->noConversation($request);
@@ -33,7 +27,7 @@ class ChatController extends Controller
     {
         $user = User::where('username', $username)->first();
         if ($user === null) {
-            return redirect(action('Nexus\ChatController@noConversation'));
+            return redirect(action('App\Http\Controllers\Nexus\ChatController@noConversation'));
         }
 
         $input = $request->all();
@@ -48,7 +42,7 @@ class ChatController extends Controller
             $message->save();
         }
 
-        return redirect(action('Nexus\ChatController@conversation', ['username' => $username]));
+        return redirect(action('App\Http\Controllers\Nexus\ChatController@conversation', ['username' => $username]));
     }
 
     public function noConversation(Request $request)
@@ -61,12 +55,12 @@ class ChatController extends Controller
         ActivityHelper::updateActivity(
             Auth::id(),
             'Messages',
-            action('Nexus\ChatController@index')
+            action('App\Http\Controllers\Nexus\ChatController@index')
         );
 
         // $conversationPartners = $this->chatList();
 
-        return view('chat.index', compact('currentPartner', 'breadcrumbs'));
+        return view('nexus.chat.index', compact('currentPartner', 'breadcrumbs'));
     }
 
     public function conversation(Request $request, $username)
@@ -77,7 +71,7 @@ class ChatController extends Controller
         ActivityHelper::updateActivity(
             Auth::id(),
             'Messages',
-            action('Nexus\ChatController@index')
+            action('App\Http\Controllers\Nexus\ChatController@index')
         );
 
         // @todo deal with empty conversation
@@ -85,6 +79,6 @@ class ChatController extends Controller
         // $conversationPartners = $this->chatList();
         $currentPartner = $username;
 
-        return view('chat.index', compact('currentPartner', 'breadcrumbs'));
+        return view('nexus.chat.index', compact('currentPartner', 'breadcrumbs'));
     }
 }

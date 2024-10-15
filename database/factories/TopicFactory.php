@@ -9,14 +9,14 @@ class TopicFactory extends Factory
     /**
      * Define the model's default state.
      *
-     * @return array
+    * @return array<string, mixed>
      */
-    public function definition()
+    public function definition(): array
     {
         return [
-            'title' => $this->faker->sentence,
-            'intro' => $this->faker->paragraph,
-            'section_id' => $this->faker->randomDigitNotNull,
+            'title' => fake()->sentence(),
+            'intro' => fake()->paragraph(),
+            'section_id' => fake()->randomDigitNotNull(),
         ];
     }
 }

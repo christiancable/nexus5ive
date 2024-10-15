@@ -2,10 +2,11 @@
 
 namespace App\Listeners;
 
-use App\Events\TreeCacheBecameDirty;
-use App\Tree;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Redis;
+use App\Events\TreeCacheBecameDirty;
+use App\Models\Tree;
 
 class DeleteTreeCache implements ShouldQueue
 {
@@ -21,10 +22,8 @@ class DeleteTreeCache implements ShouldQueue
 
     /**
      * Handle the event.
-     *
-     * @return void
      */
-    public function handle(TreeCacheBecameDirty $event)
+    public function handle(TreeCacheBecameDirty $event): void
     {
         if (config('queue.default') === 'redis') {
             Redis::throttle('tree-cache-rebuild')->allow(1)->every(30)->then(function () {

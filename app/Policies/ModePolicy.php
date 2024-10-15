@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Mode;
-use App\User;
+use App\Models\Mode;
+use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class ModePolicy

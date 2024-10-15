@@ -2,12 +2,15 @@
 
 namespace App\Helpers;
 
+use App\Models\Topic;
+use App\Models\Section;
+
 class RestoreHelper
 {
     /**
      * restores a topic, along with its posts and views, to a section
      */
-    public static function restoreTopicToSection(\App\Topic $topic, \App\Section $section)
+    public static function restoreTopicToSection(Topic $topic, Section $section)
     {
         $topic->posts()->restore();
         $topic->views()->restore();
@@ -17,7 +20,7 @@ class RestoreHelper
         $topic->save();
     }
 
-    public static function restoreSectionToSection(\App\Section $deletedSection, \App\Section $destinationSection)
+    public static function restoreSectionToSection(Section $deletedSection, Section $destinationSection)
     {
         foreach ($deletedSection->trashedTopics as $trashedTopic) {
             self::restoreTopicToSection($trashedTopic, $deletedSection);

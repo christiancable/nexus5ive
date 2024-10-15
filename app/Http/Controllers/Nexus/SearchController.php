@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Nexus;
 use App\Helpers\ActivityHelper;
 use App\Helpers\BreadcrumbHelper;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\SearchRequest;
-use App\Post;
+use App\Http\Requests\Nexus\SearchRequest;
+use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -15,12 +15,6 @@ class SearchController extends Controller
     private static $stopWords = [
         'the', 'and', 'an', 'of',
     ];
-
-    public function __construct()
-    {
-        $this->middleware('auth');
-        $this->middleware('verified');
-    }
 
     /**
      * Display a search page
@@ -36,11 +30,11 @@ class SearchController extends Controller
         ActivityHelper::updateActivity(
             $request->user()->id,
             'Searching',
-            action('Nexus\SearchController@index')
+            action('App\Http\Controllers\Nexus\SearchController@index')
         );
 
         return view(
-            'search.results',
+            'nexus.search.results',
             compact('results', 'breadcrumbs', 'text')
         );
     }
@@ -53,7 +47,7 @@ class SearchController extends Controller
         $input = $request->all();
         $searchText = $input['text'];
 
-        return redirect(action('Nexus\SearchController@find', ['text' => $searchText]));
+        return redirect(action('App\Http\Controllers\Nexus\SearchController@find', ['text' => $searchText]));
     }
 
     /**
@@ -124,13 +118,13 @@ pattern;
         ActivityHelper::updateActivity(
             $request->user()->id,
             'Searching',
-            action('Nexus\SearchController@index')
+            action('App\Http\Controllers\Nexus\SearchController@index')
         );
 
         $breadcrumbs = BreadcrumbHelper::breadcumbForUtility('Search');
 
         return view(
-            'search.results',
+            'nexus.search.results',
             compact('results', 'breadcrumbs', 'text', 'displaySearchResults')
         );
     }

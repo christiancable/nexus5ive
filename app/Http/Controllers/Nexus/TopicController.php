@@ -7,23 +7,17 @@ use App\Helpers\BreadcrumbHelper;
 use App\Helpers\FlashHelper;
 use App\Helpers\ViewHelper;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreTopic;
-use App\Http\Requests\SubscribeTopic;
-use App\Http\Requests\UpdateTopic;
-use App\Section;
-use App\Topic;
+use App\Http\Requests\Nexus\StoreTopic;
+use App\Http\Requests\Nexus\SubscribeTopic;
+use App\Http\Requests\Nexus\UpdateTopic;
+use App\Models\Section;
+use App\Models\Topic;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class TopicController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-        $this->middleware('verified');
-    }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -32,10 +26,12 @@ class TopicController extends Controller
     public function store(StoreTopic $request)
     {
         $section = Section::findOrFail($request->validated()['section_id']);
-        $this->authorize('create', [Topic::class, $section]);
+        if ($request->user()->cannot('create', $section)) {
+            abort(403);
+        }
         $topic = Topic::create($request->validated());
 
-        return redirect(action('Nexus\SectionController@show', ['section' => $topic->section_id]));
+        return redirect(action('App\Http\Controllers\Nexus\SectionController@show', ['section' => $topic->section_id]));
     }
 
     /**
@@ -85,7 +81,7 @@ class TopicController extends Controller
         ActivityHelper::updateActivity(
             $request->user()->id,
             "Reading <em>{$topic->title}</em>",
-            action('Nexus\TopicController@show', ['topic' => $topic->id])
+            action('App\Http\Controllers\Nexus\TopicController@show', ['topic' => $topic->id])
         );
 
         // if replying then include a copy of what we are replying to
@@ -102,7 +98,7 @@ class TopicController extends Controller
         $breadcrumbs = BreadcrumbHelper::breadcrumbForTopic($topic);
 
         return view(
-            'topics.index',
+            'nexus.topics.index',
             compact(
                 'topic',
                 'posts',
@@ -125,18 +121,21 @@ class TopicController extends Controller
     {
         $formName = "topicUpdate{$topic->id}";
         $topicDetails = $request->validated()[$formName];
-
-        $this->authorize('update', $topic);
+        if ($request->user()->cannot('update', $topic)) {
+            abort(403);
+        }
 
         // is the user authorized to move the topic to the destination section?
         if ($topic->section_id !== (int) $topicDetails['section_id']) {
             $destinationSection = Section::findOrFail($topicDetails['section_id']);
-            $this->authorize('move', [$topic, $destinationSection]);
+            if ($request->user()->cannot('move', [$topic, $destinationSection])) {
+                abort(403);
+            }
         }
 
         $topic->update($topicDetails);
 
-        return redirect(action('Nexus\SectionController@show', ['section' => $topic->section_id]));
+        return redirect(action('App\Http\Controllers\Nexus\SectionController@show', ['section' => $topic->section_id]));
     }
 
     /**
@@ -148,10 +147,12 @@ class TopicController extends Controller
     {
         $section_id = $topic->section->id;
 
-        $this->authorize('delete', $topic);
+        if ($request->user()->cannot('delete', $topic)) {
+            abort(403);
+        }
         $topic->delete();
 
-        $redirect = action('Nexus\SectionController@show', ['section' => $section_id]);
+        $redirect = action('App\Http\Controllers\Nexus\SectionController@show', ['section' => $section_id]);
 
         return redirect($redirect);
     }
