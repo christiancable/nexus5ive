@@ -3,6 +3,9 @@
 namespace App\Livewire;
 
 use App\Models\User;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
 
@@ -10,23 +13,36 @@ class Userlist extends Component
 {
     public $search = '';
 
+    public Collection $allUsers;
+
+    public function fetchUsers()
+    {
+        $seconds = 5 * 60;
+
+        return Cache::remember('userslist', $seconds, function () {
+            return User::select('username', 'name', 'popname', 'latestLogin', 'totalPosts', 'totalVisits')
+                ->verified()
+                ->orderBy('username', 'asc')
+                ->get();
+        });
+    }
+
     #[Computed]
     public function users()
     {
-        if (strlen($this->search) > 2)
-            {
-                return User::select('username', 'name', 'popname', 'latestLogin', 'totalPosts', 'totalVisits')
-                    ->verified()
-                    ->where('username', 'like', '%'.$this->search.'%')
-                    ->orWhere('name', 'like', '%'.$this->search.'%')
-                    ->orderBy('username', 'asc')
-                    ->get();
-            } else {
-                return User::select('username', 'name', 'popname', 'latestLogin', 'totalPosts', 'totalVisits')
-                    ->verified()
-                    ->orderBy('username', 'asc')
-                    ->get();
-            }
+        $allUsers = $this->fetchUsers();
+
+        $results = collect();
+
+        if (strlen($this->search) > 2) {
+            $results = $allUsers->filter(function ($item, $key) {
+                return Str::contains($item->username.' '.$item->name, $this->search, ignoreCase: true);
+            });
+        } else {
+            $results = $allUsers;
+        }
+
+        return $results;
     }
 
     public function render()
