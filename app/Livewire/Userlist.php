@@ -17,7 +17,7 @@ class Userlist extends Component
 
     public function fetchUsers()
     {
-        $seconds = 50 * 60;
+        $seconds = 5 * 60;
 
         return Cache::remember('userslist', $seconds, function () {
             return User::select('username', 'name', 'popname', 'latestLogin', 'totalPosts', 'totalVisits')
