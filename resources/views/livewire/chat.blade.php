@@ -1,12 +1,12 @@
 <div class="container-fluid h-100">
     <div class="row h-100">
-        <div class="col-md-4 col-xl-3 chat-sidebar">
-            <div class="card mb-sm-3 mb-md-0 contacts_card">
+        <div class="col-md-4 col-xl-3">
+            <div class="card mb-sm-3 mb-md-0">
                 <div class="card-header">
                     <h5 class="mb-0">Users</h5>
                 </div>
-                <div class="card-body contacts_body">
-                    <ul class="contacts list-group list-group-flush">
+                <div class="card-body">
+                    <ul class="contacts list-group list-group-flush chat_user_list">
                         @foreach($users as $user)
                             <x-chat.user :user="$user" :active="$selectedUser && $selectedUser->id == $user->id" />
                         @endforeach
@@ -14,16 +14,12 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-8 col-xl-9 chat">
+        <div class="col-md-8 col-xl-9">
             <div class="card h-100">
                 @if($selectedUser)
                     <div class="card-header msg_head">
                         <div class="d-flex bd-highlight">
-                            <div class="img_cont">
-                                <img src="https://via.placeholder.com/50" class="rounded-circle user_img">
-                                <span class="online_icon"></span>
-                            </div>
-                            <div class="user_info">
+                            <div>
                                 <span>Chat with {{ $selectedUser->name }}</span>
                                 <p>{{ count($messages) }} Messages</p>
                             </div>

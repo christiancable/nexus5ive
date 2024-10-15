@@ -118,82 +118,88 @@ $footer-navigation-space-lg: 0;
 
 
 /* chat UI */
-.chat-sidebar {
-  border-right: 1px solid #dee2e6;
-}
-.contacts_body {
-  padding: 0.75rem 0 !important;
-  overflow-y: auto;
-  white-space: nowrap;
-}
+// .chat-sidebar {
+//   border-right: 1px solid #dee2e6;
+// }
+// .contacts_body {
+//   padding: 0.75rem 0 !important;
+//   overflow-y: auto;
+//   white-space: nowrap;
+// }
+
+// .card-header {
+//   border-radius: 15px 15px 0 0 !important;
+//   border-bottom: 0 !important;
+// }
+// .card-footer {
+//   border-radius: 0 0 15px 15px !important;
+//   border-top: 0 !important;
+// }
+// .container {
+//   align-content: center;
+// }
+// .contacts li {
+//   width: 100% !important;
+//   padding: 5px 10px;
+//   margin-bottom: 15px !important;
+// }
+// .active {
+//   background-color: rgba(0, 123, 255, 0.3);
+// }
+// .user_img {
+//   height: 50px;
+//   width: 50px;
+//   border: 1.5px solid #f5f6fa;
+// }
+// .user_img_msg {
+//   height: 40px;
+//   width: 40px;
+//   border: 1.5px solid #f5f6fa;
+// }
+// .img_cont {
+//   position: relative;
+//   height: 50px;
+//   width: 50px;
+// }
+// .img_cont_msg {
+//   height: 40px;
+//   width: 40px;
+// }
+// .online_icon {
+//   position: absolute;
+//   height: 12px;
+//   width: 12px;
+//   background-color: #4cd137;
+//   border-radius: 50%;
+//   bottom: 2px;
+//   right: 2px;
+//   border: 1.5px solid white;
+// }
+
+// .msg_time {
+//   position: absolute;
+//   left: 0;
+//   bottom: -15px;
+//   color: rgba(0, 0, 0, 0.5);
+//   font-size: 10px;
+// }
+// .msg_time_send {
+//   position: absolute;
+//   right: 0;
+//   bottom: -15px;
+//   color: rgba(0, 0, 0, 0.5);
+//   font-size: 10px;
+// }
+// .msg_head {
+//   position: relative;
+// }
+
+
 .msg_card_body {
   overflow-y: auto;
 }
-.card-header {
-  border-radius: 15px 15px 0 0 !important;
-  border-bottom: 0 !important;
-}
-.card-footer {
-  border-radius: 0 0 15px 15px !important;
-  border-top: 0 !important;
-}
-.container {
-  align-content: center;
-}
-.contacts li {
-  width: 100% !important;
-  padding: 5px 10px;
-  margin-bottom: 15px !important;
-}
-.active {
-  background-color: rgba(0, 123, 255, 0.3);
-}
-.user_img {
-  height: 50px;
-  width: 50px;
-  border: 1.5px solid #f5f6fa;
-}
-.user_img_msg {
-  height: 40px;
-  width: 40px;
-  border: 1.5px solid #f5f6fa;
-}
-.img_cont {
-  position: relative;
-  height: 50px;
-  width: 50px;
-}
-.img_cont_msg {
-  height: 40px;
-  width: 40px;
-}
-.online_icon {
-  position: absolute;
-  height: 12px;
-  width: 12px;
-  background-color: #4cd137;
-  border-radius: 50%;
-  bottom: 2px;
-  right: 2px;
-  border: 1.5px solid white;
-}
-
-.msg_time {
-  position: absolute;
-  left: 0;
-  bottom: -15px;
-  color: rgba(0, 0, 0, 0.5);
-  font-size: 10px;
-}
-.msg_time_send {
-  position: absolute;
-  right: 0;
-  bottom: -15px;
-  color: rgba(0, 0, 0, 0.5);
-  font-size: 10px;
-}
-.msg_head {
-  position: relative;
+.chat_user_list {
+  overflow-y: auto;
 }
 
 
