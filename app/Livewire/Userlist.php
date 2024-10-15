@@ -4,27 +4,22 @@ namespace App\Livewire;
 
 use App\Models\User;
 use Illuminate\Support\Collection;
-use Livewire\Attributes\Computed;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
+use Livewire\Attributes\Computed;
 use Livewire\Component;
 
 class Userlist extends Component
 {
-    public string $search = '';
+    public $search = '';
 
     public Collection $allUsers;
 
-    public function mount()
-    {
-        $this->fetchUsers();
-    }
-
     public function fetchUsers()
     {
-        $seconds = 5 * 60;
+        $seconds = 50 * 60;
 
-        $this->allUsers = Cache::remember('userslist', $seconds, function () {
+        return Cache::remember('userslist', $seconds, function () {
             return User::select('username', 'name', 'popname', 'latestLogin', 'totalPosts', 'totalVisits')
                 ->verified()
                 ->orderBy('username', 'asc')
@@ -35,18 +30,18 @@ class Userlist extends Component
     #[Computed]
     public function users()
     {
+        $allUsers = $this->fetchUsers();
+
         $results = collect();
 
         if (strlen($this->search) > 2) {
-            $results = $this->allUsers->filter(function ($key, $item) {
-                return true;
-                // return Str::contains($item['username'] . ' ' . $item['name'], $this->search, ignoreCase: true);
+            $results = $allUsers->filter(function ($item, $key) {
+                return Str::contains($item->username.' '.$item->name, $this->search, ignoreCase: true);
             });
         } else {
-            $results = $this->allUsers;
+            $results = $allUsers;
         }
 
-        logger('Search term: ' . $this->search . ' Results count: ' . $results->count());
         return $results;
     }
 
