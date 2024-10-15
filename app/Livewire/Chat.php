@@ -16,7 +16,7 @@ class Chat extends Component
 
     public function mount()
     {
-        $this->users = User::where('id', '!=', Auth::id())->get();
+        $this->users = User::where('id', '!=', Auth::id())->orderBy('username')->get();
         $this->messages = collect();
         $this->selectedUser = null;
     }
