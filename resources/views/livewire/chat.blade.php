@@ -44,12 +44,6 @@
                     <div class="card-body msg_card_body">
                         @foreach($messages as $message)
                             <x-chat.message :message="$message" />
-                            {{-- <div class="d-flex mb-4 {{ $message->author_id == Auth::id() ? 'justify-content-end' : 'justify-content-start' }}">
-                                <div class="msg_cotainer {{ $message->author_id == Auth::id() ? 'msg_cotainer_send' : '' }}">
-                                    {{ $message->text }}
-                                    <span class="msg_time">{{ $message->time->format('g:i A') }}</span>
-                                </div>
-                            </div> --}}
                         @endforeach
                     </div>
                     <div class="card-footer">

@@ -116,64 +116,117 @@ $footer-navigation-space-lg: 0;
   }
 }
 
-/* chat */
-$header-height: calc(56.0333px + 47.0333px + 121px);
-$mobile-nav-height: 65.2px;
-$chat-post-height: 130.1px;
 
-$chat-wrapper-height: calc(
-  100vh - #{$header-height} - #{$mobile-nav-height} - #{$chat-post-height} - #{$footer-navigation-space}
-);
-
-$chat-wrapper-height-lg: calc(
-  100vh - #{$header-height} - #{$mobile-nav-height} - #{$chat-post-height}
-);
-
-.chat-message {
-  border-width: 0;
-  //   .card-text {
-  //     border-width: 0;
-  //     border-style: solid;
-  //     border-left-width: 1rem;
-  //   }
+/* chat UI */
+.chat-sidebar {
+  border-right: 1px solid #dee2e6;
+}
+.contacts_body {
+  padding: 0.75rem 0 !important;
+  overflow-y: auto;
+  white-space: nowrap;
+}
+.msg_card_body {
+  overflow-y: auto;
+}
+.card-header {
+  border-radius: 15px 15px 0 0 !important;
+  border-bottom: 0 !important;
+}
+.card-footer {
+  border-radius: 0 0 15px 15px !important;
+  border-top: 0 !important;
+}
+.container {
+  align-content: center;
+}
+.contacts li {
+  width: 100% !important;
+  padding: 5px 10px;
+  margin-bottom: 15px !important;
+}
+.active {
+  background-color: rgba(0, 123, 255, 0.3);
+}
+.user_img {
+  height: 50px;
+  width: 50px;
+  border: 1.5px solid #f5f6fa;
+}
+.user_img_msg {
+  height: 40px;
+  width: 40px;
+  border: 1.5px solid #f5f6fa;
+}
+.img_cont {
+  position: relative;
+  height: 50px;
+  width: 50px;
+}
+.img_cont_msg {
+  height: 40px;
+  width: 40px;
+}
+.online_icon {
+  position: absolute;
+  height: 12px;
+  width: 12px;
+  background-color: #4cd137;
+  border-radius: 50%;
+  bottom: 2px;
+  right: 2px;
+  border: 1.5px solid white;
+}
+.user_info {
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-left: 15px;
+}
+.user_info span {
+  font-size: 18px;
+  color: #464646;
+}
+.user_info p {
+  font-size: 10px;
+  color: rgba(0, 0, 0, 0.6);
+}
+.msg_cotainer {
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-left: 10px;
+  border-radius: 25px;
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px;
+  position: relative;
+}
+.msg_cotainer_send {
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-right: 10px;
+  border-radius: 25px;
+  background-color: #28a745;
+  color: #fff;
+  padding: 10px;
+  position: relative;
+}
+.msg_time {
+  position: absolute;
+  left: 0;
+  bottom: -15px;
+  color: rgba(0, 0, 0, 0.5);
+  font-size: 10px;
+}
+.msg_time_send {
+  position: absolute;
+  right: 0;
+  bottom: -15px;
+  color: rgba(0, 0, 0, 0.5);
+  font-size: 10px;
+}
+.msg_head {
+  position: relative;
 }
 
-.chat-wrapper {
-  height: $chat-wrapper-height; /* or position:absolute; height:100%; */
-}
 
-.chat-conversation {
-  //   min-height: calc(#{$chat-wrapper-height} - #{$chat-post-height});
-  min-height: 1rem;
-}
 
-@include media-breakpoint-up(lg) {
-  .chat-wrapper {
-    height: $chat-wrapper-height-lg;
-  }
-}
-
-.chat-post {
-  //   height: $chat-post-height;
-}
-
-.chat-content {
-  flex: 1;
-  overflow: auto;
-}
-
-.chat-wrapper {
-  display: flex;
-  flex: 1;
-  min-height: 0px; /* IMPORTANT: you need this for non-chrome browsers */
-}
-
-//@TODO this 10px value is a bit of a magic number - it covers the different heights of the post form
-.chat-list-wrapper {
-  height: calc(100vh - #{$header-height} - #{$mobile-nav-height} - 10px);
-  min-height: 0px;
-}
-.chat-list {
-  height: calc(100vh - #{$header-height} - #{$mobile-nav-height});
-  overflow: auto;
-}
