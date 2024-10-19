@@ -48,7 +48,7 @@
                         </div>
                     </div>
 
-                    <div class="card-body">
+                    <div class="card-body p-0">
                         <div class="pr-2 overflow-auto h-100 d-flex flex-column-reverse ">
                             @foreach ($messages->reverse() as $message)
                                 <x-chat.message :message="$message" />
