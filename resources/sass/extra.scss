@@ -195,12 +195,40 @@ $footer-navigation-space-lg: 0;
 // }
 
 
-.msg_card_body {
+// .msg_card_body {
+//   overflow-y: auto;
+// }
+
+.scroll_list_container {
+  height: 100vh;
+  overflow: hidden;
+}
+
+.scroll_list {
+  height: 100%;
   overflow-y: auto;
 }
+
+// .chat_user_list_container {
+//   height: 100vh;
+//   overflow: hidden; /* Hide overflow */
+// }
+
 .chat_user_list {
+  height: 100%;
   overflow-y: auto;
 }
+
+// .msg_list_container {
+//   height: 100vh;
+//   overflow: hidden; /* Hide overflow */
+// }
+
+.msg_list {
+  height: 100%;
+  overflow-y: auto;
+}
+
 
 
 .msg_author {
