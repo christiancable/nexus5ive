@@ -14,6 +14,7 @@ class Chat extends Component
     public $newMessage;
     public $selectedUser = null;
     public $pollingInterval;
+    public $newChatUser;
 
     public function mount()
     {

@@ -24,8 +24,8 @@
             <div class="card d-flex flex-column h-100" wire:poll.{{ $pollingInterval }}s="loadMessages">
                 @if ($selectedUser)
 
-                    <x-chat.user-header :user="$selectedUser" :latest_message="$messages->last()"/>
-                    
+                    <x-chat.user-header :user="$selectedUser" :latest_message="$messages->last()" />
+
                     <div class="card-body p-0">
                         <div class="pr-2 pl-2 overflow-auto h-100 d-flex flex-column-reverse">
                             @foreach ($messages->reverse() as $message)
@@ -47,7 +47,18 @@
                     </div>
                 @else
                     <div class="card-body msg_card_body d-flex justify-content-center align-items-center">
-                        <p class="text-muted">Select a user to start chatting</p>
+
+
+                        <div class="form-group">
+                            <label for="usersDropdown">Select a user to start chatting</label>
+                            <select class="form-control" id="usersDropdown" wire:model="newChatUser"
+                                wire:change="selectUser($event.target.value)">
+                                @foreach ($users as $user)
+                                    <option value="{{ $user->id }}">{{ $user->username }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
                     </div>
                 @endif
             </div>
