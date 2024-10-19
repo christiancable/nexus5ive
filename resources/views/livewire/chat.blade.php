@@ -50,7 +50,8 @@
 
 
                         <div class="form-group">
-                            <label for="usersDropdown">Select a user to start chatting</label>
+                            <h1>👋</h1>
+                            <label for="usersDropdown">Chat to&hellip;</label>
                             <select class="form-control" id="usersDropdown" wire:model="newChatUser"
                                 wire:change="selectUser($event.target.value)">
                                 @foreach ($users as $user)
