@@ -1,7 +1,7 @@
 <div class="container" id="chat-container">
     <div class="row h-100">
 
-        <div class="col-md-4 col-xl-3 h-100">
+        <div class="col-md-4 col-xl-3 h-100 d-none d-md-block">
 
             <div class="card mb-sm-3 mb-md-0 h-100">
                 <div class="card-header">
