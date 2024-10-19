@@ -199,48 +199,4 @@ $footer-navigation-space-lg: 0;
 //   overflow-y: auto;
 // }
 
-.scroll_list_container {
-  height: 100vh;
-  overflow: hidden;
-}
 
-.scroll_list {
-  height: 100%;
-  overflow-y: auto;
-}
-
-// .chat_user_list_container {
-//   height: 100vh;
-//   overflow: hidden; /* Hide overflow */
-// }
-
-.chat_user_list {
-  height: 100%;
-  overflow-y: auto;
-}
-
-// .msg_list_container {
-//   height: 100vh;
-//   overflow: hidden; /* Hide overflow */
-// }
-
-.msg_list {
-  height: 100%;
-  overflow-y: auto;
-}
-
-
-
-.msg_author {
-  background-color: #28a745;
-  color: #fff;
-  border-radius: 50px; /* This is similar to rounded-pill */
-  border-bottom-right-radius: 0; /* Remove rounding from bottom-left corner */
-}
-
-.msg_receiver {
-  background-color: #007bff;
-  color: #fff;
-  border-radius: 50px; /* This is similar to rounded-pill */
-  border-bottom-left-radius: 0; /* Remove rounding from bottom-left corner */
-}

@@ -1,25 +1,65 @@
 <div class="container">
-    <div class="row scroll_list_container">
+    <style>
+        {{-- 
+        .scroll_list_container {
+            height: 70vh;
+            overflow: hidden;
+        }
 
-        <div class="col-md-4 col-xl-3 scroll_list">
-            <div class="card mb-sm-3 mb-md-0">
+        .scroll_list {
+            height: 100%;
+            overflow-y: auto;
+        }
+
+
+        .chat_user_list {
+            height: 100%;
+            overflow-y: auto;
+        }
+
+        .msg_list {
+            height: 100%;
+            overflow-y: auto;
+        } 
+        --}} .msg_author {
+            background-color: #28a745;
+            color: #fff;
+            border-radius: 50px;
+            border-bottom-right-radius: 0;
+        }
+
+        .msg_receiver {
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 50px;
+            border-bottom-left-radius: 0;
+        }
+    </style>
+    <div class="row">
+
+        <div class="col-md-4 col-xl-3">
+
+            <div class="card mb-sm-3 mb-md-0" style="height:70vh;">
                 <div class="card-header">
                     <h5 class="mb-0">Users</h5>
                 </div>
                 <div class="card-body chat_user_list_container">
-                    <ul class="contacts list-group list-group-flush chat_user_list">
+                    <ul class="contacts list-group list-group-flush chat_user_list" style="overflow-y:auto; height:100%">
                         @foreach ($users as $user)
                             <x-chat.user :user="$user" :active="$selectedUser && $selectedUser->id == $user->id" />
                         @endforeach
                     </ul>
                 </div>
             </div>
+
         </div>
 
 
-        <div class="col-md-8 col-xl-9 scroll_list">
-            <div class="card">
+        <div class="col-md-8 col-xl-9">
+
+            <div class="card d-flex flex-column" style="height:70vh;">
                 @if ($selectedUser)
+
                     <div class="card-header msg_head">
                         <div class="d-flex bd-highlight">
                             <div>
@@ -28,11 +68,15 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card-body">
-                        @foreach ($messages as $message)
-                            <x-chat.message :message="$message" />
-                        @endforeach
+
+                    <div class="card-body" style="overflow:hidden;">
+                        <div class="pr-2" style="overflow-y:auto; height:100%">
+                            @foreach ($messages as $message)
+                                <x-chat.message :message="$message" />
+                            @endforeach
+                        </div>
                     </div>
+
                     <div class="card-footer">
                         <div class="input-group">
                             <input type="text" wire:model="newMessage" wire:keydown.enter="sendMessage"
@@ -50,9 +94,7 @@
                     </div>
                 @endif
             </div>
+
         </div>
-
-
-
     </div>
 </div>
