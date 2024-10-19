@@ -136,6 +136,16 @@ $chat-height: calc(100vh - #{$header-height} - #{$footer-height} );
   }
 }
 
+/* Custom CSS for list item hover effect */
+.chat_user_list .list-group-item {
+  transition: background-color 0.3s; /* Smooth transition */
+}
+
+.chat_user_list .list-group-item:hover {
+  background-color: rgba(0, 0, 0, 0.03); /* Change this to your desired hover color */
+}
+
+
 .msg_author {
   background-color: #28a745;
   color: #fff;

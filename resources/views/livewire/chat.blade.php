@@ -8,7 +8,7 @@
                     <h5 class="mb-0">Users</h5>
                 </div>
                 <div class="card-body chat_user_list_container p-0">
-                    <ul class="contacts list-group list-group-flush chat_user_list overflow-auto h-100">
+                    <ul class="list-group list-group-flush chat_user_list overflow-auto h-100">
                         @foreach ($users as $user)
                             <x-chat.user :user="$user" :active="$selectedUser && $selectedUser->id == $user->id" />
                         @endforeach
@@ -24,15 +24,8 @@
             <div class="card d-flex flex-column h-100">
                 @if ($selectedUser)
 
-                    <div class="card-header msg_head">
-                        <div class="d-flex bd-highlight">
-                            <div>
-                                <span>Chat with {{ $selectedUser->name }}</span>
-                                <p>{{ count($messages) }} Messages</p>
-                            </div>
-                        </div>
-                    </div>
-
+                    <x-chat.user-header :user="$selectedUser" :latest_message="$messages->last()"/>
+                    
                     <div class="card-body p-0">
                         <div class="pr-2 pl-2 overflow-auto h-100 d-flex flex-column-reverse ">
                             @foreach ($messages->reverse() as $message)
