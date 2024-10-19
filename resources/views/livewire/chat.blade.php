@@ -22,7 +22,7 @@
                 <div class="card-header">
                     <h5 class="mb-0">Users</h5>
                 </div>
-                <div class="card-body chat_user_list_container">
+                <div class="card-body chat_user_list_container p-0">
                     <ul class="contacts list-group list-group-flush chat_user_list overflow-auto h-100">
                         @foreach ($users as $user)
                             <x-chat.user :user="$user" :active="$selectedUser && $selectedUser->id == $user->id" />
@@ -49,7 +49,7 @@
                     </div>
 
                     <div class="card-body p-0">
-                        <div class="pr-2 overflow-auto h-100 d-flex flex-column-reverse ">
+                        <div class="pr-2 pl-2 overflow-auto h-100 d-flex flex-column-reverse ">
                             @foreach ($messages->reverse() as $message)
                                 <x-chat.message :message="$message" />
                             @endforeach
