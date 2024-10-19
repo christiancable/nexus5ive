@@ -12,13 +12,14 @@ class Chat extends Component
     public $users;
     public $messages;
     public $newMessage;
-    public $selectedUser;
+    public $selectedUser = null;
+    public $pollingInterval;
 
     public function mount()
     {
+        $this->pollingInterval = 1;
         $this->users = User::where('id', '!=', Auth::id())->orderBy('username')->get();
         $this->messages = collect();
-        $this->selectedUser = null;
     }
 
     public function selectUser($userId)

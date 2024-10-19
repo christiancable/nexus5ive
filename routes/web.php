@@ -65,13 +65,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('posts', PostController::class);
 
     /* messages */
-    Route::get('chat/{username}', [ChatController::class, 'conversation']);
-    Route::post('chat/{username}', [ChatController::class, 'store']);
-    Route::resource('chat', ChatController::class);
-    Route::get('chats/{username}', [ChatApiController::class, 'show']);
-    Route::get('chats', [ChatApiController::class, 'index']);
-    Route::get('chatsusers', [ChatApiController::class, 'chatPartnerIndex']);
-
+    Route::get('chat/{user?}', [ChatController::class, 'index']);
+    
     /* Search */
     Route::get('search', [SearchController::class, 'index']);
     Route::get('search/{text}', [SearchController::class, 'find']);

@@ -18,5 +18,5 @@
     </x-heading>
 </div>
 
-<livewire:chat />
+<livewire:chat :selectedUser="$selectedUser"/>
 @endsection

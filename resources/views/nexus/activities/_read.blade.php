@@ -1,5 +1,5 @@
  <tr>
-  <td><a href="{{action('App\Http\Controllers\Nexus\ChatController@conversation', ['username' => $activity->user->username])}}">
+  <td><a href="{{action('App\Http\Controllers\Nexus\ChatController@index', ['user' => $activity->user->username])}}">
     <x-heroicon-s-chat-bubble-left-right class="icon_mini" aria-hidden="true" />
 </a></td>
 <td>{!! $activity->user->present()->profileLink !!}</td>
