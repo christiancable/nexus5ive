@@ -1,9 +1,9 @@
-<div class="container">
-    <div class="row">
+<div class="container" id="chat-container">
+    <div class="row h-100">
 
-        <div class="col-md-4 col-xl-3" style="height:70vh;">
+        <div class="col-md-4 col-xl-3 h-100">
 
-            <div class="card mb-sm-3 mb-md-0 h-100" >
+            <div class="card mb-sm-3 mb-md-0 h-100">
                 <div class="card-header">
                     <h5 class="mb-0">Users</h5>
                 </div>
@@ -19,9 +19,9 @@
         </div>
 
 
-        <div class="col-md-8 col-xl-9" style="height:70vh;">
+        <div class="col-md-8 col-xl-9 h-100">
 
-            <div class="card d-flex flex-column h-100" >
+            <div class="card d-flex flex-column h-100">
                 @if ($selectedUser)
 
                     <div class="card-header msg_head">

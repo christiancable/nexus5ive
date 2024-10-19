@@ -118,6 +118,24 @@ $footer-navigation-space-lg: 0;
 
 
 /* chat UI */
+
+// values guessed by eye
+$header-height: 300px;
+$footer-height: 50px;
+
+$chat-height-lg: calc(100vh - #{$header-height});
+$chat-height: calc(100vh - #{$header-height} - #{$footer-height} );
+
+#chat-container {
+  height: $chat-height;
+}
+
+@include media-breakpoint-up(lg) {
+  #chat-container {
+    height: $chat-height-lg;
+  }
+}
+
 .msg_author {
   background-color: #28a745;
   color: #fff;
