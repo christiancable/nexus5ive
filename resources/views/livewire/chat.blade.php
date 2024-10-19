@@ -1,27 +1,6 @@
 <div class="container">
     <style>
-        {{-- 
-        .scroll_list_container {
-            height: 70vh;
-            overflow: hidden;
-        }
-
-        .scroll_list {
-            height: 100%;
-            overflow-y: auto;
-        }
-
-
-        .chat_user_list {
-            height: 100%;
-            overflow-y: auto;
-        }
-
-        .msg_list {
-            height: 100%;
-            overflow-y: auto;
-        } 
-        --}} .msg_author {
+        .msg_author {
             background-color: #28a745;
             color: #fff;
             border-radius: 50px;
@@ -44,7 +23,7 @@
                     <h5 class="mb-0">Users</h5>
                 </div>
                 <div class="card-body chat_user_list_container">
-                    <ul class="contacts list-group list-group-flush chat_user_list" style="overflow-y:auto; height:100%">
+                    <ul class="contacts list-group list-group-flush chat_user_list overflow-auto h-100">
                         @foreach ($users as $user)
                             <x-chat.user :user="$user" :active="$selectedUser && $selectedUser->id == $user->id" />
                         @endforeach
@@ -69,8 +48,8 @@
                         </div>
                     </div>
 
-                    <div class="card-body" style="overflow:hidden;">
-                        <div class="pr-2" style="overflow-y:auto; height:100%">
+                    <div class="card-body">
+                        <div class="pr-2 overflow-auto h-100">
                             @foreach ($messages as $message)
                                 <x-chat.message :message="$message" />
                             @endforeach
