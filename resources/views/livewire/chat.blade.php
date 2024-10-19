@@ -1,24 +1,9 @@
 <div class="container">
-    <style>
-        .msg_author {
-            background-color: #28a745;
-            color: #fff;
-            border-radius: 50px;
-            border-bottom-right-radius: 0;
-        }
-
-        .msg_receiver {
-            background-color: #007bff;
-            color: #fff;
-            border-radius: 50px;
-            border-bottom-left-radius: 0;
-        }
-    </style>
     <div class="row">
 
-        <div class="col-md-4 col-xl-3">
+        <div class="col-md-4 col-xl-3" style="height:70vh;">
 
-            <div class="card mb-sm-3 mb-md-0" style="height:70vh;">
+            <div class="card mb-sm-3 mb-md-0 h-100" >
                 <div class="card-header">
                     <h5 class="mb-0">Users</h5>
                 </div>
@@ -34,9 +19,9 @@
         </div>
 
 
-        <div class="col-md-8 col-xl-9">
+        <div class="col-md-8 col-xl-9" style="height:70vh;">
 
-            <div class="card d-flex flex-column" style="height:70vh;">
+            <div class="card d-flex flex-column h-100" >
                 @if ($selectedUser)
 
                     <div class="card-header msg_head">
