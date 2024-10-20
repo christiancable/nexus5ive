@@ -37,13 +37,19 @@ class Chat extends Component
     public function loadMessages()
     {
         if ($this->selectedUser) {
-            $this->messages = Message::where(function ($query) {
+
+            $query = Message::where(function ($query) {
                 $query->where('user_id', Auth::id())
                     ->where('author_id', $this->selectedUser->id);
             })->orWhere(function ($query) {
                 $query->where('user_id', $this->selectedUser->id)
                     ->where('author_id', Auth::id());
-            })->orderBy('time', 'asc')->get();
+            })->orderBy('time', 'asc');
+
+            $this->messages = $query->get();
+
+            // these messages as read for the current user
+            $query->where('user_id', Auth::id())->update(['read' => true]);
 
             $this->newChatUser = $this->selectedUser->id;
         }
