@@ -2,20 +2,14 @@
 
 namespace App\Http\Controllers\Nexus;
 
-use App\Comment;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreComment;
+use App\Http\Requests\Nexus\StoreComment;
+use App\Models\Comment;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-        $this->middleware('verified');
-    }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -45,10 +39,12 @@ class CommentController extends Controller
      */
     public function destroy(Request $request, Comment $comment)
     {
-        $this->authorize('destroy', $comment);
+        if ($request->user()->cannot('delete', $comment)) {
+            abort(403);
+        }
         $comment->delete();
 
-        return redirect(action('Nexus\UserController@show', ['user' => $request->user()->username]));
+        return redirect(action('App\Http\Controllers\Nexus\UserController@show', ['user' => $request->user()->username]));
     }
 
     /**

@@ -4,110 +4,82 @@ use App\Http\Controllers\Nexus\ActivityController;
 use App\Http\Controllers\Nexus\ChatApiController;
 use App\Http\Controllers\Nexus\ChatController;
 use App\Http\Controllers\Nexus\CommentController;
-use App\Http\Controllers\Nexus\MentionController;
 use App\Http\Controllers\Nexus\ModeController;
-use App\Http\Controllers\Nexus\NotificationsController;
 use App\Http\Controllers\Nexus\PostController;
 use App\Http\Controllers\Nexus\RestoreController;
 use App\Http\Controllers\Nexus\SearchController;
 use App\Http\Controllers\Nexus\SectionController;
 use App\Http\Controllers\Nexus\TopicController;
-use App\Http\Controllers\Nexus\TreeController;
 use App\Http\Controllers\Nexus\UserController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Middleware\EnsureUserIsAdmin;
+use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Application Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register all of the routes for an application.
-| It's a breeze. Simply tell Laravel the URIs it should respond to
-| and give it the controller to call when that URI is requested.
-|
-*/
+Route::get('/', function () {
+    return view('welcome');
+});
 
-// authentication
-if (config('nexus.allow_registrations') === true) {
-    Auth::routes(['verify' => true]);
-} else {
-    Auth::routes(
-        ['verify' => true],
-        ['register' => false]
-    );
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
 
-    // so redirect the register route
-    Route::redirect('register', 'login');
-}
+Route::middleware(['auth'])->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
 
-// Notifications
-Route::get('api/notificationsCount', [NotificationsController::class, 'notificationCount'])->middleware('auth')->name('api.notificationCount');
-Route::get('interface/toolbar', [NotificationsController::class, 'toolbar'])->middleware('auth')->name('interface.toolbar');
+require __DIR__.'/auth.php';
 
-// uers
-Route::resource('users', UserController::class);
+// above default laravel stuff
 
-// special sections
-Route::get('/', [SectionController::class, 'index']);
-Route::get('/home', [SectionController::class, 'index']);
+Route::middleware(['auth', 'verified'])->group(function () {
+    /* Admin */
+    Route::middleware([EnsureUserIsAdmin::class])->group(function () {
+        Route::resource('admin', ModeController::class);
+    });
 
-Route::get('leap', [SectionController::class, 'leap']);
-Route::get('/section/latest', [SectionController::class, 'latest']);
+    /* Sections */
+    Route::get('/', [SectionController::class, 'index'])->name('dashboard');
+    Route::get('/home', [SectionController::class, 'index']);
+    Route::get('leap', [SectionController::class, 'leap']);
+    Route::get('/section/latest', [SectionController::class, 'latest'])->name('latest');
+    Route::resource('section', SectionController::class);
 
-// sections
-Route::resource('section', SectionController::class);
+    /* Topics */
+    Route::delete('topic/{topic}', [TopicController::class, 'destroy']);
+    Route::post('/topic/{topic}/subscribe', [TopicController::class, 'updateSubscription'])
+        ->name('topic.updateSubscription');
+    Route::resource('topic', TopicController::class);
 
-// topics
-Route::delete('topic/{topic}', [TopicController::class, 'destroy']);
-Route::post('/topic/{topic}/subscribe', [TopicController::class, 'updateSubscription'])
-    ->name('topic.updateSubscription');
-Route::resource('topic', TopicController::class);
+    /* Users */
+    Route::resource('users', UserController::class);
 
-// comments
-Route::delete('comments', [CommentController::class, 'destroyAll']);
-Route::delete('comments/{comment}', [CommentController::class, 'destroy']);
-Route::resource('comments', CommentController::class);
+    /* Comments */
+    Route::delete('comments', [CommentController::class, 'destroyAll']);
+    Route::delete('comments/{comment}', [CommentController::class, 'destroy']);
+    Route::resource('comments', CommentController::class);
 
-// posts
-Route::delete('posts/{post}', [PostController::class, 'destroy']);
-Route::resource('posts', PostController::class);
+    /* Posts */
+    Route::delete('posts/{post}', [PostController::class, 'destroy']);
+    Route::resource('posts', PostController::class);
 
-// messages
-// Route::get('messages/{id}', 'Nexus\MessageController@index');
-// Route::resource('messages', 'Nexus\MessageController');
+    /* messages */
+    Route::get('chat/{user?}', [ChatController::class, 'index']);
+    
+    /* Search */
+    Route::get('search', [SearchController::class, 'index']);
+    Route::get('search/{text}', [SearchController::class, 'find']);
+    Route::post('search', [SearchController::class, 'submitSearch']);
 
-// conversations
-Route::get('chat/{username}', [ChatController::class, 'conversation']);
-Route::post('chat/{username}', [ChatController::class, 'store']);
-Route::resource('chat', ChatController::class);
+    /* misc */
+    Route::get('updateSubscriptions', [TopicController::class, 'markAllSubscribedTopicsAsRead']);
+    Route::resource('here', ActivityController::class);
 
-// chat refactor for vue
-Route::get('chats/{username}', [ChatApiController::class, 'show']);
-Route::get('chats', [ChatApiController::class, 'index']);
-Route::get('chatsusers', [ChatApiController::class, 'chatPartnerIndex']);
-
-// activities
-Route::resource('here', ActivityController::class);
-
-// search
-Route::get('search', [SearchController::class, 'index']);
-Route::get('search/{text}', [SearchController::class, 'find']);
-Route::post('search', [SearchController::class, 'submitSearch']);
-
-// restore
-Route::resource('archive', RestoreController::class);
-Route::post('archive/section/{section}', [RestoreController::class, 'section'])
-    ->name('archive.section');
-Route::post('archive/topic/{topic}', [RestoreController::class, 'topic'])
-    ->name('archive.topic');
-
-// admin
-Route::resource('admin', ModeController::class);
-Route::post('admin', [ModeController::class, 'handle'])
-    ->name('mode.handle');
-
-// utilities
-Route::get('updateSubscriptions', [TopicController::class, 'markAllSubscribedTopicsAsRead']);
-Route::get('jump', [TreeController::class, 'show']);
-
-// @mentions
-Route::delete('mentions', [MentionController::class, 'destroyAll']);
+    // restore
+    Route::resource('archive', RestoreController::class);
+    Route::post('archive/section/{section}', [RestoreController::class, 'section'])
+        ->name('archive.section');
+    Route::post('archive/topic/{topic}', [RestoreController::class, 'topic'])
+        ->name('archive.topic');
+});

@@ -9,14 +9,14 @@ class CommentFactory extends Factory
     /**
      * Define the model's default state.
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function definition()
     {
         return [
-            'user_id' => $this->faker->randomDigitNotNull,
-            'author_id' => $this->faker->randomDigitNotNull,
-            'text' => $this->faker->sentence,
+            'user_id' => fake()->randomDigitNotNull(),
+            'author_id' => fake()->randomDigitNotNull(),
+            'text' => fake()->sentence(),
             'read' => false,
         ];
     }

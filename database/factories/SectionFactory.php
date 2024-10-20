@@ -9,15 +9,15 @@ class SectionFactory extends Factory
     /**
      * Define the model's default state.
      *
-     * @return array
+     * @return array<string, mixed>
      */
-    public function definition()
+    public function definition(): array
     {
         return [
-            'title' => $this->faker->sentence,
-            'intro' => $this->faker->paragraph,
-            'user_id' => $this->faker->randomDigitNotNull,
-            'parent_id' => $this->faker->randomDigitNotNull,
+            'title' => fake()->sentence(),
+            'intro' => fake()->paragraph(),
+            'user_id' => fake()->randomDigitNotNull(),
+            'parent_id' => fake()->randomDigitNotNull(),
         ];
     }
 }
