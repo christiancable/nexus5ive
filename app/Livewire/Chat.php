@@ -2,18 +2,23 @@
 
 namespace App\Livewire;
 
-use Livewire\Component;
-use App\Models\User;
 use App\Models\Message;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
 
 class Chat extends Component
 {
     public $users;
+
     public $messages;
+
     public $newMessage;
+
     public $selectedUser = null;
+
     public $pollingInterval;
+
     public $newChatUser;
 
     public function mount()
@@ -34,11 +39,13 @@ class Chat extends Component
         if ($this->selectedUser) {
             $this->messages = Message::where(function ($query) {
                 $query->where('user_id', Auth::id())
-                      ->where('author_id', $this->selectedUser->id);
+                    ->where('author_id', $this->selectedUser->id);
             })->orWhere(function ($query) {
                 $query->where('user_id', $this->selectedUser->id)
-                      ->where('author_id', Auth::id());
+                    ->where('author_id', Auth::id());
             })->orderBy('time', 'asc')->get();
+
+            $this->newChatUser = $this->selectedUser->id;
         }
     }
 

@@ -24,7 +24,7 @@
             <div class="card d-flex flex-column h-100" wire:poll.{{ $pollingInterval }}s="loadMessages">
                 @if ($selectedUser)
 
-                    <x-chat.user-header :user="$selectedUser" :latest_message="$messages->last()" />
+                    <x-chat.user-header :user="$selectedUser" :latest_message="$messages->last()" :users="$users" />
 
                     <div class="card-body p-0">
                         <div class="pr-2 pl-2 overflow-auto h-100 d-flex flex-column-reverse">

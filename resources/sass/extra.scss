@@ -159,3 +159,12 @@ $chat-height: calc(100vh - #{$header-height} - #{$footer-height} );
   border-radius: 50px;
   border-bottom-left-radius: 0;
 }
+
+.user-select {
+  background-color: rgb(247, 247, 247);
+  color: #495057; /* Text color */
+  padding: 0.375rem 0.75rem; /* Padding */
+  border: none; /* Remove border */
+  padding: 0.375rem 0.75rem; /* Padding */
+  box-shadow: none; /* Remove any box shadow */
+}
