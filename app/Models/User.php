@@ -164,14 +164,21 @@ class User extends Authenticatable
         return $this->hasMany(Post::class, 'update_user_id', 'id');
     }
 
+    // @todo remove
     public function messages()
     {
         return $this->hasMany(Message::class);
     }
 
+    // @todo remove
     public function sentMessages()
     {
         return $this->hasMany(Message::class, 'author_id');
+    }
+
+    public function chats()
+    {
+        return $this->hasMany(Chat::class, 'owner_id');
     }
 
     public function activity()

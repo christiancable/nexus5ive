@@ -2,7 +2,8 @@
 
 namespace App\Livewire;
 
-use App\Models\Message;
+use App\Helpers\ChatHelper;
+use App\Models\Chat as ChatModel;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
@@ -14,6 +15,8 @@ class Chat extends Component
     public $messages;
 
     public $newMessage;
+
+    public $chats;
 
     public $selectedUser = null;
 
@@ -37,19 +40,17 @@ class Chat extends Component
     public function loadMessages()
     {
         if ($this->selectedUser) {
+            // find chat
+            // @todo when this is a chosen from a list of chat
+            // $chat = Chat::find($this->selectedChat);
+            $chat = ChatModel::where(['owner_id' => Auth::id(),
+                'partner_id' => $this->selectedUser->id])->first();
 
-            $query = Message::where(function ($query) {
-                $query->where('user_id', Auth::id())
-                    ->where('author_id', $this->selectedUser->id);
-            })->orWhere(function ($query) {
-                $query->where('user_id', $this->selectedUser->id)
-                    ->where('author_id', Auth::id());
-            })->orderBy('time', 'asc');
-
-            $this->messages = $query->get();
-
-            // these messages as read for the current user
-            $query->where('user_id', Auth::id())->update(['read' => true]);
+            if ($chat) {
+                $this->messages = $chat->chatMessages;
+            } else {
+                $this->messages = collect();
+            }
 
             $this->newChatUser = $this->selectedUser->id;
         }
@@ -58,16 +59,10 @@ class Chat extends Component
     public function sendMessage()
     {
         if ($this->selectedUser && $this->newMessage) {
-            Message::create([
-                'user_id' => $this->selectedUser->id,
-                'author_id' => Auth::id(),
-                'text' => $this->newMessage,
-                'read' => false,
-                'time' => now(),
-            ]);
-
+            ChatHelper::sendMessage(Auth::id(), $this->selectedUser->id, $this->newMessage);
             $this->newMessage = '';
             $this->loadMessages();
+
         }
     }
 

@@ -12,7 +12,7 @@
           </div>
           <div>
               @if ($latest_message)
-                  <small>{{ $latest_message->time->format('D, j M Y \a\t H:i') }}</small>
+                  <small>{{ $latest_message->created_at->format('D, j M Y \a\t H:i') }}</small>
               @endif
           </div>
       </div>
