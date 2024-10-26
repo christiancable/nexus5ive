@@ -11,7 +11,7 @@ helper class for dealing with chats between users
 
 class ChatHelper
 {
-    public static function sendMessage(int $user_id, int $partner_id, string $text)
+    public static function sendMessage(int $user_id, int $partner_id, string $text, $time = null)
     {
         // add message to users copy of the conversation
         $userChat = Chat::firstOrCreate(
@@ -21,7 +21,7 @@ class ChatHelper
             ]
         );
 
-        ChatMessage::create([
+        $userMessage = ChatMessage::create([
             'chat_id' => $userChat->id,
             'sender_id' => $user_id,
             'message_text' => $text,
@@ -38,12 +38,18 @@ class ChatHelper
             ]
         );
 
-        ChatMessage::create([
+        $partnerMessage = ChatMessage::create([
             'chat_id' => $partnerChat->id,
             'sender_id' => $user_id,
             'message_text' => $text,
         ]);
 
+        if ($time) {
+            $userMessage->created_at = $time;
+            $userMessage->save();
+            $partnerMessage->created_at = $time;
+            $partnerMessage->save();
+        }
         $partnerChat->is_read = false;
         $partnerChat->save();
     }
