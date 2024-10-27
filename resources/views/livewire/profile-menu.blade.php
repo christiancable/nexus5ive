@@ -20,7 +20,7 @@
             </a>
 
             <a class="dropdown-item" href="{{ action('App\Http\Controllers\Nexus\ChatController@index') }}">
-                <x-heroicon-m-chat-bubble-left-right class="icon_mini mr-1" aria-hidden="true" />Messages
+                <x-heroicon-m-chat-bubble-left-right class="icon_mini mr-1" aria-hidden="true" />Chat
                 @if ($messagesCount)
                     <span class="badge badge-info">{{ $messagesCount }}</span>
                 @endif
