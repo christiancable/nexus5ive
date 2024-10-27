@@ -13,7 +13,7 @@ class Chat extends Component
 {
     public $users;
 
-    public $user; 
+    public $user;
 
     public $messages;
 
@@ -22,6 +22,8 @@ class Chat extends Component
     public $chats;
 
     public $selectedUser = null;
+
+    public $selectedChat = null;
 
     public $pollingInterval;
 
@@ -36,34 +38,53 @@ class Chat extends Component
         $this->loadMessages();
     }
 
+    /*
+     load a chat by selecting the user from a dropdown or url action
+    */
     public function selectUser($userId)
     {
         $this->selectedUser = User::find($userId);
+        // find or create a chat of this user
+        $this->selectedChat = ChatModel::where([
+            'owner_id' => Auth::id(),
+            'partner_id' => $this->selectedUser->id
+        ])->first();
+        $this->loadMessages();
+    }
+
+    /*
+    load a chat by choosing from existing chat list
+    */
+    public function selectChat($chatId)
+    {
+        $this->selectedChat = ChatModel::find($chatId);
+        $this->selectedUser = $this->selectedChat->partner;
         $this->loadMessages();
     }
 
     public function loadMessages()
     {
         $this->chats = $this->user->chats;
-        if ($this->selectedUser) {
-            // find chat
-            // @todo when this is a chosen from a list of chat
-            // $chat = Chat::find($this->selectedChat);
-            $chat = ChatModel::where([
+
+        if (!$this->selectedChat && $this->selectedUser) {
+            $this->selectedChat = ChatModel::where([
                 'owner_id' => Auth::id(),
                 'partner_id' => $this->selectedUser->id
             ])->first();
+        }
 
-            if ($chat) {
-                $this->messages = $chat->chatMessages;
-                if ($chat->is_read == false) {
-                    $chat->is_read = true;
-                    $chat->save();
-                }
-            } else {
-                $this->messages = collect();
+
+        if ($this->selectedChat) {
+            $this->messages = $this->selectedChat->chatMessages;
+            if ($this->selectedChat->is_read == false) {
+                $this->selectedChat->is_read = true;
+                $this->selectedChat->save();
             }
+        } else {
+            $this->messages = collect();
+        }
 
+        if ($this->selectedUser) {
             $this->newChatUser = $this->selectedUser->id;
         }
     }

@@ -10,7 +10,7 @@
                 <div class="card-body chat_user_list_container p-0">
                     <ul class="list-group list-group-flush chat_user_list overflow-auto h-100">
                         @foreach ($chats as $chat)
-                            <x-chat.user :user="$chat->partner" :active="$selectedUser && $selectedUser->id == $chat->partner->id" :is_read="$chat->is_read"/>
+                            <x-chat.user :user="$chat->partner" :chat_id="$chat->id" :active="$selectedChat && $selectedChat->id == $chat->id" :is_read="$chat->is_read"/>
                         @endforeach
                     </ul>
                 </div>
