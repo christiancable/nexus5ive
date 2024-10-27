@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedInteger('owner_id'); // Foreign key to users table
             $table->unsignedInteger('partner_id'); // Foreign key to users table
             $table->boolean('is_read')->default(false); // Indicates if the chat has been read
+            $table->softDeletes();
             $table->timestamps();
 
             // Define foreign key constraints
