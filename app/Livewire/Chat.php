@@ -48,6 +48,8 @@ class Chat extends Component
 
             if ($chat) {
                 $this->messages = $chat->chatMessages;
+                $chat->is_read = true;
+                $chat->save();
             } else {
                 $this->messages = collect();
             }
