@@ -168,6 +168,11 @@ class User extends Authenticatable
         return $this->hasMany(Chat::class, 'owner_id');
     }
 
+    public function unreadChats()
+    {
+        return $this->chats()->where('is_read', false)->orderBy('updated_at', 'desc');
+    }
+
     public function activity()
     {
         return $this->hasOne(Activity::class);
