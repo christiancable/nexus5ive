@@ -12,18 +12,29 @@
         <div class="dropdown-menu" aria-labelledby="profiledropdown">
             <a class="dropdown-item"
                 href="{{ action('App\Http\Controllers\Nexus\UserController@show', ['user' => $user->username]) }}">
-                <x-heroicon-s-user class="icon_mini mr-1" aria-hidden="true" />Profile
+                <x-heroicon-m-user class="icon_mini mr-1" aria-hidden="true" />Profile
                 @if ($commentsCount)
                     <span class="badge badge-info">{{ $commentsCount }}</span>
                 @endif
             </a>
 
             <a class="dropdown-item" href="{{ action('App\Http\Controllers\Nexus\ChatController@index') }}">
-                <x-heroicon-s-chat-bubble-left-right class="icon_mini mr-1" aria-hidden="true" />Messages
+                <x-heroicon-m-chat-bubble-left-right class="icon_mini mr-1" aria-hidden="true" />Messages
                 @if ($messagesCount)
                     <span class="badge badge-info">{{ $messagesCount }}</span>
                 @endif
             </a>
+
+            @if ($messagesCount)
+                @foreach ($unreadChats as $key => $chat)
+                    <a class="pl-5 dropdown-item"
+                        href="{{ action('App\Http\Controllers\Nexus\ChatController@index', ['user' => $chat->partner->username]) }}">
+                        <x-heroicon-m-at-symbol class="text-danger mr-1 icon_mini"
+                            aria-hidden="true" />{{ $chat->partner->username }}
+                    </a>
+                @endforeach
+
+            @endif
 
             @if ($user->administrator)
                 <div role="separator" class="dropdown-divider"></div>

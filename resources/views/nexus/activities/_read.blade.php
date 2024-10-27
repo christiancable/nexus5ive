@@ -3,7 +3,7 @@
         @if(Auth::id() != $activity->user->id)
         <a
              href="{{ action('App\Http\Controllers\Nexus\ChatController@index', ['user' => $activity->user->username]) }}">
-             <x-heroicon-s-chat-bubble-left-right class="icon_mini" aria-hidden="true" />
+             <x-heroicon-m-chat-bubble-left-right class="icon_mini" aria-hidden="true" />
          </a>
          @endif
          </td>
