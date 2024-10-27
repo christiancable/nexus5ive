@@ -30,7 +30,7 @@ class ProfileMenu extends Component
     {
         $this->sectionsCount = count($this->user->sections);
         $this->commentsCount = $this->user->newCommentCount();
-        $this->messagesCount = $this->user->newMessageCount();
+        $this->messagesCount = $this->user->unreadChatCount();
         $this->notificationCount = $this->commentsCount + $this->messagesCount;
     }
 
