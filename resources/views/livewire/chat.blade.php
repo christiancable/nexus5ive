@@ -4,13 +4,13 @@
         <div class="col-md-4 col-xl-3 h-100 d-none d-md-block">
 
             <div class="card mb-sm-3 mb-md-0 h-100">
-                <div class="card-header">
-                    <h5 class="mb-0">Users</h5>
-                </div>
+                {{-- <div class="card-header">
+                    <h5 class="mb-0">Chats</h5>
+                </div> --}}
                 <div class="card-body chat_user_list_container p-0">
                     <ul class="list-group list-group-flush chat_user_list overflow-auto h-100">
-                        @foreach ($users as $user)
-                            <x-chat.user :user="$user" :active="$selectedUser && $selectedUser->id == $user->id" />
+                        @foreach ($chats as $chat)
+                            <x-chat.user :user="$chat->partner" :active="$selectedUser && $selectedUser->id == $chat->partner->id" :is_read="$chat->is_read"/>
                         @endforeach
                     </ul>
                 </div>

@@ -5,12 +5,15 @@ namespace App\Livewire;
 use App\Helpers\ChatHelper;
 use App\Models\Chat as ChatModel;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class Chat extends Component
 {
     public $users;
+
+    public $user; 
 
     public $messages;
 
@@ -24,11 +27,13 @@ class Chat extends Component
 
     public $newChatUser;
 
-    public function mount()
+    public function mount(Request $request)
     {
         $this->pollingInterval = 1;
         $this->users = User::where('id', '!=', Auth::id())->orderBy('username')->get();
         $this->messages = collect();
+        $this->user = $request->user();
+        $this->loadMessages();
     }
 
     public function selectUser($userId)
@@ -39,17 +44,22 @@ class Chat extends Component
 
     public function loadMessages()
     {
+        $this->chats = $this->user->chats;
         if ($this->selectedUser) {
             // find chat
             // @todo when this is a chosen from a list of chat
             // $chat = Chat::find($this->selectedChat);
-            $chat = ChatModel::where(['owner_id' => Auth::id(),
-                'partner_id' => $this->selectedUser->id])->first();
+            $chat = ChatModel::where([
+                'owner_id' => Auth::id(),
+                'partner_id' => $this->selectedUser->id
+            ])->first();
 
             if ($chat) {
                 $this->messages = $chat->chatMessages;
-                $chat->is_read = true;
-                $chat->save();
+                if ($chat->is_read == false) {
+                    $chat->is_read = true;
+                    $chat->save();
+                }
             } else {
                 $this->messages = collect();
             }
@@ -64,7 +74,6 @@ class Chat extends Component
             ChatHelper::sendMessage(Auth::id(), $this->selectedUser->id, $this->newMessage);
             $this->newMessage = '';
             $this->loadMessages();
-
         }
     }
 

@@ -165,7 +165,7 @@ class User extends Authenticatable
 
     public function chats()
     {
-        return $this->hasMany(Chat::class, 'owner_id');
+        return $this->hasMany(Chat::class, 'owner_id')->orderBy('updated_at', 'desc');
     }
 
     public function unreadChats()
