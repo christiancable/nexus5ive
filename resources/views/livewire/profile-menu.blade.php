@@ -1,7 +1,8 @@
-<ul class="nav navbar-nav" wire:poll.{{ $pollingInterval }}s="fetchNotifications">
-    <li class="dropdown nav-item">
+<ul class="nav navbar-nav" wire:poll.{{ $pollingInterval }}s="fetchNotifications" >
+    <li class="dropdown nav-item" x-data="{ open: false }">
 
-        <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+        <a href="#" class="dropdown-toggle nav-link" aria-haspopup="true" aria-expanded="false"
+        wire:click.prevent @click="open = !open"
             id="profiledropdown">
             {{ $user->username }} &ndash; {{ $user->popname }}
             @if ($notificationCount)
@@ -9,7 +10,7 @@
             @endif
         </a>
 
-        <div class="dropdown-menu" aria-labelledby="profiledropdown">
+        <div class="dropdown-menu show" x-show="open" aria-labelledby="profiledropdown" @click.away="open = false">
             <a class="dropdown-item"
                 href="{{ action('App\Http\Controllers\Nexus\UserController@show', ['user' => $user->username]) }}">
                 <x-heroicon-m-user class="icon_mini mr-1" aria-hidden="true" />Profile
