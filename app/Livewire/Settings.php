@@ -84,9 +84,7 @@ class Settings extends Component
         $this->currentMode->active = true;
         $this->currentMode->save();
 
-        $message = <<< Markdown
-             Setting BBS Mode to **{$this->currentMode->name}**
-         Markdown;
+        $message = "Setting BBS Mode to **{$this->currentMode->name}**";
 
         Cache::forget('bbs_mode');
         FlashHelper::showAlert($message, 'success');

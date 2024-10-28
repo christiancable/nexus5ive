@@ -11,10 +11,12 @@ class Heading extends Component
     /**
      * Create a new component instance.
      */
-    public function __construct()
-    {
-        //
-    }
+    public function __construct(
+        public string $heading = '',
+        public string $lead = '',
+        public string $introduction = '',
+        public string $icon = '',
+    ) {}
 
     /**
      * Get the view / contents that represent the component.
