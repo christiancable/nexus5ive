@@ -2,8 +2,6 @@
 /* extras */
 /* ------ */
 
-// Open Iconic icon font
-
 // Import Bootstrap mixins and variables
 @import 'bootstrap/scss/bootstrap';
 @import 'bootstrap/scss/_functions';
@@ -44,11 +42,6 @@ blockquote {
   #navigationApp .dropdown-item {
     min-width: 20rem;
   }
-}
-
-/* hide cloaked vue components */
-[v-cloak] {
-  display: none;
 }
 
 /* spoiler text */
