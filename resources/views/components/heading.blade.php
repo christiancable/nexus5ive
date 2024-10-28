@@ -1,9 +1,3 @@
-@props([
-    'heading' => null,
-    'lead' => null,
-    'introduction' => null,
-    'icon' => null,
-])
 <h1 class="display-4">
     {{ $heading }}
     @isset($icon)
@@ -13,7 +7,7 @@
 
 @isset($lead)
     <span class="lead">
-        {!! App\Helpers\NxCodeHelper::nxDecode($lead) !!}
+        {!! \App\Helpers\NxCodeHelper::nxDecode($lead) !!}
     </span>
 @endisset
 
