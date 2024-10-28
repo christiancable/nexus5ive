@@ -10,7 +10,7 @@
             @endif
         </a>
 
-        <div class="dropdown-menu show" x-show="open" aria-labelledby="profiledropdown" @click.away="open = false">
+        <div class="dropdown-menu show" x-show="open" aria-labelledby="profiledropdown" @click.away="open = false" dusk="profile-menu">
             <a class="dropdown-item"
                 href="{{ action('App\Http\Controllers\Nexus\UserController@show', ['user' => $user->username]) }}">
                 <x-heroicon-m-user class="icon_mini mr-1" aria-hidden="true" />Profile
@@ -22,11 +22,12 @@
             <a class="dropdown-item" href="{{ action('App\Http\Controllers\Nexus\ChatController@index') }}">
                 <x-heroicon-m-chat-bubble-left-right class="icon_mini mr-1" aria-hidden="true" />Chat
                 @if ($messagesCount)
-                    <span class="badge badge-info">{{ $messagesCount }}</span>
+                    <span class="badge badge-info" dusk="chat-notification-count">{{ $messagesCount }}</span>
                 @endif
             </a>
 
             @if ($messagesCount)
+                <span dusk="chat-notifications">
                 @foreach ($unreadChats as $key => $chat)
                     <a class="pl-5 dropdown-item"
                         href="{{ action('App\Http\Controllers\Nexus\ChatController@index', ['user' => $chat->partner->username]) }}">
@@ -34,7 +35,7 @@
                             aria-hidden="true" />{{ $chat->partner->username }}
                     </a>
                 @endforeach
-
+                </span>
             @endif
 
             @if ($user->administrator)
