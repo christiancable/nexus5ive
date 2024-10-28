@@ -3,14 +3,13 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Events\UserCreated;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Arr;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Log;
-
-use App\Events\UserCreated;
 
 class User extends Authenticatable
 {
@@ -21,7 +20,7 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $fillable = [  
+    protected $fillable = [
         'username',
         'name',
         'password',
@@ -164,14 +163,14 @@ class User extends Authenticatable
         return $this->hasMany(Post::class, 'update_user_id', 'id');
     }
 
-    public function messages()
+    public function chats()
     {
-        return $this->hasMany(Message::class);
+        return $this->hasMany(Chat::class, 'owner_id')->orderBy('updated_at', 'desc');
     }
 
-    public function sentMessages()
+    public function unreadChats()
     {
-        return $this->hasMany(Message::class, 'author_id');
+        return $this->chats()->where('is_read', false)->orderBy('updated_at', 'desc');
     }
 
     public function activity()
@@ -226,9 +225,9 @@ class User extends Authenticatable
         $this->comments()->delete();
     }
 
-    public function newMessageCount()
+    public function unreadChatCount()
     {
-        return $this->messages()->where('read', false)->select('id')->count();
+        return $this->chats()->where('is_read', false)->select('id')->count();
     }
 
     // dealing with @ mentions
@@ -253,7 +252,7 @@ class User extends Authenticatable
     public function notificationCount()
     {
         $count = 0;
-        $count = $count + $this->newMessageCount();
+        $count = $count + $this->unreadChatCount();
         $count = $count + $this->newCommentCount();
         $count = $count + count($this->Mentions);
 

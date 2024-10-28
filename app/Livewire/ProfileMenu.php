@@ -17,12 +17,15 @@ class ProfileMenu extends Component
 
     public $sectionsCount = 0;
 
+    public $unreadChats;
+
     public $pollingInterval = 5;
 
     public function mount(Request $request)
     {
         $this->pollingInterval = config('nexus.notification_check_interval');
         $this->user = $request->user();
+        $this->unreadChats = collect();
         $this->fetchNotifications();
     }
 
@@ -30,8 +33,9 @@ class ProfileMenu extends Component
     {
         $this->sectionsCount = count($this->user->sections);
         $this->commentsCount = $this->user->newCommentCount();
-        $this->messagesCount = $this->user->newMessageCount();
+        $this->messagesCount = $this->user->unreadChatCount();
         $this->notificationCount = $this->commentsCount + $this->messagesCount;
+        $this->unreadChats = $this->user->unreadChats;
     }
 
     public function render()

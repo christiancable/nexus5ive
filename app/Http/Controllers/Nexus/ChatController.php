@@ -28,7 +28,7 @@ class ChatController extends Controller
 
         ActivityHelper::updateActivity(
             $request->user()->id,
-            'Messages',
+            'Chat',
             action('App\Http\Controllers\Nexus\ChatController@index')
         );
 
