@@ -2,7 +2,7 @@
 	<div class="container">
 		<a class="navbar-brand text-success" href="{{ url('/') }}">
 			@if (config('nexus.logo_image'))
-				<img src="{{config('nexus.logo_image')}}" alt="{{ config('nexus.name', 'Laravel') }}">
+				<img src="{{asset(config('nexus.logo_image'))}}" alt="{{ config('nexus.name', 'Laravel') }}">
 			@else 
 				{{ config('nexus.name', 'Laravel') }}
 			@endif
