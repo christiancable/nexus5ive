@@ -75,7 +75,7 @@
 
 
             <div class="text-center">
-                <p><a href="{{ url('/password/reset') }}">Forgot Your Password?</a></p>
+                <p><a href="{{ route('password.request') }}">Forgot Your Password?</a></p>
             </div>
         </div>
     </div> <!-- .container -->

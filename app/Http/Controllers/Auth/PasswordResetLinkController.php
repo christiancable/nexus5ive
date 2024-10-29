@@ -15,7 +15,8 @@ class PasswordResetLinkController extends Controller
      */
     public function create(): View
     {
-        return view('auth.forgot-password');
+        // changed from framework default
+        return view('nexus.auth.forgot-password');
     }
 
     /**
