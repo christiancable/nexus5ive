@@ -2,6 +2,10 @@
 
 use Illuminate\Support\Facades\Schedule;
 
+/*
+to add to server 
+* * * * * cd /path-to-your-project && php artisan schedule:run >> /dev/null 2>&1
+*/
 // remove old unverified users
 Schedule::command('nexus:unverified --confirm')->daily();
 
