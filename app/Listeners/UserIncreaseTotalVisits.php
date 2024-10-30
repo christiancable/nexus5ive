@@ -4,6 +4,7 @@ namespace App\Listeners;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Auth\Events\Login;
 
 class UserIncreaseTotalVisits
 {
@@ -22,7 +23,7 @@ class UserIncreaseTotalVisits
      *
      * @return void
      */
-    public function handle()
+    public function handle(Login $event)
     {
         $user = Auth::user();
         $user->latestLogin = Carbon::now();

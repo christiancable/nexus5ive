@@ -2,9 +2,9 @@
 
 namespace App\Policies;
 
-use App\Post;
-use App\Topic;
-use App\User;
+use App\Models\Post;
+use App\Models\Topic;
+use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class PostPolicy

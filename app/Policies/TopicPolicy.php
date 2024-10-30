@@ -2,9 +2,9 @@
 
 namespace App\Policies;
 
-use App\Section;
-use App\Topic;
-use App\User;
+use App\Models\Section;
+use App\Models\Topic;
+use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class TopicPolicy

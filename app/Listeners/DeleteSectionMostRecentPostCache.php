@@ -3,7 +3,9 @@
 namespace App\Listeners;
 
 use App\Events\MostRecentPostForSectionBecameDirty;
-use App\Section;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Queue\InteractsWithQueue;
+use App\Models\Section;
 
 class DeleteSectionMostRecentPostCache
 {

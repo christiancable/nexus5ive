@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Tree;
+use App\Models\Tree;
 use Illuminate\Console\Command;
 
 class NexusRebuildTreeCache extends Command

@@ -4,12 +4,12 @@
  *  Command to remove unverified user accounts which have remained
  *  unverified for at least {--age} days
  *
- *  nexus:unverified remove {--confirm} {--age=30}
+ *  nexus:unverified {--confirm} {--age=30}
  */
 
 namespace App\Console\Commands;
 
-use App\User;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Collection;
@@ -38,7 +38,6 @@ class NexusUnverified extends Command
      * @var string
      */
     protected $signature = 'nexus:unverified
-                            {--remove : removed unverified users}
                             {--confirm : do not prompt for confirmation}
                             {--age= : unverified users should be at least this many days old}
     ';

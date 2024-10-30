@@ -2,9 +2,9 @@
 
 namespace App\Helpers;
 
-use App\Section;
-use App\Topic;
-use App\User;
+use App\Models\Section;
+use App\Models\Topic;
+use App\Models\User;
 
 /*
    helper methods for dealing with breadcrumbs
@@ -29,7 +29,7 @@ class BreadcrumbHelper
         do {
             $crumb = [];
             $crumb['title'] = $section->title;
-            $crumb['route'] = action('Nexus\SectionController@show', ['section' => $section->id]);
+            $crumb['route'] = action('App\Http\Controllers\Nexus\SectionController@show', ['section' => $section->id]);
             $breadcrumbs[] = $crumb;
             $section = $section->parent;
         } while ($section != null);
@@ -52,7 +52,7 @@ class BreadcrumbHelper
         while ($section != null) {
             $crumb = [];
             $crumb['title'] = $section->title;
-            $crumb['route'] = action('Nexus\SectionController@show', ['section' => $section->id]);
+            $crumb['route'] = action('App\Http\Controllers\Nexus\SectionController@show', ['section' => $section->id]);
             $breadcrumbs[] = $crumb;
             $section = $section->parent;
         }
@@ -75,9 +75,9 @@ class BreadcrumbHelper
         $crumb['route'] = null;
         $breadcrumbs[] = $crumb;
 
-        $section = \App\Section::first(['id', 'title']);
+        $section = Section::first(['id', 'title']);
         $crumb['title'] = $section->title;
-        $crumb['route'] = action('Nexus\SectionController@show', ['section' => $section->id]);
+        $crumb['route'] = action('App\Http\Controllers\Nexus\SectionController@show', ['section' => $section->id]);
         $breadcrumbs[] = $crumb;
 
         return array_reverse($breadcrumbs);
@@ -96,12 +96,12 @@ class BreadcrumbHelper
         $breadcrumbs[] = $crumb;
 
         $crumb['title'] = 'Users';
-        $crumb['route'] = action('Nexus\UserController@index');
+        $crumb['route'] = action('App\Http\Controllers\Nexus\UserController@index');
         $breadcrumbs[] = $crumb;
 
-        $section = \App\Section::first();
+        $section = Section::first();
         $crumb['title'] = $section->title;
-        $crumb['route'] = action('Nexus\SectionController@show', ['section' => $section->id]);
+        $crumb['route'] = action('App\Http\Controllers\Nexus\SectionController@show', ['section' => $section->id]);
         $breadcrumbs[] = $crumb;
 
         return array_reverse($breadcrumbs);
@@ -119,13 +119,13 @@ class BreadcrumbHelper
         $crumb['route'] = null;
         $breadcrumbs[] = $crumb;
 
-        $crumb['title'] = 'Messages';
-        $crumb['route'] = action('Nexus\ChatController@index');
+        $crumb['title'] = 'Chat';
+        $crumb['route'] = action('App\Http\Controllers\Nexus\ChatController@index');
         $breadcrumbs[] = $crumb;
 
-        $section = \App\Section::first();
+        $section = Section::first();
         $crumb['title'] = $section->title;
-        $crumb['route'] = action('Nexus\SectionController@show', ['section' => $section->id]);
+        $crumb['route'] = action('App\Http\Controllers\Nexus\SectionController@show', ['section' => $section->id]);
         $breadcrumbs[] = $crumb;
 
         return array_reverse($breadcrumbs);

@@ -15,7 +15,7 @@ The [Readme](readme.md) has an overview of the project and how to install the ap
 ## Develop with Github
 I use github to host the code, to track issues and feature requests, as well as accept pull requests.
 
-* Project Roadmap at https://github.com/christiancable/nexus5ive/projects/2
+* Project Roadmap at https://github.com/christiancable/nexus5ive/projects/3
 * View issues with ['Help wanted'](https://github.com/christiancable/nexus5ive/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22)
 
 Feel free to contact me on the issue on Github if you want to work on any specific one.
@@ -25,8 +25,8 @@ Pull requests are the best way to propose changes to the codebase.
 
 1. Fork the repo and create your branch from `develop`.
 2. If you've added code that should be tested, add tests.
-3. Ensure the test suite passes.
-4. Make sure your code meets the Coding Standard (currently PRS2).
+3. Ensure the test suite passes. (sail artisan test && sail dusk)
+4. Make sure your code meets the Coding Standard (laravel pint, included).
 
 I use the `master` branch for the current deployed version of this application. 
 
@@ -49,9 +49,7 @@ I use GitHub issues to track public bugs. Report a bug by opening a new issue; i
 I *love* thorough bug reports. I'm not even kidding.
 
 ## Coding Standards
-I use PSR2 for all the PHP in this project.
-
-* You can run `yarn phpcs` for to check all the code within the app directory.
+I use Laravel pint for all the PHP in this project.
 
 ## License
 By contributing, you agree that your contributions will be licensed under the [GNU GPL v2](LICENCE)

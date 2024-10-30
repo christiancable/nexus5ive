@@ -5,20 +5,14 @@ namespace App\Http\Controllers\Nexus;
 use App\Helpers\BreadcrumbHelper;
 use App\Helpers\RestoreHelper;
 use App\Http\Controllers\Controller;
-use App\Section;
-use App\Topic;
+use App\Models\Section;
+use App\Models\Topic;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class RestoreController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-        $this->middleware('verified');
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -50,7 +44,7 @@ class RestoreController extends Controller
         $breadcrumbs = BreadcrumbHelper::breadcumbForUtility('Your Archive');
         $destinationSections = $request->user()->sections()->get();
 
-        return view('restore.index', compact('trashedSections', 'trashedTopics', 'breadcrumbs', 'destinationSections'));
+        return view('nexus.restore.index', compact('trashedSections', 'trashedTopics', 'breadcrumbs', 'destinationSections'));
     }
 
     /**
@@ -64,10 +58,13 @@ class RestoreController extends Controller
         $trashedSection = Section::onlyTrashed()->findOrFail($id);
         $destinationSection = Section::findOrFail($request->destination);
 
-        $this->authorize('restore', [Section::class, $trashedSection, $destinationSection]);
+        if ($request->user()->cannot('restore', [$trashedSection, $destinationSection])) {
+            abort(403);
+        }
+
         RestoreHelper::restoreSectionToSection($trashedSection, $destinationSection);
 
-        $redirect = action('Nexus\SectionController@show', ['section' => $trashedSection->id]);
+        $redirect = action('App\Http\Controllers\Nexus\SectionController@show', ['section' => $trashedSection->id]);
 
         return redirect($redirect);
     }
@@ -83,10 +80,13 @@ class RestoreController extends Controller
         $trashedTopic = Topic::onlyTrashed()->findOrFail($id);
         $destinationSection = Section::findOrFail($request->destination);
 
-        $this->authorize('restore', [Topic::class, $trashedTopic, $destinationSection]);
+        if ($request->user()->cannot('restore', [$trashedTopic, $destinationSection])) {
+            abort(403);
+        }
+
         RestoreHelper::restoreTopicToSection($trashedTopic, $destinationSection);
 
-        $redirect = action('Nexus\SectionController@show', ['section' => $destinationSection->id]);
+        $redirect = action('App\Http\Controllers\Nexus\SectionController@show', ['section' => $destinationSection->id]);
 
         return redirect($redirect);
     }
