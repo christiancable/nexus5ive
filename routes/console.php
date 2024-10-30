@@ -1,8 +1,9 @@
 <?php
 
-use Illuminate\Foundation\Inspiring;
-use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Schedule;
 
-Artisan::command('inspire', function () {
-    $this->comment(Inspiring::quote());
-})->purpose('Display an inspiring quote')->hourly();
+// remove old unverified users
+Schedule::command('nexus:unverified --confirm')->daily();
+
+// rebuild the search tree cache if it needs it or now
+Schedule::command('nexus:rebuildtreecache')->daily();
