@@ -5,7 +5,7 @@
             <x-heroicon-s-magnifying-glass class="icon_mini mr-1" aria-hidden="true" />Search
         </a>
 
-        <div class="dropdown-menu show" x-show="open" aria-labelledby="mentiondropdown" @click.away="open = false">
+        <div class="dropdown-menu show" x-show="open" aria-labelledby="mentiondropdown" @click.away="open = false" x-cloak>
             <div class="px-4 py-3">
                 <div class="form-group">
                     <label class="sr-only" for="topicFilter">Search</label>
