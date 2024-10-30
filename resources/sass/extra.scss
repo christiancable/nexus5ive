@@ -10,6 +10,9 @@
 
 $body-color: #f5f8fa !default;
 
+/* alpine / livewire hide */
+[x-cloak] { display: none !important; }
+
 /* hero icons */
 
 .icon_large {  
