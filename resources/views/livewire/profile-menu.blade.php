@@ -10,7 +10,7 @@
             @endif
         </a>
 
-        <div class="dropdown-menu show" x-show="open" aria-labelledby="profiledropdown" @click.away="open = false" dusk="profile-menu">
+        <div class="dropdown-menu show" x-show="open" aria-labelledby="profiledropdown" @click.away="open = false" dusk="profile-menu" x-cloak>
             <a class="dropdown-item"
                 href="{{ action('App\Http\Controllers\Nexus\UserController@show', ['user' => $user->username]) }}">
                 <x-heroicon-m-user class="icon_mini mr-1" aria-hidden="true" />Profile
