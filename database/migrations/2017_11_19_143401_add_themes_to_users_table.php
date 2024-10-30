@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Models\Theme;
 
 class AddThemesToUsersTable extends Migration
 {
@@ -14,7 +15,7 @@ class AddThemesToUsersTable extends Migration
     public function up()
     {
         // find the id of the default theme
-        $defaultTheme = App\Theme::firstOrFail();
+        $defaultTheme = Theme::firstOrFail();
         Schema::table('users', function (Blueprint $table) use ($defaultTheme) {
             $table->integer('theme_id')->unsigned()->default($defaultTheme->id);
         });

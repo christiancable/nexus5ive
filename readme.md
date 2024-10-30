@@ -37,6 +37,7 @@ This current version is built using the [Laravel framework](https://laravel.com)
 ## Themes
 
 Nexus supports bootstrap themes.
+
 These can be externally hosted css files (such as the excellent ones at [Bootswatch](https://bootswatch.com/)) or built within nexus. Nexus ships with a Default theme and an example 'Excelsior' theme.
 
 To enable the Excelsior theme
@@ -72,28 +73,17 @@ A number of useful tasks are included to aid in development. Prefix the commands
 
 PHP and javascript tests are provided. Coverage is nowhere near complete. Pull requests here are _extremely_ welcome.
 
-##### PHP
-
-PHP testing for unit and features are written using phpunit
-
-`yarn test` or with coverage map `yarn coverage`
-
-The tests are found in _/tests_
-
-#### Javascript
-
-JS tests are written using mocha.
-
-The tests are found in _/test/js/_
+- `sail artisan test` - unit and some feature tests
+- `sail artisan dusk` - browser based tests
 
 ### Static Analysis
 
-Static analysis is provided using the [larastan](https://medium.com/@nunomaduro/introducing-larastan-alpha-c7582ff366a6) package. To run an analysis of the code run:
+Static analysis is provided using the [larastan](https://github.com/larastan/larastan) package. To run an analysis of the code run:
 
-`yarn larastan`
+`sail npm run larastan`
 
 ### Coding Standards
 
 PHP is written to confirm to Laravel's coding standards. To check the status of all the files within `app` run:
 
-`./vendor/bin/pint app`
+`sail pint app`

@@ -9,13 +9,13 @@ class ModeFactory extends Factory
     /**
      * Define the model's default state.
      *
-     * @return array
+     * @return array<string, mixed>
      */
-    public function definition()
+    public function definition(): array
     {
         return [
-            'name' => $this->faker->word,
-            'welcome' => $this->faker->paragraph,
+            'name' => fake()->word(),
+            'welcome' => fake()->paragraph(),
             // theme_id
             'active' => false,
             'override' => false,

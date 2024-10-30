@@ -2,9 +2,9 @@
 
 namespace App\Helpers;
 
-use App\Topic;
-use App\User;
-use App\View;
+use App\Models\Topic;
+use App\Models\User;
+use App\Models\View;
 
 class ViewHelper
 {

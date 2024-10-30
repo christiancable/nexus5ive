@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use App\Theme;
-use App\User;
+use App\Models\Theme;
+use App\Models\User;
 use Illuminate\Console\Command;
 
 class NexusTheme extends Command
@@ -25,17 +25,7 @@ class NexusTheme extends Command
      */
     protected $description = 'Add, remove and update themes';
 
-    protected $defaultTheme;
-
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
+    public $defaultTheme;
 
     private function addTheme()
     {
@@ -51,7 +41,7 @@ class NexusTheme extends Command
         if ($this->option('path') === null) {
             $this->error('Missing option --path');
 
-            return;
+            return 1;
         }
 
         $themeName = $this->option('name');
@@ -59,6 +49,13 @@ class NexusTheme extends Command
 
         if ($existingTheme) {
             $this->error('This theme already exists');
+
+            if ($existingTheme->id == $this->defaultTheme->id) {
+                $this->error('This theme already exists and cannot be replaced as it is the default');
+
+                return 1;
+            }
+
             if ($this->confirm('do you want to replace the existing theme?')) {
                 $existingTheme->path = $this->option('path');
                 $existingTheme->save();
@@ -72,12 +69,11 @@ class NexusTheme extends Command
         }
     }
 
-    private function setThemeUsersToDefault($theme)
+    public function setThemeUsersToDefault(Theme $theme)
     {
-        $defaultTheme = Theme::firstOrFail();
         foreach ($theme->users as $user) {
             $this->info('Updating theme to default for: '.$user->username);
-            $user->theme_id = $defaultTheme->id;
+            $user->theme_id = $this->defaultTheme->id;
             $user->save();
         }
     }
@@ -87,7 +83,7 @@ class NexusTheme extends Command
         if ($this->option('name') === null) {
             $this->error('Missing option --name');
 
-            return;
+            return 1;
         }
 
         $themeName = $this->option('name');
@@ -95,12 +91,14 @@ class NexusTheme extends Command
 
         if (! $existingTheme) {
             $this->error('Theme does not exist');
+
+            return 1;
         }
 
-        if ($existingTheme['name'] == 'Default') {
+        if ($existingTheme->id == $this->defaultTheme->id) {
             $this->error('You cannot remove the default theme');
 
-            return;
+            return 1;
         }
 
         $this->info('Removing Theme: '.$existingTheme['name'].' - '.$existingTheme['path']);
@@ -123,6 +121,14 @@ class NexusTheme extends Command
      */
     public function handle()
     {
+        try {
+            $this->defaultTheme = Theme::firstOrFail();
+        } catch (\Throwable $th) {
+            $this->error('Default theme missing. Try nexus:install to set a default theme first');
+
+            return 1;
+        }
+
         $function = $this->argument('function');
 
         if ($function === 'add') {
@@ -138,5 +144,7 @@ class NexusTheme extends Command
         }
 
         $this->error('Specify *add* or *remove*');
+
+        return 1;
     }
 }

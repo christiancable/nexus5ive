@@ -2,10 +2,10 @@
 
 namespace Tests\Browser;
 
-use App\Post;
-use App\Section;
-use App\Topic;
-use App\User;
+use App\Models\Post;
+use App\Models\Section;
+use App\Models\Topic;
+use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\Artisan;
 use Laravel\Dusk\Browser;
@@ -30,7 +30,7 @@ class SectionInfoTest extends DuskTestCase
     {
         parent::setUp();
 
-        $this->user = User::factory()->create();
+        $this->user = User::factory()->forTheme()->create();
         $this->home = Section::factory()->create([
             'parent_id' => null,
             'user_id' => $this->user->id,

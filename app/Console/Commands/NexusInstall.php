@@ -2,11 +2,11 @@
 
 namespace App\Console\Commands;
 
-use App\Mode;
-use App\Section;
-use App\Theme;
-use App\Topic;
-use App\User;
+use App\Models\Mode;
+use App\Models\Section;
+use App\Models\Theme;
+use App\Models\Topic;
+use App\Models\User;
 use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Hash;
@@ -25,17 +25,7 @@ class NexusInstall extends Command
      *
      * @var string
      */
-    protected $description = 'Generates an admin user, main menu and sample topic';
-
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
+    protected $description = 'Installs the BBS with an admin user, main menu and sample topic';
 
     /**
      * Execute the console command.

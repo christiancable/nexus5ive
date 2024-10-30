@@ -2,15 +2,34 @@
 /* extras */
 /* ------ */
 
-// Open Iconic icon font
-@import "~open-iconic/font/css/open-iconic-bootstrap.scss";
-
 // Import Bootstrap mixins and variables
-@import "~bootstrap/scss/functions";
-@import "~bootstrap/scss/variables";
-@import "~bootstrap/scss/mixins/_breakpoints";
+@import 'bootstrap/scss/bootstrap';
+@import 'bootstrap/scss/_functions';
+@import "bootstrap/scss/_variables";
+@import "bootstrap/scss/mixins/_breakpoints";
 
 $body-color: #f5f8fa !default;
+
+/* hero icons */
+
+.icon_large {  
+  width: 3rem;
+  height: 3rem;
+}
+
+.icon_medium {
+  width: 2rem;
+  height: 2rem;
+}
+
+.icon_small {
+
+}
+
+.icon_mini {
+  width: 1rem;
+  height: 1rem;
+}
 
 /* blockquote */
 blockquote {
@@ -23,11 +42,6 @@ blockquote {
   #navigationApp .dropdown-item {
     min-width: 20rem;
   }
-}
-
-/* hide cloaked vue components */
-[v-cloak] {
-  display: none;
 }
 
 /* spoiler text */
@@ -52,16 +66,6 @@ blockquote {
   position: absolute;
   top: 0;
   left: 0;
-}
-
-/* lazy loading */
-.b-lazy {
-  &.b-error {
-    filter: blur(2px) grayscale(100);
-    opacity: 0.1;
-    transform: rotate(-10deg);
-    transition: 0.3s ease-in-out;
-  }
 }
 
 /* to fix overly large images used in topic intros */
@@ -105,64 +109,55 @@ $footer-navigation-space-lg: 0;
   }
 }
 
-/* chat */
-$header-height: calc(56.0333px + 47.0333px + 121px);
-$mobile-nav-height: 65.2px;
-$chat-post-height: 130.1px;
 
-$chat-wrapper-height: calc(
-  100vh - #{$header-height} - #{$mobile-nav-height} - #{$chat-post-height} - #{$footer-navigation-space}
-);
+/* chat UI */
 
-$chat-wrapper-height-lg: calc(
-  100vh - #{$header-height} - #{$mobile-nav-height} - #{$chat-post-height}
-);
+// values guessed by eye
+$header-height: 300px;
+$footer-height: 50px;
 
-.chat-message {
-  border-width: 0;
-  //   .card-text {
-  //     border-width: 0;
-  //     border-style: solid;
-  //     border-left-width: 1rem;
-  //   }
-}
+$chat-height-lg: calc(100vh - #{$header-height});
+$chat-height: calc(100vh - #{$header-height} - #{$footer-height} );
 
-.chat-wrapper {
-  height: $chat-wrapper-height; /* or position:absolute; height:100%; */
-}
-
-.chat-conversation {
-  //   min-height: calc(#{$chat-wrapper-height} - #{$chat-post-height});
-  min-height: 1rem;
+#chat-container {
+  height: $chat-height;
 }
 
 @include media-breakpoint-up(lg) {
-  .chat-wrapper {
-    height: $chat-wrapper-height-lg;
+  #chat-container {
+    height: $chat-height-lg;
   }
 }
 
-.chat-post {
-  //   height: $chat-post-height;
+/* Custom CSS for list item hover effect */
+.chat_user_list .list-group-item {
+  transition: background-color 0.3s; /* Smooth transition */
 }
 
-.chat-content {
-  flex: 1;
-  overflow: auto;
+.chat_user_list .list-group-item:hover {
+  background-color: rgba(0, 0, 0, 0.03); /* Change this to your desired hover color */
 }
 
-.chat-wrapper {
-  display: flex;
-  flex: 1;
-  min-height: 0px; /* IMPORTANT: you need this for non-chrome browsers */
+
+.msg_author {
+  background-color: #28a745;
+  color: #fff;
+  border-radius: 50px;
+  border-bottom-right-radius: 0;
 }
 
-//@TODO this 10px value is a bit of a magic number - it covers the different heights of the post form
-.chat-list-wrapper {
-  height: calc(100vh - #{$header-height} - #{$mobile-nav-height} - 10px);
-  min-height: 0px;
+.msg_receiver {
+  background-color: #007bff;
+  color: #fff;
+  border-radius: 50px;
+  border-bottom-left-radius: 0;
 }
-.chat-list {
-  height: calc(100vh - #{$header-height} - #{$mobile-nav-height});
-  overflow: auto;
+
+.user-select {
+  background-color: rgb(247, 247, 247);
+  color: #495057; /* Text color */
+  padding: 0.375rem 0.75rem; /* Padding */
+  border: none; /* Remove border */
+  padding: 0.375rem 0.75rem; /* Padding */
+  box-shadow: none; /* Remove any box shadow */
 }

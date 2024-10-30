@@ -2,15 +2,15 @@
 
 namespace App\Listeners;
 
-use Illuminate\Auth\Events\Verified;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Auth\Events\Verified;
 
 class LogVerifiedUser
 {
     /**
      * Create the event listener.
-     *
-     * @return void
      */
     public function __construct()
     {
@@ -19,10 +19,8 @@ class LogVerifiedUser
 
     /**
      * Handle the event.
-     *
-     * @return void
      */
-    public function handle(Verified $event)
+    public function handle(Verified $event): void
     {
         $level = config('nexus.log_verified_user_level');
         Log::$level("🎉 User verified: {$event->user->username} - {$event->user->email}");

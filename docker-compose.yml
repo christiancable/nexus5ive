@@ -23,10 +23,10 @@ services:
             - sail
         depends_on:
             - mysql
-            - selenium
             - redis
+            - selenium
     mysql:
-        image: 'mysql/mysql-server:8.0'
+        image: 'mariadb:10.5.8'
         ports:
             - '${FORWARD_DB_PORT:-3306}:3306'
         environment:
@@ -49,12 +49,6 @@ services:
                 - '-p${DB_PASSWORD}'
             retries: 3
             timeout: 5s
-    selenium:
-        image: selenium/standalone-chrome
-        volumes:
-            - '/dev/shm:/dev/shm'
-        networks:
-            - sail
     redis:
         image: 'redis:alpine'
         ports:
@@ -70,6 +64,15 @@ services:
                 - ping
             retries: 3
             timeout: 5s
+
+    selenium:
+        image: 'selenium/standalone-chromium'
+        extra_hosts:
+            - 'host.docker.internal:host-gateway'
+        volumes:
+            - '/dev/shm:/dev/shm'
+        networks:
+            - sail
 networks:
     sail:
         driver: bridge

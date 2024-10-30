@@ -3,6 +3,7 @@
 namespace App\Helpers;
 
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Str;
 
 /*
     send flash messages to the session

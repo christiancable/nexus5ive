@@ -2,8 +2,8 @@
 
 namespace Tests\Feature;
 
-use App\Section;
-use App\User;
+use App\Models\Section;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -22,12 +22,12 @@ class CreateSectionTest extends TestCase
         - a sub section
         - a moderator for the sub section
         */
-        $sysop = User::factory()->create();
+        $sysop = User::factory()->forTheme()->create();
         $home = Section::factory()->for($sysop, 'moderator')->create([
             'parent_id' => null,
         ]);
 
-        $moderator = User::factory()->create();
+        $moderator = User::factory()->forTheme()->create();
         $section = Section::factory()
             ->for($moderator, 'moderator')
             ->for($home, 'parent')

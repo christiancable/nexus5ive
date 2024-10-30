@@ -2,7 +2,8 @@
 
 namespace App\Helpers;
 
-use App\Post;
+use App\Models\Post;
+use App\Models\Topic;
 use Illuminate\Support\Arr;
 
 class TopicHelper
@@ -22,7 +23,7 @@ class TopicHelper
 
         // create the route
         $route = action(
-            'Nexus\TopicController@show',
+            'App\Http\Controllers\Nexus\TopicController@show',
             [
                 'topic' => $post->topic->id,
                 'page' => $page,
@@ -56,7 +57,7 @@ SQL;
         $allTopicIDs = Arr::pluck(\DB::select($sql), 'topic_id');
         // $topics = \App\Topic::with('most_recent_post', 'most_recent_post.author', 'section')
         // removed most_recent_post from the eager loading here as it was killing memory in large forums
-        $topics = \App\Topic::with('section')
+        $topics = Topic::with('section')
             ->whereIn('id', $allTopicIDs)->get();
 
         // sorting here rather than in SQL because FIELD is MySQL only and so fails tests
