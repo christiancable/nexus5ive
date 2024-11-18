@@ -1,5 +1,5 @@
 <h1 class="display-4">
-    {{ $heading }}
+    {!! Str::inlineMarkdown($heading) !!}
     @isset($icon)
     <span style="opacity: 0.2">{{ $icon }}</span>
     @endisset

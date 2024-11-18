@@ -16,6 +16,6 @@
             @default
                 <x-heroicon-s-chat-bubble-bottom-center-text class="icon_large {{ $textClass }}" />
         @endswitch
-        {{ $title }}
+        {!! Str::inlineMarkdown($title) !!}
     </h2>
 </a>
