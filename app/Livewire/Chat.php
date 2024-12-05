@@ -32,7 +32,7 @@ class Chat extends Component
     public function mount(Request $request)
     {
         $this->pollingInterval = 1;
-        $this->users = User::where('id', '!=', Auth::id())->orderBy('username')->get();
+        $this->users = User::where('id', '!=', Auth::id())->verified()->orderBy('username')->get();
         $this->messages = collect();
         $this->user = $request->user();
         $this->loadMessages();
