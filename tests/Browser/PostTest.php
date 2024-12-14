@@ -91,7 +91,7 @@ class PostTest extends DuskTestCase
                 // when a user visits a topic and leaves a post
                 ->visit(action([TopicController::class, 'show'], ['topic' => $this->closedTopic]))
                 ->assertDontSee('Add Comment')
-                ->assertSee(strip_tags(__('nexus.topic.closed')));
+                ->assertSee(strip_tags(__('nexus.topic.closed.normal')));
         });
     }
 

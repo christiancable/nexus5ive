@@ -8,37 +8,33 @@ class UpdateTopic extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
-     *
-     * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
 
     /**
      * Get the validation rules that apply to the request.
-     *
-     * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         $id = $this->request->all()['id'] ?? '';
         $formName = "topicUpdate{$id}";
         $this->errorBag = 'topicUpdate'.$id;
 
         return [
-            $formName.'.id' => 'required|numeric',
-            $formName.'.id' => 'exists:topics,id',
+            $formName.'.id' => 'required|numeric|exists:topics,id',
             $formName.'.title' => 'required',
             $formName.'.intro' => 'required',
-            $formName.'.section_id' => 'required|numeric',
-            $formName.'.section_id' => 'exists:sections,id',
+            $formName.'.section_id' => 'required|numeric|exists:sections,id',
             $formName.'.weight' => 'required|numeric',
+            $formName.'.readonly' => 'required|boolean',
+            $formName.'.secret' => 'required|boolean',
         ];
     }
 
-    public function messages()
+    public function messages(): array
     {
         $id = $this->request->all()['id'] ?? '';
         $formName = "topicUpdate{$id}";
