@@ -1,14 +1,13 @@
-<?php 
+<?php
 
 $authorLink = "{$post->author->present()->profileLink} &ndash; {$post->popname}";
 if ($post->topic->secret && $userCanSeeSecrets == false) {
-    $authorLink = "<span><strong>Unknown User &ndash; Unknown User</span>";
+    $authorLink = '<span><strong>Unknown User &ndash; Unknown User</strong></span>';
 }
 
 $postTime = $post->time;
 $formattedTime = date('D, F jS Y - H:i', strtotime($post->time));
 if ($post->topic->secret && $userCanSeeSecrets == false) {
-    var_dump($postTime, $formattedTime);
     // if we are anonymous them we want to see fuzzy times
     $formattedTime = $post->time->diffForHumans();
 }
@@ -34,7 +33,7 @@ if ($post->editor) {
             <span class="card-title">{{$post->title}}</span>
         </div>
     @endif
-    
+
     <div class="card-body">
         <div class="d-flex justify-content-between">
         <span>{!! $authorLink !!}</span>
@@ -44,7 +43,7 @@ if ($post->editor) {
             <hr>
             {!! App\Helpers\NxCodeHelper::nxDecode($post->text) !!}
         </p>
-        @if ($editedByInfo)         
+        @if ($editedByInfo)
             <footer class="d-flex justify-content-end">
                 <small class="text-muted">{!! $editedByInfo !!}</small>
             </footer>
