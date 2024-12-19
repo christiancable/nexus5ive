@@ -15,12 +15,12 @@
     @if ($destinationSections->count() != 0)
     <form action="{{ route('archive.section', $section->id) }}" method="POST" class="form">
         @csrf
-        <div class="form-row align-items-center justify-content-end">
+        <div class="row align-items-center justify-content-end">
             <div class="col-auto my-1">
                 <label for="destination">Restore section to</label>
             </div>
             <div class="col-auto my-1">
-                <select name="destination" class="custom-select mr-sm-2">
+                <select name="destination" class="form-select me-sm-2">
                     @foreach($destinationSections as $destSection)
                         <option value="{{ $destSection->id }}">{{ $destSection->title }}</option>
                     @endforeach

@@ -12,13 +12,13 @@ $errorBag = 'topicUpdate' . $topic->id;
     <input type="hidden" name="{{ $formName }}[secret]" value="0">
     <input type="hidden" name="{{ $formName }}[readonly]" value="0">
 
-    <div class="form-group">
+    <div class="mb-3">
         <label for="title" class="hidden">Title</label>
         <input type="text" name="{{ $formName }}[title]" value="{{ $topic->title }}" class="form-control"
             placeholder="Title">
     </div>
 
-    <div class="form-group">
+    <div class="mb-3">
         <label for="intro" class="hidden">Introduction</label>
         <textarea name="{{ $formName }}[intro]" class="form-control" rows="3" placeholder="Introduction">{{ $topic->intro }}</textarea>
     </div>
@@ -49,9 +49,9 @@ $errorBag = 'topicUpdate' . $topic->id;
         </fieldset>
 
         @if (isset($moderatedSections))
-            <div class="form-group form-inline">
-                <label for="{{ $formName }}[section_id]" class="mr-sm-2">Section</label>
-                <select name="{{ $formName }}[section_id]" class="form-control custom-select">
+            <div class="mb-3 d-flex align-items-center">
+                <label for="{{ $formName }}[section_id]" class="me-sm-2">Section</label>
+                <select name="{{ $formName }}[section_id]" class="form-select form-select">
                     @foreach ($moderatedSections as $id => $title)
                         <option value="{{ $id }}" {{ $topic->section_id == $id ? 'selected' : '' }}>
                             {{ $title }}</option>
@@ -60,9 +60,9 @@ $errorBag = 'topicUpdate' . $topic->id;
             </div>
         @endif
 
-        <div class="form-group form-inline">
-            <label for="{{ $formName }}[weight]" class="mr-sm-2">Order</label>
-            <select name="{{ $formName }}[weight]" class="form-control custom-select">
+        <div class="mb-3 d-flex align-items-center">
+            <label for="{{ $formName }}[weight]" class="me-sm-2">Order</label>
+            <select name="{{ $formName }}[weight]" class="form-select form-select">
                 @for ($i = 0; $i <= 10; $i++)
                     <option value="{{ $i }}" {{ $topic->weight == $i ? 'selected' : '' }}>
                         {{ $i }}</option>
@@ -72,9 +72,9 @@ $errorBag = 'topicUpdate' . $topic->id;
     </div>
 
     <div class="d-flex flex-row-reverse justify-content-between bd-highlight">
-        <div class="form-group ml-2">
+        <div class="mb-3 ms-2">
             <x-button class="btn-success" type="success">
-                <x-heroicon-s-pencil class="icon_mini mr-1" aria-hidden="true" />Save Changes
+                <x-heroicon-s-pencil class="icon_mini me-1" aria-hidden="true" />Save Changes
             </x-button>
         </div>
 
@@ -85,9 +85,9 @@ $errorBag = 'topicUpdate' . $topic->id;
     @csrf
     @method('DELETE')
 
-        <div class="form-group">
+        <div class="mb-3">
             <x-button type="submit" class="btn-warning">
-                <x-heroicon-s-archive-box-arrow-down class="icon_mini mr-1" aria-hidden="true" />
+                <x-heroicon-s-archive-box-arrow-down class="icon_mini me-1" aria-hidden="true" />
                 Archive Topic
             </x-button>
         </div>

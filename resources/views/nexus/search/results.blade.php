@@ -14,7 +14,7 @@
         <x-heading heading="Search" lead="Find old posts and half remembered dreams"
             introduction='Tip: surround phrases in quotes like this "that was no dream"'>
             <x-slot:icon>
-                <x-heroicon-s-magnifying-glass class="icon_large mr-1" aria-hidden="true" />
+                <x-heroicon-s-magnifying-glass class="icon_large me-1" aria-hidden="true" />
             </x-slot>
         </x-heading>
 
@@ -23,15 +23,15 @@
     <div class="container">
         <form action="{{ url('search') }}" method="POST">
             @csrf
-            <div class="form-group">
+            <div class="mb-3">
                 <input type="text" name="text" class="form-control" placeholder="{{ $text }}" autofocus>
             </div>
 
             <div class="row">
                 <div class="col-sm-12">
-                    <div class="form-group">
+                    <div class="mb-3">
                         <x-button type="submit" class="btn-primary">
-                            <x-heroicon-s-magnifying-glass class="icon_mini mr-1" aria-hidden="true" />
+                            <x-heroicon-s-magnifying-glass class="icon_mini me-1" aria-hidden="true" />
                             Search
                         </x-button>
                     </div>

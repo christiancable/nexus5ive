@@ -12,19 +12,19 @@
         <input type="hidden" name="id" value="{{ $subSection->id }}">
         <input type="hidden" name="form[{{ $formName }}][id]" value="{{ $subSection->id }}">
 
-        <div class="form-group">
+        <div class="mb-3">
             <input type="text" name="form[{{ $formName }}][title]" value="{{ $subSection->title }}"
                 class="form-control" placeholder="Title">
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <textarea name="form[{{ $formName }}][intro]" class="form-control">{{ $subSection->intro }}</textarea>
         </div>
 
         <div class="d-md-flex justify-content-md-between">
-            <div class="form-group form-inline">
-                <label class="mr-sm-2" for="{{ $formName }}[user_id]">Moderator</label>
-                <select name="form[{{ $formName }}][user_id]" class="form-control custom-select">
+            <div class="mb-3 d-flex align-items-center">
+                <label class="me-sm-2" for="{{ $formName }}[user_id]">Moderator</label>
+                <select name="form[{{ $formName }}][user_id]" class="form-select form-select">
                     @foreach ($potentialModerators as $id => $name)
                         <option value="{{ $id }}" {{ $subSection->moderator->id == $id ? 'selected' : '' }}>
                             {{ $name }}</option>
@@ -32,9 +32,9 @@
                 </select>
             </div>
 
-            <div class="form-group form-inline">
-                <label class="mr-sm-2" for="{{ $formName }}[parent_id]">Section</label>
-                <select name="form[{{ $formName }}][parent_id]" class="form-control custom-select">
+            <div class="mb-3 d-flex align-items-center">
+                <label class="me-sm-2" for="{{ $formName }}[parent_id]">Section</label>
+                <select name="form[{{ $formName }}][parent_id]" class="form-select form-select">
                     @foreach ($destinations as $id => $title)
                         <option value="{{ $id }}" {{ $parentSectionID == $id ? 'selected' : '' }}>
                             {{ $title }}</option>
@@ -42,9 +42,9 @@
                 </select>
             </div>
 
-            <div class="form-group form-inline">
-                <label class="mr-sm-2" for="{{ $formName }}[weight]">Order</label>
-                <select name="form[{{ $formName }}][weight]" class="form-control custom-select">
+            <div class="mb-3 d-flex align-items-center">
+                <label class="me-sm-2" for="{{ $formName }}[weight]">Order</label>
+                <select name="form[{{ $formName }}][weight]" class="form-select form-select">
                     @for ($i = 0; $i <= 10; $i++)
                         <option value="{{ $i }}" {{ $subSection->weight == $i ? 'selected' : '' }}>
                             {{ $i }}</option>
@@ -54,9 +54,9 @@
         </div>
 
         <div class="d-flex flex-row-reverse justify-content-between bd-highlight">
-            <div class="form-group ml-2">
+            <div class="mb-3 ms-2">
                 <x-button class="btn-success" type="success">
-                    <x-heroicon-s-pencil class="icon_mini mr-1" aria-hidden="true" />Save Changes
+                    <x-heroicon-s-pencil class="icon_mini me-1" aria-hidden="true" />Save Changes
                 </x-button>
             </div>
             </form>
@@ -64,9 +64,9 @@
             <form action="{{ action('App\Http\Controllers\Nexus\\SectionController@destroy', ['section' => $subSection->id]) }}" method="POST">
                 @csrf
                 @method('DELETE')
-            <div class="form-group">
+            <div class="mb-3">
                 <x-button type="submit" class="btn-warning">
-                    <x-heroicon-s-archive-box-arrow-down class="icon_mini mr-1" aria-hidden="true" />
+                    <x-heroicon-s-archive-box-arrow-down class="icon_mini me-1" aria-hidden="true" />
                     Archive Section
                 </x-button>
             </div>
