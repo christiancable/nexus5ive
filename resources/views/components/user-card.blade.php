@@ -8,7 +8,7 @@
             <p class="card-subtitle">{{ $user->name }}</p>
             <p class="card-text text-secondary">
                 @if($user->popname)
-                    <q><em class="font-italic pl-1 pr-1">{{$user->popname}}</em></q>
+                    <q><em class="fst-italic ps-1 pe-1">{{$user->popname}}</em></q>
                 @endif
             </p>
             <div class="row text-secondary mb-3">

@@ -18,7 +18,7 @@
             introduction='These are your archived sections and topics. They only visible to you until you restore them.'
             >
             <x-slot:icon>
-                <x-heroicon-s-archive-box class="icon_large mr-1" aria-hidden="true" />
+                <x-heroicon-s-archive-box class="icon_large me-1" aria-hidden="true" />
             </x-slot>
         </x-heading>
 
@@ -30,9 +30,9 @@
         @else
             <h2>Archived Sections</h2>
 
-            <x-button class="disclose btn-success col-12" data-toggle="collapse" data-target="#sections" aria-expanded="false"
+            <x-button class="disclose btn-success col-12" data-bs-toggle="collapse" data-bs-target="#sections" aria-expanded="false"
                 aria-controls="sections">
-                <x-heroicon-s-chevron-right class="icon_mini mr-2" aria-hidden="true" />
+                <x-heroicon-s-chevron-right class="icon_mini me-2" aria-hidden="true" />
                 View Sections to Restore
             </x-button>
 
@@ -52,9 +52,9 @@
 
             <h2>Archived Topics</h2>
 
-            <x-button class="disclose btn-success col-12" data-toggle="collapse" data-target="#topics" aria-expanded="false"
+            <x-button class="disclose btn-success col-12" data-bs-toggle="collapse" data-bs-target="#topics" aria-expanded="false"
                 aria-controls="sections">
-                <x-heroicon-s-chevron-right class="icon_mini mr-2" aria-hidden="true" />
+                <x-heroicon-s-chevron-right class="icon_mini me-2" aria-hidden="true" />
                 View Topics to Restore
             </x-button>
 

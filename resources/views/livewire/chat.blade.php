@@ -27,7 +27,7 @@
                     <x-chat.user-header :user="$selectedUser" :latest_message="$messages->last()" :users="$users" />
 
                     <div class="card-body p-0">
-                        <div class="pr-2 pl-2 overflow-auto h-100 d-flex flex-column-reverse" dusk="chat-messages">
+                        <div class="pe-2 ps-2 overflow-auto h-100 d-flex flex-column-reverse" dusk="chat-messages">
                             @foreach ($messages->reverse() as $message)
                                 <x-chat.message :message="$message" />
                             @endforeach
@@ -49,10 +49,10 @@
                     <div class="card-body msg_card_body d-flex justify-content-center align-items-center">
 
 
-                        <div class="form-group">
+                        <div class="mb-3">
                             <h1>👋</h1>
-                            <label class="sr-only" for="usersDropdown">Chat to&hellip;</label>
-                            <select class="form-control" id="usersDropdown" wire:model="newChatUser"
+                            <label class="visually-hidden" for="usersDropdown">Chat to&hellip;</label>
+                            <select class="form-select" id="usersDropdown" wire:model="newChatUser"
                                 wire:change="selectUser($event.target.value)">
                                     <option value="null" disabled>Chat with...</option>
                                 @foreach ($users as $user)

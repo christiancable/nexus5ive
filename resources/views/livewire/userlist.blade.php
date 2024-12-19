@@ -1,6 +1,6 @@
 <div>
 
-    <div role="search" class="form-group">
+    <div role="search" class="mb-3">
         <input wire:model.live="search" placeholder="Search for a user" autofocus="autofocus" class="form-control"
             dusk="user-filter">
     </div>
