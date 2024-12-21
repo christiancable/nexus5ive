@@ -1,6 +1,6 @@
 @if ($theme->external)
-    @vite(['resources/sass/extra.scss'])
-    <link href="{{ $theme->path }}" rel="stylesheet">
+    {{-- @vite(['resources/sass/extra.scss']) --}}
+    {{-- <link href="{{ $theme->path }}" rel="stylesheet"> --}}
 @else
-    @vite([$theme->path])
+    {{-- @vite([$theme->path]) --}}
 @endif
