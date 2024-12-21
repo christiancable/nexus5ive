@@ -13,18 +13,18 @@
     <input type="hidden" name="form[{{ $formName }}][user_id]" value="{{ $section->user_id }}">
     <input type="hidden" name="form[{{ $formName }}][weight]" value="{{ $section->weight }}">
 
-    <div class="form-group">
+    <div class="mb-3">
         <input type="text" name="form[{{ $formName }}][title]" value="{{ $section->title }}" class="form-control" placeholder="Title">
     </div>
 
-    <div class="form-group">
+    <div class="mb-3">
         <textarea name="form[{{ $formName }}][intro]" class="form-control">{{ $section->intro }}</textarea>
     </div>
 
     <div class="d-flex justify-content-end">    
-        <div class="form-group">          
+        <div class="mb-3">          
             <x-button class="btn-success" type="success">
-                <x-heroicon-s-pencil class="icon_mini mr-1" aria-hidden="true" />Save Changes
+                <x-heroicon-s-pencil class="icon_mini me-1" aria-hidden="true" />Save Changes
             </x-button>
         </div>
     </div>

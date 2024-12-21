@@ -1,5 +1,9 @@
-// Bootstrap
-@import '_variables';
+
 @import 'bootstrap/scss/bootstrap';
 
-@import 'extra';
+@import '_hero_icons';
+@import '_youtube';
+@import '_chat';
+@import '_images';
+@import '_footer_nav';
+

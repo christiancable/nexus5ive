@@ -9,19 +9,19 @@ $errorBag = 'postUpdate' . $post->id;
         @method('PATCH')
         <input type="hidden" name="id" value="{{ $post->id }}">
 
-        <div class="form-group">
+        <div class="mb-3">
             <input type="text" name="form[{{ $formName }}][title]" value="{{ $post->title }}"
                 class="form-control" placeholder="Subject">
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <textarea name="form[{{ $formName }}][text]" class="form-control">{{ $post->text }}</textarea>
         </div>
 
         <div class="d-flex flex-row-reverse justify-content-between bd-highlight">
-            <div class="form-group ml-2">
+            <div class="mb-3 ms-2">
                 <x-button class="btn-success" type="success">
-                    <x-heroicon-s-pencil class="icon_mini mr-1" aria-hidden="true" />Save Changes
+                    <x-heroicon-s-pencil class="icon_mini me-1" aria-hidden="true" />Save Changes
                 </x-button>
             </div>
         </form>
@@ -30,9 +30,9 @@ $errorBag = 'postUpdate' . $post->id;
         <form action="{{ route('posts.destroy', ['post' => $post->id]) }}" method="POST">
             @csrf
             @method('DELETE')
-            <div class="form-group">
+            <div class="mb-3">
                 <x-button class="btn-danger" type="success">
-                    <x-heroicon-s-trash class="icon_mini mr-1" aria-hidden="true" />Delete
+                    <x-heroicon-s-trash class="icon_mini me-1" aria-hidden="true" />Delete
                 </x-button>
             </div>
         </form>
