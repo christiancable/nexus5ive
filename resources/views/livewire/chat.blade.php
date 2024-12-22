@@ -27,7 +27,7 @@
                     <x-chat.user-header :user="$selectedUser" :latest_message="$messages->last()" :users="$users" />
 
                     <div class="card-body p-0">
-                        <div class="pe-2 ps-2 overflow-auto h-100 d-flex flex-column-reverse" dusk="chat-messages">
+                        <div class="pe-2 ps-2 overflow-auto" dusk="chat-messages">
                             @foreach ($messages->reverse() as $message)
                                 <x-chat.message :message="$message" />
                             @endforeach

@@ -1,0 +1,83 @@
+/* ------ */
+/* extras */
+/* ------ */
+
+// Body
+$body-bg: #f5f8fa;
+$body-color: #636b6f;
+
+// Typography
+$font-family-sans-serif: "Nunito", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+$font-size-base: 0.9rem;
+$line-height-base: 1.6;
+
+
+// Colors
+$teal: #4dc0b5;
+$orange: #f6993f;
+$indigo: #6574cd;
+$purple: #9561e2;
+$pink: #f66D9b;
+
+// muted colours from BS3
+$blue:  #3097D1;
+$red: #bf5329;
+$yellow: #cbb956;
+$green: #2ab27b;
+$cyan: #8eb4cb;
+
+
+$body-color: #f5f8fa !default;
+
+/* alpine / livewire hide */
+[x-cloak] { display: none !important; }
+
+
+/* blockquote */
+blockquote {
+  padding: 0.6rem 1.2rem;
+  margin: 0 0 1.2rem;
+  border-left: 0.4rem solid $body-color;
+}
+/* jump menu */
+@media (min-width: 768px) {
+  #navigationApp .dropdown-item {
+    min-width: 20rem;
+  }
+}
+
+/* spoiler text */
+.spoiler {
+  background: black;
+  color: black;
+}
+
+
+
+
+
+/* make overly long words break */
+.break-long-words {
+  -ms-word-break: break-all;
+  word-break: break-all;
+
+  /* Non standard for webkit */
+  word-break: break-word;
+
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+  hyphens: auto;
+}
+
+/* stop ios zooming into form inputs on small screens */
+$screen-sm-min: 768px !default;
+@media (max-width: $screen-sm-min) {
+  textarea.form-control,
+  input.form-control {
+    font-size: 16px;
+  }
+}
+
+
+
+
