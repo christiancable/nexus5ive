@@ -7,6 +7,17 @@ Bootstrap update:
 ✔ hero icon sizes for toolbar @done(24-12-21 11:26)
 ✔ youtube styles @done(24-12-21 13:59)
 
+☐ default nexus colours and type @started(24-12-24 11:44)
+    ✔ how can I add my own variables for the default nexus colours? @done(24-12-24 11:44)
+    ☐ button text should be white and not black
+    ✔ font family is wrong @done(24-12-24 12:23)
+    ✔ breadcrumb background whould be light grey @done(24-12-24 12:23)
+    ☐ consider building the bs in the more complicated way so you can access functions in bootstrap too
+        see Option B at https://getbootstrap.com/docs/5.3/customize/sass/#importing
+
+
+
+    ☐ why does npm run dev work but npm run build give me vite errors on the page
 
 ☐ styles for chat
     why is overflow auto showing hidden content?
@@ -14,7 +25,6 @@ Bootstrap update:
     
 ☐ bootstrap pagination styles
 
-☐ default nexus colours and type
 
 
 
