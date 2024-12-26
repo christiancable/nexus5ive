@@ -85,15 +85,16 @@ class MentionsTest extends DuskTestCase
 
         $this->browse(function ($browser) use ($user) {
             // WHEN the user clears all mentions
-            $browser->loginAs($user)
+            $browser->loginAs($user);
+
+            $browser
                 ->visit('/')
                 ->click('@mentions-menu-toggle')
-                ->press('@mentions-clear');
+                ->press('@mentions-clear')
+                ->waitUntilMissing('@mentions-count');
 
             // THEN the user no-longer sees they have mentions
-            $browser->loginAs($user)
-                ->visit('/')
-                ->assertMissing('@mentions-count');
+            $browser->assertMissing('@mentions-count');
         });
     }
 }
