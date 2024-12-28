@@ -50,8 +50,12 @@
                             </div>
                         </div>
 
+
+
                         <div class="mb-3">
-                            <button type="submit" class="btn btn-primary">Log In</button>
+                            <x-primary-button>
+                                {{ __('Log in') }}
+                            </x-primary-button>
                         </div>
 
                         <div class="mb-3">

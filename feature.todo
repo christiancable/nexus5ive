@@ -6,10 +6,10 @@ Bootstrap update:
 ✔ build bootstrap 5 for basic css @done(24-12-21 10:56)
 ✔ hero icon sizes for toolbar @done(24-12-21 11:26)
 ✔ youtube styles @done(24-12-21 13:59)
+☐ button text should be white and not black ??
 
-☐ default nexus colours and type @started(24-12-24 11:44)
+✔ default nexus colours and type @started(24-12-24 11:44) @done(24-12-28 18:04) @lasted(4d6h20m54s)
     ✔ how can I add my own variables for the default nexus colours? @done(24-12-24 11:44)
-    ☐ button text should be white and not black
         but that seems to be what bootstrap wants so maybe this is _fine_ 
     ✔ font family is wrong @done(24-12-24 12:23)
     ✔ breadcrumb background whould be light grey @done(24-12-24 12:23)
@@ -27,6 +27,7 @@ Bootstrap update:
     
 ☐ pop up menu for formatting help
 
+✔ fix icons on login page @done(24-12-28 17:56)
 ☐ remove popperjs
 ☐ update formatting menu to use the same stuff as the dropdown menus as far as alphine goes
 ☐ search for other uses of the the popup menu class
