@@ -29,11 +29,11 @@
                         <div class="mb-3">
                             <label for="username" class="visually-hidden">Username</label>
                             <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <div class="input-group-text">
-                                        <x-heroicon-s-user class="icon_mini" aria-hidden="true" />
-                                    </div>
+
+                                <div class="input-group-text">
+                                    <x-heroicon-s-user class="icon_mini" aria-hidden="true" />
                                 </div>
+
                                 <input type="text" name="username" class="form-control" placeholder="Username">
                             </div>
                         </div>
@@ -41,11 +41,11 @@
                         <div class="mb-3">
                             <label for="password" class="visually-hidden">Password</label>
                             <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <div class="input-group-text">
-                                        <x-heroicon-s-key class="icon_mini" aria-hidden="true" />
-                                    </div>
+
+                                <div class="input-group-text">
+                                    <x-heroicon-s-key class="icon_mini" aria-hidden="true" />
                                 </div>
+
                                 <input type="password" name="password" class="form-control" placeholder="Password">
                             </div>
                         </div>
