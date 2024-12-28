@@ -46,10 +46,8 @@
                         </div>
                     </div>
                 @else
-                    <div class="card-body msg_card_body d-flex justify-content-center align-items-center">
-
-
-                        <div class="mb-3">
+                    <div class="card-body msg_card_body d-flex justify-content-center align-items-center h-100">
+                        <div class="text-center">
                             <h1>👋</h1>
                             <label class="visually-hidden" for="usersDropdown">Chat to&hellip;</label>
                             <select class="form-select" id="usersDropdown" wire:model="newChatUser"
@@ -60,7 +58,6 @@
                                 @endforeach
                             </select>
                         </div>
-
                     </div>
                 @endif
             </div>
