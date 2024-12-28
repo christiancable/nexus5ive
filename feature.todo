@@ -16,19 +16,21 @@ Bootstrap update:
     
     ✔ why does npm run dev work but npm run build give me vite errors on the page - assert url in .env @done(24-12-26 15:16)
     
-    ☐ styles for chat
-    why is overflow auto showing hidden content?
+    ✔ styles for chat @done(24-12-28 17:38)
+        ✔ why is overflow auto showing hidden content? - because all the parents of the thing set to h-100 must also have a size @done(24-12-28 17:27)
+        ✔ messages are not in the right order @done(24-12-28 17:27)
+        ✔ send icon placement @done(24-12-28 17:38)
     
     ✔ placement of clear comment button should be at the end of the comment row and it is not @done(24-12-26 16:08)
-    ☐ bootstrap pagination styles
+
+✔ bootstrap pagination styles @done(24-12-28 16:40)
     
+☐ pop up menu for formatting help
+
+☐ remove popperjs
+☐ update formatting menu to use the same stuff as the dropdown menus as far as alphine goes
+☐ search for other uses of the the popup menu class
+
+☐ building custom themes
     ☐ consider building the bs in the more complicated way so you can access functions in bootstrap too
         see Option B at https://getbootstrap.com/docs/5.3/customize/sass/#importing
-    
-
-
-☐ pop up menu for formatting help
-    ☐ remove popperjs
-    ☐ update formatting menu to use the same stuff as the dropdown menus as far as alphine goes
-☐ search for other uses of the the popup menu class
-☐ building custom themes
