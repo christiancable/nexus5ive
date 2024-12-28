@@ -1,5 +1,8 @@
 Bootstrap update:
 
+☐ fix mention menu console error
+☐ fix other console error
+
 ✔ take css and js back to framework defaults @started(24-12-21 10:56) @done(24-12-21 10:56) @lasted(54s)
 ✔ add bootstrap 5 to package.json @done(24-12-21 10:56)
 ✔ add bootstrap 5 to vite @done(24-12-21 10:56)
@@ -24,7 +27,10 @@ Bootstrap update:
     ✔ placement of clear comment button should be at the end of the comment row and it is not @done(24-12-26 16:08)
 
 ✔ bootstrap pagination styles @done(24-12-28 16:40)
-    
+  
+✔ cog menu in topic @done(24-12-28 20:00)
+✔ spoiler text click to reveal @done(24-12-28 20:00)
+
 ☐ pop up menu for formatting help
 
 ✔ fix icons on login page @done(24-12-28 17:56)

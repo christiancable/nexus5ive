@@ -30,9 +30,9 @@
         @else
             <h2>Archived Sections</h2>
 
-            <x-button class="disclose btn-success col-12" data-bs-toggle="collapse" data-bs-target="#sections" aria-expanded="false"
+            <x-button class="btn-success col-12" data-bs-toggle="collapse" data-bs-target="#sections" aria-expanded="false"
                 aria-controls="sections">
-                <x-heroicon-s-chevron-right class="icon_mini me-2" aria-hidden="true" />
+                <x-heroicon-s-chevron-right class="icon_mini me-2 collapse-icon" aria-hidden="true" />
                 View Sections to Restore
             </x-button>
 
@@ -52,9 +52,9 @@
 
             <h2>Archived Topics</h2>
 
-            <x-button class="disclose btn-success col-12" data-bs-toggle="collapse" data-bs-target="#topics" aria-expanded="false"
+            <x-button class="btn-success col-12" data-bs-toggle="collapse" data-bs-target="#topics" aria-expanded="false"
                 aria-controls="sections">
-                <x-heroicon-s-chevron-right class="icon_mini me-2" aria-hidden="true" />
+                <x-heroicon-s-chevron-right class="icon_mini me-2 collapse-icon" aria-hidden="true" />
                 View Topics to Restore
             </x-button>
 

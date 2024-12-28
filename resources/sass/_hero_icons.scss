@@ -18,3 +18,13 @@
     width: 1rem;
     height: 1rem;
   }
+
+  // rotation of hero icons
+
+.rotate-90 {
+    transform: rotate(90deg);
+}
+
+.collapse-icon {
+    transition: transform 0.2s ease-in-out;
+}
