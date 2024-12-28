@@ -25,7 +25,7 @@
 
 
 
-                    <div class="card-body p-0 h-75">
+                    <div class="card-body p-0 flex-grow-1 h-75">
                         <div class="pe-2 ps-2 overflow-auto h-100 d-flex flex-column-reverse" dusk="chat-messages">
                             @foreach ($messages->reverse() as $message)
                                 <x-chat.message :message="$message" />
@@ -37,12 +37,10 @@
                         <div class="input-group">
                             <input type="text" wire:model="newMessage" wire:keydown.enter="sendMessage"
                                 dusk="chat-input" class="form-control type_msg" placeholder="Type your message...">
-                            <div class="input-group-append">
-                                <button wire:click="sendMessage" class="btn btn-primary send_btn" type="button"
-                                    dusk="chat-send-button">
-                                    <x-heroicon-s-paper-airplane class="icon_mini" />
-                                </button>
-                            </div>
+                            <button wire:click="sendMessage" class="btn btn-primary send_btn" type="button"
+                                dusk="chat-send-button">
+                                <x-heroicon-s-paper-airplane class="icon_mini" />
+                            </button>
                         </div>
                     </div>
                 @else
