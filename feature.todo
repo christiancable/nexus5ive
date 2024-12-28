@@ -13,18 +13,18 @@ Bootstrap update:
         but that seems to be what bootstrap wants so maybe this is _fine_ 
     ✔ font family is wrong @done(24-12-24 12:23)
     ✔ breadcrumb background whould be light grey @done(24-12-24 12:23)
-    ☐ consider building the bs in the more complicated way so you can access functions in bootstrap too
-        see Option B at https://getbootstrap.com/docs/5.3/customize/sass/#importing
-
+    
     ✔ why does npm run dev work but npm run build give me vite errors on the page - assert url in .env @done(24-12-26 15:16)
-
+    
     ☐ styles for chat
     why is overflow auto showing hidden content?
-
-✔ placement of clear comment button should be at the end of the comment row and it is not @done(24-12-26 16:08)
-☐ bootstrap pagination styles
-
-
+    
+    ✔ placement of clear comment button should be at the end of the comment row and it is not @done(24-12-26 16:08)
+    ☐ bootstrap pagination styles
+    
+    ☐ consider building the bs in the more complicated way so you can access functions in bootstrap too
+        see Option B at https://getbootstrap.com/docs/5.3/customize/sass/#importing
+    
 
 
 ☐ pop up menu for formatting help
