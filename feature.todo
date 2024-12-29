@@ -2,13 +2,13 @@ Bootstrap update:
 
 ☐ alpinejs warnings on profile dropdown 
 
-☐ building custom themes
-    ☐ consider building the bs in the more complicated way so you can access functions in bootstrap too
+✔ building custom themes @done(24-12-29 15:59)
+    ✘ consider building the bs in the more complicated way so you can access functions in bootstrap too @cancelled(24-12-29 15:55)
         see Option B at https://getbootstrap.com/docs/5.3/customize/sass/#importing
     ✔ excelsior @done(24-12-29 15:07)
-    ☐ halloween
-    ☐ hotdog
-    ☐ xmas
+    ✔ halloween @done(24-12-29 15:26)
+    ✔ hotdog @done(24-12-29 15:48)
+    ✔ xmas @done(24-12-29 15:55)
 
 
 
