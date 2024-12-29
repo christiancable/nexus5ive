@@ -1,0 +1,27 @@
+// excelsior
+@import '_excelsior_variables';
+
+@import 'bootstrap/scss/bootstrap';
+
+@import '_links';
+@import '_blockquote';
+@import '_spoiler';
+@import '_livewire';
+@import '_hero_icons';
+@import '_youtube';
+@import '_chat';
+@import '_images';
+@import '_footer_nav';
+
+// overrides
+
+/* spoiler text */
+.spoiler {
+    background: $green;
+    color: $green;
+}
+
+
+.table table-striped {
+    color: $green;
+}

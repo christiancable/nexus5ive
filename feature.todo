@@ -5,8 +5,12 @@ Bootstrap update:
 ☐ building custom themes
     ☐ consider building the bs in the more complicated way so you can access functions in bootstrap too
         see Option B at https://getbootstrap.com/docs/5.3/customize/sass/#importing
+    ✔ excelsior @done(24-12-29 15:07)
+    ☐ halloween
+    ☐ hotdog
+    ☐ xmas
 
-        
+
 
 ✔ fix mention menu console error? what happened to mentions? @done(24-12-29 12:48)
 ✔ fix other console error @done(24-12-29 13:18)

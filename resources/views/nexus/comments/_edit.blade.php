@@ -2,7 +2,7 @@
     <td>
         <strong>{!! $comment->author->present()->profileLink !!}</strong>
     </td>
-    <td class="break-long-words">    
+    <td class="break-long-words comment">    
         @if ($comment->read === true)
         {{$comment->text}}
         @else 

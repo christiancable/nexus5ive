@@ -7,7 +7,11 @@ export default defineConfig({
             input: [
                 'resources/sass/app.scss',
                 'resources/sass/additional.scss',
-                'resources/js/app.js'
+                'resources/js/app.js',
+                
+                // homegrown themes
+                'resources/sass/excelsior.scss',
+
             ],
             refresh: true,
         }),
