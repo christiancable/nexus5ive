@@ -11,6 +11,8 @@ export default defineConfig({
                 
                 // homegrown themes
                 'resources/sass/excelsior.scss',
+                'resources/sass/halloween.scss',
+                'resources/sass/hotdog.scss',
 
             ],
             refresh: true,
