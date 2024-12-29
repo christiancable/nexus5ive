@@ -13,6 +13,7 @@ export default defineConfig({
                 'resources/sass/excelsior.scss',
                 'resources/sass/halloween.scss',
                 'resources/sass/hotdog.scss',
+                'resources/sass/xmas.scss',
 
             ],
             refresh: true,
