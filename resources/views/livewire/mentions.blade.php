@@ -1,14 +1,25 @@
-<span wire:poll.{{ $pollingInterval }}s="fetchMentions">
+<span wire:poll.{{ $pollingInterval }}s="fetchMentions" x-data="{ open: false }">
     @if ($mentionsCount > 0)
         <ul class="nav navbar-nav ms-auto">
-            <li class="dropdown nav-item">
-                <a href="#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown" role="button" aria-haspopup="true"
-                    aria-expanded="false" id="mentiondropdown" dusk='mentions-menu-toggle'>
+            <li class="dropdown nav-item position-static">
+                <a href="#" 
+                    class="nav-link dropdown-toggle" 
+                    @click.prevent="open = !open"
+                    @click.away="open = false"
+                    role="button"
+                    :aria-expanded="open"
+                    id="mentiondropdown"
+                    dusk='mentions-menu-toggle'>
                     <x-heroicon-s-bell-alert class="icon_mini me-1" aria-hidden="true" />
                     <span class="badge  text-bg-danger" dusk='mentions-count'>{{ $mentionsCount }}</span>
                 </a>
 
-                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="mentiondropdown">
+                <div wire:ignore.self 
+                    class="dropdown-menu dropdown-menu-end" 
+                    :class="{ 'show d-block': open }"
+                    
+                    style="z-index: 1000;"
+                    aria-labelledby="mentiondropdown">
                     @foreach ($mentions as $mention)
                         <a class="dropdown-item" href="{{ App\Helpers\TopicHelper::routeToPost($mention->post) }}">
                             <strong>{{ $mention->post->author->username }}</strong> mentioned you in
