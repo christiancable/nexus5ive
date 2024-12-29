@@ -1,0 +1,8 @@
+/* stop ios zooming into form inputs on small screens */
+$screen-sm-min: 768px !default;
+@media (max-width: $screen-sm-min) {
+  textarea.form-control,
+  input.form-control {
+    font-size: 16px;
+  }
+}
