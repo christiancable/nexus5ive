@@ -2,13 +2,13 @@
     <li class="dropdown nav-item">
         <a href="#" class="dropdown-toggle nav-link" role="button" aria-haspopup="true" aria-expanded="false"
             id="mentiondropdown" wire:click.prevent @click="open = !open">
-            <x-heroicon-s-magnifying-glass class="icon_mini mr-1" aria-hidden="true" />Search
+            <x-heroicon-s-magnifying-glass class="icon_mini me-1" aria-hidden="true" />Search
         </a>
 
         <div class="dropdown-menu show" x-show="open" aria-labelledby="mentiondropdown" @click.away="open = false" x-cloak>
             <div class="px-4 py-3">
-                <div class="form-group">
-                    <label class="sr-only" for="topicFilter">Search</label>
+                <div class="mb-3">
+                    <label class="visually-hidden" for="topicFilter">Search</label>
                     <input type="text" class="form-control" id="topicFilter"
                         placeholder="Search for a Section or Topic" wire:model.live="searchTerm"
                         wire:keydown.enter="performSearch">
@@ -30,7 +30,7 @@
                                 {{ $item['title'] ?: $item['id'] . ' untitled' }}
                             </span>
                         @else
-                            <span class="ml-3">
+                            <span class="ms-3">
                                 <x-heroicon-s-chat-bubble-bottom-center-text class="icon_mini text-muted" />
                                 {{ $item['title'] ?: $item['id'] . ' untitled' }}
                             </span>
@@ -39,7 +39,7 @@
                 @endforeach
             @else
                 <a href="/search/{{ $searchTerm }}" class="dropdown-item">
-                    <x-heroicon-s-magnifying-glass class="icon_mini mr-1" aria-hidden="true" />
+                    <x-heroicon-s-magnifying-glass class="icon_mini me-1" aria-hidden="true" />
                     Search for
                     <em>{{ $searchTerm }}</em>
                 </a>

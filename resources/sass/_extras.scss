@@ -1,0 +1,46 @@
+
+$font-size-base: 0.9rem;
+$line-height-base: 1.6;
+
+
+
+
+
+/* jump menu */
+@media (min-width: 768px) {
+  #navigationApp .dropdown-item {
+    min-width: 20rem;
+  }
+}
+
+
+
+
+
+
+/* make overly long words break */
+.break-long-words {
+  -ms-word-break: break-all;
+  word-break: break-all;
+
+  /* Non standard for webkit */
+  word-break: break-word;
+
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+  hyphens: auto;
+}
+
+/* stop ios zooming into form inputs on small screens */
+// @todo test this on ios to see if this is needed
+$screen-sm-min: 768px !default;
+@media (max-width: $screen-sm-min) {
+  textarea.form-control,
+  input.form-control {
+    font-size: 16px;
+  }
+}
+
+
+
+

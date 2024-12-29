@@ -4,12 +4,12 @@
     <input type="hidden" name="secret" value="0">
     <input type="hidden" name="readonly" value="0">
 
-    <div class="form-group">
-        <label for="title" class="sr-only">Title</label>
+    <div class="mb-3">
+        <label for="title" class="visually-hidden">Title</label>
         <input type="text" name="title" class="form-control" placeholder="Title">
     </div>
-    <div class="form-group">
-        <label for="intro" class="sr-only">Introduction</label>
+    <div class="mb-3">
+        <label for="intro" class="visually-hidden">Introduction</label>
         <textarea name="intro" class="form-control" rows="3" placeholder="Introduction"></textarea>
     </div>
 
@@ -26,9 +26,9 @@
             </div>
         </fieldset>
 
-        <div class="form-group form-inline">
-            <label for="weight" class="mr-sm-2">Order</label>
-            <select name="weight" class="form-control custom-select">
+        <div class="mb-3 d-flex align-items-center">
+            <label for="weight" class="me-sm-2">Order</label>
+            <select name="weight" class="form-select form-select">
                 @for ($i = 0; $i <= 10; $i++)
                     <option value="{{ $i }}">{{ $i }}</option>
                 @endfor
@@ -37,9 +37,9 @@
     </div>
 
     <div class="d-flex flex-row-reverse bd-highlight">
-        <div class="form-group ml-2">
+        <div class="mb-3 ms-2">
             <x-button type="submit" class="btn btn-success">
-                <x-heroicon-s-document-plus class="icon_mini mr-1" aria-hidden="true" />Add Topic
+                <x-heroicon-s-document-plus class="icon_mini me-1" aria-hidden="true" />Add Topic
             </x-button>
         </div>
     </div>

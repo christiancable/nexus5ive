@@ -1,4 +1,5 @@
 // Typography
+@import url('https://fonts.googleapis.com/css?family=Michroma');
 $headings-font-family: 'Michroma', cursive;
 $font-family-sans-serif: "Michroma", sans-serif;
 
@@ -60,3 +61,11 @@ $info: $orange;
     border-bottom-color: $green !important;
   }
 }
+
+.user-comments  {
+  .comment {
+    background-color: $black;
+    color: $green;
+  }
+}
+

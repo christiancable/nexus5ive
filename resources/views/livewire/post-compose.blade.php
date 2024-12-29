@@ -15,11 +15,11 @@
     <div class="tab-content">
         
         <div role="tabpanel" class="tab-pane @if($composeActive) active @endif" id="postEdit">
-            <div class="form-group">
+            <div class="mb-3">
                 <input class="form-control" placeholder="Subject" id="title" name="title" type="text" wire:model="title" />
             </div>
 
-            <div class="form-group">
+            <div class="mb-3">
                 <textarea class="form-control" id="text" name="text" cols="50" rows="10" wire:model="text"
                     ref="text"></textarea>
             </div>
@@ -53,21 +53,21 @@
 
     <!-- buttons and help - medium screens and above -->
     <div class="d-none d-md-flex justify-content-between">
-        <div class="form-group">
+        <div class="mb-3">
             <input dusk="addCommentBtn" class="btn btn-primary form-control" type="submit" value="Add Comment"
                 @if (!$buttonActive) disabled @endif
                  />
         </div>
 
-        <a tabindex="0" class="small text-muted" role="button" data-html="true" data-placement="left"
-            data-toggle="popover" data-trigger="focus" title="Formating Help" data-content="{!! $help !!}">
+        <a tabindex="0" class="small text-muted" role="button" data-bs-html="true" data-bs-placement="left"
+            data-bs-toggle="popover" data-bs-trigger="focus" title="Formating Help" data-bs-content="{!! $help !!}">
             <u>Formatting Help</u>
         </a>
     </div>
 
     <!-- buttons and help - below medium screens -->
     <div class="d-md-none">
-        <div class="form-group">
+        <div class="mb-3">
             <input class="btn btn-primary form-control" type="submit" value="Add Comment"
                 @if (!$buttonActive) disabled @endif
                 />
@@ -76,9 +76,9 @@
 
     <div class="d-md-none">
         <p>
-            <a data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false"
+            <a data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false"
                 aria-controls="collapseExample">
-                <x-heroicon-m-chevron-right class="icon_mini mr-1"/>
+                <x-heroicon-m-chevron-right class="icon_mini me-1"/>
                 Formatting Help
             </a>
         </p>
@@ -87,6 +87,3 @@
         </div>
     </div>
 </form>
-<script>
-$('[data-toggle="popover"]').popover();
-</script>

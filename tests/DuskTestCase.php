@@ -30,6 +30,8 @@ abstract class DuskTestCase extends BaseTestCase
         $options = (new ChromeOptions)->addArguments(collect([
             $this->shouldStartMaximized() ? '--start-maximized' : '--window-size=1920,1080',
             '--disable-search-engine-choice-screen',
+            '--disable-smooth-scrolling', // asdded to make scroll into view work
+            // @see https://stackoverflow.com/questions/66208262/how-to-make-scrollintoview-method-work-in-laravel-dusk
         ])->unless($this->hasHeadlessDisabled(), function (Collection $items) {
             return $items->merge([
                 '--disable-gpu',

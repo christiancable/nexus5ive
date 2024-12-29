@@ -19,12 +19,12 @@
     </div>
     @endif
 
-    <div class="form-group">
+    <div class="mb-3">
       <label for="email">Your E-mail Address</label>
       <input type="text" name="email" class="form-control" placeholder="E-mail">
     </div>
 
-    <div class="form-group">
+    <div class="mb-3">
       <button type="submit" class="btn btn-primary">E-mail Password Reset Link</button>
     </div>
     </form>

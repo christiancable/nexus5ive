@@ -26,35 +26,39 @@
                             </div>
                         @endif
 
-                        <div class="form-group">
-                            <label for="username" class="sr-only">Username</label>
+                        <div class="mb-3">
+                            <label for="username" class="visually-hidden">Username</label>
                             <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <div class="input-group-text">
-                                        <x-heroicon-s-user class="icon_mini" aria-hidden="true" />
-                                    </div>
+
+                                <div class="input-group-text">
+                                    <x-heroicon-s-user class="icon_mini" aria-hidden="true" />
                                 </div>
+
                                 <input type="text" name="username" class="form-control" placeholder="Username">
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <label for="password" class="sr-only">Password</label>
+                        <div class="mb-3">
+                            <label for="password" class="visually-hidden">Password</label>
                             <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <div class="input-group-text">
-                                        <x-heroicon-s-key class="icon_mini" aria-hidden="true" />
-                                    </div>
+
+                                <div class="input-group-text">
+                                    <x-heroicon-s-key class="icon_mini" aria-hidden="true" />
                                 </div>
+
                                 <input type="password" name="password" class="form-control" placeholder="Password">
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-primary">Log In</button>
+
+
+                        <div class="mb-3">
+                            <x-primary-button>
+                                {{ __('Log in') }}
+                            </x-primary-button>
                         </div>
 
-                        <div class="form-group">
+                        <div class="mb-3">
                             <div class="form-check">
                                 <input type="checkbox" name="remember" id="remember" class="form-check-input">
                                 <label for="remember" class="form-check-label">Remember me</label>
