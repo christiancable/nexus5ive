@@ -87,6 +87,3 @@
         </div>
     </div>
 </form>
-<script>
-$('[data-bs-toggle="popover"]').popover();
-</script>
