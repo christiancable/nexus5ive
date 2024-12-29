@@ -37,7 +37,7 @@ class CommentsTest extends DuskTestCase
     * a given user can clear a comment from their profile page
     */
     #[Test]
-    public function testUserCanClearSingleComment(): void
+    public function test_user_can_clear_single_comment(): void
     {
         $user = $this->user;
 
@@ -79,7 +79,7 @@ class CommentsTest extends DuskTestCase
     * a given user can clear all comments from their profile page
     */
     #[Test]
-    public function testUserCanClearAllComments(): void
+    public function test_user_can_clear_all_comments(): void
     {
         $user = $this->user;
 
@@ -95,20 +95,22 @@ class CommentsTest extends DuskTestCase
 
         $this->browse(function ($browser) use ($user, $comment1, $comment2) {
 
+            $browser->loginAs($user);
             // GIVEN user has comments on their profile
-            $browser->loginAs($user)
+            $browser
                 ->visit('/users/'.$user->username)
                 ->assertSee($comment1->text)
                 ->assertSee($comment2->text);
 
             // WHEN user clicks clear comments
-            $browser->loginAs($user)
-                ->visit('/users/'.$user->username)
-                ->press('Clear All Comments');
+            $browser
+                ->waitFor('@btn-clear-all-comments')
+                ->assertVisible('@btn-clear-all-comments')
+                ->scrollIntoView('@btn-clear-all-comments')
+                ->press('@btn-clear-all-comments');
 
             // THEN user can no longer see any comments
-            $browser->loginAs($user)
-                ->visit('/users/'.$user->username)
+            $browser
                 ->assertDontSee($comment1->text)
                 ->assertDontSee($comment2->text);
         });

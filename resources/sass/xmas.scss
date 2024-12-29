@@ -1,12 +1,27 @@
-// Fonts
-@import url('https://fonts.googleapis.com/css?family=Nunito');
-// @import url('https://fonts.googleapis.com/css2?family=Festive&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@400;700&display=swap');
+// Festive
+@import '_xmas_variables';
 
-// Variables
-@import 'xmas_variables';
-
-// Bootstrap
 @import 'bootstrap/scss/bootstrap';
 
-@import 'extra';
+@import '_links';
+@import '_blockquote';
+@import '_spoiler';
+@import '_livewire';
+@import '_hero_icons';
+@import '_youtube';
+@import '_chat';
+@import '_images';
+@import '_footer_nav';
+
+// overrides
+
+/* spoiler text */
+.spoiler {
+    background: $green;
+    color: $green;
+}
+
+
+.table table-striped {
+    color: $green;
+}

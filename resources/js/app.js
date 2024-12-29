@@ -1,9 +1,22 @@
 import './bootstrap';
+import * as bootstrap from 'bootstrap';
 
-import Alpine from 'alpinejs';
+import { handleSpoilers } from './modules/spoilers';
+import { handleCollapseIcons } from './modules/collapseIcons';
+import { handleCogMenu } from './modules/cogMenu';
+import { handlePopovers } from './modules/popover';
 
-window.Alpine = Alpine;
+// Initialize all handlers
+const init = () => {
+    try {
+        handleSpoilers();
+        handleCollapseIcons();
+        handleCogMenu();
+        handlePopovers(bootstrap);
+    } catch (error) {
+        console.error('Error initializing event handlers:', error);
+    }
+};
 
-Alpine.start();
-
-import './nexus';
+// Run initialization when DOM is ready
+document.addEventListener('DOMContentLoaded', init);

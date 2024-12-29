@@ -1,0 +1,21 @@
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration:underline;
+    text-underline-offset: 0.33rem;
+
+}
+
+a:hover.btn {
+    text-decoration:none
+}
+
+a:hover.nav-link {
+    text-decoration:none
+}
+
+a:hover.dropdown-item {
+    text-decoration:none
+}

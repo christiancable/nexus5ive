@@ -1,3 +1,4 @@
+{{-- @todo theme support --}}
 @auth
     @if ($mode)
         @if ($mode->override)
@@ -14,7 +15,7 @@
     @if ($mode)
         @include('nexus._theme', ['theme' => $mode->theme])
     @else 
-        @vite(['resources/css/app.css'])
+         @vite(['resources/sass/app.scss'])
     @endif
 @endguest
 

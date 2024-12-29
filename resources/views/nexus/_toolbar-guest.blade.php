@@ -8,13 +8,13 @@
 			@endif
 		</a>
 
-		<button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarSupportedContent" aria-expanded="true" aria-controls="navbar">
+		<button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-expanded="true" aria-controls="navbar">
 			<span class="navbar-toggler-icon"></span>
 		</button>
 
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<!-- Left Side Of Navbar -->
-			<span class="navbar-nav mr-auto d-none d-lg-block">
+			<span class="navbar-nav me-auto d-none d-lg-block">
                 <span class="navbar-text">
                    {{ config('nexus.subtitle') }}
                 </span>
@@ -23,10 +23,10 @@
 			<!-- Right Side Of Navbar -->
 			@if (!isset($hideRegistration))
 				@if (config('nexus.allow_registrations'))
-				<ul class="navbar-nav ml-auto">
+				<ul class="navbar-nav ms-auto">
 					<li class="nav-item">
 						<a class=" btn btn-primary" href="{{ route('register') }}">
-						 <x-heroicon-s-rocket-launch class="icon_mini mr-1" aria-hidden="true" />
+						 <x-heroicon-s-rocket-launch class="icon_mini me-1" aria-hidden="true" />
 						{{ __('Join') }}</a>
 					</li>
 				</ul>

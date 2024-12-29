@@ -2,8 +2,8 @@
   <div class="card-header msg_head">
       <div class="d-flex bd-highlight justify-content-between">
           <div>
-              <label class="sr-only">To:</label>
-              <select class="form-control user-select" id="usersHeaderDropdown" wire:model="newChatUser"
+              <label class="visually-hidden">To:</label>
+              <select class="form-select user-select" id="usersHeaderDropdown" wire:model="newChatUser"
                   wire:change="selectUser($event.target.value)">
                   @foreach ($users as $user)
                       <option value="{{ $user->id }}">{{ $user->username }}</option>

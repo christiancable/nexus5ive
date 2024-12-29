@@ -1,0 +1,13 @@
+// mobile footer navigation
+$footer-navigation-space: 4rem;
+$footer-navigation-space-lg: 0;
+
+.footer-navigation-spacer {
+  height: $footer-navigation-space;
+}
+
+@include media-breakpoint-up(lg) {
+  .footer-navigation-spacer {
+    height: $footer-navigation-space-lg;
+  }
+}

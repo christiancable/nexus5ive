@@ -32,7 +32,7 @@
 @if (count($user->sections))
 <span>If you like <strong>{{$user->username}}</strong> then check out these sections they moderate </span>
 <div class="dropdown d-inline">
-    <button class="btn btn-secondary dropdown-toggle" type="button" id="sectionMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="sectionMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         Choose Section
     </button>
     <div class="dropdown-menu" aria-labelledby="sectionMenuButton">

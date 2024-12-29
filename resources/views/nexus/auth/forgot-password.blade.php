@@ -32,10 +32,9 @@
                             </div>
 
                             <div class="flex items-center justify-end mt-4">
-                                <button type="submit" class="btn btn-link p-0 m-0 align-baseline">
-                                    <x-primary-button>
-                                        {{ __('Email Password Reset Link') }}
-                                    </x-primary-button>
+                                <x-primary-button>
+                                    {{ __('Email Password Reset Link') }}
+                                </x-primary-button>
                             </div>
                         </form>
 

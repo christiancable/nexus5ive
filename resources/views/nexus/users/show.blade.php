@@ -24,7 +24,7 @@
         @include('nexus.comments.create', $user)
 
         @if (count($comments))
-            <table class="table table-striped">
+            <table class="table table-striped user-comments">
                 <tbody>
                     @foreach ($comments as $comment)
                         @if (Auth::user()->id == $user->id)

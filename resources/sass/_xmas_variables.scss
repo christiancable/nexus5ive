@@ -1,49 +1,69 @@
 @use "sass:color";
 
 // Festive colours
-$festive-pink:          #F5624D;
-$festive-red:           #CC231E;
-$festive-green:         #34A65F;
-$festive-dark-green:    #0F8A5F;
-$festive-blue:          #235E6F;
+$festive-pink: #f5624d;
+$festive-red: #cc231e;
+$festive-green: #34a65f;
+$festive-dark-green: #0f8a5f;
+$festive-blue: #235e6f;
 
+// Additional festive colors
+$festive-gold: #FFD700;
+$festive-snow: #FFFAFA;
 
-$body-bg:       color.adjust($festive-green,    $alpha: -0.9);
-$body-color:    color.adjust($festive-red,      $alpha: -0.1);
+$body-bg: color.adjust($festive-green, $alpha: -0.9);
+$body-color: color.adjust($festive-red, $alpha: -0.1);
+
+$dropdown-bg: white;
+$card-bg: white;
+
+// Card customization
+$card-border-color: $festive-red;
+$card-cap-bg: color.adjust($festive-green, $lightness: 90%);
 
 // Typography
-$font-family-sans-serif: "Nunito", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+@import url("https://fonts.googleapis.com/css?family=Nunito");
+// @import url('https://fonts.googleapis.com/css2?family=Festive&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@400;700&display=swap");
+$font-family-sans-serif: "Nunito", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol";
 $font-size-base: 0.9rem;
 $line-height-base: 1.6;
-$headings-font-family: 'Mountains of Christmas', cursive;
-
+$headings-font-family: "Mountains of Christmas", cursive;
 
 $theme-colors: (
-  "primary":    $festive-dark-green,
-  "secondary":  $festive-blue,
-  "success":    $festive-green,
-  "info":       $festive-pink,
-  "warning":    $festive-green,
-  "danger":     $festive-red,
-  "light":      color.adjust($festive-green, $alpha: -0.9),
-  "dark":       $festive-dark-green,
+    "primary": $festive-dark-green,
+    "secondary": $festive-blue,
+    "success": $festive-green,
+    "info": $festive-pink,
+    "warning": $festive-gold,  // Changed to gold
+    "danger": $festive-red,
+    "light": $festive-snow,  // Changed to snow white
+    "dark": $festive-dark-green,
 );
+
+// Bootstrap component customization
+:root {
+  --bs-card-bg: #{color.adjust($festive-snow, $alpha: -0.1)};
+  --bs-border-radius: 0.5rem;
+  --bs-btn-border-radius: 1.5rem;
+}
 
 // toolbar
 #top-toolbar {
     // border-bottom-color: $orange !important;
-  }
-  
-  #top-toolbar .navbar {
+}
+
+#top-toolbar .navbar {
     background-color: $festive-red !important;
     color: $festive-green;
-  
+
     * {
-      color: $festive-green;
+        color: $festive-green;
     }
-  
+
     .navbar-toggler-icon {
-      background-color: $festive-green;
+        background-color: $festive-green;
     }
-      
-  }
+}

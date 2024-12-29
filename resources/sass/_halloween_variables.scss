@@ -1,4 +1,6 @@
 // Typography
+@import url('https://fonts.googleapis.com/css?family=Arvo|Creepster&display=swap');
+
 $headings-font-family: 'Creepster', cursive;
 $font-family-sans-serif: 'Arvo', serif;
 
@@ -63,4 +65,11 @@ $info: $orange;
     background-color: $orange;
   }
     
+}
+
+.user-comments  {
+  .comment {
+    background-color: $black;
+    color: $green;
+  }
 }

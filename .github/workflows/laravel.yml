@@ -39,11 +39,10 @@ jobs:
       run: php artisan key:generate --env testing
     
     - name: Build with Vite
-      run: npm run build
+      run: npm run build 2>/dev/null || npm run build
     
     - name: Execute PHP tests (Unit and Feature tests) via PHPUnit
       env:
         DB_CONNECTION: sqlite
         DB_DATABASE: database/database.sqlite
       run: php artisan test
-    

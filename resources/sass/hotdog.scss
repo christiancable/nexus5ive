@@ -1,10 +1,27 @@
-// Fonts
-@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+// Hotdog
+@import '_hotdog_variables';
 
-// Variables
-@import "_hotdog_variables";
-
-// Bootstrap
 @import 'bootstrap/scss/bootstrap';
 
-@import 'extra';
+@import '_links';
+@import '_blockquote';
+@import '_spoiler';
+@import '_livewire';
+@import '_hero_icons';
+@import '_youtube';
+@import '_chat';
+@import '_images';
+@import '_footer_nav';
+
+// overrides
+
+/* spoiler text */
+.spoiler {
+    background: $green;
+    color: $green;
+}
+
+
+.table table-striped {
+    color: $green;
+}

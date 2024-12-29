@@ -46,13 +46,13 @@ To enable the Excelsior theme
 To add external themes from Bootswatch...
 
 ```
-php artisan nexus:theme add --name=darkly  --path='https://bootswatch.com/4/darkly/bootstrap.min.css'
-php artisan nexus:theme add --name=slate   --path='https://bootswatch.com/4/slate/bootstrap.min.css'
-php artisan nexus:theme add --name=united  --path='https://bootswatch.com/4/united/bootstrap.min.css'
-php artisan nexus:theme add --name=solar   --path='https://bootswatch.com/4/solar/bootstrap.min.css'
-php artisan nexus:theme add --name=sketchy --path='https://bootswatch.com/4/sketchy/bootstrap.min.css'
-php artisan nexus:theme add --name=materia --path='https://bootswatch.com/4/materia/bootstrap.min.css'
-php artisan nexus:theme add --name=minty   --path='https://bootswatch.com/4/minty/bootstrap.min.css'
+php artisan nexus:theme add --name=darkly  --path='https://bootswatch.com/5/darkly/bootstrap.min.css'
+php artisan nexus:theme add --name=slate   --path='https://bootswatch.com/5/slate/bootstrap.min.css'
+php artisan nexus:theme add --name=united  --path='https://bootswatch.com/5/united/bootstrap.min.css'
+php artisan nexus:theme add --name=solar   --path='https://bootswatch.com/5/solar/bootstrap.min.css'
+php artisan nexus:theme add --name=sketchy --path='https://bootswatch.com/5/sketchy/bootstrap.min.css'
+php artisan nexus:theme add --name=materia --path='https://bootswatch.com/5/materia/bootstrap.min.css'
+php artisan nexus:theme add --name=minty   --path='https://bootswatch.com/5/minty/bootstrap.min.css'
 ```
 
 Themes can be removed by

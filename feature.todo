@@ -1,0 +1,43 @@
+future:
+    ☐ alpinejs warnings on profile dropdown 
+    ☐ test need of ios zoom css fixes that were used on bs4
+    
+Bootstrap 5 updates:
+    ✘ update formatting menu to use the same stuff as the dropdown menus as far as alphine goes @cancelled(24-12-29 16:26)
+    ✘ search for other uses of the the popup menu class @cancelled(24-12-29 16:26)
+    ✔ building custom themes @done(24-12-29 15:59)
+        ✘ consider building the bs in the more complicated way so you can access functions in bootstrap too @cancelled(24-12-29 15:55)
+            see Option B at https://getbootstrap.com/docs/5.3/customize/sass/#importing
+        ✔ excelsior @done(24-12-29 15:07)
+        ✔ halloween @done(24-12-29 15:26)
+        ✔ hotdog @done(24-12-29 15:48)
+        ✔ xmas @done(24-12-29 15:55)
+
+    ✔ fix mention menu console error? what happened to mentions? @done(24-12-29 12:48)
+    ✔ fix other console error @done(24-12-29 13:18)
+    ✔ take css and js back to framework defaults @started(24-12-21 10:56) @done(24-12-21 10:56) @lasted(54s)
+    ✔ add bootstrap 5 to package.json @done(24-12-21 10:56)
+    ✔ add bootstrap 5 to vite @done(24-12-21 10:56)
+    ✔ build bootstrap 5 for basic css @done(24-12-21 10:56)
+    ✔ hero icon sizes for toolbar @done(24-12-21 11:26)
+    ✔ youtube styles @done(24-12-21 13:59)
+    ✔ button text should be white and not black ?? @done(24-12-29 13:19)
+    ✔ default nexus colours and type @started(24-12-24 11:44) @done(24-12-28 18:04) @lasted(4d6h20m54s)
+        ✔ how can I add my own variables for the default nexus colours? @done(24-12-24 11:44)
+            but that seems to be what bootstrap wants so maybe this is _fine_ 
+        ✔ font family is wrong @done(24-12-24 12:23)
+        ✔ breadcrumb background whould be light grey @done(24-12-24 12:23)
+        ✔ why does npm run dev work but npm run build give me vite errors on the page - assert url in .env @done(24-12-26 15:16)
+        ✔ styles for chat @done(24-12-28 17:38)
+            ✔ why is overflow auto showing hidden content? - because all the parents of the thing set to h-100 must also have a size @done(24-12-28 17:27)
+            ✔ messages are not in the right order @done(24-12-28 17:27)
+            ✔ send icon placement @done(24-12-28 17:38)
+        ✔ placement of clear comment button should be at the end of the comment row and it is not @done(24-12-26 16:08)
+    ✔ bootstrap pagination styles @done(24-12-28 16:40)
+    ✔ cog menu in topic @done(24-12-28 20:00)
+    ✔ spoiler text click to reveal @done(24-12-28 20:00)
+    ✔ pop up menu for formatting help @done(24-12-29 13:17)
+    ✔ fix icons on login page @done(24-12-28 17:56)
+    ✔ remove popperjs @done(24-12-29 13:21)
+
+
