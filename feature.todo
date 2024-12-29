@@ -2,6 +2,12 @@ Bootstrap update:
 
 ☐ alpinejs warnings on profile dropdown 
 
+☐ building custom themes
+    ☐ consider building the bs in the more complicated way so you can access functions in bootstrap too
+        see Option B at https://getbootstrap.com/docs/5.3/customize/sass/#importing
+
+        
+
 ✔ fix mention menu console error? what happened to mentions? @done(24-12-29 12:48)
 ✔ fix other console error @done(24-12-29 13:18)
 
@@ -28,10 +34,10 @@ Bootstrap update:
 ✔ spoiler text click to reveal @done(24-12-28 20:00)
 ✔ pop up menu for formatting help @done(24-12-29 13:17)
 ✔ fix icons on login page @done(24-12-28 17:56)
-☐ remove popperjs
+✔ remove popperjs @done(24-12-29 13:21)
+
+
 ☐ update formatting menu to use the same stuff as the dropdown menus as far as alphine goes
 ☐ search for other uses of the the popup menu class
 
-☐ building custom themes
-    ☐ consider building the bs in the more complicated way so you can access functions in bootstrap too
-        see Option B at https://getbootstrap.com/docs/5.3/customize/sass/#importing
+
