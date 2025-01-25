@@ -1,6 +1,8 @@
 future:
     ☐ alpinejs warnings on profile dropdown 
-    ☐ test need of ios zoom css fixes that were used on bs4
+    
+misc:
+    ✔ test need of ios zoom css fixes that were used on bs4 @done(24-12-29 17:01)
     
 Bootstrap 5 updates:
     ✘ update formatting menu to use the same stuff as the dropdown menus as far as alphine goes @cancelled(24-12-29 16:26)
