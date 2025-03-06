@@ -1,28 +1,29 @@
 {
-    "name": "laravel/laravel",
+    "name": "christiancable/nexus5ive",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
+    "description": "a Laravel based BBS.",
     "keywords": ["laravel", "framework"],
     "license": "MIT",
     "require": {
         "php": "^8.2",
         "blade-ui-kit/blade-heroicons": "^2.4",
-        "laravel/framework": "^11.9",
-        "laravel/tinker": "^2.9",
+        "fakerphp/faker": "^1.23",
+        "laravel/framework": "^12.0",
+        "laravel/pail": "^1.2.2",
+        "laravel/tinker": "^2.10.1",
         "livewire/livewire": "^3.5",
         "symfony/http-client": "^7.1",
-        "symfony/mailgun-mailer": "^7.1",
-        "fakerphp/faker": "^1.23"
+        "symfony/mailgun-mailer": "^7.1"
     },
     "require-dev": {
-        "larastan/larastan": "^2.0",
+        "larastan/larastan": "^3.0",
         "laravel/breeze": "^2.1",
         "laravel/dusk": "^8.2",
         "laravel/pint": "^1.13",
-        "laravel/sail": "^1.26",
+        "laravel/sail": "^1.41",
         "mockery/mockery": "^1.6",
-        "nunomaduro/collision": "^8.0",
-        "phpunit/phpunit": "^11.0.1"
+        "nunomaduro/collision": "^8.6",
+        "phpunit/phpunit": "^11.5.3"
     },
     "autoload": {
         "psr-4": {
