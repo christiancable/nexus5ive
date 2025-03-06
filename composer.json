@@ -1,7 +1,7 @@
 {
-    "name": "laravel/laravel",
+    "name": "christiancable/nexus5ive",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
+    "description": "a Laravel based BBS.",
     "keywords": ["laravel", "framework"],
     "license": "MIT",
     "require": {
