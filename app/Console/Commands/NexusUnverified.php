@@ -105,7 +105,7 @@ class NexusUnverified extends Command
         foreach ($this->unverifiedUsers as $user) {
             $this->comment("* removing {$user->username}");
             $deletedUserCount++;
-            $user->delete();
+            $user->forceDelete();
         }
 
         $this->info("Removed $deletedUserCount unverified users");
