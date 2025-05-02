@@ -1,6 +1,11 @@
 moderation:
+    prep:
+        ✔ post component @done(25-05-02 20:17)
+        ✔ profile link component @done(25-05-02 20:17)
+        ☐ replace user preseted profileLink with component
+
     posts can be reported for moderation
-    
+
         get /post/<id>/report
             reporting screen
         post /post/<id>/report
