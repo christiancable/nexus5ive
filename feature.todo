@@ -1,3 +1,36 @@
+moderation:
+    posts can be reported for moderation
+    
+        get /post/<id>/report
+            reporting screen
+        post /post/<id>/report
+            sends details to moderation queue
+
+    
+    a moderator level user can see a list of posts awaiting moderation
+        they can jump to the post to see it in cotext
+        they can delete the post
+        they can edit the post
+        moderator can respond to the moderation
+            a chat message is sent to the user
+        when the post is moderated then a message is sent to the author telling them they have broken the rules
+     and what action has been taken
+    
+    a log can produced from the moderation which shows
+        - the post
+        - the action taken by the moderator
+
+    when a post is reported
+        - a entry is added to the moderation queue
+        - the entry is marked unread
+
+    queue for moderation includes
+        post 
+        user
+        post content
+        action taken
+
+
 future:
     ☐ alpinejs warnings on profile dropdown 
     

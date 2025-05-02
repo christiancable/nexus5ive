@@ -1,16 +1,20 @@
-
 <div class="card mb-3" id="{{ $id }}">
     @if ($title)
         <div class="card-header bg-primary text-white">
-            <span class="card-title">{{$title}}</span>
+            <span class="card-title">{{ $title }}</span>
         </div>
     @endif
 
     <div class="card-body">
         <div class="d-flex justify-content-between">
-        <span>{!! $authorLink !!}</span>
-        <small class="{{$timeClass}}">{{$formattedTime}}</small>
+            <div>
+                <x-profile-link :url=$authorUrl :username=$authorName/> <span class="text-muted">&ndash;</span> {{$authorPopname}}
+            </div>
+            <div>
+                <x-heroicon-s-flag class="icon_mini" />
+            </div>
         </div>
+        <small class="{{ $timeClass }}">{{ $formattedTime }}</small>
         <p class="card-text">
             <hr>
             {!! $content !!}

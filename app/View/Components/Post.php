@@ -12,8 +12,6 @@ class Post extends Component
 
     public $title;
 
-    public $authorLink;
-
     public $timeClass;
 
     public $formattedTime;
@@ -21,6 +19,12 @@ class Post extends Component
     public $content;
 
     public $editedByInfo;
+
+    public $authorUrl;
+
+    public $authorName;
+
+    public $authorPopname;
 
     /**
      * Create a new component instance.
@@ -32,9 +36,14 @@ class Post extends Component
         $this->id = $post->id;
         $this->title = $post->title ?? null;
 
-        $this->authorLink = "{$post->author->present()->profileLink} &ndash; {$post->popname}";
+        $this->authorUrl = action('App\Http\Controllers\Nexus\UserController@show', ['user' => $post->author->username]);
+        $this->authorName = $post->author->username;
+        $this->authorPopname = $post->author->popname;
+
         if ($post->topic->secret && $userCanSeeSecrets == false) {
-            $this->authorLink = '<span><strong>Unknown User &ndash; Unknown User</strong></span>';
+            $this->authorPopname = null;
+            $this->authorUrl = null;
+            $this->authorName = null;
         }
 
         $this->timeClass = 'text-muted';
