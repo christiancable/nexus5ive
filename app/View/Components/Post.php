@@ -26,15 +26,18 @@ class Post extends Component
 
     public $authorPopname;
 
+    public $preview;
+
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($post, $userCanSeeSecrets = false, $readProgress = null)
+    public function __construct($post, $userCanSeeSecrets = false, $readProgress = null, $preview = false)
     {
         $this->id = $post->id;
         $this->title = $post->title ?? null;
+        $this->preview = $preview ?? false;
 
         $this->authorUrl = action('App\Http\Controllers\Nexus\UserController@show', ['user' => $post->author->username]);
         $this->authorName = $post->author->username;
