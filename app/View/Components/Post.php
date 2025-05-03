@@ -38,7 +38,7 @@ class Post extends Component
 
         $this->authorUrl = action('App\Http\Controllers\Nexus\UserController@show', ['user' => $post->author->username]);
         $this->authorName = $post->author->username;
-        $this->authorPopname = $post->author->popname;
+        $this->authorPopname = $post->popname;
 
         if ($post->topic->secret && $userCanSeeSecrets == false) {
             $this->authorPopname = null;

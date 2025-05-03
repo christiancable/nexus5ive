@@ -3,6 +3,10 @@ moderation:
         ✔ post component @done(25-05-02 20:17)
         ✔ profile link component @done(25-05-02 20:17)
         ☐ replace user preseted profileLink with component
+            ✔ review this, have the user as an optional arg and use that for url and name if given @done(25-05-03 12:11)
+            - saves a lot of faff
+
+            <x-profile-link :user=$user :url=$url :name=$name />
 
     posts can be reported for moderation
 

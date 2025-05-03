@@ -15,4 +15,5 @@
     {!! App\Helpers\NxCodeHelper::nxDecode($introduction) !!}
 @endisset
 
+{{ $slot }}
 <hr>
