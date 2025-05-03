@@ -10,9 +10,12 @@
             <div>
                 <x-profile-link :url=$authorUrl :username=$authorName/> <span class="text-muted">&ndash;</span> {{$authorPopname}}
             </div>
+            
+            @if($preview != true)
             <div>
-                <x-heroicon-s-flag class="icon_mini" />
+                <a href="{{ action('App\Http\Controllers\Nexus\PostController@report', ['post' => $id]) }}"><x-heroicon-s-flag class="icon_mini" /></a>
             </div>
+            @endif
         </div>
         <small class="{{ $timeClass }}">{{ $formattedTime }}</small>
         <p class="card-text">

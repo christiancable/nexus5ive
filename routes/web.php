@@ -2,10 +2,12 @@
 
 use App\Http\Controllers\Nexus\ActivityController;
 use App\Http\Controllers\Nexus\ChatApiController;
+
 use App\Http\Controllers\Nexus\ChatController;
 use App\Http\Controllers\Nexus\CommentController;
 use App\Http\Controllers\Nexus\ModeController;
 use App\Http\Controllers\Nexus\PostController;
+use App\Http\Controllers\Nexus\ReportController;
 use App\Http\Controllers\Nexus\RestoreController;
 use App\Http\Controllers\Nexus\SearchController;
 use App\Http\Controllers\Nexus\SectionController;
@@ -62,7 +64,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     /* Posts */
     Route::delete('posts/{post}', [PostController::class, 'destroy']);
+    Route::get('posts/{post}/report', [PostController::class, 'report'])->name('report');
     Route::resource('posts', PostController::class);
+
+    /* moderation and reporting */
+    Route::post('report/{type}/{id}', [ReportController::class, 'store']);
 
     /* messages */
     Route::get('chat/{user?}', [ChatController::class, 'index']);

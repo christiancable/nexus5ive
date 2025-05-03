@@ -46,4 +46,19 @@ class PostController extends Controller
 
         return redirect()->route('topic.show', ['topic' => $post->topic_id]);
     }
+
+    /**
+     * flag a post for moderation
+     */
+    public function report(Request $request, Post $post)
+    {
+        // can user see secrets?
+
+        return view(
+            'nexus.moderation.report.post',
+            [
+                'post' => $post,
+            ],
+        );
+    }
 }
