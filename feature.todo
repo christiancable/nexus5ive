@@ -2,21 +2,17 @@ moderation:
     prep:
         ✔ post component @done(25-05-02 20:17)
         ✔ profile link component @done(25-05-02 20:17)
-        ☐ replace user preseted profileLink with component
+        ✔ replace user preseted profileLink with component @done(25-05-03 12:49)
             ✔ review this, have the user as an optional arg and use that for url and name if given @done(25-05-03 12:11)
-            - saves a lot of faff
-
-            <x-profile-link :user=$user :url=$url :name=$name />
-
-    posts can be reported for moderation
-
-        get /post/<id>/report
-            reporting screen
-        post /post/<id>/report
-            sends details to moderation queue
-
+        ✔ a user can report a post @done(25-05-03 19:33)
     
-    a moderator level user can see a list of posts awaiting moderation
+    dusk:
+        ☐ a user can report a post for moderation
+        ☐ an administrator can list reports
+        ☐ an administrator can see the posted report
+
+
+    ☐ a moderator level user can see a list of posts awaiting moderation
         they can jump to the post to see it in cotext
         they can delete the post
         they can edit the post
