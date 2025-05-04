@@ -1,8 +1,6 @@
 <?php
 
 use App\Http\Controllers\Nexus\ActivityController;
-use App\Http\Controllers\Nexus\ChatApiController;
-
 use App\Http\Controllers\Nexus\ChatController;
 use App\Http\Controllers\Nexus\CommentController;
 use App\Http\Controllers\Nexus\ModeController;
@@ -13,23 +11,8 @@ use App\Http\Controllers\Nexus\SearchController;
 use App\Http\Controllers\Nexus\SectionController;
 use App\Http\Controllers\Nexus\TopicController;
 use App\Http\Controllers\Nexus\UserController;
-use App\Http\Controllers\ProfileController;
 use App\Http\Middleware\EnsureUserIsAdmin;
 use Illuminate\Support\Facades\Route;
-
-Route::get('/', function () {
-    return view('welcome');
-});
-
-// Route::get('/dashboard', function () {
-//     return view('dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
-
-Route::middleware(['auth'])->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
 
 require __DIR__.'/auth.php';
 
@@ -37,9 +20,12 @@ require __DIR__.'/auth.php';
 
 Route::middleware(['auth', 'verified'])->group(function () {
     /* Admin */
-    Route::middleware([EnsureUserIsAdmin::class])->group(function () {
-        Route::resource('admin', ModeController::class);
-    });
+    Route::middleware([EnsureUserIsAdmin::class])
+        ->prefix('admin')
+        ->group(function () {
+            Route::resource('admin', ModeController::class);
+            Route::get('/reports', [ReportController::class, 'index']);
+        });
 
     /* Sections */
     Route::get('/', [SectionController::class, 'index'])->name('dashboard');
@@ -67,12 +53,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('posts/{post}/report', [PostController::class, 'report'])->name('report');
     Route::resource('posts', PostController::class);
 
-    /* moderation and reporting */
+    /* moderation and reporting - all users can report */
     Route::post('report/{type}/{id}', [ReportController::class, 'store']);
 
     /* messages */
     Route::get('chat/{user?}', [ChatController::class, 'index']);
-    
+
     /* Search */
     Route::get('search', [SearchController::class, 'index']);
     Route::get('search/{text}', [SearchController::class, 'find']);
