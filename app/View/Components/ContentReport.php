@@ -18,11 +18,24 @@ class ContentReport extends Component
         public Report $report,
     ) {
 
-        // if the report is about a post make a post model we can use for preview
+        // add previews for reported content
         if (is_array($report->reported_content_snapshot ?? null)) {
-            $this->postPreview = new \App\Models\Post($report->reported_content_snapshot);
-            $this->postPreview->updated_at = $report->reported_content_snapshot['updated_at'] ?? null;
-            $this->postPreview->load(['topic', 'author', 'editor']);
+
+            switch (class_basename($report->reportable_type)) {
+                case 'Post':
+                    $this->postPreview = new \App\Models\Post($report->reported_content_snapshot);
+                    $this->postPreview->updated_at = $report->reported_content_snapshot['updated_at'] ?? null;
+                    $this->postPreview->load(['topic', 'author', 'editor']);
+                    break;
+
+                case 'Chat':
+                    // @todo add sensible preview for chat
+                    break;
+
+                default:
+                    // code...
+                    break;
+            }
         }
     }
 
