@@ -30,7 +30,7 @@ class TopicHelper
             ]
         );
 
-        return $route;
+        return "$route#$post->id";
     }
 
     public static function recentTopics($maxresults = 10)

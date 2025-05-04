@@ -69,6 +69,17 @@ class Report extends Model
         return $query->whereNotIn('status', ['pending', 'under_review']);
     }
 
+    /**
+     * link to content if relevant
+     */
+    public function getReportableLinkAttribute(): ?string
+    {
+        return match (class_basename($this->reportable_type)) {
+            'Post' => \App\Helpers\TopicHelper::routeToPost($this->reportable),
+            default => null,
+        };
+    }
+
     public function getStatusBadgeClassAttribute()
     {
         return match ($this->status) {
