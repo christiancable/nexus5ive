@@ -12,6 +12,19 @@ moderation:
         ☐ an administrator can see the posted report
 
 
+    ☐ an administrator can see a paginated list of reports
+    ☐ a report can view be expanded to show details
+
+    ☐ report form is limited to the choices in the report model reason array
+
+    ☐ report uses profile link to link to reporter
+    ☐ report shows chat icon for reporter if not annoy
+
+    off topic:
+        ✔ does the BBS modes have any auth at all? yes, in the routes @done(25-05-04 09:50)
+        ✔ BBS settings should be something like 'Theme' @done(25-05-04 11:05)
+        ✔ test users can register and remove the profile controller - greeny3 - jue.yan8qej5whg3KMD @done(25-05-04 10:21)
+
     ☐ a moderator level user can see a list of posts awaiting moderation
         they can jump to the post to see it in cotext
         they can delete the post

@@ -30,14 +30,14 @@ class ModeTest extends TestCase
     }
 
     /**
-     * Only administrators can access the admin section
+     * Only administrators can access the theme section
      */
     #[Test]
     #[Group('mode')]
-    public function sysopsCanAccessAdminSection(): void
+    public function sysops_can_access_theme_section(): void
     {
         $sysop = User::factory()->forTheme()->create(['administrator' => true]);
-        $this->actingAs($sysop)->get('/admin')->assertSuccessful();
+        $this->actingAs($sysop)->get(route('theme.index'))->assertSuccessful();
     }
 
     /**
@@ -45,9 +45,9 @@ class ModeTest extends TestCase
      */
     #[Test]
     #[Group('mode')]
-    public function nonSysopsCannotAccessAdminSection(): void
+    public function non_sysops_cannot_access_admin_section(): void
     {
         $user = User::factory()->forTheme()->create();
-        $this->actingAs($user)->get('/admin')->assertStatus(403);
+        $this->actingAs($user)->get(route('theme.index'))->assertStatus(403);
     }
 }

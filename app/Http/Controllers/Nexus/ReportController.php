@@ -2,21 +2,27 @@
 
 namespace App\Http\Controllers\Nexus;
 
-use App\Http\Controllers\Controller;
-use App\Models\Post;
-use App\Models\Report;
+use App\Helpers\BreadcrumbHelper;
 use App\Helpers\FlashHelper;
-
+use App\Http\Controllers\Controller;
+use App\Models\Report;
 use Illuminate\Http\Request;
 
 class ReportController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * index of currently open reports aka the moderation queue
      */
     public function index()
     {
-        //
+        $breadcrumbs = BreadcrumbHelper::breadcumbForUtility('Moderation Queue');
+
+        $reports = Report::open()
+            ->with(['reportable', 'reporter', 'moderator']) // eager load relations
+            ->orderBy('created_at', 'desc')
+            ->paginate(5);
+
+        return view('nexus.admin.reports.index', compact('reports', 'breadcrumbs'));
     }
 
     /**
@@ -48,12 +54,12 @@ class ReportController extends Controller
         $reportable = $modelClass::findOrFail($id);
 
         // Create and save the report
-        $report = new Report();
+        $report = new Report;
         $report->reason = $validated['reason'];
         $report->details = $validated['details'] ?? null;
-        $report->reported_content_snapshot = $reportable->toJson();
+        $report->reported_content_snapshot = $reportable->toArray();
 
-        if (!($validated['anonymous'] ?? false) && auth()->check()) {
+        if (! ($validated['anonymous'] ?? false) && auth()->check()) {
             $report->reporter_id = auth()->id();
         }
 
@@ -68,7 +74,7 @@ class ReportController extends Controller
         $action = match ($type) {
             'post' => action('App\Http\Controllers\Nexus\TopicController@show', ['topic' => $reportable->topic->id]),
             'chat' => action('App\Http\Controllers\Nexus\ChatController@index'),
-            default => action('App\Http\Controllers\Nexus\SectionController@index'),  
+            default => action('App\Http\Controllers\Nexus\SectionController@index'),
         };
 
         return redirect($action);

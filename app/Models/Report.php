@@ -89,6 +89,16 @@ class Report extends Model
 
     public function getReasonLabelAttribute()
     {
-        return self::REASONS[$this->reason]  ?? 'Unknown';
+        return self::REASONS[$this->reason] ?? 'Unknown';
+    }
+
+    /**
+     * show a preview of the reported content
+     *
+     * @todo show different previews for the type of report
+     */
+    public function getSnapshotTextAttribute()
+    {
+        return $this->reported_content_snapshot['text'] ?? 'No content';
     }
 }
