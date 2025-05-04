@@ -31,16 +31,20 @@
 
                         <td>
                             @if ($report->reportable)
-                                <strong>{{ class_basename($report->reportable_type) }}
-                                    #{{ $report->reportable->id }}</strong><br>
+                                <strong>{{ class_basename($report->reportable_type) }}</strong> <small class="text-body-secondary">#{{ $report->reportable->id }}</small><br>
 
-                                    <div class="border rounded p-2 bg-light text-muted fst-italic small">
-                                        {{ Str::limit($report->snapshot_text, 150) }}
+                                <div class="border rounded p-2 bg-light text-muted fst-italic small">
+                                    {{ Str::limit($report->snapshot_text, 150) }}
+                                </div>
+
+                                @if ($report->reportable_link)
+                                    <div class="mt-2">
+                                        <a href="{{ $report->reportable_link }}" target="_blank"
+                                            class="btn btn-sm btn-outline-secondary">
+                                           <x-heroicon-s-arrow-top-right-on-square class="icon_mini me-1" />View in context
+                                        </a>
                                     </div>
-
-                                    @if ($report->reportable_link)
-                                    <a href="{{$report->reportable_link }}">View in context</a>
-                                    @endif
+                                @endif
                             @else
                                 <em>Content no longer available</em>
                             @endif
@@ -49,10 +53,10 @@
                         <td>{{ $report->reason_label }}</td>
 
                         <td>
-                            @if($report->reporter)
-                            <x-profile-link :user="$report->reporter" />
+                            @if ($report->reporter)
+                                <x-profile-link :user="$report->reporter" />
                             @else
-                            Anonymous
+                                Anonymous
                             @endif
                         </td>
 
@@ -77,7 +81,7 @@
             </tbody>
         </table>
 
-        <div class="d-flex justify-content-center">
+        <div>
             {{ $reports->links() }}
         </div>
     </div>
