@@ -19,12 +19,12 @@ class ModeController extends Controller
     {
         ActivityHelper::updateActivity(
             $request->user()->id,
-            'Settings',
+            'Updating Default Theme',
         );
-        $breadcrumbs = BreadcrumbHelper::breadcumbForUtility('Settings');
+        $breadcrumbs = BreadcrumbHelper::breadcumbForUtility('Default Theme');
 
         return view(
-            'nexus.modes.index',
+            'nexus.admin.modes.index',
             [
                 'breadcrumbs' => $breadcrumbs,
             ],

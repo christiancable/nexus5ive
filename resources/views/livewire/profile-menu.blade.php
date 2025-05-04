@@ -42,7 +42,10 @@
                 <div role="separator" class="dropdown-divider"></div>
                 <div class="dropdown-header dropdown-item">Administrator Goodies</div>
                 <a class="dropdown-item" href="{{ action('App\Http\Controllers\Nexus\ModeController@index') }}">
-                    <x-heroicon-s-wrench class="icon_mini me-1" aria-hidden="true" />BBS Settings
+                    <x-heroicon-s-wrench class="icon_mini me-1" aria-hidden="true" />Default Theme
+                </a>
+                <a class="dropdown-item" href="{{ action('App\Http\Controllers\Nexus\ReportController@index') }}">
+                    <x-heroicon-s-flag class="icon_mini me-1" aria-hidden="true" />Moderation
                 </a>
             @endif
 
