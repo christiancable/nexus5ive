@@ -12,12 +12,13 @@ moderation:
         ☐ an administrator can see the posted report
 
 
-    ☐ an administrator can see a paginated list of reports
+    ✔ an administrator can see a paginated list of reports @done(25-05-04 18:11)
+    ☐ better button for reviewing the report - use the component if we have one
     ☐ a report can view be expanded to show details
 
-    ☐ report form is limited to the choices in the report model reason array
+    ✔ report form is limited to the choices in the report model reason array @done(25-05-04 18:12)
 
-    ☐ report uses profile link to link to reporter
+    ✔ report uses profile link to link to reporter @done(25-05-04 18:12)
     ☐ report shows chat icon for reporter if not annoy
 
     off topic:
