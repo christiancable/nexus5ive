@@ -25,11 +25,9 @@
                 <label for="reason" class="form-label">Reason for report:</label>
                 <select name="reason" id="reason" class="form-select" required>
                     <option value="">Select a reason</option>
-                    <option value="spam">Spam</option>
-                    <option value="harassment">Harassment</option>
-                    <option value="hate_speech">Hate Speech</option>
-                    <option value="illegal_content">Illegal Content</option>
-                    <option value="other">Other</option>
+                    @foreach (\App\Models\Report::REASONS as $key => $label)
+                        <option value="{{ $key }}">{{ $label }}</option>
+                    @endforeach
                 </select>
             </div>
 

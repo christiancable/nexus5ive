@@ -14,6 +14,23 @@ class Report extends Model
         'reported_content_snapshot' => 'json',
     ];
 
+    public const STATUSES = [
+        'pending' => 'Pending',
+        'under_review' => 'Under Review',
+        'reviewed' => 'Reviewed',
+        'dismissed' => 'Dismissed',
+        'action_taken' => 'Action Taken',
+        'closed' => 'Closed',
+    ];
+
+    public const REASONS = [
+        'spam' => 'Spam',
+        'harassment' => 'Harassment',
+        'hate_speech' => 'Hate Speech',
+        'illegal_content' => 'Illegal Content',
+        'other' => 'Other',
+    ];
+
     public function reportable()
     {
         return $this->morphTo();
@@ -28,12 +45,50 @@ class Report extends Model
         return $this->belongsTo(User::class, 'reporter_id');
     }
 
-
     /**
      * the moderator dealing with this report
      */
     public function moderator()
     {
         return $this->belongsTo(User::class, 'moderator_id');
+    }
+
+    /**
+     * reports still in progress
+     */
+    public function scopeOpen($query)
+    {
+        return $query->whereIn('status', ['pending', 'under_review']);
+    }
+
+    /**
+     * reports that have been dealt with
+     */
+    public function scopeClosed($query)
+    {
+        return $query->whereNotIn('status', ['pending', 'under_review']);
+    }
+
+    public function getStatusBadgeClassAttribute()
+    {
+        return match ($this->status) {
+            'pending' => 'bg-warning text-dark',
+            'under_review' => 'bg-info text-dark',
+            'reviewed' => 'bg-primary',
+            'dismissed' => 'bg-secondary',
+            'action_taken' => 'bg-success',
+            'closed' => 'bg-dark',
+            default => 'bg-light text-dark',
+        };
+    }
+
+    public function getStatusLabelAttribute()
+    {
+        return self::STATUSES[$this->status] ?? 'Unknown';
+    }
+
+    public function getReasonLabelAttribute()
+    {
+        return self::REASONS[$this->reason]  ?? 'Unknown';
     }
 }
