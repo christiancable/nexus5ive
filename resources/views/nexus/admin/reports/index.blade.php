@@ -9,77 +9,18 @@
 @endsection
 
 @section('content')
-    <div class="container">
-        <h1 class="mb-4">Open Reports</h1>
+    <div class="container my-4">
 
-        <table class="table table-striped table-hover align-middle">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Content</th>
-                    <th>Reason</th>
-                    <th>Reporter</th>
-                    <th>Status</th>
-                    <th>Reported</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse ($reports as $report)
-                    <tr>
-                        <td>{{ $report->id }}</td>
+        <x-heading heading="Moderation Queue" lead="Reports awaiting review">
+            <x-slot:icon>
+                <x-heroicon-s-flag class="icon_large mr-1" aria-hidden="true" />
+            </x-slot>
+        </x-heading>
 
-                        <td>
-                            @if ($report->reportable)
-                                <strong>{{ class_basename($report->reportable_type) }}</strong> <small class="text-body-secondary">#{{ $report->reportable->id }}</small><br>
 
-                                <div class="border rounded p-2 bg-light text-muted fst-italic small">
-                                    {{ Str::limit($report->snapshot_text, 150) }}
-                                </div>
-
-                                @if ($report->reportable_link)
-                                    <div class="mt-2">
-                                        <a href="{{ $report->reportable_link }}" target="_blank"
-                                            class="btn btn-sm btn-outline-secondary">
-                                           <x-heroicon-s-arrow-top-right-on-square class="icon_mini me-1" />View in context
-                                        </a>
-                                    </div>
-                                @endif
-                            @else
-                                <em>Content no longer available</em>
-                            @endif
-                        </td>
-
-                        <td>{{ $report->reason_label }}</td>
-
-                        <td>
-                            @if ($report->reporter)
-                                <x-profile-link :user="$report->reporter" />
-                            @else
-                                Anonymous
-                            @endif
-                        </td>
-
-                        <td>
-                            <span class="badge {{ $report->statusBadgeClass }}">
-                                {{ $report->status_label }}
-                            </span>
-                        </td>
-
-                        <td>{{ $report->created_at->diffForHumans() }}</td>
-
-                        <td>
-                            {{-- <a href="{{ route('moderation.report.view', $report->id) }}" class="btn btn-primary btn-sm">View</a> --}}
-                            <a href="" class="btn btn-primary btn-sm">View</a>
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="7" class="text-center">No open reports.</td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
+        @foreach ($reports as $report)
+            <x-content-report :report="$report" />
+        @endforeach
 
         <div>
             {{ $reports->links() }}

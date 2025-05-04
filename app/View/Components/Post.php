@@ -35,7 +35,7 @@ class Post extends Component
      */
     public function __construct($post, $userCanSeeSecrets = false, $readProgress = null, $preview = false)
     {
-        $this->id = $post->id;
+        $this->id = $post->id ?? null; // posts can be previewed so may not have an id
         $this->title = $post->title ?? null;
         $this->preview = $preview ?? false;
 
