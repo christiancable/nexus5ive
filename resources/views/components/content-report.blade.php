@@ -36,26 +36,33 @@
                 <div x-data="{ open: false }">
                     <template x-if="open">
                         <div>
-                            <button type="button" @click="open = false" class="btn btn-sm btn-outline-secondary mt-2 mb-2">
+                            <x-ui.button-link @click="open = false" variant="outline-secondary" class="mb-2">
                                 Hide preview
-                            </button>
+                            </x-ui.button-link>
                             <x-post :post="$postPreview" :preview=true />
                         </div>
                     </template>
                     <template x-if="!open">
-                        <button type="button" @click="open = true" class="btn btn-sm btn-outline-secondary mt-2">
+
+                        <x-ui.button-link @click="open = true" variant="outline-secondary">
                             Show preview
-                        </button>
+                        </x-ui.button-link>
+
                     </template>
                 </div>
             @else
                 <p class="text-muted"><em>No content preview available</em></p>
             @endif
-            <a href="{{ $report->reportable_link }}" target="_blank"
-                class="btn btn-sm btn-outline-secondary mt-2 d-inline-flex align-items-center gap-1">
-                <x-heroicon-s-arrow-top-right-on-square class="icon_mini me-1" />
+
+
+            <x-ui.button-link href="{{ $report->reportable_link }}" target="_blank" variant="outline-secondary"
+                class="mt-2">
+                <x-slot name="icon">
+                    <x-heroicon-s-arrow-top-right-on-square class="icon_mini me-1" />
+                </x-slot>
                 View in context
-            </a>
+            </x-ui.button-link>
+
         </div>
 
         <div class="ms-md-3 text-end mt-3 mt-md-0">
