@@ -25,15 +25,29 @@
             </p>
 
             @if ($report->details)
-            <p class="card-text text-muted">Reason</p>
+                <p class="card-text text-muted">Reason</p>
 
-            <blockquote class="blockquote">
-            {{ $report->details }}
-            </blockquote>
+                <blockquote class="blockquote">
+                    {{ $report->details }}
+                </blockquote>
             @endif
 
             @if ($postPreview)
-                <x-post :post="$postPreview" :preview=true/>
+                <div x-data="{ open: false }">
+                    <template x-if="open">
+                        <div>
+                            <button type="button" @click="open = false" class="btn btn-sm btn-outline-secondary mt-2 mb-2">
+                                Hide preview
+                            </button>
+                            <x-post :post="$postPreview" :preview=true />
+                        </div>
+                    </template>
+                    <template x-if="!open">
+                        <button type="button" @click="open = true" class="btn btn-sm btn-outline-secondary mt-2">
+                            Show preview
+                        </button>
+                    </template>
+                </div>
             @else
                 <p class="text-muted"><em>No content preview available</em></p>
             @endif
