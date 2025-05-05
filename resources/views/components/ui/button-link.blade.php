@@ -17,7 +17,7 @@
     ]);
 @endphp
 
-<a href="{{ $disabled ? '#' : $href }}"
+<a href="{{ $disabled ? '#' : $href }}" role="button"
    {{ $class }}
    @if($external) target="_blank" rel="noopener noreferrer" @endif
    @if ($disabled) aria-disabled="true" @endif

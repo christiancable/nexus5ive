@@ -58,7 +58,7 @@
             <x-ui.button-link href="{{ $report->reportable_link }}" target="_blank" variant="outline-secondary"
                 class="mt-2">
                 <x-slot name="icon">
-                    <x-heroicon-s-arrow-top-right-on-square class="icon_mini me-1" />
+                    <x-heroicon-s-arrow-top-right-on-square class="icon_mini" />
                 </x-slot>
                 View in context
             </x-ui.button-link>
@@ -66,10 +66,10 @@
         </div>
 
         <div class="ms-md-3 text-end mt-3 mt-md-0">
-            {{-- <a href="{{ route('admin.reports.show', $report->id) }}" class="btn btn-sm btn-primary"> --}}
-            <a href="" class="btn btn-sm btn-primary">
+            <x-ui.button-link href="#" variant="primary">
                 Review
-            </a>
+            </x-ui.button-link>
+
         </div>
     </div>
 </div>
