@@ -17,7 +17,7 @@ return new class extends Migration
 
             $table->unsignedInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->nullOnDelete();
-            
+
             $table->string('user_name')->nullable(); // Store username at time of note creation
             $table->text('note');
             $table->timestamps();
