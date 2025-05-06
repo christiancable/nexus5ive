@@ -1,6 +1,27 @@
 moderation:
+
+    ☐ user comments can be reported
+        ☐ add preview for comment
+        ☐ add link to profile
+        
+        ☐ user to user chats can be reported
+        ☐ a user can delete a chat
+        ☐ a user can save a chat as a text file
+        ☐ add preview for chat report
+        ☐ no link possible for chat
+        
+    dusk:
+        ☐ a user can report a post for moderation
+        ☐ an administrator can list reports
+        ☐ an administrator can see the posted report
+
+    UI:
+        ✔ sysops should see a total of pending reports in the notification area @done(25-05-06 18:18)
+        ✔ do we want a x-button-link component??? @done(25-05-05 14:28)
+        ☐ replace x-button with x-ui.button
+    
     account sign up:
-        ☐ user must confirm they are 18 years old or older
+        ✔ user must confirm they are 18 years old or older @done(25-05-06 20:22)
 
     prep:
         ✔ post component @done(25-05-02 20:17)
@@ -14,19 +35,12 @@ moderation:
         ✔ text @done(25-05-06 12:16)
         ✔ breadcrumbs @done(25-05-06 12:53)
 
-    dusk:
-        ☐ a user can report a post for moderation
-        ☐ an administrator can list reports
-        ☐ an administrator can see the posted report
 
 
     reporting:
         ✔ user can view the preview of the post they report @done(25-05-06 20:17)
         ✔ user cannot see secrets they would not normally see in the preview @done(25-05-06 20:17)
 
-    UI:
-        ✔ sysops should see a total of pending reports in the notification area @done(25-05-06 18:18)
-        ✔ do we want a x-button-link component??? @done(25-05-05 14:28)
 
     report index:
         ✔ better button for reviewing the report - use the component if we have one @done(25-05-06 14:38)
@@ -61,27 +75,7 @@ moderation:
 
     ✔ a moderator level user can see a list of posts awaiting moderation @done(25-05-05 12:31)
         ✔ they can jump to the post to see it in cotext @done(25-05-05 12:31)
-            they can delete the post
-            they can edit the post
-        moderator can respond to the moderation
-            a chat message is sent to the user
-        when the post is moderated then a message is sent to the author telling them they have broken the rules
-     and what action has been taken
-    
-    a log can produced from the moderation which shows
-        - the post
-        - the action taken by the moderator
-
-    when a post is reported
-        - a entry is added to the moderation queue
-        - the entry is marked unread
-
-    queue for moderation includes
-        post 
-        user
-        post content
-        action taken
-
+        
 
 future:
     ☐ alpinejs warnings on profile dropdown 
