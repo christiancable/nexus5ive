@@ -1,18 +1,15 @@
+// _nexus_variables.scss
 
-// Body
+// ----------------------------------------------------
+// Nexus Theme Variables — colors only
+// Assumes bootstrap/functions & variables are loaded first!
+// ----------------------------------------------------
+
+// Body colors
 $body-bg: #f5f8fa;
 $body-color: #636b6f;
 
-// Typography
-@import url('https://fonts.googleapis.com/css?family=Nunito');
-$font-family-sans-serif:      "Nunito", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !default;
-// $font-family-monospace:       SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !default;
-
-$font-size-base: 0.9rem;
-$line-height-base: 1.6;
-
-
-// classic nexus bs colours
+// Base color overrides
 $blue:    #3097D1;
 $cyan:    #8eb4cb;
 $green:   #2ab27b;
@@ -24,8 +21,49 @@ $red:     #bf5329;
 $teal:    #4dc0b5;
 $yellow:  #cbb956;
 
+// ----------------------------------------------------
+// Bootstrap contextual variables — required for consistency
+// ----------------------------------------------------
 
-$breadcrumb-bg: #e9ebed;
-$breadcrumb-padding-x: 1rem;
-$breadcrumb-padding-y: 1rem;
-$breadcrumb-border-radius: 0.375rem;
+// Set Bootstrap's own variables to match your colors.
+// This ensures that text color, hover color, etc. are calculated correctly.
+$primary:   $blue;
+$secondary: $cyan;
+$success:   $green;
+$info:      $indigo;
+$warning:   $orange;
+$danger:    $red;
+// light and dark should already be inherited from Bootstrap
+
+// ----------------------------------------------------
+// Theme colors map
+// ----------------------------------------------------
+
+$theme-colors: (
+  "primary":   $primary,
+  "secondary": $secondary,
+  "success":   $success,
+  "info":      $info,
+  "warning":   $warning,
+  "danger":    $danger,
+  "light":     $light,
+  "dark":      $dark
+);
+
+
+// ----------------------------------------------------
+// Explicit button text colors to fix contrast issues
+// ----------------------------------------------------
+
+$btn-primary-color: $white;
+$btn-secondary-color: $black;
+$btn-success-color: $white;
+$btn-info-color: $white;
+$btn-warning-color: $black;
+$btn-danger-color: $white;
+$btn-light-color: $black;
+$btn-dark-color: $white;
+
+// Link colours
+$link-color: $primary;
+$link-hover-color: shade-color($link-color, 20%);
