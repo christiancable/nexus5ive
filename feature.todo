@@ -1,4 +1,7 @@
 moderation:
+    account sign up:
+        ☐ user must confirm they are 18 years old or older
+
     prep:
         ✔ post component @done(25-05-02 20:17)
         ✔ profile link component @done(25-05-02 20:17)
@@ -16,6 +19,10 @@ moderation:
         ☐ an administrator can list reports
         ☐ an administrator can see the posted report
 
+
+    reporting:
+        ✔ user can view the preview of the post they report @done(25-05-06 20:17)
+        ✔ user cannot see secrets they would not normally see in the preview @done(25-05-06 20:17)
 
     UI:
         ✔ sysops should see a total of pending reports in the notification area @done(25-05-06 18:18)

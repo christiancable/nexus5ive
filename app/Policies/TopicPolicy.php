@@ -11,6 +11,14 @@ class TopicPolicy
 {
     use HandlesAuthorization;
 
+    public function before(User $user, $ability)
+    {
+        // Administrators can perform any action on a topic
+        if ($user->administrator) {
+            return true;
+        }
+    }
+
     /**
      * Determine whether the user can view the topic.
      *
@@ -18,7 +26,18 @@ class TopicPolicy
      */
     public function view(User $user, Topic $topic)
     {
-        //
+        return true;
+    }
+
+    /**
+     * Determine whether the user can view the all post details even if
+     * the topic is anonymous
+     *
+     * @return mixed
+     */
+    public function viewSecrets(User $user, Topic $topic): bool
+    {
+        return $topic->section->moderator->id === $user->id;
     }
 
     /**
@@ -30,11 +49,6 @@ class TopicPolicy
      */
     public function create(User $user, Section $section)
     {
-        //@todo they are allowed by this is not evidenced in the UI - do we need this?
-        if ($user->administrator) {
-            return true;
-        }
-
         if ($user->id === $section->moderator->id) {
             return true;
         }
@@ -53,10 +67,6 @@ class TopicPolicy
      */
     public function update(User $user, Topic $topic)
     {
-        if ($user->administrator) {
-            return true;
-        }
-
         return $user->id === $topic->section->moderator->id;
     }
 
@@ -71,10 +81,6 @@ class TopicPolicy
      */
     public function move(User $user, Topic $topic, Section $destinationSection)
     {
-        if ($user->administrator) {
-            return true;
-        }
-
         return $user->id === $topic->section->moderator->id && $user->id === $destinationSection->moderator->id;
     }
 
@@ -89,10 +95,6 @@ class TopicPolicy
      */
     public function delete(User $user, Topic $topic)
     {
-        if ($user->administrator) {
-            return true;
-        }
-
         return $user->id === $topic->section->moderator->id;
     }
 

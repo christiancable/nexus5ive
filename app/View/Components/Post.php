@@ -20,13 +20,15 @@ class Post extends Component
 
     public $editedByInfo;
 
-    public $authorUrl;
+    public $author;
 
-    public $authorName;
-
-    public $authorPopname;
+    public $popname;
 
     public $preview;
+
+    public $show;
+
+    public $userCanSeeSecrets;
 
     /**
      * Create a new component instance.
@@ -38,16 +40,9 @@ class Post extends Component
         $this->id = $post->id ?? null; // posts can be previewed so may not have an id
         $this->title = $post->title ?? null;
         $this->preview = $preview ?? false;
-
-        $this->authorUrl = action('App\Http\Controllers\Nexus\UserController@show', ['user' => $post->author->username]);
-        $this->authorName = $post->author->username;
-        $this->authorPopname = $post->popname;
-
-        if ($post->topic->secret && $userCanSeeSecrets == false) {
-            $this->authorPopname = null;
-            $this->authorUrl = null;
-            $this->authorName = null;
-        }
+        $this->popname = $post->popname ?? null;
+        $this->author = $post->author;
+        $this->userCanSeeSecrets = $userCanSeeSecrets;
 
         $this->timeClass = 'text-muted';
         if ($readProgress < $post->time) {

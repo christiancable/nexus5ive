@@ -52,12 +52,14 @@ class PostController extends Controller
      */
     public function report(Request $request, Post $post)
     {
-        // can user see secrets?
+        // for annoy topics can the reporter see secrets?
+        $userCanSeeSecrets = $request->user()->can('viewSecrets', $post->topic);
 
         return view(
             'nexus.moderation.report.post',
             [
                 'post' => $post,
+                'userCanSeeSecrets' => $userCanSeeSecrets,
             ],
         );
     }
