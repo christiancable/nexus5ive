@@ -6,7 +6,7 @@
 </h1>
 
 @isset($lead)
-    <span class="lead">
+    <span class="fs-6">
         {!! \App\Helpers\NxCodeHelper::nxDecode($lead) !!}
     </span>
 @endisset

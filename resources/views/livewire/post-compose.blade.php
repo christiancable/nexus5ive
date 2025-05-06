@@ -61,7 +61,7 @@
 
         <a tabindex="0" class="small text-muted" role="button" data-bs-html="true" data-bs-placement="left"
             data-bs-toggle="popover" data-bs-trigger="focus" title="Formating Help" data-bs-content="{!! $help !!}">
-            <u>Formatting Help</u>
+            Formatting Help
         </a>
     </div>
 
