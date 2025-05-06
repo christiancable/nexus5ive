@@ -11,7 +11,7 @@
 @section('content')
     <div class="container my-4">
 
-        <x-heading heading="Moderation Queue" lead="Reports awaiting review">
+        <x-heading heading="Moderation Queue">
             <x-slot:icon>
                 <x-heroicon-s-flag class="icon_large mr-1" aria-hidden="true" />
             </x-slot>

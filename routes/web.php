@@ -24,7 +24,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->prefix('admin')
         ->group(function () {
             Route::resource('theme', ModeController::class);
-            Route::get('reports', [ReportController::class, 'index']);
+            Route::resource('reports', ReportController::class);
+            // Route::get('reports', [ReportController::class, 'index']);
         });
 
     /* Sections */

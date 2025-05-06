@@ -83,9 +83,25 @@ class ReportController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Report $report)
     {
-        //
+        $report->load('reportable', 'reporter');
+
+        $breadcrumbs = BreadcrumbHelper::breadcumbForUtility('View Report');
+
+        $postPreview = null;
+        if ($report->reportable_type === \App\Models\Post::class) {
+            $postPreview = $report->reportable;
+        }
+
+        $statusOptions = Report::STATUSES;
+
+        return view('nexus.admin.reports.show', [
+            'breadcrumbs' => $breadcrumbs,
+            'report' => $report,
+            'postPreview' => $postPreview,
+            'statusOptions' => $statusOptions,
+        ]);
     }
 
     /**
@@ -101,7 +117,7 @@ class ReportController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        return 'come back later';
     }
 
     /**

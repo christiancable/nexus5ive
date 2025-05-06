@@ -66,7 +66,7 @@
         </div>
 
         <div class="ms-md-3 text-end mt-3 mt-md-0">
-            <x-ui.button-link href="#" variant="primary">
+            <x-ui.button-link href="{{ route('reports.show', ['report' => $report->id]) }}" variant="primary">
                 Review
             </x-ui.button-link>
 
