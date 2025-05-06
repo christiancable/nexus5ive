@@ -13,18 +13,31 @@ use Illuminate\Validation\Rule;
 class ReportController extends Controller
 {
     /**
-     * index of currently open reports aka the moderation queue
+     * index of reports, optionally filterable by status
      */
-    public function index()
+    public function index(Request $request)
     {
-        $breadcrumbs = BreadcrumbHelper::breadcumbForUtility('Moderation Queue');
 
-        $reports = Report::open()
-            ->with(['reportable', 'reporter', 'moderator']) // eager load relations
-            ->orderBy('created_at', 'desc')
-            ->paginate(5);
+        $breadcrumbs = BreadcrumbHelper::breadcumbForUtility('Moderation');
 
-        return view('nexus.admin.reports.index', compact('reports', 'breadcrumbs'));
+        $query = Report::query();
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->input('status'));
+        }
+
+        // Totals for the nav pills
+        $totals = [
+            'all' => Report::count(),
+        ];
+
+        foreach (Report::STATUSES as $key => $label) {
+            $totals[$key] = Report::where('status', $key)->count();
+        }
+
+        $reports = $query->orderBy('created_at', 'desc')->paginate(15);
+
+        return view('nexus.admin.reports.index', compact('reports', 'breadcrumbs', 'totals'));
     }
 
     /**
@@ -57,6 +70,7 @@ class ReportController extends Controller
 
         // Create and save the report
         $report = new Report;
+        $report->status = 'new';
         $report->reason = $validated['reason'];
         $report->details = $validated['details'] ?? null;
         $report->reported_content_snapshot = $reportable->toArray();
@@ -137,9 +151,14 @@ class ReportController extends Controller
             ]);
         }
 
+        $flashMessage = [
+            'body' => 'Report updated successfully.',
+            'level' => 'success',
+        ];
+
         return redirect()
-            ->route('reports.show', $report)
-            ->with('success', 'Report updated successfully.');
+            ->route('reports.index')
+            ->with('headerAlert', $flashMessage);
     }
 
     /**

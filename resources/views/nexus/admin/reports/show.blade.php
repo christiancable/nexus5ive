@@ -1,7 +1,7 @@
 @extends('nexus.layouts.master')
 
 @section('meta')
-    <title>Moderate Report</title>
+    <title>Moderating Report</title>
 @endsection
 
 @section('breadcrumbs')
@@ -16,12 +16,14 @@
         <x-content-report :report="$report" :preview="false" />
 
         {{-- Previous notes/history --}}
-
         @if ($report->moderationNotes->count())
-            <h5 class="mt-4">Moderation Notes</h5>
-            @foreach ($report->moderationNotes as $note)
-                <div class="border rounded mb-2 p-2 bg-light">
-                    <p class="mb-1 small text-muted">
+            <div class="card shadow-sm mb-3 bg-light p-3">
+                <h5 class="card-title mb-3">
+                    Moderation Log
+                </h5>
+
+                @foreach ($report->moderationNotes as $note)
+                    <p class="mb-2 small text-muted">
                         @if ($note->user)
                             <x-profile-link :user="$note->user" />
                         @else
@@ -29,11 +31,11 @@
                         @endif
                         &middot; {{ $note->created_at->diffForHumans() }}
                     </p>
-                    <blockquote class="blockquote mb-1 fs-6">
+                    <blockquote class="blockquote mb-4 fs-6">
                         {{ $note->note }}
                     </blockquote>
-                </div>
-            @endforeach
+                @endforeach
+            </div>
         @endif
 
         {{-- Admin action form --}}
@@ -69,11 +71,6 @@
                 </form>
             </div>
         </div>
-
-
-
-
-
     </div>
 
 @endsection

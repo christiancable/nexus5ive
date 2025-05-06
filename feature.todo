@@ -13,48 +13,30 @@ moderation:
 
     dusk:
         ☐ a user can report a post for moderation
-        ✔ an administrator can list reports @done(25-05-05 14:28)
+        ☐ an administrator can list reports
         ☐ an administrator can see the posted report
 
 
     UI:
-        ☐ sysops should see a total of pending reports in the notification area
+        ✔ sysops should see a total of pending reports in the notification area @done(25-05-06 18:18)
         ✔ do we want a x-button-link component??? @done(25-05-05 14:28)
 
     report index:
-        ☐ better button for reviewing the report - use the component if we have one
+        ✔ better button for reviewing the report - use the component if we have one @done(25-05-06 14:38)
         ☐ report shows chat icon for reporter if not annoy
         ✔ a report can view be expanded to show details - show / hide / expand @done(25-05-05 14:28)
-            <div x-data="{ open: true }">
-            <template x-if="open">
-                <div>
-                    <x-post :post="$postPreview" :preview=true />
-                    <button type="button" @click="open = false" class="btn btn-sm btn-outline-secondary mt-2">
-                        Hide preview
-                    </button>
-                </div>
-            </template>
-            <template x-if="!open">
-                <button type="button" @click="open = true" class="btn btn-sm btn-outline-secondary mt-2">
-                    Show preview
-                </button>
-            </template>
-        </div>
-
-
 
     report view:
-        ☐ sysop and change status
-        ☐ sysop can log what moderation has taken place
+        ✔ sysop can change status @done(25-05-06 18:17)
+        ✔ sysop can log what moderation has taken place @done(25-05-06 18:18)
         ☐ sysop can chat to the reporter if any
         ☐ sysop can chat to the reported user
-        ☐ sysop can jump to the reported content and remove or edit it
-        moderation logs???:
+        ✔ sysop can jump to the reported content and remove or edit it @done(25-05-06 18:18)
 
     report archive:
-        ☐ sysop seens an index of reports that are not open
-        ☐ sysop and view a report and its logs
-        ☐ sysop can re-open a report for editing
+        ✔ sysop seens an index of reports that are not open @done(25-05-06 18:18)
+        ✔ sysop and view a report and its logs @done(25-05-06 18:18)
+        ✔ sysop can re-open a report for editing @done(25-05-06 18:18)
 
     ✔ an administrator can see a paginated list of reports @done(25-05-04 18:11)
 

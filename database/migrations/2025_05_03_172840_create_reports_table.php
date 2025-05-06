@@ -29,7 +29,7 @@ return new class extends Migration
             $table->json('reported_content_snapshot')->nullable();
 
             // Status and moderation review
-            $table->string('status')->default('pending');
+            $table->string('status')->default('new');
 
             $table->unsignedBigInteger('moderator_id')->nullable();
             $table->timestamp('reviewed_at')->nullable();

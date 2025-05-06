@@ -15,11 +15,8 @@ class Report extends Model
     ];
 
     public const STATUSES = [
-        'pending' => 'Pending',
+        'new' => 'New',
         'under_review' => 'Under Review',
-        'reviewed' => 'Reviewed',
-        'dismissed' => 'Dismissed',
-        'action_taken' => 'Action Taken',
         'closed' => 'Closed',
     ];
 
@@ -58,7 +55,7 @@ class Report extends Model
      */
     public function scopeOpen($query)
     {
-        return $query->whereIn('status', ['pending', 'under_review']);
+        return $query->whereNot('status', 'closed');
     }
 
     /**
@@ -66,7 +63,7 @@ class Report extends Model
      */
     public function scopeClosed($query)
     {
-        return $query->whereNotIn('status', ['pending', 'under_review']);
+        return $query->where('status', 'closed');
     }
 
     /**
@@ -83,11 +80,8 @@ class Report extends Model
     public function getStatusBadgeClassAttribute()
     {
         return match ($this->status) {
-            'pending' => 'bg-warning text-dark',
+            'new' => 'bg-warning text-dark',
             'under_review' => 'bg-info text-dark',
-            'reviewed' => 'bg-primary',
-            'dismissed' => 'bg-secondary',
-            'action_taken' => 'bg-success',
             'closed' => 'bg-dark',
             default => 'bg-light text-dark',
         };
