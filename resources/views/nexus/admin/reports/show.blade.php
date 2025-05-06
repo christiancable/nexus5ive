@@ -10,63 +10,70 @@
 
 @section('content')
 
-<div class="container">
+    <div class="container">
 
-    {{-- Report card --}}
-    <x-content-report :report="$report" :preview="false"/>
-    
-    {{-- Admin action form --}}
-    <div class="card shadow-sm mb-3">
-        <div class="card-header">
-            Moderation Actions
-        </div>
-        <div class="card-body">
-            <form method="POST" action="{{ route('reports.update', $report) }}">
-                @csrf
-                @method('PUT')
+        {{-- Report card --}}
+        <x-content-report :report="$report" :preview="false" />
 
-                <div class="mb-3">
-                    <label for="status" class="form-label">Change Status</label>
-                    <select name="status" id="status" class="form-select">
-                        @foreach (\App\Models\Report::STATUSES as $value => $label)
-                            <option value="{{ $value }}" @if ($report->status === $value) selected @endif>
-                                {{ $label }}
-                            </option>
-                        @endforeach
-                    </select>
+        {{-- Previous notes/history --}}
+
+        @if ($report->moderationNotes->count())
+            <h5 class="mt-4">Moderation Notes</h5>
+            @foreach ($report->moderationNotes as $note)
+                <div class="border rounded mb-2 p-2 bg-light">
+                    <p class="mb-1 small text-muted">
+                        @if ($note->user)
+                            <x-profile-link :user="$note->user" />
+                        @else
+                            <strong>{{ $note->user_name ?? 'Deleted user' }}</strong>
+                        @endif
+                        &middot; {{ $note->created_at->diffForHumans() }}
+                    </p>
+                    <blockquote class="blockquote mb-1 fs-6">
+                        {{ $note->note }}
+                    </blockquote>
                 </div>
+            @endforeach
+        @endif
 
-                <div class="mb-3">
-                    <label for="moderator_note" class="form-label">Add Moderator Note</label>
-                    <textarea name="moderator_note" id="moderator_note" class="form-control" rows="3"
-                        placeholder="Describe the action taken or any relevant notes"></textarea>
-                </div>
+        {{-- Admin action form --}}
+        <div class="card shadow-sm mb-3">
+            <div class="card-header">
+                Moderation Actions
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ route('reports.update', $report) }}">
+                    @csrf
+                    @method('PUT')
 
-                <x-ui.button type="submit" variant="primary">
-                    Update Report
-                </x-ui.button>
-            </form>
+                    <div class="mb-3">
+                        <label for="status" class="form-label">Change Status</label>
+                        <select name="status" id="status" class="form-select">
+                            @foreach (\App\Models\Report::STATUSES as $value => $label)
+                                <option value="{{ $value }}" @if ($report->status === $value) selected @endif>
+                                    {{ $label }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="moderator_note" class="form-label">Add Moderator Note</label>
+                        <textarea name="moderator_note" id="moderator_note" class="form-control" rows="3"
+                            placeholder="Describe the action taken or any relevant notes"></textarea>
+                    </div>
+
+                    <x-ui.button type="submit" variant="primary">
+                        Update Report
+                    </x-ui.button>
+                </form>
+            </div>
         </div>
+
+
+
+
+
     </div>
-
-    {{-- Previous notes/history --}}
-    @if ($report->notes && count($report->notes))
-    <div class="card shadow-sm">
-        <div class="card-header">
-            Moderator Notes History
-        </div>
-        <div class="card-body">
-            <ul class="list-group list-group-flush">
-                @foreach ($report->notes as $note)
-                    <li class="list-group-item">
-                        <strong>{{ $note->created_at->diffForHumans() }}:</strong> {{ $note->content }}
-                    </li>
-                @endforeach
-            </ul>
-        </div>
-    </div>
-    @endif
-
-</div>
 
 @endsection

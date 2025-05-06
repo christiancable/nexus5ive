@@ -7,6 +7,8 @@ use App\Helpers\FlashHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Report;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class ReportController extends Controller
 {
@@ -59,8 +61,8 @@ class ReportController extends Controller
         $report->details = $validated['details'] ?? null;
         $report->reported_content_snapshot = $reportable->toArray();
 
-        if (! ($validated['anonymous'] ?? false) && auth()->check()) {
-            $report->reporter_id = auth()->id();
+        if (! ($validated['anonymous'] ?? false) && Auth::check()) {
+            $report->reporter_id = Auth::id();
         }
 
         $reportable->reports()->save($report);
@@ -115,9 +117,29 @@ class ReportController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Report $report)
     {
-        return 'come back later';
+        $request->validate([
+            'status' => ['required', Rule::in(array_keys(Report::STATUSES))],
+            'note' => ['nullable', 'string', 'max:5000'],
+        ]);
+
+        // Update the report's status
+        $report->status = $request->input('status');
+        $report->save();
+
+        // If a note is provided, save it
+        if ($request->filled('moderator_note')) {
+            $report->moderationNotes()->create([
+                'user_id' => Auth::id(),
+                'user_name' => Auth::user()?->username ?? 'System',
+                'note' => $request->input('moderator_note'),
+            ]);
+        }
+
+        return redirect()
+            ->route('reports.show', $report)
+            ->with('success', 'Report updated successfully.');
     }
 
     /**

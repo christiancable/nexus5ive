@@ -112,4 +112,10 @@ class Report extends Model
     {
         return $this->reported_content_snapshot['text'] ?? 'No content';
     }
+
+    // a report can have many moderation notes
+    public function moderationNotes()
+    {
+        return $this->hasMany(ModerationNote::class);
+    }
 }
