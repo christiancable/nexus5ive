@@ -16,6 +16,7 @@ class ContentReport extends Component
      */
     public function __construct(
         public Report $report,
+        public bool $preview = true, // previews show the review button
     ) {
 
         // add previews for reported content
