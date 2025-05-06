@@ -27,7 +27,7 @@
             @if ($report->details)
                 <p class="card-text text-muted">Reason</p>
 
-                <blockquote class="blockquote">
+                <blockquote class="blockquote fs-6">
                     {{ $report->details }}
                 </blockquote>
             @endif
