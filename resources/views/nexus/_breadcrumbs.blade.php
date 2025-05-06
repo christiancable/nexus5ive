@@ -1,6 +1,7 @@
 <div class="container mb-3">
-    <nav aria-label="breadcrumb" class="border rounded bg-secondary-subtle opacity-75">
-        <ol class="breadcrumb my-3 mx-3">
+    {{-- <nav aria-label="breadcrumb" class="border rounded bg-secondary-subtle opacity-75"> --}}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb my-3">
             @foreach ($breadcrumbs as $crumb)
                 @if ($crumb['route'])
                     <li class="breadcrumb-item"><a href="{{ $crumb['route'] }}">{{ $crumb['title'] }}</a></li>
