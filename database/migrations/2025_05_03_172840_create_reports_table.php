@@ -29,12 +29,13 @@ return new class extends Migration
             $table->json('reported_content_snapshot')->nullable();
 
             // Status and moderation review
-            $table->string('status')->default('new');
+            $table->string('status')->default('new')->index();
 
             $table->unsignedBigInteger('moderator_id')->nullable();
             $table->timestamp('reviewed_at')->nullable();
 
             $table->timestamps();
+            $table->softDeletes();
 
             $table->index(['reportable_id', 'reportable_type']);
         });

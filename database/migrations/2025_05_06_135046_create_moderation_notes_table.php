@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('user_name')->nullable(); // Store username at time of note creation
             $table->text('note');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
