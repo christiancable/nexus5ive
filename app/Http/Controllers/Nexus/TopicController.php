@@ -58,16 +58,8 @@ class TopicController extends Controller
             $readonly = false;
         }
 
-        // is this topic secret to the authenticated user?
-        $userCanSeeSecrets = false;
-
-        if ($topic->section->moderator->id === $request->user()->id) {
-            $userCanSeeSecrets = true;
-        }
-
-        if ($request->user()->administrator) {
-            $userCanSeeSecrets = true;
-        }
+        // is this topic secret to the authenticated user
+        $userCanSeeSecrets = $request->user()->can('viewSecrets', $topic);
 
         // get the previously read progress so we can indicate this in the view
         $readProgress = ViewHelper::getReadProgress($request->user(), $topic);

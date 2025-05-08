@@ -1,3 +1,82 @@
+moderation:
+
+    ☐ user comments can be reported
+        ☐ add preview for comment
+        ☐ add link to profile
+        
+        ☐ user to user chats can be reported
+        ☐ a user can delete a chat
+        ☐ a user can save a chat as a text file
+        ☐ add preview for chat report
+        ☐ no link possible for chat
+        
+    dusk:
+        ☐ a user can report a post for moderation
+        ☐ an administrator can list reports
+        ☐ an administrator can see the posted report
+
+    UI:
+        ✔ sysops should see a total of pending reports in the notification area @done(25-05-06 18:18)
+        ✔ do we want a x-button-link component??? @done(25-05-05 14:28)
+        ☐ replace x-button with x-ui.button
+    
+    account sign up:
+        ✔ user must confirm they are 18 years old or older @done(25-05-06 20:22)
+
+    prep:
+        ✔ post component @done(25-05-02 20:17)
+        ✔ profile link component @done(25-05-02 20:17)
+        ✔ replace user preseted profileLink with component @done(25-05-03 12:49)
+            ✔ review this, have the user as an optional arg and use that for url and name if given @done(25-05-03 12:11)
+        ✔ a user can report a post @done(25-05-03 19:33)
+    
+    styles:
+        ✔ bootstrap buttons are wrong, fix my stying build @done(25-05-06 11:48)
+        ✔ text @done(25-05-06 12:16)
+        ✔ breadcrumbs @done(25-05-06 12:53)
+
+
+
+    reporting:
+        ✔ user can view the preview of the post they report @done(25-05-06 20:17)
+        ✔ user cannot see secrets they would not normally see in the preview @done(25-05-06 20:17)
+
+
+    report index:
+        ✔ better button for reviewing the report - use the component if we have one @done(25-05-06 14:38)
+        ☐ report shows chat icon for reporter if not annoy
+        ✔ a report can view be expanded to show details - show / hide / expand @done(25-05-05 14:28)
+
+    report view:
+        ✔ sysop can change status @done(25-05-06 18:17)
+        ✔ sysop can log what moderation has taken place @done(25-05-06 18:18)
+        ☐ sysop can chat to the reporter if any
+        ☐ sysop can chat to the reported user
+        ✔ sysop can jump to the reported content and remove or edit it @done(25-05-06 18:18)
+
+    report archive:
+        ✔ sysop seens an index of reports that are not open @done(25-05-06 18:18)
+        ✔ sysop and view a report and its logs @done(25-05-06 18:18)
+        ✔ sysop can re-open a report for editing @done(25-05-06 18:18)
+
+    ✔ an administrator can see a paginated list of reports @done(25-05-04 18:11)
+
+    ✔ report form is limited to the choices in the report model reason array @done(25-05-04 18:12)
+
+    ✔ report uses profile link to link to reporter @done(25-05-04 18:12)
+
+    off topic:
+        ✔ does the BBS modes have any auth at all? yes, in the routes @done(25-05-04 09:50)
+        ✔ BBS settings should be something like 'Theme' @done(25-05-04 11:05)
+        ✔ test users can register and remove the profile controller - greeny3 - jue.yan8qej5whg3KMD @done(25-05-04 10:21)
+        ☐ list slow dusk tests
+            - section with no topics shows no topic as having the most recent post - 159.46s
+            - user can change theme - 279.46s
+
+    ✔ a moderator level user can see a list of posts awaiting moderation @done(25-05-05 12:31)
+        ✔ they can jump to the post to see it in cotext @done(25-05-05 12:31)
+        
+
 future:
     ☐ alpinejs warnings on profile dropdown 
     

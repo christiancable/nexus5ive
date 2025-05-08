@@ -7,7 +7,7 @@
          </a>
          @endif
          </td>
-     <td>{!! $activity->user->present()->profileLink !!}</td>
+     <td><x-profile-link :user="$activity->user" /></td>
      <td class="d-none d-sm-table-cell">{{ $activity->user->popname }}</td>
      <td><a href="{{ $activity->route }}">{!! $activity->text !!}</a></td>
      <td class="text-muted">{{ $activity->time->diffForHumans() }} </td>

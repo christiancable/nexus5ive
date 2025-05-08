@@ -1,11 +1,9 @@
 <?php
 $status = \App\Helpers\ViewHelper::getTopicStatus(Auth::user(), $topic);
 
-// author display - hide author for anon topics
-$authorLink = $topic->most_recent_post->author->present()->profileLink;
-if ($topic->secret == true) {
-    $authorLink = '<strong>Anonymous</strong>';
-}
+// author display
+$authorUrl = action('App\Http\Controllers\Nexus\UserController@show', ['user' => $topic->most_recent_post->author->username]);
+$authorName = $topic->most_recent_post->author->username;
         
 // remove the spoilers
 $pattern = '/\[spoiler-\](.*)\[-spoiler\]/iU';
@@ -28,7 +26,12 @@ $topicLink = action('App\Http\Controllers\Nexus\TopicController@show', ['topic' 
         
         <small class="card-subtitle mb-2 text-muted">
             Latest post {{$topic->most_recent_post->time->diffForHumans()}} by
-            {!! $authorLink !!} in 
+            @if ($topic->secret)
+                <strong>Anonymous</strong>
+            @else
+                <x-profile-link :url=$authorUrl :username=$authorName />
+            @endif
+            in 
             <a href="{{$sectionLink}}">{{$topic->section->title}}</a>
         </small>
         </div>

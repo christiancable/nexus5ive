@@ -1,8 +1,18 @@
-// nexus default colours
-@import '_nexus_variables';
+// Step 1: Import Bootstrap’s functions and variables FIRST
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
 
-@import 'bootstrap/scss/bootstrap';
+// Step 2: Optional — your overrides can go here
+@import "_nexus_variables";
 
+// Step 3: Import Bootstrap
+@import "bootstrap/scss/bootstrap";
+
+// Step 4: override bootstrap buttons with nexus custom colours
+@import "_nexus_button_overrides"; 
+
+// Step 5: Custom styles
+@import '_type';
 @import '_links';
 @import '_blockquote';
 @import '_spoiler';

@@ -1,0 +1,1 @@
+<span class="text-muted">@</span><mark><strong><a href="{{$url}}">{{$username}}</a></strong></mark>

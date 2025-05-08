@@ -8,7 +8,6 @@ if ($showErrors) {
     $viewTabClass = '';
 }
 ?>
-
 {{-- tab top --}}
 @include('nexus.shared._tabtop', [
     'id' => 'section-' . $section->id,
@@ -23,8 +22,10 @@ if ($showErrors) {
     <div class="tab-pane fade {{ $viewTabClass }}" id="section-view-{{ $section->id }}" role="tabpanel"
         aria-labelledby="section-view-{{ $section->id }}-tab">
 
-        <x-heading heading="{{ $section->title }}" lead="{{ $section->intro }}"
-            introduction="Moderated by: {!! $section->moderator->present()->profileLink !!}" />
+        <x-heading heading="{{ $section->title }}" lead="{{ $section->intro }}">
+            Moderated by: <x-profile-link :user="$section->moderator" />
+        </x-heading>
+
 
     </div>
     <div class="tab-pane fade {{ $editTabClass }}" id="section-edit{{ $section->id }}" role="tabpanel"

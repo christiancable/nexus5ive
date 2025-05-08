@@ -1,0 +1,11 @@
+// Loop through each theme color and output a CSS variable override
+@each $name, $color in $theme-colors {
+    .btn-#{$name} {
+        // Set a readable contrast colour for text
+        @if ($name == "primary" or $name == "success" or $name == "info" or $name == "danger" or $name == "dark") {
+            --bs-btn-color: #fff;
+        } @else {
+            --bs-btn-color: #000;
+        }
+    }
+}
