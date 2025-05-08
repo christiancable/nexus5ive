@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Events\UserCreated;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -257,16 +257,6 @@ class User extends Authenticatable implements MustVerifyEmail
         $count = $count + count($this->Mentions);
 
         return $count;
-    }
-
-    /**
-     * Present the user model.
-     *
-     * @return UserPresenter
-     */
-    public function present()
-    {
-        return new UserPresenter($this);
     }
 
     /**

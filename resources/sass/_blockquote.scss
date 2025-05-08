@@ -1,6 +1,35 @@
-/* blockquote */
 blockquote {
-    padding: 0.6rem 1.2rem;
-    margin: 0 0 1.2rem;
-    border-left: 0.4rem solid $body-color;
+  position: relative;
+  padding: 1.25rem 1.5rem 1.25rem 3.5rem; // more space on the left
+  margin: 0 0 1.5rem;
+  background-color: rgba(0, 0, 0, 0.03);
+  border-radius: 0.5rem;
+  font-style: italic;
+  color: $body-color;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+blockquote::before {
+  content: "“";
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  font-size: 3rem;
+  color: $primary;
+  opacity: 0.3;
+  line-height: 1;
+  pointer-events: none;
+}
+
+/* Responsive adjustment */
+@media (max-width: 576px) { // Bootstrap's "sm" breakpoint
+  blockquote {
+      padding-left: 2.5rem;
   }
+
+  blockquote::before {
+      font-size: 2rem;
+      top: 0.8rem;
+      left: 0.8rem;
+  }
+}

@@ -1,6 +1,6 @@
 <tr>
     <td>
-        <strong>{!! $comment->author->present()->profileLink !!}</strong>
+        <strong><x-profile-link :user="$comment->author" /></strong>
     </td>
     <td class="break-long-words comment">    
         @if ($comment->read === true)

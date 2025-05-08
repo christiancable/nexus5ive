@@ -49,4 +49,12 @@ class Post extends Model
     {
         return $this->belongsTo(User::class, 'update_user_id');
     }
+
+    /**
+     * moderation reports for this post
+     */
+    public function reports()
+    {
+        return $this->morphMany(Report::class, 'reportable');
+    }
 }

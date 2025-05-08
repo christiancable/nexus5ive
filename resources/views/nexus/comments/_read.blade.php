@@ -1,6 +1,6 @@
 <tr>
     <td><strong>
-        {!! $comment->author->present()->profileLink !!}
+        <x-profile-link :user="$comment->author" />
     </strong>
 </td>
 <td class="break-long-words comment">    

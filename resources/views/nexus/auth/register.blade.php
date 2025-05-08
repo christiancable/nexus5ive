@@ -65,6 +65,23 @@
                             </div>
                         </div>
 
+                        <div class="mb-3 row">
+                            <div class="col-md-6 offset-md-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="age_confirmation" id="age_confirmation" required>
+                                    <label class="form-check-label" for="age_confirmation">
+                                        I confirm that I am 18 years of age or older.
+                                    </label>
+                                </div>
+                        
+                                @if ($errors->has('age_confirmation'))
+                                    <span class="invalid-feedback d-block" role="alert">
+                                        <strong>{{ $errors->first('age_confirmation') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
                         <div class="mb-3 row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
