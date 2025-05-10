@@ -42,17 +42,19 @@
             @endif
 
             {{-- render posts --}}
+            {{-- if the topic is secret but the posts are not anonymous then the user is a moderator  --}}
             @if ($topic->secret)
-                @if ($userCanSeeSecrets)
-                    <div class="alert alert-danger" role="alert">
-                        <p><strong>This topic is anonymous</strong>. You can see who wrote each post because you are
-                            privileged. <strong>Please respect people's anonymity</strong>.</p>
-                    </div>
-                @else
+                @if ($anonymous)
                     <div class="alert alert-danger" role="alert">
                         <p><strong>This topic is anonymous</strong>. However, the Moderator
                             <strong>{{ $topic->section->moderator->username }}</strong> and the BBS administrator are able
-                            to see who wrote each post.</p>
+                            to see who wrote each post.
+                        </p>
+                    </div>
+                @else
+                    <div class="alert alert-danger" role="alert">
+                        <p><strong>This topic is anonymous</strong>. You can see who wrote each post because you are
+                            privileged. <strong>Please respect people's anonymity</strong>.</p>
                     </div>
                 @endif
             @endif
@@ -73,7 +75,7 @@
                         ?>
                         @include('nexus.post._moderate', compact('post', 'readProgress', 'allowDelete'))
                     @else
-                        @include('nexus.post._view', compact('post', 'readProgress', 'userCanSeeSecrets'))
+                        @include('nexus.post._view', compact('post', 'readProgress', 'anonymous'))
                     @endif
                 @endif
 
