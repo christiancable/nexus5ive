@@ -15,7 +15,7 @@
 
         <h2>Post preview</h2>
         <!-- Show the post being reported -->
-        <x-post :post=$post :preview=true :userCanSeeSecrets="$userCanSeeSecrets"></x-post>
+        <x-post :post=$post :preview=true :anonymous="$anonymous"></x-post>
 
         <!-- Report form -->
         <form action="{{ action('App\Http\Controllers\Nexus\ReportController@store', ['type' => 'post', 'id' => $post->id]) }}" method="POST">

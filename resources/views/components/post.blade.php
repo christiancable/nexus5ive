@@ -7,12 +7,12 @@
 
     <div class="card-body">
         <div class="d-flex justify-content-between">
-            @if ($userCanSeeSecrets)
+            @if ($anonymous)
+                Unknown User
+            @else 
             <div>
                 <x-profile-link :user="$author"/> <span class="text-muted">&ndash;</span> {{$popname}}
             </div>
-            @else 
-            Unknown User
             @endif
             
             @if($preview != true)

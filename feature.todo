@@ -1,3 +1,24 @@
+bugfix:
+    ☐ non-moderators and non-admins cannot see post details they just see unknown user
+        - What should happen
+            - topic is secret
+                ✔ admin can see details @done(25-05-10 11:31)
+                ✔ topic modetator can see details @done(25-05-10 11:31)
+                ✔ all other users cannot see details @done(25-05-10 11:31)
+
+            - topic is not secret
+                ✔ all users can see details @done(25-05-10 11:31)
+
+            ^^ this looks like a decision to made by topic policy
+                post previews outside of a topic can just pass the flag to the post component
+
+        therefore post component should have a flag to say if this is annon or not
+
+        tasks:
+            ✔ add flag to post component - it should not care in of itself about the privs of the user @done(25-05-10 11:21)
+            ✔ calculate flag value in topic controller via topic policy @done(25-05-10 11:21)
+
+
 moderation:
 
     ☐ user comments can be reported
