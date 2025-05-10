@@ -44,6 +44,9 @@ class TopicController extends Controller
         $posts = $topic->reversedPosts()->with('author');
 
         // is this topic readonly to the authenticated user?
+        // @todo make this a policy call but then we would
+        // care if the topic is writable rather than read only because of the before function
+
         $readonly = true;
 
         if ($topic->readonly == false) {
@@ -58,8 +61,8 @@ class TopicController extends Controller
             $readonly = false;
         }
 
-        // is this topic secret to the authenticated user
-        $userCanSeeSecrets = $request->user()->can('viewSecrets', $topic);
+        // is this topic anonymous to the logged in user?
+        $anonymous = ! ($request->user()->can('viewDetails', $topic));
 
         // get the previously read progress so we can indicate this in the view
         $readProgress = ViewHelper::getReadProgress($request->user(), $topic);
@@ -95,11 +98,11 @@ class TopicController extends Controller
                 'topic',
                 'posts',
                 'readonly',
-                'userCanSeeSecrets',
                 'readProgress',
                 'breadcrumbs',
                 'unsubscribed',
-                'replyingTo'
+                'replyingTo',
+                'anonymous',
             )
         );
     }

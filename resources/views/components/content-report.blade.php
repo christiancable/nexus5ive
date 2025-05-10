@@ -39,7 +39,7 @@
                             <x-ui.button-link @click="open = false" variant="outline-secondary" class="mb-2">
                                 Hide preview
                             </x-ui.button-link>
-                            <x-post :post="$postPreview" :preview=true userCanSeeSecrets="true"/>
+                            <x-post :post="$postPreview" :preview=true/>
                         </div>
                     </template>
                     <template x-if="!open">

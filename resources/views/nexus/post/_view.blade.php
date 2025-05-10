@@ -1,1 +1,1 @@
-<x-post :post=$post :userCanSeeSecrets=$userCanSeeSecrets :readProgress=$readProgress/>
+<x-post :post=$post :anonymous=$anonymous :readProgress=$readProgress/>

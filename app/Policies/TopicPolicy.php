@@ -30,13 +30,17 @@ class TopicPolicy
     }
 
     /**
-     * Determine whether the user can view the all post details even if
-     * the topic is anonymous
-     *
-     * @return mixed
+     * a user can see post details if the topic is not anonymous
+     * or if the user is privilaged
      */
-    public function viewSecrets(User $user, Topic $topic): bool
+    public function viewDetails(User $user, Topic $topic): bool
     {
+        // all users can see details if the topic is not secret
+        if (! $topic->secret) {
+            return true;
+        }
+
+        // otherwise they only see them if they moderate the topic
         return $topic->section->moderator->id === $user->id;
     }
 
