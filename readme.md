@@ -65,9 +65,12 @@ Users who use a removed theme have their theme set to the default.
 
 ## Development
 
-Nexus uses [Laravel Sail](https://laravel.com/docs/11.x/sail) for development.
+Nexus uses [Laravel Sail](https://laravel.com/docs/12.x/sail) for development.
 
 A number of useful tasks are included to aid in development. Prefix the commands below with `./vendon/bin/sail` where required.
+
+There are two copies of the docker-composer.yml file here; if you are using podman rather than docker then copy the docker-compose.yml.podman file over docker-composer.yml and update the IP address of your
+podman mv in the 'host.docker.internal' lines.
 
 ### Tests
 
