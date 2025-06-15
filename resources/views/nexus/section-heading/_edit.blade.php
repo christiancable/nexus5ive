@@ -23,9 +23,9 @@
 
     <div class="d-flex justify-content-end">    
         <div class="mb-3">          
-            <x-button class="btn-success" type="success">
+            <x-ui.button variant="success" type="submit">
                 <x-heroicon-s-pencil class="icon_mini me-1" aria-hidden="true" />Save Changes
-            </x-button>
+            </x-ui.button>
         </div>
     </div>
 </form>

@@ -55,9 +55,9 @@
 
         <div class="d-flex flex-row-reverse justify-content-between bd-highlight">
             <div class="mb-3 ms-2">
-                <x-button class="btn-success" type="success">
+                <x-ui.button variant="success" type="submit">
                     <x-heroicon-s-pencil class="icon_mini me-1" aria-hidden="true" />Save Changes
-                </x-button>
+                </x-ui.button>
             </div>
             </form>
 
@@ -65,10 +65,10 @@
                 @csrf
                 @method('DELETE')
             <div class="mb-3">
-                <x-button type="submit" class="btn-warning">
+                <x-ui.button variant="warning" type="submit">
                     <x-heroicon-s-archive-box-arrow-down class="icon_mini me-1" aria-hidden="true" />
                     Archive Section
-                </x-button>
+                </x-ui.button>
             </div>
             </form>
 
