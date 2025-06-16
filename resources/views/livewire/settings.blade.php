@@ -47,9 +47,9 @@
                 </div>
             </span>
             <div class="mb-3 d-flex">
-                    <x-button class="btn-success me-2" type="submit" wire:click="save">Update mode</x-button>
-                    <x-button class="btn-primary" wire:click="setBBSMode">Set BBS mode</x-button>
-                </div>
+                <x-ui.button variant="success" class="me-2" type="submit" wire:click="save">Update mode</x-ui.button>
+                <x-ui.button variant="primary" wire:click="setBBSMode">Set BBS mode</x-ui.button>
+            </div>
         </div>
     </div>
 </span>

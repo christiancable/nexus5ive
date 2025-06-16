@@ -16,8 +16,9 @@
             >
         @csrf
         @method('DELETE')
-            <button class="btn btn-danger position-end">
-            <x-heroicon-s-trash class="icon_mini mr-1" aria-hidden="true" />Delete</button>
+            <x-ui.button variant="danger" type="submit" class="position-end">
+                <x-heroicon-s-trash class="icon_mini mr-1" aria-hidden="true" />Delete
+            </x-ui.button>
         </form>
     </td>
 </tr>

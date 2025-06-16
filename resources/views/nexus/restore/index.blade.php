@@ -30,11 +30,10 @@
         @else
             <h2>Archived Sections</h2>
 
-            <x-button class="btn-success col-12" data-bs-toggle="collapse" data-bs-target="#sections" aria-expanded="false"
-                aria-controls="sections">
+            <x-ui.button variant="success" class="col-12" data-bs-toggle="collapse" data-bs-target="#sections" aria-expanded="false" aria-controls="sections">
                 <x-heroicon-s-chevron-right class="icon_mini me-2 collapse-icon" aria-hidden="true" />
                 View Sections to Restore
-            </x-button>
+            </x-ui.button>
 
             <div class="collapse" id="sections">
                 @if ($trashedSections->count() != 0)
@@ -52,11 +51,10 @@
 
             <h2>Archived Topics</h2>
 
-            <x-button class="btn-success col-12" data-bs-toggle="collapse" data-bs-target="#topics" aria-expanded="false"
-                aria-controls="sections">
+            <x-ui.button variant="success" class="col-12" data-bs-toggle="collapse" data-bs-target="#topics" aria-expanded="false" aria-controls="sections">
                 <x-heroicon-s-chevron-right class="icon_mini me-2 collapse-icon" aria-hidden="true" />
                 View Topics to Restore
-            </x-button>
+            </x-ui.button>
 
             <div class="collapse" id="topics">
                 @if ($trashedTopics->count() != 0)
