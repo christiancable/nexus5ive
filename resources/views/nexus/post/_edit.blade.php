@@ -20,9 +20,9 @@ $errorBag = 'postUpdate' . $post->id;
 
         <div class="d-flex flex-row-reverse justify-content-between bd-highlight">
             <div class="mb-3 ms-2">
-                <x-button class="btn-success" type="success">
+                <x-ui.button variant="success" type="submit">
                     <x-heroicon-s-pencil class="icon_mini me-1" aria-hidden="true" />Save Changes
-                </x-button>
+                </x-ui.button>
             </div>
         </form>
         
@@ -31,9 +31,9 @@ $errorBag = 'postUpdate' . $post->id;
             @csrf
             @method('DELETE')
             <div class="mb-3">
-                <x-button class="btn-danger" type="success">
+                <x-ui.button variant="danger" type="submit">
                     <x-heroicon-s-trash class="icon_mini me-1" aria-hidden="true" />Delete
-                </x-button>
+                </x-ui.button>
             </div>
         </form>
     @endif

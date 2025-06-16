@@ -1,5 +1,4 @@
 @extends('nexus.layouts.master')
-
 @section('meta')
     <title>Search Results</title>
 @endsection
@@ -30,10 +29,10 @@
             <div class="row">
                 <div class="col-sm-12">
                     <div class="mb-3">
-                        <x-button type="submit" class="btn-primary">
+                        <x-ui.button variant="primary" type="submit">
                             <x-heroicon-s-magnifying-glass class="icon_mini me-1" aria-hidden="true" />
                             Search
-                        </x-button>
+                        </x-ui.button>
                     </div>
                 </div>
             </div>

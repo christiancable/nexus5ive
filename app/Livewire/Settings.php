@@ -66,7 +66,7 @@ class Settings extends Component
 
         Cache::forget('bbs_mode');
         FlashHelper::showAlert('Saved changes', 'success');
-        $this->redirect(route('admin.index'));
+        $this->redirect(route('theme.index'));
     }
 
     public function setBBSMode(Request $request)
@@ -88,7 +88,7 @@ class Settings extends Component
 
         Cache::forget('bbs_mode');
         FlashHelper::showAlert($message, 'success');
-        $this->redirect(route('admin.index'));
+        $this->redirect(route('theme.index'));
     }
 
     public function render()
