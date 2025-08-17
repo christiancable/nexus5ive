@@ -11,6 +11,17 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
 
+/**
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Post> $posts
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Comment> $comments
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Section> $sections
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\View> $views
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Chat> $chats
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Mention> $mentions
+ * @property-read \App\Models\Activity $activity
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Comment> $givenComments
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Post> $modifiedPosts
+ */
 class User extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory, Notifiable, SoftDeletes;
@@ -18,7 +29,7 @@ class User extends Authenticatable implements MustVerifyEmail
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int, string>
+     * @var list<string>
      */
     protected $fillable = [
         'username',
@@ -38,7 +49,7 @@ class User extends Authenticatable implements MustVerifyEmail
     /**
      * The attributes that should be hidden for serialization.
      *
-     * @var array<int, string>
+     * @var list<string>
      */
     protected $hidden = [
         'password',
@@ -91,14 +102,12 @@ class User extends Authenticatable implements MustVerifyEmail
                 /*
                 to keep a cascading delete when using softDeletes we must remove the related models here
                 */
-                $children = ['posts',
-                    'comments',
-                    'sections',
-                    'views',
-                    'messages',
-                    'sentMessages',
-                    'activity',
-                    'givenComments'];
+                $children = ["posts",
+                    "comments",
+                    "sections",
+                    "views",
+                    "activity",
+                    "givenComments"];
                 foreach ($children as $child) {
                     if ($user->$child !== null) {
                         // we need to call delete on the grandchilden to trigger their delete() events
@@ -178,6 +187,8 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasOne(Activity::class);
     }
 
+
+
     public function theme()
     {
         return $this->belongsTo(Theme::class);
@@ -214,6 +225,8 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->comments()->where('read', false)->select('id')->count();
     }
+
+
 
     public function markCommentsAsRead()
     {
@@ -254,7 +267,7 @@ class User extends Authenticatable implements MustVerifyEmail
         $count = 0;
         $count = $count + $this->unreadChatCount();
         $count = $count + $this->newCommentCount();
-        $count = $count + count($this->Mentions);
+        $count = $count + count($this->mentions);
 
         return $count;
     }
