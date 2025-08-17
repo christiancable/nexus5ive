@@ -83,7 +83,7 @@ class Topic extends Model
      *
      * @return \Illuminate\Support\Carbon|null
      */
-    public function getMostRecentPostTimeAttribute()
+    public function getMostRecentPostTimeAttribute(): ?\Illuminate\Support\Carbon
     {
 
         $latestPost = Post::select('time')
@@ -97,7 +97,7 @@ class Topic extends Model
             $result = $this->created_at;
         }
 
-        return $result;
+        return $result instanceof \Illuminate\Support\Carbon ? $result : null;
     }
 
     // phpcs:disable PSR1.Methods.CamelCapsMethodName
