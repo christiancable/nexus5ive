@@ -106,7 +106,7 @@ HTML;
             $unspoiledspoilers[] = $spoilerStart.$matches[1][$key].$spoilerStop;
         }
 
-        if (! empty($matches)) {
+        if (count($matches[0]) > 0) {
             $text = str_replace($spoilers, $unspoiledspoilers, $text);
         }
 

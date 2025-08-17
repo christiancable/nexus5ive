@@ -20,6 +20,9 @@ class View extends Model
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<Topic, $this>
+     */
     public function topic()
     {
         return $this->belongsTo(Topic::class);

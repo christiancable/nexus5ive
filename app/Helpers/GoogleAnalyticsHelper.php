@@ -15,7 +15,7 @@ class GoogleAnalyticsHelper
     {
         $return = '';
 
-        if (env('GOOGLE_ANAYTICS_ACTIVATE') == 'true') {
+        if (config('nexus.google_anaytics_activate') == 'true') {
             $return = "onClick=\"ga('send', 'event', '$category', '$action', '$label');\"";
         }
 

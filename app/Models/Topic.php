@@ -2,16 +2,18 @@
 
 namespace App\Models;
 
-
 use App\Events\MostRecentPostForSectionBecameDirty;
 use App\Events\TreeCacheBecameDirty;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Log;
 
+/**
+ * @property-read \App\Models\Section $section
+ * @property-read \App\Models\Post|null $most_recent_post
+ */
 class Topic extends Model
 {
     use HasFactory;
@@ -76,10 +78,8 @@ class Topic extends Model
     /**
      * returns the time of the most recent post
      * if the topic has no posts then return the created time of the topic
-     *
-     * @return Carbon|null
      */
-    public function getMostRecentPostTimeAttribute()
+    public function getMostRecentPostTimeAttribute(): ?\Illuminate\Support\Carbon
     {
 
         $latestPost = Post::select('time')
@@ -93,7 +93,7 @@ class Topic extends Model
             $result = $this->created_at;
         }
 
-        return $result;
+        return $result instanceof \Illuminate\Support\Carbon ? $result : null;
     }
 
     // phpcs:disable PSR1.Methods.CamelCapsMethodName
@@ -103,26 +103,35 @@ class Topic extends Model
         return $this->belongsTo(Post::class);
     }
 
-    // sections
-
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<Section, $this>
+     */
     public function section()
     {
         return $this->belongsTo(Section::class);
     }
 
-    // posts
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<Post, $this>
+     */
     public function posts()
     {
         return $this->hasMany(Post::class)->orderBy('id', 'asc');
     }
 
-    // posts but in reverse order
+    /**
+     * posts but in reverse order
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<Post, $this>
+     */
     public function reversedPosts()
     {
         return $this->hasMany(Post::class)->orderBy('id', 'desc');
     }
-    // views
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<View, $this>
+     */
     public function views()
     {
         return $this->hasMany(View::class)->orderBy('latest_view_date', 'desc');

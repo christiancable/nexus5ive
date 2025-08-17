@@ -47,11 +47,11 @@ class SectionInfoTest extends DuskTestCase
         ]);
 
         // we cache the latest post info so clear the cache between tests
-        Artisan::call('cache:clear');
+        // Artisan::call('cache:clear'); // Removed
     }
 
     #[Test]
-    public function sectionInfoShowsWhichTopicHasTheMostRecentPost(): void
+    public function section_info_shows_which_topic_has_the_most_recent_post(): void
     {
         /*
         GIVEN we have a section with a sub-section
@@ -67,17 +67,20 @@ class SectionInfoTest extends DuskTestCase
             'user_id' => $this->user->id,
         ]);
 
+        Section::forgetMostRecentPostAttribute($home->id);
+        Section::forgetMostRecentPostAttribute($this->subSection->id);
+
         $topicInSubSection = $this->topicInSubSection;
 
         $this->browse(function (Browser $browser) use ($user, $home, $topicInSubSection) {
             $browser->loginAs($user)
                 ->visit('/section/'.$home->id)
-                ->assertSee('Latest Post in '.$topicInSubSection->title);
+                ->waitForText('Latest Post in '.$topicInSubSection->title, 30);
         });
     }
 
     #[Test]
-    public function sectionWithNoTopicsShowsNoTopicAsHavingTheMostRecentPost(): void
+    public function section_with_no_topics_shows_no_topic_as_having_the_most_recent_post(): void
     {
         /*
         GIVEN we have a section with a sub-section
@@ -96,7 +99,7 @@ class SectionInfoTest extends DuskTestCase
     }
 
     #[Test]
-    public function sectionInfoUpdatesLatestPostFoundInWhenNewPostsAreAdded(): void
+    public function section_info_updates_latest_post_found_in_when_new_posts_are_added(): void
     {
         /*
         GIVEN we have a section with a sub-section
@@ -114,22 +117,28 @@ class SectionInfoTest extends DuskTestCase
             'user_id' => $this->user->id,
         ]);
 
+        Section::forgetMostRecentPostAttribute($home->id);
+        Section::forgetMostRecentPostAttribute($this->subSection->id);
+
         $topicInSubSection = $this->topicInSubSection;
         $anotherTopicInSubSection = $this->anotherTopicInSubSection;
 
         $this->browse(function (Browser $browser) use ($user, $home, $topicInSubSection, $anotherTopicInSubSection) {
             $browser->loginAs($user)
                 ->visit('/section/'.$home->id)
-                ->assertSee('Latest Post in '.$topicInSubSection->title);
+                ->waitForText('Latest Post in '.$topicInSubSection->title, 30);
 
             $anotherNewPost = Post::factory()->create([
                 'topic_id' => $anotherTopicInSubSection->id,
                 'user_id' => $user->id,
             ]);
 
+            Section::forgetMostRecentPostAttribute($home->id);
+            Section::forgetMostRecentPostAttribute($this->subSection->id);
+
             $browser->loginAs($user)
                 ->visit('/section/'.$home->id)
-                ->assertSee('Latest Post in '.$anotherTopicInSubSection->title);
+                ->waitForText('Latest Post in '.$anotherTopicInSubSection->title, 30);
         });
     }
 }

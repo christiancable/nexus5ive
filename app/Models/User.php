@@ -11,6 +11,19 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
 
+/**
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Post> $posts
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Comment> $comments
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Section> $sections
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\View> $views
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Chat> $chats
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Mention> $mentions
+ * @property-read \App\Models\Activity $activity
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Comment> $givenComments
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Comment> $modifiedPosts
+ * @property string $username
+ * @property string $email
+ */
 class User extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory, Notifiable, SoftDeletes;
@@ -18,7 +31,7 @@ class User extends Authenticatable implements MustVerifyEmail
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int, string>
+     * @var list<string>
      */
     protected $fillable = [
         'username',
@@ -38,7 +51,7 @@ class User extends Authenticatable implements MustVerifyEmail
     /**
      * The attributes that should be hidden for serialization.
      *
-     * @var array<int, string>
+     * @var list<string>
      */
     protected $hidden = [
         'password',
@@ -95,8 +108,6 @@ class User extends Authenticatable implements MustVerifyEmail
                     'comments',
                     'sections',
                     'views',
-                    'messages',
-                    'sentMessages',
                     'activity',
                     'givenComments'];
                 foreach ($children as $child) {
@@ -254,7 +265,7 @@ class User extends Authenticatable implements MustVerifyEmail
         $count = 0;
         $count = $count + $this->unreadChatCount();
         $count = $count + $this->newCommentCount();
-        $count = $count + count($this->Mentions);
+        $count = $count + count($this->mentions);
 
         return $count;
     }

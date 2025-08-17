@@ -12,7 +12,6 @@ namespace App\Console\Commands;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
-use Illuminate\Database\Eloquent\Collection;
 
 class NexusUnverified extends Command
 {
@@ -28,7 +27,7 @@ class NexusUnverified extends Command
      * List of unverified users to be
      * considered for removal.
      *
-     * @var Collection
+     * @var \Illuminate\Database\Eloquent\Collection<\App\Models\User>
      */
     protected $unverifiedUsers = null;
 
@@ -52,7 +51,7 @@ class NexusUnverified extends Command
     /**
      * generate list of unverified users
      *
-     * @return collection;
+     * @return \Illuminate\Database\Eloquent\Collection<\App\Models\User>
      */
     private function getUnverifiedUsers()
     {

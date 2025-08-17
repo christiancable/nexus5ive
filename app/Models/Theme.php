@@ -18,6 +18,9 @@ class Theme extends Model
         'updated_at',
     ];
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<User, $this>
+     */
     public function users()
     {
         return $this->hasMany(User::class);

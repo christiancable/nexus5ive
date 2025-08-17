@@ -2,7 +2,7 @@
 
 namespace App\Livewire;
 
-use App\Models\Tree;
+use App\Helpers\TreeHelper;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use Livewire\Attributes\Computed;
@@ -24,7 +24,7 @@ class SearchMenu extends Component
     public function fetchTree()
     {
         $this->locations = collect(Cache::rememberForever('tree', function () {
-            return Tree::tree();
+            return TreeHelper::tree();
         }));
     }
 
