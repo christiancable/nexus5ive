@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * @property-read Model $reportable
+ */
 class Report extends Model
 {
     /** @use HasFactory<\Database\Factories\ReportFactory> */
@@ -72,10 +75,11 @@ class Report extends Model
      */
     public function getReportableLinkAttribute(): ?string
     {
-        return match (class_basename($this->reportable_type)) {
-            'Post' => \App\Helpers\TopicHelper::routeToPost($this->reportable),
-            default => null,
-        };
+        if ($this->reportable instanceof Post) {
+            return \App\Helpers\TopicHelper::routeToPost($this->reportable);
+        }
+
+        return null;
     }
 
     public function getStatusBadgeClassAttribute()
