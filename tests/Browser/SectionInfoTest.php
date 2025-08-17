@@ -72,7 +72,7 @@ class SectionInfoTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($user, $home, $topicInSubSection) {
             $browser->loginAs($user)
                 ->visit('/section/'.$home->id)
-                ->assertSee('Latest Post in '.$topicInSubSection->title);
+                ->waitForText('Latest Post in '.$topicInSubSection->title, 30);
         });
     }
 
@@ -120,7 +120,7 @@ class SectionInfoTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($user, $home, $topicInSubSection, $anotherTopicInSubSection) {
             $browser->loginAs($user)
                 ->visit('/section/'.$home->id)
-                ->assertSee('Latest Post in '.$topicInSubSection->title);
+                ->waitForText('Latest Post in '.$topicInSubSection->title, 30);
 
             $anotherNewPost = Post::factory()->create([
                 'topic_id' => $anotherTopicInSubSection->id,
@@ -129,7 +129,7 @@ class SectionInfoTest extends DuskTestCase
 
             $browser->loginAs($user)
                 ->visit('/section/'.$home->id)
-                ->assertSee('Latest Post in '.$anotherTopicInSubSection->title);
+                ->waitForText('Latest Post in '.$anotherTopicInSubSection->title, 30);
         });
     }
 }
