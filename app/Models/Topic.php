@@ -12,6 +12,10 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Log;
 
+/**
+ * @property-read \App\Models\Section $section
+ * @property-read \App\Models\Post|null $most_recent_post
+ */
 class Topic extends Model
 {
     use HasFactory;
@@ -77,7 +81,7 @@ class Topic extends Model
      * returns the time of the most recent post
      * if the topic has no posts then return the created time of the topic
      *
-     * @return Carbon|null
+     * @return \Illuminate\Support\Carbon|null
      */
     public function getMostRecentPostTimeAttribute()
     {
