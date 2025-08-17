@@ -51,7 +51,7 @@ class SectionInfoTest extends DuskTestCase
     }
 
     #[Test]
-    public function sectionInfoShowsWhichTopicHasTheMostRecentPost(): void
+    public function section_info_shows_which_topic_has_the_most_recent_post(): void
     {
         /*
         GIVEN we have a section with a sub-section
@@ -80,7 +80,7 @@ class SectionInfoTest extends DuskTestCase
     }
 
     #[Test]
-    public function sectionWithNoTopicsShowsNoTopicAsHavingTheMostRecentPost(): void
+    public function section_with_no_topics_shows_no_topic_as_having_the_most_recent_post(): void
     {
         /*
         GIVEN we have a section with a sub-section
@@ -99,7 +99,7 @@ class SectionInfoTest extends DuskTestCase
     }
 
     #[Test]
-    public function sectionInfoUpdatesLatestPostFoundInWhenNewPostsAreAdded(): void
+    public function section_info_updates_latest_post_found_in_when_new_posts_are_added(): void
     {
         /*
         GIVEN we have a section with a sub-section

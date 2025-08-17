@@ -2,13 +2,11 @@
 
 namespace App\Models;
 
-
 use App\Events\MostRecentPostForSectionBecameDirty;
 use App\Events\TreeCacheBecameDirty;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Log;
 
@@ -80,8 +78,6 @@ class Topic extends Model
     /**
      * returns the time of the most recent post
      * if the topic has no posts then return the created time of the topic
-     *
-     * @return \Illuminate\Support\Carbon|null
      */
     public function getMostRecentPostTimeAttribute(): ?\Illuminate\Support\Carbon
     {
@@ -125,13 +121,14 @@ class Topic extends Model
 
     /**
      * posts but in reverse order
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany<Post, $this>
      */
     public function reversedPosts()
     {
         return $this->hasMany(Post::class)->orderBy('id', 'desc');
     }
-    
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany<View, $this>
      */

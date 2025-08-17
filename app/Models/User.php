@@ -104,12 +104,12 @@ class User extends Authenticatable implements MustVerifyEmail
                 /*
                 to keep a cascading delete when using softDeletes we must remove the related models here
                 */
-                $children = ["posts",
-                    "comments",
-                    "sections",
-                    "views",
-                    "activity",
-                    "givenComments"];
+                $children = ['posts',
+                    'comments',
+                    'sections',
+                    'views',
+                    'activity',
+                    'givenComments'];
                 foreach ($children as $child) {
                     if ($user->$child !== null) {
                         // we need to call delete on the grandchilden to trigger their delete() events
@@ -189,8 +189,6 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasOne(Activity::class);
     }
 
-
-
     public function theme()
     {
         return $this->belongsTo(Theme::class);
@@ -227,8 +225,6 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->comments()->where('read', false)->select('id')->count();
     }
-
-
 
     public function markCommentsAsRead()
     {

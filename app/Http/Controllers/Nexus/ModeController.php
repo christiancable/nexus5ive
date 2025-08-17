@@ -7,7 +7,6 @@ use App\Helpers\BreadcrumbHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Mode;
 use Illuminate\Http\Request;
-use Illuminate\View\View;
 
 class ModeController extends Controller
 {

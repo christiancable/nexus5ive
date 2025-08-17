@@ -2,9 +2,9 @@
 
 namespace Tests\Unit;
 
+use App\Helpers\TreeHelper;
 use App\Models\Section;
 use App\Models\Topic;
-use App\Helpers\TreeHelper;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;

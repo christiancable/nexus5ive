@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Events\TreeCacheBecameDirty;
+use App\Helpers\TreeHelper;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -10,7 +10,6 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
-use App\Helpers\TreeHelper;
 
 /**
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Section> $sections
@@ -167,8 +166,8 @@ class Section extends Model
         $latestPost = Post::whereHas('topic', function ($query) {
             $query->where('section_id', $this->id);
         })
-        ->orderBy('id', 'desc')
-        ->first();
+            ->orderBy('id', 'desc')
+            ->first();
 
         return $latestPost;
     }

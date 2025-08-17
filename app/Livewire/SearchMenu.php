@@ -2,11 +2,11 @@
 
 namespace App\Livewire;
 
+use App\Helpers\TreeHelper;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
-use App\Helpers\TreeHelper;
 
 class SearchMenu extends Component
 {

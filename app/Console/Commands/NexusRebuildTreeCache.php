@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
 use App\Helpers\TreeHelper;
+use Illuminate\Console\Command;
 
 class NexusRebuildTreeCache extends Command
 {

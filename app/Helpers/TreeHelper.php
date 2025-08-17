@@ -2,9 +2,9 @@
 
 namespace App\Helpers;
 
+use App\Models\Section;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
-use App\Models\Section;
 
 class TreeHelper
 {

@@ -18,7 +18,7 @@ class EnsureUserIsAdmin
         if ($request->user()->isAdmin()) {
             return $next($request);
         }
-        
+
         abort(403, 'Access Denied: You do not have the necessary permissions to view this page.');
     }
 }
