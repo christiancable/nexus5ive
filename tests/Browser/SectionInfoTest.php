@@ -47,7 +47,7 @@ class SectionInfoTest extends DuskTestCase
         ]);
 
         // we cache the latest post info so clear the cache between tests
-        Artisan::call('cache:clear');
+        // Artisan::call('cache:clear'); // Removed
     }
 
     #[Test]
@@ -66,6 +66,9 @@ class SectionInfoTest extends DuskTestCase
             'topic_id' => $this->topicInSubSection->id,
             'user_id' => $this->user->id,
         ]);
+
+        Section::forgetMostRecentPostAttribute($home->id);
+        Section::forgetMostRecentPostAttribute($this->subSection->id);
 
         $topicInSubSection = $this->topicInSubSection;
 
@@ -114,6 +117,9 @@ class SectionInfoTest extends DuskTestCase
             'user_id' => $this->user->id,
         ]);
 
+        Section::forgetMostRecentPostAttribute($home->id);
+        Section::forgetMostRecentPostAttribute($this->subSection->id);
+
         $topicInSubSection = $this->topicInSubSection;
         $anotherTopicInSubSection = $this->anotherTopicInSubSection;
 
@@ -126,6 +132,9 @@ class SectionInfoTest extends DuskTestCase
                 'topic_id' => $anotherTopicInSubSection->id,
                 'user_id' => $user->id,
             ]);
+
+            Section::forgetMostRecentPostAttribute($home->id);
+            Section::forgetMostRecentPostAttribute($this->subSection->id);
 
             $browser->loginAs($user)
                 ->visit('/section/'.$home->id)

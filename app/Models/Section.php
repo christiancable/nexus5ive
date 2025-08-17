@@ -153,18 +153,18 @@ class Section extends Model
      */
     private function recalculateMostRecentPost()
     {
-        $topicIDs = Topic::withoutGlobalScope('with_most_recent_post')->select('id')
-            ->where('section_id', $this->id)->get()->toArray();
-        if (count($topicIDs) == 0) {
+        if ($this->topics->isEmpty()) {
             return null;
         }
 
-        $postID = Post::select('id')->whereIn('topic_id', $topicIDs)->orderBy('id', 'desc')->first();
-        if (! $postID) {
-            return null;
-        }
+        // Directly find the latest post within the section's topics
+        $latestPost = Post::whereHas('topic', function ($query) {
+            $query->where('section_id', $this->id);
+        })
+        ->orderBy('id', 'desc')
+        ->first();
 
-        return Post::find($postID->id);
+        return $latestPost;
     }
 
     public function slug()
