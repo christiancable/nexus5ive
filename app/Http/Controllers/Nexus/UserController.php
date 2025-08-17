@@ -56,7 +56,7 @@ class UserController extends Controller
 
         // get default theme and then the others sorted by name
         $defaultTheme = Theme::firstOrFail();
-        $otherThemes = Theme::orderBy('name')->get()->except($defaultTheme->id);
+        $otherThemes = Theme::orderBy('name')->where('id', '!=', $defaultTheme->id)->get();
 
         $themes = collect([$defaultTheme])
             ->concat($otherThemes)

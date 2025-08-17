@@ -107,26 +107,34 @@ class Topic extends Model
         return $this->belongsTo(Post::class);
     }
 
-    // sections
-
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<Section, $this>
+     */
     public function section()
     {
         return $this->belongsTo(Section::class);
     }
 
-    // posts
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<Post, $this>
+     */
     public function posts()
     {
         return $this->hasMany(Post::class)->orderBy('id', 'asc');
     }
 
-    // posts but in reverse order
+    /**
+     * posts but in reverse order
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<Post, $this>
+     */
     public function reversedPosts()
     {
         return $this->hasMany(Post::class)->orderBy('id', 'desc');
     }
-    // views
-
+    
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<View, $this>
+     */
     public function views()
     {
         return $this->hasMany(View::class)->orderBy('latest_view_date', 'desc');

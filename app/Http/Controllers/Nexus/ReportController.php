@@ -146,7 +146,7 @@ class ReportController extends Controller
         if ($request->filled('moderator_note')) {
             $report->moderationNotes()->create([
                 'user_id' => Auth::id(),
-                'user_name' => Auth::user()?->username ?? 'System',
+                'user_name' => Auth::user()->username ?? 'System',
                 'note' => $request->input('moderator_note'),
             ]);
         }

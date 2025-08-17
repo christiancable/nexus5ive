@@ -18,6 +18,9 @@ class Chat extends Model
         return $this->hasMany(ChatMessage::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne<User, $this>
+     */
     public function partner()
     {
         return $this->hasOne(User::class, 'id', 'partner_id');

@@ -20,7 +20,9 @@ use Illuminate\Support\Facades\Log;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Mention> $mentions
  * @property-read \App\Models\Activity $activity
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Comment> $givenComments
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Post> $modifiedPosts
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Comment> $modifiedPosts
+ * @property string $username
+ * @property string $email
  */
 class User extends Authenticatable implements MustVerifyEmail
 {

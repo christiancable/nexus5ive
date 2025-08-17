@@ -28,7 +28,7 @@ class NexusUnverified extends Command
      * List of unverified users to be
      * considered for removal.
      *
-     * @var Collection
+     * @var \Illuminate\Database\Eloquent\Collection<\App\Models\User>
      */
     protected $unverifiedUsers = null;
 
@@ -52,7 +52,7 @@ class NexusUnverified extends Command
     /**
      * generate list of unverified users
      *
-     * @return collection;
+     * @return \Illuminate\Database\Eloquent\Collection<\App\Models\User>
      */
     private function getUnverifiedUsers()
     {

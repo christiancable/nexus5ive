@@ -22,6 +22,9 @@ class Mode extends Model
         'override' => 'bool',
     ];
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<Theme, $this>
+     */
     public function theme()
     {
         return $this->belongsTo(Theme::class);

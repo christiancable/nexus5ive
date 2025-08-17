@@ -114,11 +114,17 @@ class Section extends Model
     }
 
     // topics
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<Topic, $this>
+     */
     public function topics()
     {
         return $this->hasMany(Topic::class)->orderBy('weight', 'asc');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<Topic, $this>
+     */
     public function trashedTopics()
     {
         return $this->topics()->onlyTrashed()->orderBy('weight', 'asc');
