@@ -17,14 +17,17 @@
             </x-slot>
         </x-heading>
 
-        <ul class="nav nav-pills mb-3">
+        <ul class="nav nav-pills mb-2 card flex-row align-items-center py-2 px-2">
             <li class="nav-item">
-                <a class="nav-link {{ request('status') ? '' : 'active' }}" href="{{ route('reports.index') }}">All</a>
+                <a class="nav-link {{ request('status') ? '' : 'active bg-primary text-white' }}"
+                   href="{{ route('reports.index') }}">
+                    All
+                </a>
             </li>
             @foreach (\App\Models\Report::STATUSES as $key => $label)
                 <li class="nav-item">
-                    <a class="nav-link {{ request('status') === $key ? 'active' : '' }}"
-                        href="{{ route('reports.index', ['status' => $key]) }}">
+                    <a class="nav-link {{ request('status') === $key ? 'active bg-primary text-white' : '' }}"
+                       href="{{ route('reports.index', ['status' => $key]) }}">
                         {{ $label }}
                         <span class="badge bg-light text-secondary">
                             {{ $totals[$key] ?? 0 }}

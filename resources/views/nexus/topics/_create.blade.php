@@ -38,9 +38,9 @@
 
     <div class="d-flex flex-row-reverse bd-highlight">
         <div class="mb-3 ms-2">
-            <x-button type="submit" class="btn btn-success">
+            <x-ui.button variant="success" type="submit">
                 <x-heroicon-s-document-plus class="icon_mini me-1" aria-hidden="true" />Add Topic
-            </x-button>
+            </x-ui.button>
         </div>
     </div>
 </form>
