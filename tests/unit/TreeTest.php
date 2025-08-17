@@ -4,7 +4,7 @@ namespace Tests\Unit;
 
 use App\Models\Section;
 use App\Models\Topic;
-use App\Models\Tree;
+use App\Helpers\TreeHelper;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -20,7 +20,7 @@ class TreeTest extends TestCase
         $section = Section::factory()->create(['user_id' => $user->id, 'parent_id' => null]);
         $topic = Topic::factory()->create(['section_id' => $section->id]);
 
-        $tree = Tree::tree();
+        $tree = TreeHelper::tree();
 
         $this->assertIsArray($tree);
         $this->assertCount(2, $tree);
@@ -32,7 +32,7 @@ class TreeTest extends TestCase
     public function it_can_rebuild_the_cache()
     {
         $this->expectNotToPerformAssertions();
-        Tree::rebuild();
+        TreeHelper::rebuild();
     }
 
     /** @test */
@@ -42,14 +42,14 @@ class TreeTest extends TestCase
         $section = Section::factory()->create(['user_id' => $user->id, 'parent_id' => null]);
 
         // Initial state
-        Tree::rebuild();
-        $tree = Tree::tree();
+        TreeHelper::rebuild();
+        $tree = TreeHelper::tree();
         $this->assertCount(1, $tree); // Just the section
 
         // Add a topic and rebuild
         $topic = Topic::factory()->create(['section_id' => $section->id]);
-        Tree::rebuild();
-        $tree = Tree::tree();
+        TreeHelper::rebuild();
+        $tree = TreeHelper::tree();
 
         $this->assertCount(2, $tree);
         $this->assertEquals($topic->title, $tree[1]['title']);
@@ -63,14 +63,14 @@ class TreeTest extends TestCase
         $topic = Topic::factory()->create(['section_id' => $section->id]);
 
         // Initial state
-        Tree::rebuild();
-        $tree = Tree::tree();
+        TreeHelper::rebuild();
+        $tree = TreeHelper::tree();
         $this->assertCount(2, $tree);
 
         // Remove the topic and rebuild
         $topic->delete();
-        Tree::rebuild();
-        $tree = Tree::tree();
+        TreeHelper::rebuild();
+        $tree = TreeHelper::tree();
 
         $this->assertCount(1, $tree);
     }

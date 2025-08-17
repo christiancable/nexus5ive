@@ -10,6 +10,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use App\Helpers\TreeHelper;
 
 /**
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Section> $sections
@@ -54,13 +55,13 @@ class Section extends Model
         });
 
         Section::deleted(function () {
-            event(new TreeCacheBecameDirty);
+            TreeHelper::rebuild();
         });
         Section::updated(function () {
-            event(new TreeCacheBecameDirty);
+            TreeHelper::rebuild();
         });
         Section::created(function () {
-            event(new TreeCacheBecameDirty);
+            TreeHelper::rebuild();
         });
     }
 

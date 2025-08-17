@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Models;
+namespace App\Helpers;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
+use App\Models\Section;
 
-class Tree extends Model
+class TreeHelper
 {
     /**
      * a flat index of all sections and topics
@@ -17,7 +17,9 @@ class Tree extends Model
      */
     public static function tree()
     {
-        $locations = Section::with('topics:id,title,intro,section_id')->orderBy('title')->get(['id', 'title', 'intro']);
+        $locations = Section::with(['topics' => function ($query) {
+            $query->select('id', 'title', 'intro', 'section_id');
+        }])->orderBy('title')->get(['id', 'title', 'intro']);
         $destinations = [];
         $oldenDays = now()->subMonths(12);
         $keyIndex = 0;
@@ -72,7 +74,7 @@ class Tree extends Model
         Cache::rememberForever(
             'tree',
             function () {
-                return Tree::tree();
+                return self::tree();
             }
         );
     }
