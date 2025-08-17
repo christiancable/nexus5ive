@@ -11,6 +11,13 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
+/**
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Section> $sections
+ * @property-read \App\Models\Section|null $parent
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Topic> $trashedTopics
+ * @property-read \App\Models\User $moderator
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Topic> $topics
+ */
 class Section extends Model
 {
     use HasFactory;
@@ -151,7 +158,7 @@ class Section extends Model
             return null;
         }
 
-        $postID = Post::select('id')->whereIn('topic_id', $topicIDs)->orderBy('id', 'desc')->get()->first();
+        $postID = Post::select('id')->whereIn('topic_id', $topicIDs)->orderBy('id', 'desc')->first();
         if (! $postID) {
             return null;
         }
