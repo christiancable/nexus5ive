@@ -16,7 +16,7 @@ class ChatController extends Controller
         $selectedUser = null;
 
         // if there is not user then an empty $user passed to the controller
-        if ($user->id ?? null !== null) {
+        if (($user->id ?? null) !== null) {
             $selectedUser = $user;
         }
         if ($selectedUser) {

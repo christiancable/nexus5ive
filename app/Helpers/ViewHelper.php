@@ -101,7 +101,7 @@ class ViewHelper
                 $status['unsubscribed'] = true;
             }
 
-            if ($mostRecentPostDate !== false && $mostRecentlyReadPostDate !== false) {
+            if ($mostRecentPostDate !== null && $mostRecentlyReadPostDate !== false) {
                 if ($mostRecentPostDate->gt($mostRecentlyReadPostDate)) {
                     $status['new_posts'] = true;
                 }

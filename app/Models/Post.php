@@ -2,6 +2,10 @@
 
 namespace App\Models;
 
+/**
+ * @property \App\Models\Topic $topic
+ */
+
 use App\Events\MostRecentPostForSectionBecameDirty;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -35,16 +39,25 @@ class Post extends Model
         });
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<Topic, $this>
+     */
     public function topic()
     {
         return $this->belongsTo(Topic::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<User, $this>
+     */
     public function author()
     {
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<User, $this>
+     */
     public function editor()
     {
         return $this->belongsTo(User::class, 'update_user_id');

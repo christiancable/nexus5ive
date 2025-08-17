@@ -2,11 +2,10 @@
 
 namespace App\Listeners;
 
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Support\Facades\Redis;
 use App\Events\TreeCacheBecameDirty;
-use App\Models\Tree;
+use App\Helpers\TreeHelper;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\Redis;
 
 class DeleteTreeCache implements ShouldQueue
 {
@@ -44,6 +43,6 @@ class DeleteTreeCache implements ShouldQueue
 
     public function executeJob()
     {
-        Tree::rebuild();
+        TreeHelper::rebuild();
     }
 }

@@ -69,6 +69,7 @@ class NexusInstall extends Command
             $this->info("Please enter in values for the main menu. Don't worry You can change this later.");
             $title = $this->ask('Title');
 
+            /** @var \App\Models\Section $mainMenu */
             $mainMenu = Section::factory()->make(
                 [
                     'title' => $title,
@@ -92,6 +93,7 @@ class NexusInstall extends Command
             $this->info("Please enter in values for the first topic. Don't worry You can change this later.");
             $title = $this->ask('Title');
 
+            /** @var \App\Models\Topic $firstTopic */
             $firstTopic = Topic::factory()->make(
                 [
                     'title' => $title,
@@ -112,6 +114,7 @@ class NexusInstall extends Command
         $defaultMode = Mode::first();
 
         if (! $defaultMode) {
+            /** @var \App\Models\Mode $defaultMode */
             $defaultMode = Mode::factory()->make(
                 // @codingStandardsIgnoreStart
                 [

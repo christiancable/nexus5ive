@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Tree;
+use App\Helpers\TreeHelper;
 use Illuminate\Console\Command;
 
 class NexusRebuildTreeCache extends Command
@@ -40,6 +40,6 @@ class NexusRebuildTreeCache extends Command
     {
 
         $this->line('Rebuilding Tree Cache');
-        Tree::rebuild();
+        TreeHelper::rebuild();
     }
 }

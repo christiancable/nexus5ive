@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Events\TreeCacheBecameDirty;
+use App\Helpers\TreeHelper;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -11,6 +11,13 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
+/**
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Section> $sections
+ * @property-read \App\Models\Section|null $parent
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Topic> $trashedTopics
+ * @property-read \App\Models\User $moderator
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Topic> $topics
+ */
 class Section extends Model
 {
     use HasFactory;
@@ -47,13 +54,13 @@ class Section extends Model
         });
 
         Section::deleted(function () {
-            event(new TreeCacheBecameDirty);
+            TreeHelper::rebuild();
         });
         Section::updated(function () {
-            event(new TreeCacheBecameDirty);
+            TreeHelper::rebuild();
         });
         Section::created(function () {
-            event(new TreeCacheBecameDirty);
+            TreeHelper::rebuild();
         });
     }
 
@@ -106,11 +113,17 @@ class Section extends Model
     }
 
     // topics
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<Topic, $this>
+     */
     public function topics()
     {
         return $this->hasMany(Topic::class)->orderBy('weight', 'asc');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<Topic, $this>
+     */
     public function trashedTopics()
     {
         return $this->topics()->onlyTrashed()->orderBy('weight', 'asc');
@@ -145,18 +158,18 @@ class Section extends Model
      */
     private function recalculateMostRecentPost()
     {
-        $topicIDs = Topic::withoutGlobalScope('with_most_recent_post')->select('id')
-            ->where('section_id', $this->id)->get()->toArray();
-        if (count($topicIDs) == 0) {
+        if ($this->topics->isEmpty()) {
             return null;
         }
 
-        $postID = Post::select('id')->whereIn('topic_id', $topicIDs)->orderBy('id', 'desc')->get()->first();
-        if (! $postID) {
-            return null;
-        }
+        // Directly find the latest post within the section's topics
+        $latestPost = Post::whereHas('topic', function ($query) {
+            $query->where('section_id', $this->id);
+        })
+            ->orderBy('id', 'desc')
+            ->first();
 
-        return Post::find($postID->id);
+        return $latestPost;
     }
 
     public function slug()
