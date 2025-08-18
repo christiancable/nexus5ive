@@ -7,13 +7,14 @@ use App\Models\Section;
 use App\Models\Topic;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class TreeTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
+    #[Test]
     public function it_returns_an_array_of_destinations()
     {
         $user = User::factory()->create();
@@ -28,14 +29,14 @@ class TreeTest extends TestCase
         $this->assertEquals($topic->title, $tree[1]['title']);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_rebuild_the_cache()
     {
         $this->expectNotToPerformAssertions();
         TreeHelper::rebuild();
     }
 
-    /** @test */
+    #[Test]
     public function it_reflects_newly_added_topics_after_rebuild()
     {
         $user = User::factory()->create();
@@ -55,7 +56,7 @@ class TreeTest extends TestCase
         $this->assertEquals($topic->title, $tree[1]['title']);
     }
 
-    /** @test */
+    #[Test]
     public function it_reflects_removed_topics_after_rebuild()
     {
         $user = User::factory()->create();
