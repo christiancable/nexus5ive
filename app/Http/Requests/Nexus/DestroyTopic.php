@@ -12,7 +12,9 @@ class DestroyTopic extends FormRequest
      */
     public function authorize(): bool
     {
-        return $this->user()->can('delete', Topic::class);
+        // get topic from route model binding
+        $topic = $this->route('topic');
+        return $this->user()->can('delete', $topic);
     }
 
     /**
