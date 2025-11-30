@@ -28,6 +28,12 @@ $moderator = Auth::user()->id === $section->user_id;
         </x-heading>
     @endif 
 
+    {{-- Topics - add new topic --}}
+    <?php unset($topic); ?>
+    @if(Auth::user()->id === $section->user_id)
+        @include('nexus.sections._add-topic', [$section])
+    @endif
+    
 
     {{-- Topics --}}
     @if (count($section->topics) > 0)
@@ -40,12 +46,6 @@ $moderator = Auth::user()->id === $section->user_id;
         @endforeach
     @endif
 
-    {{-- Topics - add new topic --}}
-    <?php unset($topic); ?>
-    @if(Auth::user()->id === $section->user_id)
-        @include('nexus.sections._add-topic', [$section])
-    @endif
-    
     {{-- Sub Sections --}}
     @if (count($section->sections) > 0)
         @include('nexus.sections._subsections', [$section, $moderator, $potentialModerators])
