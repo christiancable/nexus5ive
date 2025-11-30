@@ -115,4 +115,16 @@ class TopicPolicy
     {
         return $user->id === $trashedTopic->section->moderator->id && $user->id === $destinationSection->moderator->id;
     }
+
+    /**
+     * Determine whether the user can reply or post to a topic.
+     */
+    public function reply(User $user, Topic $topic)
+    {
+        if ($topic->section->moderator->id === $user->id) {
+            return true;
+        }
+
+        return ! $topic->readonly;
+    }
 }

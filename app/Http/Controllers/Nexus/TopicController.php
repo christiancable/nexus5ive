@@ -43,23 +43,7 @@ class TopicController extends Controller
     {
         $posts = $topic->reversedPosts()->with('author');
 
-        // is this topic readonly to the authenticated user?
-        // @todo make this a policy call but then we would
-        // care if the topic is writable rather than read only because of the before function
-
-        $readonly = true;
-
-        if ($topic->readonly == false) {
-            $readonly = false;
-        }
-
-        if ($topic->section->moderator->id === $request->user()->id) {
-            $readonly = false;
-        }
-
-        if ($request->user()->administrator) {
-            $readonly = false;
-        }
+        $readonly = ! ($request->user()->can('reply', $topic));
 
         // is this topic anonymous to the logged in user?
         $anonymous = ! ($request->user()->can('viewDetails', $topic));
