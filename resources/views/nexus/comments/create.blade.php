@@ -10,7 +10,7 @@
     </div>
 </form>
 
-@if ($errors->any())
+@if ($errors->commentCreate->any())
     <p class="alert alert-danger">
         Only a monster would try to leave an empty comment! 
     </p>
