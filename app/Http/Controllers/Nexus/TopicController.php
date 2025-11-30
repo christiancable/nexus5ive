@@ -28,7 +28,7 @@ class TopicController extends Controller
     {
         $topic = Topic::create($request->validated());
 
-        return redirect(action('App\Http\Controllers\Nexus\SectionController@show', ['section' => $topic->section_id]));
+        return redirect()->route('section.show', ['section' => $topic->section_id]);
     }
 
     /**
@@ -161,6 +161,6 @@ class TopicController extends Controller
         FlashHelper::showAlert($message, 'success');
         $home = Section::firstOrFail();
 
-        return redirect(route('section.show', ['section' => $home->id]));
+        return redirect()->route('section.show', ['section' => $home->id]);
     }
 }
