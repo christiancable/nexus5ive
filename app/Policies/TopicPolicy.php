@@ -53,11 +53,7 @@ class TopicPolicy
      */
     public function create(User $user, Section $section)
     {
-        if ($user->id === $section->moderator->id) {
-            return true;
-        }
-
-        return false;
+        return $user->id === $section->moderator->id;
     }
 
     /**
@@ -81,10 +77,16 @@ class TopicPolicy
      * - & the moderator of the destination section
      * - or a bbs administrator
      *
+     * - a section cannot be moved to be within itself
+     *
      * @return bool
      */
     public function move(User $user, Topic $topic, Section $destinationSection)
     {
+        if ($topic->id === $destinationSection->id) {
+            return false; 
+        }
+
         return $user->id === $topic->section->moderator->id && $user->id === $destinationSection->moderator->id;
     }
 
@@ -114,5 +116,17 @@ class TopicPolicy
     public function restore(User $user, Topic $trashedTopic, Section $destinationSection)
     {
         return $user->id === $trashedTopic->section->moderator->id && $user->id === $destinationSection->moderator->id;
+    }
+
+    /**
+     * Determine whether the user can reply or post to a topic.
+     */
+    public function reply(User $user, Topic $topic)
+    {
+        if ($topic->section->moderator->id === $user->id) {
+            return true;
+        }
+
+        return ! $topic->readonly;
     }
 }

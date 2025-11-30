@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Nexus;
 
+use App\Models\Topic;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateTopic extends FormRequest
@@ -11,7 +12,7 @@ class UpdateTopic extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return $this->user()->can('update', Topic::class);
     }
 
     /**

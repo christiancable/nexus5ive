@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests\Nexus;
 
+use App\Models\Topic;
+use App\Models\Section;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreTopic extends FormRequest
@@ -20,7 +22,9 @@ class StoreTopic extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        $section = Section::findOrFail($this->input('section_id'));
+        return $section && $this->user()->can('create', [Topic::class, $section]);
+
     }
 
     /**
