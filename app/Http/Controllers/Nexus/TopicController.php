@@ -7,6 +7,7 @@ use App\Helpers\BreadcrumbHelper;
 use App\Helpers\FlashHelper;
 use App\Helpers\ViewHelper;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Nexus\DestroyTopic;
 use App\Http\Requests\Nexus\StoreTopic;
 use App\Http\Requests\Nexus\SubscribeTopic;
 use App\Http\Requests\Nexus\UpdateTopic;
@@ -25,13 +26,9 @@ class TopicController extends Controller
      */
     public function store(StoreTopic $request)
     {
-        $section = Section::findOrFail($request->validated()['section_id']);
-        if ($request->user()->cannot('create', $section)) {
-            abort(403);
-        }
         $topic = Topic::create($request->validated());
 
-        return redirect(action('App\Http\Controllers\Nexus\SectionController@show', ['section' => $topic->section_id]));
+        return redirect()->route('section.show', ['section' => $topic->section_id]);
     }
 
     /**
@@ -43,23 +40,7 @@ class TopicController extends Controller
     {
         $posts = $topic->reversedPosts()->with('author');
 
-        // is this topic readonly to the authenticated user?
-        // @todo make this a policy call but then we would
-        // care if the topic is writable rather than read only because of the before function
-
-        $readonly = true;
-
-        if ($topic->readonly == false) {
-            $readonly = false;
-        }
-
-        if ($topic->section->moderator->id === $request->user()->id) {
-            $readonly = false;
-        }
-
-        if ($request->user()->administrator) {
-            $readonly = false;
-        }
+        $readonly = ! ($request->user()->can('reply', $topic));
 
         // is this topic anonymous to the logged in user?
         $anonymous = ! ($request->user()->can('viewDetails', $topic));
@@ -116,11 +97,8 @@ class TopicController extends Controller
     {
         $formName = "topicUpdate{$topic->id}";
         $topicDetails = $request->validated()[$formName];
-        if ($request->user()->cannot('update', $topic)) {
-            abort(403);
-        }
 
-        // is the user authorized to move the topic to the destination section?
+        // if the user is moving the topic then we need futher authorization
         if ($topic->section_id !== (int) $topicDetails['section_id']) {
             $destinationSection = Section::findOrFail($topicDetails['section_id']);
             if ($request->user()->cannot('move', [$topic, $destinationSection])) {
@@ -130,7 +108,7 @@ class TopicController extends Controller
 
         $topic->update($topicDetails);
 
-        return redirect(action('App\Http\Controllers\Nexus\SectionController@show', ['section' => $topic->section_id]));
+        return redirect()->route('section.show', ['section' => $topic->section_id]);
     }
 
     /**
@@ -138,18 +116,12 @@ class TopicController extends Controller
      *
      * @return RedirectResponse
      */
-    public function destroy(Request $request, Topic $topic)
+    public function destroy(DestroyTopic $request, Topic $topic)
     {
         $section_id = $topic->section->id;
-
-        if ($request->user()->cannot('delete', $topic)) {
-            abort(403);
-        }
         $topic->delete();
 
-        $redirect = action('App\Http\Controllers\Nexus\SectionController@show', ['section' => $section_id]);
-
-        return redirect($redirect);
+        return redirect()->route('section.show', ['section' => $section_id]);
     }
 
     /**
@@ -187,7 +159,8 @@ class TopicController extends Controller
 
         $message = '**Success!** all subscribed topics are now marked as read';
         FlashHelper::showAlert($message, 'success');
+        $home = Section::firstOrFail();
 
-        return redirect('/');
+        return redirect()->route('section.show', ['section' => $home->id]);
     }
 }
