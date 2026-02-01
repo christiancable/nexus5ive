@@ -13,6 +13,7 @@
         <textarea name="intro" class="form-control" rows="3" placeholder="Introduction"></textarea>
     </div>
 
+    @if($isModerator ?? false)
     <div class="d-md-flex justify-content-md-between">
         <fieldset>
             <div class="form-check">
@@ -35,6 +36,7 @@
             </select>
         </div>
     </div>
+    @endif
 
     <div class="d-flex flex-row-reverse bd-highlight">
         <div class="mb-3 ms-2">

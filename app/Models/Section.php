@@ -25,9 +25,10 @@ class Section extends Model
 
     protected $casts = [
         'deleted_at' => 'datetime',
+        'allow_user_topics' => 'boolean',
     ];
 
-    protected $fillable = ['id', 'title', 'intro', 'user_id', 'parent_id', 'weight'];
+    protected $fillable = ['id', 'title', 'intro', 'user_id', 'parent_id', 'weight', 'allow_user_topics'];
 
     public static function boot()
     {
@@ -118,7 +119,22 @@ class Section extends Model
      */
     public function topics()
     {
-        return $this->hasMany(Topic::class)->orderBy('weight', 'asc');
+        $query = $this->hasMany(Topic::class);
+
+        if ($this->allow_user_topics) {
+            // Order by most recent post time descending (newest activity first)
+            $query->orderBy(
+                Post::select('time')
+                    ->whereColumn('topic_id', 'topics.id')
+                    ->orderByDesc('time')
+                    ->limit(1),
+                'desc'
+            );
+        } else {
+            $query->orderBy('weight', 'asc');
+        }
+
+        return $query;
     }
 
     /**
@@ -126,7 +142,7 @@ class Section extends Model
      */
     public function trashedTopics()
     {
-        return $this->topics()->onlyTrashed()->orderBy('weight', 'asc');
+        return $this->topics()->onlyTrashed();
     }
 
     // posts

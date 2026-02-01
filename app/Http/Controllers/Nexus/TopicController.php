@@ -11,6 +11,7 @@ use App\Http\Requests\Nexus\DestroyTopic;
 use App\Http\Requests\Nexus\StoreTopic;
 use App\Http\Requests\Nexus\SubscribeTopic;
 use App\Http\Requests\Nexus\UpdateTopic;
+use App\Models\Post;
 use App\Models\Section;
 use App\Models\Topic;
 use Illuminate\Http\RedirectResponse;
@@ -27,6 +28,17 @@ class TopicController extends Controller
     public function store(StoreTopic $request)
     {
         $topic = Topic::create($request->validated());
+
+        // If the user is not the section moderator, create an initial post
+        $section = Section::findOrFail($topic->section_id);
+        if ($request->user()->id !== $section->moderator->id && ! $request->user()->administrator) {
+            Post::create([
+                'title' => $topic->title,
+                'text' => $topic->intro,
+                'user_id' => $request->user()->id,
+                'topic_id' => $topic->id,
+            ]);
+        }
 
         return redirect()->route('section.show', ['section' => $topic->section_id]);
     }

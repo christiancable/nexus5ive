@@ -68,6 +68,14 @@ class SectionController extends Controller
             'topics.most_recent_post.author:id,username'
         );
 
+        // Re-sort topics by most recent post if section allows user topics
+        if ($section->allow_user_topics) {
+            $section->setRelation(
+                'topics',
+                $section->topics->sortByDesc('most_recent_post_id')->values()
+            );
+        }
+
         // load some counts too
         $section->loadCount('sections');
 
@@ -115,6 +123,7 @@ class SectionController extends Controller
             'title' => $request->validated()['form'][$formName]['title'],
             'user_id' => $request->validated()['form'][$formName]['user_id'],
             'weight' => $request->validated()['form'][$formName]['weight'],
+            'allow_user_topics' => (bool) ($request->validated()['form'][$formName]['allow_user_topics'] ?? false),
         ];
 
         // do not set parent for home section

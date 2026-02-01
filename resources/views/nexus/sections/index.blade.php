@@ -30,9 +30,9 @@ $moderator = Auth::user()->id === $section->user_id;
 
     {{-- Topics - add new topic --}}
     <?php unset($topic); ?>
-    @if(Auth::user()->id === $section->user_id)
-        @include('nexus.sections._add-topic', [$section])
-    @endif
+    @can('create', [App\Models\Topic::class, $section])
+        @include('nexus.sections._add-topic', ['section' => $section, 'isModerator' => Auth::user()->id === $section->user_id])
+    @endcan
     
 
     {{-- Topics --}}
