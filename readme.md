@@ -9,7 +9,7 @@
      °°   °°°   °°°°°°°   °°   ÛÛ    °°°°°    °°°°°°°
                                 °°
 
-Written by [Christian Cable](http://christiancable.co.uk).
+Written by [Christian Cable](https://christiancable.co.uk).
 
 This is the code that powers the _old-school style_ injoke of a BBS at [https://nexus5.org.uk](https://nexus5.org.uk).
 
