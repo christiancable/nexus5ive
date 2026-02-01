@@ -35,6 +35,7 @@ class TopicController extends Controller
             Post::create([
                 'title' => $topic->title,
                 'text' => $topic->intro,
+                'time' => now(),
                 'user_id' => $request->user()->id,
                 'topic_id' => $topic->id,
             ]);

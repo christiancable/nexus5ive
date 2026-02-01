@@ -60,21 +60,21 @@ class SectionController extends Controller
      */
     public function show(Request $request, Section $section)
     {
-        // lazy eager load relationships
+        // lazy eager load relationships (except topics, which we paginate separately)
         $section->load(
             'moderator:id,username',
             'sections.moderator:id,username',
-            'sections.sections',
-            'topics.most_recent_post.author:id,username'
+            'sections.sections'
         );
 
-        // Re-sort topics by most recent post if section allows user topics
+        // Load topics with pagination, ordered appropriately
+        $topicsQuery = $section->topics()->with('most_recent_post.author:id,username');
+
         if ($section->allow_user_topics) {
-            $section->setRelation(
-                'topics',
-                $section->topics->sortByDesc('most_recent_post_id')->values()
-            );
+            $topicsQuery->orderByDesc('most_recent_post_id');
         }
+
+        $topics = $topicsQuery->paginate(config('nexus.pagination'));
 
         // load some counts too
         $section->loadCount('sections');
@@ -100,7 +100,7 @@ class SectionController extends Controller
         }
         $breadcrumbs = BreadcrumbHelper::breadcrumbForSection($section);
 
-        return view('nexus.sections.index', compact('section', 'breadcrumbs', 'potentialModerators', 'moderatedSections'));
+        return view('nexus.sections.index', compact('section', 'topics', 'breadcrumbs', 'potentialModerators', 'moderatedSections'));
     }
 
     /**

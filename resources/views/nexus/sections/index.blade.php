@@ -36,14 +36,16 @@ $moderator = Auth::user()->id === $section->user_id;
     
 
     {{-- Topics --}}
-    @if (count($section->topics) > 0)
-        @foreach ($section->topics as $topic)
-            @if(Auth::user()->id === $section->user_id) 
+    @if (count($topics) > 0)
+        @foreach ($topics as $topic)
+            @if(Auth::user()->id === $section->user_id)
                 @include('nexus.topic._moderate', compact('topic', 'moderatedSections'))
             @else
                 @include('nexus.topic._view', $topic)
             @endif
         @endforeach
+
+        {{ $topics->links() }}
     @endif
 
     {{-- Sub Sections --}}
