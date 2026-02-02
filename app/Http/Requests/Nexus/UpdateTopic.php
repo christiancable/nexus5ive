@@ -32,6 +32,7 @@ class UpdateTopic extends FormRequest
             $formName.'.weight' => 'required|numeric',
             $formName.'.readonly' => 'required|boolean',
             $formName.'.secret' => 'required|boolean',
+            $formName.'.sticky' => 'sometimes|boolean',
         ];
     }
 

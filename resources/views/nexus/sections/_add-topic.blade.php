@@ -15,3 +15,9 @@
   </div>
 </div>
 
+<script>
+document.getElementById('addTopicForm').addEventListener('shown.bs.collapse', function () {
+    document.getElementById('newTopicTitle').focus();
+});
+</script>
+

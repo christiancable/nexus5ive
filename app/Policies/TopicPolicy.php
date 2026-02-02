@@ -46,14 +46,22 @@ class TopicPolicy
 
     /**
      * Determine whether the user can create topics.
-     * Topics can be created by the moderator of the current section or bbs
-     * administrators
+     * Topics can be created by:
+     * - the moderator of the current section
+     * - bbs administrators (handled by before())
+     * - any authenticated user if the section's allow_user_topics flag is true
      *
      * @return mixed
      */
     public function create(User $user, Section $section)
     {
-        return $user->id === $section->moderator->id;
+        // Moderator can always create topics
+        if ($user->id === $section->moderator->id) {
+            return true;
+        }
+
+        // Any authenticated user can create if section allows it
+        return $section->allow_user_topics;
     }
 
     /**
@@ -84,7 +92,7 @@ class TopicPolicy
     public function move(User $user, Topic $topic, Section $destinationSection)
     {
         if ($topic->id === $destinationSection->id) {
-            return false; 
+            return false;
         }
 
         return $user->id === $topic->section->moderator->id && $user->id === $destinationSection->moderator->id;

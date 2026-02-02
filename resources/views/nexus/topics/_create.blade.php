@@ -6,13 +6,14 @@
 
     <div class="mb-3">
         <label for="title" class="visually-hidden">Title</label>
-        <input type="text" name="title" class="form-control" placeholder="Title">
+        <input type="text" name="title" id="newTopicTitle" class="form-control" placeholder="Subject">
     </div>
     <div class="mb-3">
         <label for="intro" class="visually-hidden">Introduction</label>
         <textarea name="intro" class="form-control" rows="3" placeholder="Introduction"></textarea>
     </div>
 
+    @if($isModerator ?? false)
     <div class="d-md-flex justify-content-md-between">
         <fieldset>
             <div class="form-check">
@@ -35,11 +36,12 @@
             </select>
         </div>
     </div>
+    @endif
 
     <div class="d-flex flex-row-reverse bd-highlight">
         <div class="mb-3 ms-2">
             <x-ui.button variant="success" type="submit">
-                <x-heroicon-s-document-plus class="icon_mini me-1" aria-hidden="true" />Add Topic
+                <x-heroicon-s-plus-circle class="icon_mini me-1" aria-hidden="true" />Add Topic
             </x-ui.button>
         </div>
     </div>
