@@ -21,7 +21,10 @@ $topicLink = action('App\Http\Controllers\Nexus\TopicController@show', ['topic' 
 
 
 <div class="card mb-3">
-        <div class="card-header">
+        <div class="card-header position-relative">
+        @if($topic->sticky)
+            <x-heroicon-s-bookmark class="icon_large text-warning position-absolute top-0 end-0 mt-2 me-2" title="Sticky" />
+        @endif
         <x-topic-heading title="{{ $topic->title }}" :link=$topicLink :status=$status />
         
         <small class="card-subtitle mb-2 text-muted">

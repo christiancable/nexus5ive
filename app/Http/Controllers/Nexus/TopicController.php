@@ -121,6 +121,13 @@ class TopicController extends Controller
 
         $topic->update($topicDetails);
 
+        // If this topic is being made sticky, remove sticky from other topics in the section
+        if ($topicDetails['sticky'] ?? false) {
+            Topic::where('section_id', $topic->section_id)
+                ->where('id', '!=', $topic->id)
+                ->update(['sticky' => false]);
+        }
+
         return redirect()->route('section.show', ['section' => $topic->section_id]);
     }
 

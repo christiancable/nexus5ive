@@ -122,15 +122,14 @@ class Section extends Model
         $query = $this->hasMany(Topic::class);
 
         if ($this->allow_user_topics) {
-            // Order by most recent post time descending (newest activity first)
-            $query->orderBy(
-                Post::select('time')
-                    ->whereColumn('topic_id', 'topics.id')
-                    ->orderByDesc('time')
-                    ->limit(1),
-                'desc'
+            // Sticky topics appear first, then order by most recent post time
+            // Use COALESCE to fall back to topic created_at when no posts exist
+            $query->orderByDesc('sticky');
+            $query->orderByRaw(
+                'COALESCE((SELECT time FROM posts WHERE topic_id = topics.id ORDER BY time DESC LIMIT 1), topics.created_at) DESC'
             );
         } else {
+            // Moderator-controlled sections: order by weight only, sticky has no effect
             $query->orderBy('weight', 'asc');
         }
 
