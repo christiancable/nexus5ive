@@ -8,9 +8,15 @@ return new class extends Migration
     /**
      * Fix timestamp columns that have invalid '0000-00-00 00:00:00' defaults.
      * This is required for MySQL strict mode compatibility.
+     * SQLite doesn't have this issue, so we skip it there.
      */
     public function up(): void
     {
+        // Only run on MySQL/MariaDB - SQLite doesn't have this issue
+        if (DB::getDriverName() !== 'mysql') {
+            return;
+        }
+
         // Must modify all timestamp columns in each table in a single statement
         // because MySQL validates the entire table when altering any column
         DB::statement('ALTER TABLE `sections`
