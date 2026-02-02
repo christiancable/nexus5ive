@@ -79,7 +79,7 @@ class ThemesTest extends DuskTestCase
                     ->assertSelectHasOption('@theme_select', $this->alternativeTheme->id)
                     ->select('@theme_select', $this->alternativeTheme->id)
                     ->press('Save Changes')
-                    ->visit('/users/'.$this->user->username)
+                    ->waitForLocation('/users/'.$this->user->username)
                     // THEN we see that theme is selected on next visit
                     ->assertSelected('@theme_select', $this->alternativeTheme->id);
             }
