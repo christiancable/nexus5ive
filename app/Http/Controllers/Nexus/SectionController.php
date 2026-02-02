@@ -68,11 +68,8 @@ class SectionController extends Controller
         );
 
         // Load topics with pagination, ordered appropriately
+        // Note: topics() relationship already handles sticky and time/weight ordering
         $topicsQuery = $section->topics()->with('most_recent_post.author:id,username');
-
-        if ($section->allow_user_topics) {
-            $topicsQuery->orderByDesc('most_recent_post_id');
-        }
 
         $topics = $topicsQuery->paginate(config('nexus.pagination'));
 
