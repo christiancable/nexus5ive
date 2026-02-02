@@ -19,6 +19,7 @@ return [
     'timezone' => env('NEXUS_TIMEZONE'),
     'recent_edit' => env('NEXUS_RECENT_EDIT'),
     'pagination' => env('NEXUS_PAGINATION', 10),
+    'topic_pagination' => env('NEXUS_TOPIC_PAGINATION', 5),
     'comment_pagination' => env('NEXUS_COMMENT_PAGINATION', 50),
     'notification_check_interval' => env('NEXUS_NOTIFICATION_CHECK_INTERVAL', 5), // how often should the app poll for notifications in seconds
     'google_anaytics_activate' => env('GOOGLE_ANAYTICS_ACTIVATE', false),
