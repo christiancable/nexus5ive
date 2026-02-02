@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests\Nexus;
 
-use App\Models\Topic;
 use App\Models\Section;
+use App\Models\Topic;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreTopic extends FormRequest
@@ -23,6 +23,7 @@ class StoreTopic extends FormRequest
     public function authorize()
     {
         $section = Section::findOrFail($this->input('section_id'));
+
         return $section && $this->user()->can('create', [Topic::class, $section]);
 
     }
@@ -38,10 +39,38 @@ class StoreTopic extends FormRequest
             'title' => 'required',
             'intro' => 'required',
             'section_id' => 'required|numeric|exists:sections,id',
-            'weight' => 'required|numeric',
-            'secret' => 'required|numeric',
-            'readonly' => 'required|numeric',
+            'weight' => 'nullable|numeric',
+            'secret' => 'nullable|numeric',
+            'readonly' => 'nullable|numeric',
         ];
+    }
+
+    /**
+     * Get the validated data from the request.
+     * Forces default values for non-moderators.
+     *
+     * @param  string|null  $key
+     * @param  mixed  $default
+     * @return mixed
+     */
+    public function validated($key = null, $default = null)
+    {
+        $validated = parent::validated($key, $default);
+
+        // If returning a specific key, return as-is
+        if ($key !== null) {
+            return $validated;
+        }
+
+        // Force default values for non-moderators
+        $section = Section::findOrFail($this->input('section_id'));
+        if ($this->user()->id !== $section->moderator->id && ! $this->user()->administrator) {
+            $validated['secret'] = 0;
+            $validated['readonly'] = 0;
+            $validated['weight'] = 0;
+        }
+
+        return $validated;
     }
 
     public function messages()

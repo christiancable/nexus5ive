@@ -95,3 +95,10 @@ $h6-font-size: $font-size-base * 1;
 
 $headings-font-family: $font-family-sans-serif;
 $headings-font-weight: 600;
+
+// ----------------------------------------------------
+// Transitions
+// ----------------------------------------------------
+
+// Speed up Bootstrap collapse animation (default: height .35s ease)
+$transition-collapse: height .15s ease;

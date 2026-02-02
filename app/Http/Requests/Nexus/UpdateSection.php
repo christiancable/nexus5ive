@@ -37,6 +37,7 @@ class UpdateSection extends FormRequest
             "form.{$formName}.intro" => 'nullable',
             "form.{$formName}.parent_id" => 'numeric|nullable',
             "form.{$formName}.weight" => 'numeric|nullable',
+            "form.{$formName}.allow_user_topics" => 'nullable',
         ];
 
         $section = Section::findOrFail($id);

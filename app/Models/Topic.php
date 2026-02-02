@@ -21,6 +21,7 @@ class Topic extends Model
 
     protected $casts = [
         'deleted_at' => 'datetime',
+        'sticky' => 'boolean',
     ];
 
     protected $fillable = [
@@ -30,6 +31,7 @@ class Topic extends Model
         'readonly',
         'weight',
         'section_id',
+        'sticky',
     ];
 
     public static function boot()

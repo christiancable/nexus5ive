@@ -60,13 +60,18 @@ class SectionController extends Controller
      */
     public function show(Request $request, Section $section)
     {
-        // lazy eager load relationships
+        // lazy eager load relationships (except topics, which we paginate separately)
         $section->load(
             'moderator:id,username',
             'sections.moderator:id,username',
-            'sections.sections',
-            'topics.most_recent_post.author:id,username'
+            'sections.sections'
         );
+
+        // Load topics with pagination, ordered appropriately
+        // Note: topics() relationship already handles sticky and time/weight ordering
+        $topicsQuery = $section->topics()->with('most_recent_post.author:id,username');
+
+        $topics = $topicsQuery->paginate(config('nexus.topic_pagination'));
 
         // load some counts too
         $section->loadCount('sections');
@@ -92,7 +97,7 @@ class SectionController extends Controller
         }
         $breadcrumbs = BreadcrumbHelper::breadcrumbForSection($section);
 
-        return view('nexus.sections.index', compact('section', 'breadcrumbs', 'potentialModerators', 'moderatedSections'));
+        return view('nexus.sections.index', compact('section', 'topics', 'breadcrumbs', 'potentialModerators', 'moderatedSections'));
     }
 
     /**
@@ -115,6 +120,7 @@ class SectionController extends Controller
             'title' => $request->validated()['form'][$formName]['title'],
             'user_id' => $request->validated()['form'][$formName]['user_id'],
             'weight' => $request->validated()['form'][$formName]['weight'],
+            'allow_user_topics' => (bool) ($request->validated()['form'][$formName]['allow_user_topics'] ?? false),
         ];
 
         // do not set parent for home section

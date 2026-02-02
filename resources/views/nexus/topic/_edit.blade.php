@@ -11,6 +11,7 @@ $errorBag = 'topicUpdate' . $topic->id;
     <input type="hidden" name="{{ $formName }}[id]" value="{{ $topic->id }}">
     <input type="hidden" name="{{ $formName }}[secret]" value="0">
     <input type="hidden" name="{{ $formName }}[readonly]" value="0">
+    <input type="hidden" name="{{ $formName }}[sticky]" value="0">
 
     <div class="mb-3">
         <label for="title" class="hidden">Title</label>
@@ -45,6 +46,12 @@ $errorBag = 'topicUpdate' . $topic->id;
                         name="{{ $formName }}[readonly]">
                 @endif
                 <label class="form-check-label" for="{{ $formName }}[readonly]">Read Only</label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="1" id="{{ $formName }}[sticky]"
+                    name="{{ $formName }}[sticky]" {{ $topic->sticky ? 'checked' : '' }}>
+                <label class="form-check-label" for="{{ $formName }}[sticky]">Sticky (Pin to top)</label>
             </div>
         </fieldset>
 
