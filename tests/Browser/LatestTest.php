@@ -8,6 +8,7 @@ use App\Models\Section;
 use App\Models\Topic;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\DuskTestCase;
 
@@ -69,6 +70,9 @@ class LatestTest extends DuskTestCase
         });
     }
 
+    /**
+     * Optimized: waitForText after button press, single browser session.
+     */
     #[Test]
     public function userDoesNotSeePostPreviewForUnsubscribedTopicWithPosts(): void
     {
@@ -86,9 +90,8 @@ class LatestTest extends DuskTestCase
         $this->browse(function ($browser) use ($user, $topic, $postPreview) {
             $browser->loginAs($user)
                 ->visit('/topic/'.$topic->id)
-                ->press('Unsubscribe from this topic');
-
-            $browser->loginAs($user)
+                ->press('Unsubscribe from this topic')
+                ->waitForText('Subscribe to this topic')
                 ->visit('/section/latest/')
                 ->assertDontSee($postPreview);
         });

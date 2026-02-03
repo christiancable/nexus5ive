@@ -32,6 +32,28 @@ abstract class DuskTestCase extends BaseTestCase
             '--disable-search-engine-choice-screen',
             '--disable-smooth-scrolling', // asdded to make scroll into view work
             // @see https://stackoverflow.com/questions/66208262/how-to-make-scrollintoview-method-work-in-laravel-dusk
+
+            // Performance optimizations for Docker/CI environment
+            '--no-sandbox',
+            '--disable-dev-shm-usage',
+            '--disable-extensions',
+            '--disable-background-networking',
+            '--disable-background-timer-throttling',
+            '--disable-backgrounding-occluded-windows',
+            '--disable-renderer-backgrounding',
+            '--disable-default-apps',
+            '--disable-sync',
+            '--disable-translate',
+            '--disable-features=TranslateUI',
+            '--metrics-recording-only',
+            '--mute-audio',
+            '--no-first-run',
+            '--safebrowsing-disable-auto-update',
+            '--disable-component-update',
+            '--disable-hang-monitor',
+            '--disable-prompt-on-repost',
+            '--disable-domain-reliability',
+            '--disable-client-side-phishing-detection',
         ])->unless($this->hasHeadlessDisabled(), function (Collection $items) {
             return $items->merge([
                 '--disable-gpu',

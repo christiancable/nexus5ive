@@ -6,6 +6,7 @@ use App\Models\Section;
 use App\Models\Theme;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\DuskTestCase;
 
@@ -64,7 +65,11 @@ class ThemesTest extends DuskTestCase
         );
     }
 
+    /**
+     * SLOW (~41s): Form submission with waitForLocation waits for full page redirect.
+     */
     #[Test]
+    #[Group('slow')]
     public function userCanChangeTheme(): void
     {
         // GIVEN we have a user and a default theme

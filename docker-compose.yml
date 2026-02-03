@@ -66,13 +66,30 @@ services:
             timeout: 5s
 
     selenium:
-        image: 'selenium/standalone-chromium'
+        image: 'seleniarm/standalone-chromium:latest'
         extra_hosts:
             - 'host.docker.internal:host-gateway'
         volumes:
             - '/dev/shm:/dev/shm'
         networks:
             - sail
+        environment:
+            # Reduce session timeouts to fail fast
+            - SE_SESSION_REQUEST_TIMEOUT=60
+            - SE_SESSION_RETRY_INTERVAL=5
+            # Allow faster session cleanup
+            - SE_NODE_SESSION_TIMEOUT=60
+            # Limit concurrent sessions to reduce resource contention
+            - SE_NODE_MAX_SESSIONS=1
+            - SE_NODE_OVERRIDE_MAX_SESSIONS=true
+            # Faster startup
+            - SE_START_XVFB=false
+        healthcheck:
+            test: ["CMD", "curl", "-f", "http://localhost:4444/wd/hub/status"]
+            interval: 15s
+            timeout: 10s
+            retries: 3
+            start_period: 30s
     mailpit:
         image: 'axllent/mailpit:latest'
         ports:

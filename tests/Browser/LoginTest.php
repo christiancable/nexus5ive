@@ -5,6 +5,8 @@ namespace Tests\Browser;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\Hash;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\DuskTestCase;
 
 class LoginTest extends DuskTestCase
@@ -12,8 +14,10 @@ class LoginTest extends DuskTestCase
     use DatabaseMigrations;
 
     /**
-     * A Dusk test example.
+     * SLOW (~26s): Form submission waits for full page load after login redirect.
      */
+    #[Test]
+    #[Group('slow')]
     public function testBasicExample(): void
     {
         $user = User::factory()->create([

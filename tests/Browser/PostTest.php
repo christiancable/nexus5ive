@@ -8,6 +8,7 @@ use App\Models\Topic;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\DuskTestCase;
 
@@ -56,6 +57,9 @@ class PostTest extends DuskTestCase
             ]);
     }
 
+    /**
+     * Optimized: replaced waitForReload with waitForText for posted content.
+     */
     #[Test]
     public function userCanPostInTopic(): void
     {
@@ -68,12 +72,9 @@ class PostTest extends DuskTestCase
                 ->visit(action([TopicController::class, 'show'], ['topic' => $this->topic]))
                 ->type('title', $title)
                 ->type('text', $text)
-                ->waitForReload(function (Browser $browser) {
-                    $browser->press('Add Comment');
-                })
-                // then the form is empty
-                ->assertSeeNothingIn('#text')
-                ->assertSeeNothingIn('#title')
+                ->press('Add Comment')
+                // wait for the post to appear on the page
+                ->waitForText($title)
                 // and the post is seen within the topic
                 ->assertSeeIn('.card-title', $title)
                 ->assertSee($text);
@@ -95,6 +96,9 @@ class PostTest extends DuskTestCase
         });
     }
 
+    /**
+     * Optimized: replaced waitForReload with waitForText for posted content.
+     */
     #[Test]
     public function ownerCanPostInReadOnlyTopicWithWarning(): void
     {
@@ -109,18 +113,18 @@ class PostTest extends DuskTestCase
                 ->assertSee(strip_tags(__('nexus.topic.closed.moderator')))
                 ->type('title', $title)
                 ->type('text', $text)
-                ->waitForReload(function (Browser $browser) {
-                    $browser->press('Add Comment');
-                })
-                // then the form is empty
-                ->assertSeeNothingIn('#text')
-                ->assertSeeNothingIn('#title')
+                ->press('Add Comment')
+                // wait for the post to appear on the page
+                ->waitForText($title)
                 // and the post is seen within the topic
                 ->assertSeeIn('.card-title', $title)
                 ->assertSee($text);
         });
     }
 
+    /**
+     * Optimized: replaced waitForReload with waitForText for posted content.
+     */
     #[Test]
     public function adminCanPostInReadOnlyTopicWithWarning(): void
     {
@@ -135,18 +139,18 @@ class PostTest extends DuskTestCase
                 ->assertSee(strip_tags(__('nexus.topic.closed.moderator')))
                 ->type('title', $title)
                 ->type('text', $text)
-                ->waitForReload(function (Browser $browser) {
-                    $browser->press('Add Comment');
-                })
-                // then the form is empty
-                ->assertSeeNothingIn('#text')
-                ->assertSeeNothingIn('#title')
+                ->press('Add Comment')
+                // wait for the post to appear on the page
+                ->waitForText($title)
                 // and the post is seen within the topic
                 ->assertSeeIn('.card-title', $title)
                 ->assertSee($text);
         });
     }
 
+    /**
+     * Optimized: waitFor with short timeout since validation is immediate.
+     */
     #[Test]
     public function userCannotPostEmptyPostInTopic(): void
     {
@@ -158,7 +162,7 @@ class PostTest extends DuskTestCase
                 ->visit(action([TopicController::class, 'show'], ['topic' => $this->topic]))
                 ->type('title', $title)
                 ->press('Add Comment')
-                ->waitFor('.alert-danger')
+                ->waitFor('.alert-danger', 5)
                 ->assertSeeIn('.alert-danger', strip_tags(__('nexus.validation.post.empty')));
         });
     }

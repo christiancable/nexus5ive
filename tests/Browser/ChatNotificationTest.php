@@ -5,6 +5,7 @@ namespace Tests\Browser;
 use App\Models\Section;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\DuskTestCase;
 
@@ -38,10 +39,11 @@ class ChatNotificationTest extends DuskTestCase
         $this->user4 = User::factory()->create();
     }
 
-    /*
-    * a user can send a message to another user
-    */
+    /**
+     * SLOW (~12s): Multiple visit/click/waitFor sequences with assertMissing (implicit wait).
+     */
     #[Test]
+    #[Group('slow')]
     public function testUserCanSeeChatNotifications(): void
     {
         $this->browse(function ($browser) {

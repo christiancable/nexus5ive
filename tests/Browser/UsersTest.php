@@ -5,6 +5,7 @@ namespace Tests\Browser;
 use App\Models\Section;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\DuskTestCase;
 
@@ -59,7 +60,12 @@ class UsersTest extends DuskTestCase
         );
     }
 
+    /**
+     * SLOW (~42s): Multiple Livewire filter operations with pause(1000),
+     * waitForText, waitUntilMissingText, and assertDontSee (implicit wait).
+     */
     #[Test]
+    #[Group('slow')]
     public function userListCanBeFiltered()
     {
         $name = 'Sir Professor Doctor Test';
