@@ -6,6 +6,7 @@ use App\Models\Section;
 use App\Models\Theme;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\DuskTestCase;
 
@@ -64,7 +65,11 @@ class ThemesTest extends DuskTestCase
         );
     }
 
+    /**
+     * SLOW (~41s): Form submission with waitForLocation waits for full page redirect.
+     */
     #[Test]
+    #[Group('slow')]
     public function userCanChangeTheme(): void
     {
         // GIVEN we have a user and a default theme
@@ -79,7 +84,7 @@ class ThemesTest extends DuskTestCase
                     ->assertSelectHasOption('@theme_select', $this->alternativeTheme->id)
                     ->select('@theme_select', $this->alternativeTheme->id)
                     ->press('Save Changes')
-                    ->visit('/users/'.$this->user->username)
+                    ->waitForLocation('/users/'.$this->user->username)
                     // THEN we see that theme is selected on next visit
                     ->assertSelected('@theme_select', $this->alternativeTheme->id);
             }

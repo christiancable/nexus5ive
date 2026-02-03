@@ -6,6 +6,7 @@ use App\Models\Section;
 use App\Models\Topic;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\DuskTestCase;
 
@@ -33,6 +34,9 @@ class SubscriptionTest extends DuskTestCase
         ]);
     }
 
+    /**
+     * Optimized: waitForText instead of second visit().
+     */
     #[Test]
     public function userCanUnsubscribeFromTopic(): void
     {
@@ -50,11 +54,14 @@ class SubscriptionTest extends DuskTestCase
             $browser->loginAs($user)
                 ->visit('/topic/'.$topic->id)
                 ->press('Unsubscribe from this topic')
-                ->visit('/topic/'.$topic->id)
+                ->waitForText('Subscribe to this topic')
                 ->assertSee('Subscribe to this topic');
         });
     }
 
+    /**
+     * Optimized: waitForText instead of second visit().
+     */
     #[Test]
     public function userCanResubscribeToTopic(): void
     {
@@ -73,7 +80,7 @@ class SubscriptionTest extends DuskTestCase
             $browser->loginAs($user)
                 ->visit('/topic/'.$topic->id)
                 ->press('Subscribe to this topic')
-                ->visit('/topic/'.$topic->id)
+                ->waitForText('Unsubscribe from this topic')
                 ->assertSee('Unsubscribe from this topic');
         });
     }

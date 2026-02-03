@@ -9,6 +9,7 @@ use App\Models\Topic;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\DuskTestCase;
 
@@ -93,7 +94,11 @@ class UserTopicCreationTest extends DuskTestCase
         });
     }
 
+    /**
+     * SLOW (~16s): Multiple assertMissing calls wait for implicit timeout before asserting.
+     */
     #[Test]
+    #[Group('slow')]
     public function normal_user_does_not_see_moderator_only_options(): void
     {
         $this->section->update(['allow_user_topics' => true]);
@@ -109,7 +114,11 @@ class UserTopicCreationTest extends DuskTestCase
         });
     }
 
+    /**
+     * SLOW (~31s): waitForText after form submission waits for page content to appear.
+     */
     #[Test]
+    #[Group('slow')]
     public function normal_user_can_create_topic(): void
     {
         $this->section->update(['allow_user_topics' => true]);

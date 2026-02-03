@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\Artisan;
 use Laravel\Dusk\Browser;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\DuskTestCase;
 
@@ -50,7 +51,11 @@ class SectionInfoTest extends DuskTestCase
         // Artisan::call('cache:clear'); // Removed
     }
 
+    /**
+     * SLOW/FLAKY (~3-30s): waitForText with cache invalidation; intermittent Chrome timeouts.
+     */
     #[Test]
+    #[Group('slow')]
     public function section_info_shows_which_topic_has_the_most_recent_post(): void
     {
         /*
@@ -75,11 +80,15 @@ class SectionInfoTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($user, $home, $topicInSubSection) {
             $browser->loginAs($user)
                 ->visit('/section/'.$home->id)
-                ->waitForText('Latest Post in '.$topicInSubSection->title, 30);
+                ->waitForText('Latest Post in '.$topicInSubSection->title, 5);
         });
     }
 
+    /**
+     * SLOW/FLAKY (~30s): assertDontSee waits for implicit timeout; Chrome renderer timeouts.
+     */
     #[Test]
+    #[Group('slow')]
     public function section_with_no_topics_shows_no_topic_as_having_the_most_recent_post(): void
     {
         /*
@@ -98,7 +107,11 @@ class SectionInfoTest extends DuskTestCase
         });
     }
 
+    /**
+     * SLOW/FLAKY (~1-3s): Multiple waitForText calls with cache invalidation between visits.
+     */
     #[Test]
+    #[Group('slow')]
     public function section_info_updates_latest_post_found_in_when_new_posts_are_added(): void
     {
         /*
@@ -126,7 +139,7 @@ class SectionInfoTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($user, $home, $topicInSubSection, $anotherTopicInSubSection) {
             $browser->loginAs($user)
                 ->visit('/section/'.$home->id)
-                ->waitForText('Latest Post in '.$topicInSubSection->title, 30);
+                ->waitForText('Latest Post in '.$topicInSubSection->title, 5);
 
             $anotherNewPost = Post::factory()->create([
                 'topic_id' => $anotherTopicInSubSection->id,
@@ -138,7 +151,7 @@ class SectionInfoTest extends DuskTestCase
 
             $browser->loginAs($user)
                 ->visit('/section/'.$home->id)
-                ->waitForText('Latest Post in '.$anotherTopicInSubSection->title, 30);
+                ->waitForText('Latest Post in '.$anotherTopicInSubSection->title, 5);
         });
     }
 }

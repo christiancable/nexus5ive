@@ -5,6 +5,7 @@ namespace Tests\Browser;
 use App\Models\Section;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\DuskTestCase;
 
@@ -32,10 +33,11 @@ class ChatTest extends DuskTestCase
         $this->user2 = User::factory()->create();
     }
 
-    /*
-    * a user can send a message to another user
-    */
+    /**
+     * SLOW (~11s): Multiple Livewire interactions with waitFor, pause(200), and assertions.
+     */
     #[Test]
+    #[Group('slow')]
     public function testUserCanMessageAnotherUser(): void
     {
         $user1 = $this->user1;

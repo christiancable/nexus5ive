@@ -7,6 +7,7 @@ use App\Models\Section;
 use App\Models\Topic;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\DuskTestCase;
 
@@ -37,7 +38,11 @@ class MentionsTest extends DuskTestCase
         ]);
     }
 
+    /**
+     * SLOW (~6s): assertMissing waits for implicit timeout before asserting element is absent.
+     */
     #[Test]
+    #[Group('slow')]
     public function userWithNoMentionsDoesNotSeeOptionToClearMentions(): void
     {
         $user = $this->user;
@@ -70,7 +75,11 @@ class MentionsTest extends DuskTestCase
         });
     }
 
+    /**
+     * SLOW (~11s): waitUntilMissing has implicit wait timeout for element to disappear.
+     */
     #[Test]
+    #[Group('slow')]
     public function userWithMentionsCanClearMentions(): void
     {
         // GIVEN we have a user with no mentions
