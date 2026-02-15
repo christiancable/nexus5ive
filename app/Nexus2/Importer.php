@@ -1,0 +1,656 @@
+<?php
+
+namespace App\Nexus2;
+
+use App\Models\Comment;
+use App\Models\Post;
+use App\Models\Section;
+use App\Models\Topic;
+use App\Models\User;
+use Carbon\Carbon;
+use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+
+class Importer
+{
+    private Command $command;
+
+    private string $bbsDir;
+
+    private bool $dryRun;
+
+    /** @var array<string, int> lowercase nick => user_id */
+    private array $nickMap = [];
+
+    private int $usersImported = 0;
+
+    private int $usersSkipped = 0;
+
+    private int $sectionsImported = 0;
+
+    private int $sectionsSkipped = 0;
+
+    private int $topicsImported = 0;
+
+    private int $topicsSkipped = 0;
+
+    private int $postsImported = 0;
+
+    private int $postsSkipped = 0;
+
+    private int $commentsImported = 0;
+
+    private int $commentsSkipped = 0;
+
+    /** @var array<string, true> legacy keys already seen (for dry-run dedup) */
+    private array $visited = [];
+
+    public function __construct(Command $command, string $bbsDir, bool $dryRun = false)
+    {
+        $this->command = $command;
+        $this->bbsDir = rtrim($bbsDir, '/');
+        $this->dryRun = $dryRun;
+    }
+
+    public function importAll(): void
+    {
+        $usrDir = $this->bbsDir.'/USR';
+
+        $this->command->info('Phase 1: Importing users...');
+        $this->importUsers($usrDir);
+        $this->command->info("  Users: {$this->usersImported} imported, {$this->usersSkipped} skipped");
+
+        $this->command->info('Phase 2: Importing sections, topics, and posts...');
+        $this->importSections();
+        $this->command->info("  Sections: {$this->sectionsImported} imported, {$this->sectionsSkipped} skipped");
+        $this->command->info("  Topics: {$this->topicsImported} imported, {$this->topicsSkipped} skipped");
+        $this->command->info("  Posts: {$this->postsImported} imported, {$this->postsSkipped} skipped");
+
+        $this->command->info('Phase 3: Importing comments...');
+        $this->importComments($usrDir);
+        $this->command->info("  Comments: {$this->commentsImported} imported, {$this->commentsSkipped} skipped");
+    }
+
+    public function importUsers(string $usrDir): void
+    {
+        // Pre-populate nickMap with existing Nexus5ive users
+        foreach (User::all(['id', 'username']) as $user) {
+            $this->nickMap[strtolower($user->username)] = $user->id;
+        }
+
+        $dirs = glob($usrDir.'/[0-9]*', GLOB_ONLYDIR);
+        sort($dirs, SORT_NATURAL);
+
+        foreach ($dirs as $dir) {
+            $udbPath = $dir.'/NEXUS.UDB';
+            if (! file_exists($udbPath)) {
+                continue;
+            }
+
+            $dirNum = basename($dir);
+            $legacyKey = "user:{$dirNum}";
+
+            if (Nexus2Import::exists('user', $legacyKey)) {
+                $modelId = Nexus2Import::modelId('user', $legacyKey);
+                // Rebuild nickMap from already-imported users
+                $existingUser = User::find($modelId);
+                if ($existingUser) {
+                    $this->nickMap[strtolower($existingUser->username)] = $existingUser->id;
+                }
+                $this->usersSkipped++;
+
+                continue;
+            }
+
+            try {
+                $parser = new UdbParser($udbPath);
+                $data = $parser->parse();
+            } catch (\RuntimeException $e) {
+                $this->command->warn("  Skipping {$udbPath}: {$e->getMessage()}");
+
+                continue;
+            }
+
+            $nick = trim($data['Nick']);
+            if ($nick === '') {
+                continue;
+            }
+
+            if ($this->dryRun) {
+                $this->command->line("  [dry-run] Would import user: {$nick} (dir {$dirNum})");
+                $this->nickMap[strtolower($nick)] = -1;
+                $this->usersImported++;
+
+                continue;
+            }
+
+            $username = $this->resolveUsername($nick);
+
+            // Read INFO.TXT if present
+            $about = null;
+            $infoPath = $dir.'/INFO.TXT';
+            if (file_exists($infoPath)) {
+                $infoContent = trim(file_get_contents($infoPath));
+                if ($infoContent !== '') {
+                    $about = $this->cleanText($infoContent);
+                }
+            }
+
+            $popname = $this->cleanText($data['PopName']);
+            $realName = trim($data['RealName']) !== '' ? $data['RealName'] : $nick;
+
+            $user = new User;
+            $user->username = $username;
+            $user->name = $realName;
+            $user->email = strtolower($username).'@legacy.nexus2';
+            $user->password = Hash::make(Str::random(64));
+            $user->email_verified_at = now();
+            $user->popname = $popname;
+            $user->about = $about;
+            $user->totalVisits = (int) $data['TimesOn'];
+            $user->totalPosts = (int) $data['TotalEdits'];
+            $user->administrator = $data['Rights'] === 255;
+            $user->theme_id = 1;
+            $user->created_at = $this->parseNexus2Date($data['Created']);
+            $user->latestLogin = $this->parseNexus2Date($data['LastOn']);
+            $user->save();
+
+            $this->nickMap[strtolower($nick)] = $user->id;
+            if (strtolower($username) !== strtolower($nick)) {
+                $this->nickMap[strtolower($username)] = $user->id;
+            }
+
+            Nexus2Import::track('user', $legacyKey, $user->id);
+            $this->usersImported++;
+        }
+    }
+
+    public function importSections(): void
+    {
+        $iniPath = $this->bbsDir.'/ONSTUFF/NEXUS.INI';
+        $ini = file_get_contents($iniPath);
+
+        $mainMenuPath = null;
+        foreach (preg_split('/\r?\n/', $ini) as $line) {
+            if (preg_match('/^MainMenu\s+(.+)/i', trim($line), $m)) {
+                $mainMenuPath = $this->resolveBackslashPath(trim($m[1]));
+
+                break;
+            }
+        }
+
+        if (! $mainMenuPath) {
+            $this->command->error('  Could not find MainMenu in NEXUS.INI');
+
+            return;
+        }
+
+        $fullPath = $this->bbsDir.'/'.$mainMenuPath;
+        $fullPath = $this->findCaseInsensitive($fullPath);
+
+        if (! $fullPath || ! file_exists($fullPath)) {
+            $this->command->error("  Main menu file not found: {$mainMenuPath}");
+
+            return;
+        }
+
+        $this->importMnu($fullPath, null, null);
+    }
+
+    public function importMnu(string $mnuPath, ?int $parentId, ?string $referringTitle): void
+    {
+        $relativePath = $this->relativeLegacyPath($mnuPath);
+        $legacyKey = "section:{$relativePath}";
+
+        if (isset($this->visited[$legacyKey]) || Nexus2Import::exists('section', $legacyKey)) {
+            if (! isset($this->visited[$legacyKey])) {
+                $sectionId = Nexus2Import::modelId('section', $legacyKey);
+                $this->visited[$legacyKey] = true;
+                $this->sectionsSkipped++;
+
+                // Still need to recurse into children for any new items
+                $this->processMenuItems($mnuPath, $sectionId);
+            }
+
+            return;
+        }
+
+        $this->visited[$legacyKey] = true;
+
+        try {
+            $parser = new MnuParser($mnuPath);
+            $data = $parser->parse();
+        } catch (\RuntimeException $e) {
+            $this->command->warn("  Skipping menu {$mnuPath}: {$e->getMessage()}");
+
+            return;
+        }
+
+        $title = $this->cleanText($referringTitle)
+            ?? $this->cleanText($data['header'])
+            ?? pathinfo($mnuPath, PATHINFO_FILENAME);
+
+        $ownerId = $this->resolveOwner($data['owners']);
+
+        if ($this->dryRun) {
+            $this->command->line("  [dry-run] Would import section: {$title}");
+            $this->sectionsImported++;
+            $this->processMenuItems($mnuPath, null);
+
+            return;
+        }
+
+        $section = new Section;
+        $section->title = $title;
+        $section->intro = null;
+        $section->user_id = $ownerId;
+        $section->parent_id = $parentId;
+        $section->weight = $this->sectionsImported;
+        $section->allow_user_topics = false;
+        $section->save();
+
+        Nexus2Import::track('section', $legacyKey, $section->id);
+        $this->sectionsImported++;
+
+        $this->processMenuItems($mnuPath, $section->id);
+    }
+
+    private function processMenuItems(string $mnuPath, ?int $sectionId): void
+    {
+        try {
+            $parser = new MnuParser($mnuPath);
+            $data = $parser->parse();
+        } catch (\RuntimeException $e) {
+            return;
+        }
+
+        $mnuDir = dirname($mnuPath);
+        $itemWeight = 0;
+
+        foreach ($data['items'] as $item) {
+            if ($item['type'] === 'folder' && isset($item['file'])) {
+                $subPath = $this->resolveRelativePath($mnuDir, $item['file']);
+                $subPath = $this->findCaseInsensitive($subPath);
+
+                if ($subPath && file_exists($subPath)) {
+                    $this->importMnu($subPath, $sectionId, $item['info'] ?? null);
+                } else {
+                    $this->command->warn("  Submenu not found: {$item['file']} (from {$mnuPath})");
+                }
+            } elseif ($item['type'] === 'article' && isset($item['file']) && ($sectionId !== null || $this->dryRun)) {
+                $this->importArticle($sectionId ?? 0, $item, $mnuDir, $mnuPath, $itemWeight);
+                $itemWeight++;
+            }
+        }
+    }
+
+    public function importArticle(int $sectionId, array $item, string $mnuDir, string $mnuPath, int $weight): void
+    {
+        $relativeMnu = $this->relativeLegacyPath($mnuPath);
+        $fileName = $item['file'];
+
+        // Article files may use backslash paths (absolute from BBS root)
+        if (str_contains($fileName, '\\')) {
+            $articlePath = $this->bbsDir.'/'.$this->resolveBackslashPath($fileName);
+        } else {
+            $articlePath = $mnuDir.'/'.$fileName;
+        }
+
+        $articlePath = $this->findCaseInsensitive($articlePath);
+        if (! $articlePath || ! file_exists($articlePath)) {
+            return;
+        }
+
+        $topicKey = "topic:{$relativeMnu}:{$item['file']}";
+
+        if (Nexus2Import::exists('topic', $topicKey)) {
+            $this->topicsSkipped++;
+
+            return;
+        }
+
+        try {
+            $parser = new ArticleParser($articlePath);
+            $data = $parser->parse();
+        } catch (\RuntimeException $e) {
+            $this->command->warn("  Skipping article {$articlePath}: {$e->getMessage()}");
+
+            return;
+        }
+
+        $title = $this->cleanText($item['info']) ?? $item['file'];
+
+        $preamble = $this->cleanText($data['preamble']);
+
+        if ($this->dryRun) {
+            $postCount = count($data['posts']);
+            $this->command->line("  [dry-run] Would import topic: {$title} ({$postCount} posts)");
+            $this->topicsImported++;
+            $this->postsImported += $postCount;
+
+            return;
+        }
+
+        $flags = strtoupper($item['flags'] ?? '');
+
+        $topic = new Topic;
+        $topic->title = $title;
+        $topic->intro = $preamble ?? '';
+        $topic->section_id = $sectionId;
+        $topic->readonly = str_contains($flags, 'R');
+        $topic->secret = str_contains($flags, 'A');
+        $topic->weight = $weight;
+        $topic->save();
+
+        Nexus2Import::track('topic', $topicKey, $topic->id);
+        $this->topicsImported++;
+
+        foreach ($data['posts'] as $index => $post) {
+            $postKey = "post:{$relativeMnu}:{$item['file']}:{$index}";
+
+            if (Nexus2Import::exists('post', $postKey)) {
+                $this->postsSkipped++;
+
+                continue;
+            }
+
+            $nick = trim($post['nick'] ?? '');
+            $userId = $nick !== '' ? $this->getOrCreateUser($nick) : $this->getOrCreateUser('unknown');
+
+            $postTime = $this->parseArticleTimestamp($post['timestamp']);
+            $postPopname = $this->cleanText($post['popname']);
+            $postSubject = $this->cleanText($post['subject']);
+            $postBody = $this->cleanText($post['body']) ?? '';
+
+            $newPost = new Post;
+            $newPost->title = $postSubject;
+            $newPost->text = $postBody;
+            $newPost->time = $postTime;
+            $newPost->popname = $postPopname;
+            $newPost->html = false;
+            $newPost->user_id = $userId;
+            $newPost->topic_id = $topic->id;
+            $newPost->save();
+
+            Nexus2Import::track('post', $postKey, $newPost->id);
+            $this->postsImported++;
+        }
+    }
+
+    public function importComments(string $usrDir): void
+    {
+        $dirs = glob($usrDir.'/[0-9]*', GLOB_ONLYDIR);
+        sort($dirs, SORT_NATURAL);
+
+        foreach ($dirs as $dir) {
+            $commentsPath = $dir.'/COMMENTS.TXT';
+            if (! file_exists($commentsPath)) {
+                continue;
+            }
+
+            $dirNum = basename($dir);
+
+            // Find the profile owner's user_id from the UDB import
+            $profileUserId = Nexus2Import::modelId('user', "user:{$dirNum}");
+            if (! $profileUserId && ! $this->dryRun) {
+                continue;
+            }
+
+            $content = trim(file_get_contents($commentsPath));
+            if ($content === '') {
+                continue;
+            }
+
+            // File is newest-first, reverse for chronological order
+            $lines = array_reverse(explode("\n", $content));
+
+            foreach ($lines as $lineIndex => $line) {
+                $line = trim($line);
+                if ($line === '') {
+                    continue;
+                }
+
+                $legacyKey = "comment:{$dirNum}:{$lineIndex}";
+
+                if (Nexus2Import::exists('comment', $legacyKey)) {
+                    $this->commentsSkipped++;
+
+                    continue;
+                }
+
+                // Parse "{Nick} : text" format
+                if (! preg_match('/^\{([^}]+)\}\s*:\s*(.*)$/', $line, $m)) {
+                    continue;
+                }
+
+                $authorNick = trim($m[1]);
+                $commentText = trim($m[2]);
+
+                if ($commentText === '') {
+                    continue;
+                }
+
+                if ($this->dryRun) {
+                    $this->commentsImported++;
+
+                    continue;
+                }
+
+                $authorId = $this->getOrCreateUser($authorNick);
+
+                $comment = new Comment;
+                $comment->user_id = $profileUserId;
+                $comment->author_id = $authorId;
+                $comment->text = $this->cleanText($commentText) ?? $commentText;
+                $comment->read = true;
+                $comment->save();
+
+                Nexus2Import::track('comment', $legacyKey, $comment->id);
+                $this->commentsImported++;
+            }
+        }
+    }
+
+    public function getOrCreateUser(string $nick): int
+    {
+        // Strip highlight markup from nicks (article/comment authors may have them)
+        $nick = NxText::stripHighlights($nick);
+        $nick = str_replace(['{', '}'], '', $nick);
+        $nick = trim($nick);
+        if ($nick === '') {
+            $nick = 'unknown';
+        }
+
+        $lower = strtolower($nick);
+
+        if (isset($this->nickMap[$lower])) {
+            return $this->nickMap[$lower];
+        }
+
+        // Check if tracked as a placeholder already
+        $placeholderKey = "user:placeholder:{$lower}";
+        $existingId = Nexus2Import::modelId('user', $placeholderKey);
+        if ($existingId) {
+            $this->nickMap[$lower] = $existingId;
+
+            return $existingId;
+        }
+
+        $username = $this->resolveUsername($nick);
+
+        $user = new User;
+        $user->username = $username;
+        $user->name = $nick;
+        $user->email = strtolower($username).'_placeholder@legacy.nexus2';
+        $user->password = Hash::make(Str::random(64));
+        $user->email_verified_at = now();
+        $user->theme_id = 1;
+        $user->save();
+
+        Nexus2Import::track('user', $placeholderKey, $user->id);
+        $this->nickMap[$lower] = $user->id;
+
+        return $user->id;
+    }
+
+    private function resolveUsername(string $nick): string
+    {
+        $username = $nick;
+        $lower = strtolower($username);
+
+        if (isset($this->nickMap[$lower]) || User::whereRaw('LOWER(username) = ?', [$lower])->exists()) {
+            $username = $nick.'_legacy';
+        }
+
+        return $username;
+    }
+
+    private function resolveOwner(array $owners): int
+    {
+        foreach ($owners as $nick) {
+            $lower = strtolower($nick);
+            if (isset($this->nickMap[$lower])) {
+                return $this->nickMap[$lower];
+            }
+        }
+
+        // Fallback to first admin user or user id 1
+        $admin = User::where('administrator', true)->first();
+
+        return $admin ? $admin->id : 1;
+    }
+
+    private function resolveBackslashPath(string $path): string
+    {
+        $path = str_replace('\\', '/', $path);
+
+        return ltrim($path, '/');
+    }
+
+    private function resolveRelativePath(string $baseDir, string $filePath): string
+    {
+        if (str_contains($filePath, '\\')) {
+            return $this->bbsDir.'/'.$this->resolveBackslashPath($filePath);
+        }
+
+        return $baseDir.'/'.$filePath;
+    }
+
+    private function relativeLegacyPath(string $fullPath): string
+    {
+        $prefix = $this->bbsDir.'/';
+        if (str_starts_with($fullPath, $prefix)) {
+            return substr($fullPath, strlen($prefix));
+        }
+
+        return $fullPath;
+    }
+
+    /**
+     * Case-insensitive file lookup — Nexus 2 was DOS, filenames may differ in case.
+     */
+    private function findCaseInsensitive(string $path): ?string
+    {
+        if (file_exists($path)) {
+            return $path;
+        }
+
+        $dir = dirname($path);
+        $target = strtolower(basename($path));
+
+        if (! is_dir($dir)) {
+            return null;
+        }
+
+        $files = scandir($dir);
+        foreach ($files as $file) {
+            if (strtolower($file) === $target) {
+                return $dir.'/'.$file;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Parse Nexus 2 UDB date format: "Tue 31/10/75 at 14:12:32"
+     */
+    private function parseNexus2Date(?string $dateStr): ?Carbon
+    {
+        if (empty($dateStr)) {
+            return null;
+        }
+
+        // Strip day name and "at" keyword
+        $cleaned = preg_replace('/^\w+\s+/', '', $dateStr);
+        $cleaned = str_replace(' at ', ' ', $cleaned);
+
+        try {
+            return Carbon::createFromFormat('d/m/y H:i:s', $cleaned);
+        } catch (\Exception $e) {
+            return null;
+        }
+    }
+
+    /**
+     * Parse article post timestamp: "Mon Jun 02 14:13:11 1997"
+     */
+    private function parseArticleTimestamp(?string $timestamp): ?Carbon
+    {
+        if (empty($timestamp)) {
+            return null;
+        }
+
+        try {
+            $date = Carbon::parse($timestamp);
+
+            // MySQL TIMESTAMP max is 2038-01-19 — clamp absurd future dates
+            if ($date->year > 2037) {
+                return null;
+            }
+
+            return $date;
+        } catch (\Exception $e) {
+            return null;
+        }
+    }
+
+    /**
+     * Strip Nexus 2 highlights and non-UTF-8 bytes, returning null if nothing remains.
+     */
+    private function cleanText(?string $text): ?string
+    {
+        if ($text === null || trim($text) === '') {
+            return null;
+        }
+
+        $text = NxText::stripHighlights($text);
+        // Convert CP437 (DOS) to UTF-8 — handles box-drawing chars etc.
+        if (! mb_check_encoding($text, 'UTF-8')) {
+            $converted = @iconv('CP437', 'UTF-8//IGNORE', $text);
+            if ($converted !== false) {
+                $text = $converted;
+            }
+        }
+        $text = trim($text);
+
+        return $text !== '' ? $text : null;
+    }
+
+    public function getCounts(): array
+    {
+        return [
+            'users_imported' => $this->usersImported,
+            'users_skipped' => $this->usersSkipped,
+            'sections_imported' => $this->sectionsImported,
+            'sections_skipped' => $this->sectionsSkipped,
+            'topics_imported' => $this->topicsImported,
+            'topics_skipped' => $this->topicsSkipped,
+            'posts_imported' => $this->postsImported,
+            'posts_skipped' => $this->postsSkipped,
+            'comments_imported' => $this->commentsImported,
+            'comments_skipped' => $this->commentsSkipped,
+        ];
+    }
+}
