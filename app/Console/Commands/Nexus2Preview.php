@@ -16,7 +16,8 @@ class Nexus2Preview extends Command
                             {path : Path to the file}
                             {--info : Also display the user\'s INFO.TXT (udb only)}
                             {--comments : Also display the user\'s COMMENTS.TXT (udb only)}
-                            {--plain : Strip highlight markup instead of colouring (useful for piping to files)}';
+                            {--plain : Strip highlight markup instead of colouring (useful for piping to files)}
+                            {--priv=100 : Privilege level for menu visibility filtering (0-255, default 100)}';
 
     protected $description = 'Preview parsed data from legacy Nexus 2 files';
 
@@ -127,10 +128,11 @@ class Nexus2Preview extends Command
 
     private function previewMnu(string $path): int
     {
+        $privLevel = (int) $this->option('priv');
         $parser = new MnuParser($path);
-        $data = $parser->parse();
+        $data = $parser->parse($privLevel);
 
-        $this->info("Nexus 2 Menu: {$path}");
+        $this->info("Nexus 2 Menu: {$path} (priv level: {$privLevel})");
 
         if ($data['header']) {
             $this->line('Header: '.$this->highlights($data['header']));

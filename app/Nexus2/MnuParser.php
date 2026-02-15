@@ -27,7 +27,12 @@ class MnuParser
         $this->lines = preg_split('/\r?\n/', $content);
     }
 
-    public function parse(): array
+    /**
+     * Parse the menu file.
+     *
+     * @param  int|null  $privLevel  If provided, items with read > privLevel are filtered out.
+     */
+    public function parse(?int $privLevel = null): array
     {
         $result = [
             'header' => null,
@@ -44,7 +49,7 @@ class MnuParser
             }
 
             if ($line[0] === '.') {
-                $this->parseDirective($line, $result, $lineNum + 1);
+                $this->parseDirective($line, $result, $lineNum + 1, $privLevel);
 
                 continue;
             }
@@ -59,7 +64,7 @@ class MnuParser
 
             if (isset(self::ITEM_TYPES[$prefix])) {
                 $item = $this->parseItem($prefix, $line, $lineNum + 1);
-                if ($item !== null) {
+                if ($item !== null && ($privLevel === null || $item['read'] <= $privLevel)) {
                     $result['items'][] = $item;
                 }
             }
@@ -74,7 +79,7 @@ class MnuParser
         'use', 'quit',
     ];
 
-    private function parseDirective(string $line, array &$result, int $lineNum): void
+    private function parseDirective(string $line, array &$result, int $lineNum, ?int $privLevel = null): void
     {
         $after = substr($line, 1);
         $parts = preg_split('/\s+/', $after, 2);
@@ -100,7 +105,7 @@ class MnuParser
         $prefix = strtolower($after[0] ?? '');
         if (isset(self::ITEM_TYPES[$prefix])) {
             $item = $this->parseItem($prefix, $after, $lineNum);
-            if ($item !== null) {
+            if ($item !== null && ($privLevel === null || $item['read'] <= $privLevel)) {
                 $result['items'][] = $item;
             }
 

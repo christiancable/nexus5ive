@@ -198,6 +198,66 @@ class MnuParserTest extends TestCase
         }
     }
 
+    public function testNullPrivLevelReturnsAllItems(): void
+    {
+        $parser = new MnuParser($this->fixturesPath.'/test_menu.mnu');
+        $data = $parser->parse();
+
+        // Should include the sysop-only item (read=250)
+        $sysopItems = array_filter($data['items'], fn ($i) => ($i['read'] ?? 0) === 250);
+        $this->assertNotEmpty($sysopItems);
+    }
+
+    public function testPrivLevelFiltersHighReadItems(): void
+    {
+        $parser = new MnuParser($this->fixturesPath.'/test_menu.mnu');
+        $data = $parser->parse(100);
+
+        // All items should have read <= 100
+        foreach ($data['items'] as $item) {
+            $this->assertLessThanOrEqual(100, $item['read'],
+                "Item '{$item['info']}' has read={$item['read']} which exceeds priv level 100");
+        }
+    }
+
+    public function testPrivLevelZeroShowsOnlyGuestItems(): void
+    {
+        $parser = new MnuParser($this->fixturesPath.'/test_menu.mnu');
+        $data = $parser->parse(0);
+
+        foreach ($data['items'] as $item) {
+            $this->assertEquals(0, $item['read'],
+                "Item '{$item['info']}' should not be visible at priv level 0");
+        }
+    }
+
+    public function testPrivLevel255ShowsAllItems(): void
+    {
+        $parser = new MnuParser($this->fixturesPath.'/test_menu.mnu');
+        $allData = $parser->parse();
+
+        $parser2 = new MnuParser($this->fixturesPath.'/test_menu.mnu');
+        $sysopData = $parser2->parse(255);
+
+        $this->assertCount(count($allData['items']), $sysopData['items']);
+    }
+
+    public function testPrivLevelFiltersDotPrefixedItems(): void
+    {
+        $tmpFile = tempnam(sys_get_temp_dir(), 'mnu');
+        file_put_contents($tmpFile, ".a 180 180 d diary *u Secret diary\na 0 100 x public * Public\n");
+
+        try {
+            $parser = new MnuParser($tmpFile);
+            $data = $parser->parse(100);
+
+            $this->assertCount(1, $data['items']);
+            $this->assertEquals('public', $data['items'][0]['file']);
+        } finally {
+            unlink($tmpFile);
+        }
+    }
+
     public function testThrowsExceptionForMissingFile(): void
     {
         $this->expectException(RuntimeException::class);
