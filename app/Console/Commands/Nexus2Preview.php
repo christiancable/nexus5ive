@@ -2,6 +2,9 @@
 
 namespace App\Console\Commands;
 
+use App\Nexus2\ArticleParser;
+use App\Nexus2\MnuParser;
+use App\Nexus2\NxText;
 use App\Nexus2\UdbParser;
 use Illuminate\Console\Command;
 use RuntimeException;
@@ -9,10 +12,11 @@ use RuntimeException;
 class Nexus2Preview extends Command
 {
     protected $signature = 'nexus2:preview
-                            {type : The file type to preview (udb)}
+                            {type : The file type to preview (udb, mnu, article)}
                             {path : Path to the file}
-                            {--info : Also display the user\'s INFO.TXT}
-                            {--comments : Also display the user\'s COMMENTS.TXT}';
+                            {--info : Also display the user\'s INFO.TXT (udb only)}
+                            {--comments : Also display the user\'s COMMENTS.TXT (udb only)}
+                            {--plain : Strip highlight markup instead of colouring (useful for piping to files)}';
 
     protected $description = 'Preview parsed data from legacy Nexus 2 files';
 
@@ -21,8 +25,8 @@ class Nexus2Preview extends Command
         $type = $this->argument('type');
         $path = $this->argument('path');
 
-        if ($type !== 'udb') {
-            $this->error("Unsupported file type: {$type}. Supported types: udb");
+        if (! in_array($type, ['udb', 'mnu', 'article'])) {
+            $this->error("Unsupported file type: {$type}. Supported types: udb, mnu, article");
 
             return self::FAILURE;
         }
@@ -34,13 +38,22 @@ class Nexus2Preview extends Command
         }
 
         try {
-            $parser = new UdbParser($path);
-            $data = $parser->parse();
+            return match ($type) {
+                'udb' => $this->previewUdb($path),
+                'mnu' => $this->previewMnu($path),
+                'article' => $this->previewArticle($path),
+            };
         } catch (RuntimeException $e) {
             $this->error($e->getMessage());
 
             return self::FAILURE;
         }
+    }
+
+    private function previewUdb(string $path): int
+    {
+        $parser = new UdbParser($path);
+        $data = $parser->parse();
 
         $this->info("Nexus 2 UDB: {$path}");
         $this->line('');
@@ -112,6 +125,109 @@ class Nexus2Preview extends Command
         return self::SUCCESS;
     }
 
+    private function previewMnu(string $path): int
+    {
+        $parser = new MnuParser($path);
+        $data = $parser->parse();
+
+        $this->info("Nexus 2 Menu: {$path}");
+
+        if ($data['header']) {
+            $this->line('Header: '.$this->highlights($data['header']));
+        }
+
+        if (! empty($data['owners'])) {
+            $this->line('Owners: '.implode(', ', $data['owners']));
+        }
+
+        if (! empty($data['directives'])) {
+            $this->line('');
+            $this->info('Directives');
+            $this->table(
+                ['Command', 'Args'],
+                array_map(fn ($d) => [$d['command'], $d['args']], $data['directives'])
+            );
+        }
+
+        $this->line('');
+        $this->info('Items');
+
+        $rows = [];
+        foreach ($data['items'] as $item) {
+            $row = [
+                $item['type'],
+                $item['read'],
+            ];
+
+            if (isset($item['write'])) {
+                $row[] = $item['write'];
+            } else {
+                $row[] = '';
+            }
+
+            $row[] = $item['key'] ?? '';
+            $row[] = $item['file'] ?? '';
+            $row[] = $item['flags'] ?? '';
+            $row[] = $this->highlights($item['info']);
+
+            $rows[] = $row;
+        }
+
+        $this->table(
+            ['Type', 'Read', 'Write', 'Key', 'File', 'Flags', 'Info'],
+            $rows
+        );
+
+        return self::SUCCESS;
+    }
+
+    private function previewArticle(string $path): int
+    {
+        $parser = new ArticleParser($path);
+        $data = $parser->parse();
+
+        $this->info("Nexus 2 Article: {$path}");
+        $this->line(count($data['posts']).' post(s)');
+
+        if ($data['preamble'] !== '') {
+            $this->line('');
+            $this->info('Preamble');
+            $this->line($this->highlights($data['preamble']));
+        }
+
+        foreach ($data['posts'] as $i => $post) {
+            $this->line('');
+            $this->info(str_repeat('=', 70));
+
+            $num = $i + 1;
+            $this->line("Post #{$num}  {$post['timestamp']}");
+
+            $from = $post['nick'] ?? 'Unknown';
+            if ($post['popname']) {
+                $from .= '  ('.$this->highlights($post['popname']).')';
+            }
+            $this->line("From: {$from}");
+
+            if ($post['subject']) {
+                $this->line('Subject: '.$this->highlights($post['subject']));
+            }
+
+            if ($post['body'] !== '') {
+                $this->line('');
+                $this->line($this->highlights($post['body']));
+            }
+        }
+
+        return self::SUCCESS;
+    }
+
+    private function highlights(string $text): string
+    {
+        return $this->option('plain')
+            ? NxText::stripHighlights($text)
+            : NxText::toConsole($text);
+    }
+
     private function displayTextFile(string $path, string $label, bool $reverse = false): void
     {
         $this->line('');
@@ -136,6 +252,6 @@ class Nexus2Preview extends Command
         }
 
         $this->info($label);
-        $this->line($content);
+        $this->line($this->highlights($content));
     }
 }

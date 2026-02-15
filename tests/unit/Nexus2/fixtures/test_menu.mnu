@@ -1,0 +1,17 @@
+.owner fraggle valis
+H @Test @Menu
+m 0 {Welcome to the test menu}
+m 0 ----------------------------
+# this is a comment
+; another comment
+/ yet another comment
+a 0 100 o whatson * Whats On
+a 0 100 F forsale * For Sale
+a 128 200 d secret *u {Secret File}
+f 0 b \sections\sub\sub.mnu * {Sub Menu}
+c 0 Just a comment
+m 0
+.if user fraggle valis
+a 0 0 g hidden * Hidden File
+.endif
+a 250 250 p syspriv * Sysop Only
