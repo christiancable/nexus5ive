@@ -530,9 +530,13 @@ class Importer
 
     private function resolveRelativePath(string $baseDir, string $filePath): string
     {
-        if (str_contains($filePath, '\\')) {
+        // Absolute paths start with backslash — resolve from BBS root
+        if (str_starts_with($filePath, '\\')) {
             return $this->bbsDir.'/'.$this->resolveBackslashPath($filePath);
         }
+
+        // Relative paths may use backslashes as directory separators (DOS)
+        $filePath = str_replace('\\', '/', $filePath);
 
         return $baseDir.'/'.$filePath;
     }
@@ -549,6 +553,7 @@ class Importer
 
     /**
      * Case-insensitive file lookup — Nexus 2 was DOS, filenames may differ in case.
+     * Handles multi-component paths by resolving each segment case-insensitively.
      */
     private function findCaseInsensitive(string $path): ?string
     {
@@ -556,21 +561,39 @@ class Importer
             return $path;
         }
 
-        $dir = dirname($path);
-        $target = strtolower(basename($path));
+        // Find the longest existing prefix, then resolve remaining segments case-insensitively
+        $resolved = $this->bbsDir;
+        $remaining = substr($path, strlen($this->bbsDir) + 1);
 
-        if (! is_dir($dir)) {
+        if ($remaining === false || $remaining === '') {
             return null;
         }
 
-        $files = scandir($dir);
-        foreach ($files as $file) {
-            if (strtolower($file) === $target) {
-                return $dir.'/'.$file;
+        $segments = explode('/', $remaining);
+
+        foreach ($segments as $segment) {
+            if (! is_dir($resolved)) {
+                return null;
+            }
+
+            $target = strtolower($segment);
+            $found = false;
+
+            foreach (scandir($resolved) as $entry) {
+                if (strtolower($entry) === $target) {
+                    $resolved .= '/'.$entry;
+                    $found = true;
+
+                    break;
+                }
+            }
+
+            if (! $found) {
+                return null;
             }
         }
 
-        return null;
+        return file_exists($resolved) ? $resolved : null;
     }
 
     /**
