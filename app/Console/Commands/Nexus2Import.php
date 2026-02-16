@@ -16,7 +16,8 @@ class Nexus2Import extends Command
 {
     protected $signature = 'nexus2:import
                             {--dry-run : Show what would be imported without making changes}
-                            {--path= : Base path to Nexus 2 BBS data (default: untracked/ucl_info/BBS)}';
+                            {--path= : Base path to Nexus 2 BBS data (default: untracked/ucl_info/BBS)}
+                            {--section= : Import legacy menus under this existing section ID}';
 
     protected $description = 'Import legacy Nexus 2 data into Nexus5ive';
 
@@ -24,8 +25,15 @@ class Nexus2Import extends Command
     {
         $bbsDir = $this->option('path') ?? base_path('untracked/ucl_info/BBS');
         $dryRun = (bool) $this->option('dry-run');
+        $parentSectionId = $this->option('section') ? (int) $this->option('section') : null;
 
         if (! $this->validateDataPath($bbsDir)) {
+            return self::FAILURE;
+        }
+
+        if ($parentSectionId && ! Section::find($parentSectionId)) {
+            $this->error("Section {$parentSectionId} not found");
+
             return self::FAILURE;
         }
 
@@ -34,7 +42,12 @@ class Nexus2Import extends Command
             $this->line('');
         }
 
-        $importer = new Importer($this, $bbsDir, $dryRun);
+        if ($parentSectionId) {
+            $section = Section::find($parentSectionId);
+            $this->info("Importing under section: {$section->title} (ID {$parentSectionId})");
+        }
+
+        $importer = new Importer($this, $bbsDir, $dryRun, $parentSectionId);
 
         if ($dryRun) {
             $importer->importAll();

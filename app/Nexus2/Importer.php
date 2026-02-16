@@ -20,6 +20,8 @@ class Importer
 
     private bool $dryRun;
 
+    private ?int $parentSectionId;
+
     /** @var array<string, int> lowercase nick => user_id */
     private array $nickMap = [];
 
@@ -46,11 +48,12 @@ class Importer
     /** @var array<string, true> legacy keys already seen (for dry-run dedup) */
     private array $visited = [];
 
-    public function __construct(Command $command, string $bbsDir, bool $dryRun = false)
+    public function __construct(Command $command, string $bbsDir, bool $dryRun = false, ?int $parentSectionId = null)
     {
         $this->command = $command;
         $this->bbsDir = rtrim($bbsDir, '/');
         $this->dryRun = $dryRun;
+        $this->parentSectionId = $parentSectionId;
     }
 
     public function importAll(): void
@@ -195,7 +198,7 @@ class Importer
             return;
         }
 
-        $this->importMnu($fullPath, null, null);
+        $this->importMnu($fullPath, $this->parentSectionId, null);
     }
 
     public function importMnu(string $mnuPath, ?int $parentId, ?string $referringTitle): void
