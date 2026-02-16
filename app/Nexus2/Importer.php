@@ -22,8 +22,12 @@ class Importer
 
     private ?int $parentSectionId;
 
+    private bool $mergeExistingUsers;
+
     /** @var array<string, int> lowercase nick => user_id */
     private array $nickMap = [];
+
+    private int $usersMerged = 0;
 
     private int $usersImported = 0;
 
@@ -48,12 +52,13 @@ class Importer
     /** @var array<string, true> legacy keys already seen (for dry-run dedup) */
     private array $visited = [];
 
-    public function __construct(Command $command, string $bbsDir, bool $dryRun = false, ?int $parentSectionId = null)
+    public function __construct(Command $command, string $bbsDir, bool $dryRun = false, ?int $parentSectionId = null, bool $mergeExistingUsers = false)
     {
         $this->command = $command;
         $this->bbsDir = rtrim($bbsDir, '/');
         $this->dryRun = $dryRun;
         $this->parentSectionId = $parentSectionId;
+        $this->mergeExistingUsers = $mergeExistingUsers;
     }
 
     public function importAll(): void
@@ -62,7 +67,8 @@ class Importer
 
         $this->command->info('Phase 1: Importing users...');
         $this->importUsers($usrDir);
-        $this->command->info("  Users: {$this->usersImported} imported, {$this->usersSkipped} skipped");
+        $merged = $this->usersMerged > 0 ? ", {$this->usersMerged} merged" : '';
+        $this->command->info("  Users: {$this->usersImported} imported, {$this->usersSkipped} skipped{$merged}");
 
         $this->command->info('Phase 2: Importing sections, topics, and posts...');
         $this->importSections();
@@ -85,6 +91,8 @@ class Importer
         $dirs = glob($usrDir.'/[0-9]*', GLOB_ONLYDIR);
         sort($dirs, SORT_NATURAL);
 
+        // Pre-parse all UDB files so we can sort duplicates by LastOn
+        $entries = [];
         foreach ($dirs as $dir) {
             $udbPath = $dir.'/NEXUS.UDB';
             if (! file_exists($udbPath)) {
@@ -96,7 +104,6 @@ class Importer
 
             if (Nexus2Import::exists('user', $legacyKey)) {
                 $modelId = Nexus2Import::modelId('user', $legacyKey);
-                // Rebuild nickMap from already-imported users
                 $existingUser = User::find($modelId);
                 if ($existingUser) {
                     $this->nickMap[strtolower($existingUser->username)] = $existingUser->id;
@@ -120,9 +127,54 @@ class Importer
                 continue;
             }
 
+            $entries[] = ['dir' => $dir, 'dirNum' => $dirNum, 'legacyKey' => $legacyKey, 'data' => $data, 'nick' => $nick];
+        }
+
+        // Sort so the most recently active account for each nick is processed first
+        usort($entries, function ($a, $b) {
+            $dateA = $this->parseNexus2Date($a['data']['LastOn']);
+            $dateB = $this->parseNexus2Date($b['data']['LastOn']);
+
+            // Nulls sort last
+            if (! $dateA && ! $dateB) {
+                return 0;
+            }
+            if (! $dateA) {
+                return 1;
+            }
+            if (! $dateB) {
+                return -1;
+            }
+
+            return $dateB->timestamp <=> $dateA->timestamp;
+        });
+
+        foreach ($entries as $entry) {
+            $dir = $entry['dir'];
+            $dirNum = $entry['dirNum'];
+            $legacyKey = $entry['legacyKey'];
+            $data = $entry['data'];
+            $nick = $entry['nick'];
+
+            // Check if this nick matches an existing user
+            $lower = strtolower($nick);
+            $existingUser = isset($this->nickMap[$lower]) ? User::find($this->nickMap[$lower]) : null;
+
+            if ($existingUser && $this->mergeExistingUsers) {
+                if ($this->dryRun) {
+                    $this->command->line("  [dry-run] Would merge user: {$nick} (dir {$dirNum}) → existing #{$existingUser->id} ({$existingUser->username})");
+                } else {
+                    Nexus2Import::track('user', $legacyKey, $existingUser->id);
+                    $this->command->line("  Merged user: {$nick} → existing #{$existingUser->id} ({$existingUser->username})");
+                }
+                $this->usersMerged++;
+
+                continue;
+            }
+
             if ($this->dryRun) {
                 $this->command->line("  [dry-run] Would import user: {$nick} (dir {$dirNum})");
-                $this->nickMap[strtolower($nick)] = -1;
+                $this->nickMap[$lower] = -1;
                 $this->usersImported++;
 
                 continue;
@@ -471,6 +523,16 @@ class Importer
             return $this->nickMap[$lower];
         }
 
+        // When merging, check if an existing Nexus5ive user matches this nick
+        if ($this->mergeExistingUsers) {
+            $existing = User::whereRaw('LOWER(username) = ?', [$lower])->first();
+            if ($existing) {
+                $this->nickMap[$lower] = $existing->id;
+
+                return $existing->id;
+            }
+        }
+
         // Check if tracked as a placeholder already
         $placeholderKey = "user:placeholder:{$lower}";
         $existingId = Nexus2Import::modelId('user', $placeholderKey);
@@ -669,6 +731,7 @@ class Importer
         return [
             'users_imported' => $this->usersImported,
             'users_skipped' => $this->usersSkipped,
+            'users_merged' => $this->usersMerged,
             'sections_imported' => $this->sectionsImported,
             'sections_skipped' => $this->sectionsSkipped,
             'topics_imported' => $this->topicsImported,

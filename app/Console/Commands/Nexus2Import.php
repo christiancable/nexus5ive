@@ -8,7 +8,9 @@ use App\Models\Post;
 use App\Models\Section;
 use App\Models\Topic;
 use App\Models\User;
+use App\Models\Mention;
 use App\Nexus2\Importer;
+use App\Nexus2\Nexus2Import as Nexus2ImportModel;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 
@@ -17,7 +19,8 @@ class Nexus2Import extends Command
     protected $signature = 'nexus2:import
                             {--dry-run : Show what would be imported without making changes}
                             {--path= : Base path to Nexus 2 BBS data (default: untracked/ucl_info/BBS)}
-                            {--section= : Import legacy menus under this existing section ID}';
+                            {--section= : Import legacy menus under this existing section ID}
+                            {--merge-existing-users : Map legacy nicks to existing accounts instead of creating _legacy duplicates}';
 
     protected $description = 'Import legacy Nexus 2 data into Nexus5ive';
 
@@ -26,6 +29,7 @@ class Nexus2Import extends Command
         $bbsDir = $this->option('path') ?? base_path('untracked/ucl_info/BBS');
         $dryRun = (bool) $this->option('dry-run');
         $parentSectionId = $this->option('section') ? (int) $this->option('section') : null;
+        $mergeExistingUsers = (bool) $this->option('merge-existing-users');
 
         if (! $this->validateDataPath($bbsDir)) {
             return self::FAILURE;
@@ -47,7 +51,7 @@ class Nexus2Import extends Command
             $this->info("Importing under section: {$section->title} (ID {$parentSectionId})");
         }
 
-        $importer = new Importer($this, $bbsDir, $dryRun, $parentSectionId);
+        $importer = new Importer($this, $bbsDir, $dryRun, $parentSectionId, $mergeExistingUsers);
 
         if ($dryRun) {
             $importer->importAll();
@@ -78,6 +82,12 @@ class Nexus2Import extends Command
                 $model::setEventDispatcher(app('events'));
             }
         }
+
+        // Clear notifications for imported users
+        $this->info('Clearing notifications for imported users...');
+        $importedUserIds = Nexus2ImportModel::where('type', 'user')->pluck('model_id');
+        Comment::whereIn('user_id', $importedUserIds)->update(['read' => true]);
+        Mention::whereIn('user_id', $importedUserIds)->delete();
 
         // Fire cache rebuild events once
         $this->info('Rebuilding caches...');

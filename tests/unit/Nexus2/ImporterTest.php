@@ -117,6 +117,39 @@ class ImporterTest extends TestCase
         $this->assertEquals('TestUser_legacy', $imported->username);
     }
 
+    public function test_merge_existing_users_maps_to_existing_account(): void
+    {
+        $existing = User::factory()->create(['username' => 'TestUser']);
+
+        $command = $this->createMockCommand();
+        $importer = new Importer($command, $this->bbsDir, mergeExistingUsers: true);
+
+        $importer->importUsers($this->bbsDir.'/USR');
+        $importer->importSections();
+
+        // No _legacy account should be created
+        $this->assertNull(User::where('username', 'TestUser_legacy')->first());
+
+        // Posts from the legacy data should be assigned to the existing user
+        $posts = Post::where('user_id', $existing->id)->get();
+        $this->assertGreaterThan(0, $posts->count());
+    }
+
+    public function test_merge_existing_users_associates_comments(): void
+    {
+        $existing = User::factory()->create(['username' => 'SysopNick']);
+
+        $command = $this->createMockCommand();
+        $importer = new Importer($command, $this->bbsDir, mergeExistingUsers: true);
+
+        $importer->importUsers($this->bbsDir.'/USR');
+        $importer->importComments($this->bbsDir.'/USR');
+
+        // Comments authored by SysopNick should point to the existing account
+        $comments = Comment::where('author_id', $existing->id)->get();
+        $this->assertGreaterThan(0, $comments->count());
+    }
+
     public function test_idempotency_skips_duplicate_users(): void
     {
         $command = $this->createMockCommand();
