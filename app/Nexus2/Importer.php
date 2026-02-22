@@ -819,6 +819,8 @@ class Importer
         }
 
         $text = $markdown ? NxText::toMarkdown($text) : NxText::stripHighlights($text);
+        // Backticks render as inline code in Markdown — replace with a plain apostrophe
+        $text = str_replace('`', "'", $text);
         // Convert CP437 (DOS) to UTF-8 — handles box-drawing chars etc.
         if (! mb_check_encoding($text, 'UTF-8')) {
             $converted = @iconv('CP437', 'UTF-8//IGNORE', $text);
