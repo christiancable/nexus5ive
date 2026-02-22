@@ -1,0 +1,391 @@
+// Nexus 2 DOS Theme — CGA/EGA 16-color palette
+// Inspired by the original Nexus 2 BBS running under DOS
+
+// ── CGA palette ──────────────────────────────────────────────────────────────
+$dos-black:          #000000;
+$dos-dark-blue:      #0000AA;
+$dos-dark-green:     #00AA00;
+$dos-dark-cyan:      #00AAAA;
+$dos-dark-red:       #AA0000;
+$dos-brown:          #AA5500;
+$dos-light-gray:     #AAAAAA;
+$dos-dark-gray:      #555555;
+$dos-bright-blue:    #5555FF;
+$dos-bright-green:   #55FF55;
+$dos-bright-cyan:    #55FFFF;
+$dos-bright-red:     #FF5555;
+$dos-yellow:         #FFFF55;
+$dos-white:          #FFFFFF;
+
+// ── Typography ───────────────────────────────────────────────────────────────
+// JetBrains Mono (body) + Space Mono (headings)
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Space+Mono:wght@400;700&display=swap');
+
+$font-family-monospace:  'JetBrains Mono', 'Courier New', monospace;
+$font-family-sans-serif: 'JetBrains Mono', 'Courier New', monospace;
+$headings-font-family:   'Space Mono', 'Courier New', monospace;
+$font-size-base:         0.9rem;
+$line-height-base:       1.6;
+$headings-line-height:   1.3;
+
+// ── Body ─────────────────────────────────────────────────────────────────────
+$body-bg:    $dos-black;
+$body-color: $dos-light-gray;
+
+// ── Bootstrap base palette ───────────────────────────────────────────────────
+// Using exact Turbo C CGA hex values as defined in conio.h
+$black:  $dos-black;       // BLACK       = 0
+$white:  $dos-white;       // WHITE       = 15
+$blue:   $dos-dark-blue;   // BLUE        = 1
+$green:  $dos-dark-green;  // GREEN       = 2  (Menu HIGHLIGHT default)
+$cyan:   $dos-dark-cyan;   // CYAN        = 3
+$red:    $dos-dark-red;    // RED         = 4  (MenuBar BACKGROUND default)
+$yellow: $dos-yellow;      // YELLOW      = 14 (Examine/article HIGHLIGHT default)
+
+// ── Contextual colors ────────────────────────────────────────────────────────
+$primary:   $dos-dark-blue;   // BLUE        — status bars, navbar
+$secondary: $dos-dark-gray;   // DARKGRAY
+$success:   $dos-dark-green;  // GREEN
+$info:      $dos-dark-cyan;   // CYAN        — unread post timestamps
+$warning:   $dos-yellow;      // YELLOW
+$danger:    $dos-dark-red;    // RED         — danger/alerts
+$light:     $dos-light-gray;  // LIGHTGRAY   — Menu NORMAL text
+$dark:      $dos-dark-gray;   // DARKGRAY
+
+$theme-colors: (
+  "primary":   $primary,
+  "secondary": $secondary,
+  "success":   $success,
+  "info":      $info,
+  "warning":   $warning,
+  "danger":    $danger,
+  "light":     $light,
+  "dark":      $dark,
+);
+
+// ── Headings & links ─────────────────────────────────────────────────────────
+// Menu[HIGHLIGHT]=GREEN (#00AA00), article highlights=YELLOW (#FFFF55)
+$headings-color:   $dos-bright-cyan;              // LIGHTCYAN — section headers
+$link-color:       $dos-dark-green;               // GREEN = Menu HIGHLIGHT
+$link-hover-color: $dos-bright-green;             // LIGHTGREEN — brighter on hover
+
+// ── Cards ────────────────────────────────────────────────────────────────────
+$card-bg:           $dos-black;
+$card-border-color: $dos-dark-gray;
+$card-cap-bg:       $dos-dark-blue;
+$card-cap-color:    $dos-white;
+
+// ── Borders & radii — zero everywhere (DOS has no rounded corners) ────────────
+$border-color:      $dos-dark-gray;
+$border-radius:     0;
+$border-radius-sm:  0;
+$border-radius-lg:  0;
+$border-radius-xl:  0;
+$border-radius-2xl: 0;
+$border-radius-pill: 2px; // keep pills vaguely pill-shaped
+
+// ── HR ───────────────────────────────────────────────────────────────────────
+$hr-color:   $dos-dark-gray;
+$hr-opacity: 1;
+
+// ── Inputs ───────────────────────────────────────────────────────────────────
+$input-bg:                 $dos-black;
+$input-color:              $dos-bright-green;
+$input-border-color:       $dos-dark-gray;
+$input-focus-bg:           $dos-black;
+$input-focus-color:        $dos-yellow;
+$input-focus-border-color: $dos-bright-cyan;
+$input-placeholder-color:  $dos-dark-gray;
+
+// ── Dropdowns — blue panel, red selection bar ─────────────────────────────────
+$dropdown-bg:                $dos-dark-blue;
+$dropdown-color:             $dos-white;
+$dropdown-border-color:      $dos-bright-cyan;
+$dropdown-link-color:        $dos-white;
+$dropdown-link-hover-bg:     $dos-dark-red;
+$dropdown-link-hover-color:  $dos-white;
+$dropdown-link-active-bg:    $dos-dark-red;
+$dropdown-link-active-color: $dos-white;
+
+// ── Breadcrumbs ───────────────────────────────────────────────────────────────
+$breadcrumb-active-color:   $dos-light-gray;
+$breadcrumb-divider-color:  $dos-dark-gray;
+$breadcrumb-border-radius:  0;
+$breadcrumb-padding-y:      0.4rem;
+$breadcrumb-padding-x:      1rem;
+
+// ── Pagination ────────────────────────────────────────────────────────────────
+$pagination-bg:                  $dos-black;
+$pagination-color:               $dos-bright-green;
+$pagination-border-color:        $dos-dark-gray;
+$pagination-hover-bg:            $dos-dark-blue;
+$pagination-hover-color:         $dos-white;
+$pagination-hover-border-color:  $dos-dark-gray;
+$pagination-active-bg:           $dos-dark-red;  // RED = MenuBar BACKGROUND
+$pagination-active-border-color: $dos-dark-red;
+$pagination-disabled-bg:         $dos-black;
+$pagination-disabled-color:      $dos-dark-gray;
+
+// ── Tables ────────────────────────────────────────────────────────────────────
+$table-color:        $dos-light-gray;
+$table-bg:           transparent;
+$table-border-color: $dos-dark-gray;
+
+// ── Code / pre ────────────────────────────────────────────────────────────────
+$code-color: $dos-bright-cyan;
+$kbd-bg:     $dos-dark-gray;
+$kbd-color:  $dos-white;
+
+// ── Misc ──────────────────────────────────────────────────────────────────────
+$mark-bg:    $dos-dark-red;
+$mark-color: $dos-white;
+$text-muted: $dos-dark-gray;
+
+// ── Buttons ───────────────────────────────────────────────────────────────────
+$btn-border-radius:    0;
+$btn-border-radius-sm: 0;
+$btn-border-radius-lg: 0;
+
+// ── Badges ────────────────────────────────────────────────────────────────────
+$badge-border-radius: 0;
+
+// ── Nav tabs ─────────────────────────────────────────────────────────────────
+$nav-tabs-link-active-color:      $dos-white;         // WHITE  — active tab text
+$nav-tabs-link-active-bg:         $dos-dark-blue;     // BLUE   — active tab background
+$nav-tabs-border-color:           $dos-dark-gray;
+$nav-tabs-link-active-border-color: $dos-bright-cyan $dos-bright-cyan $dos-dark-blue;
+$nav-link-color:                  $dos-light-gray;    // LIGHTGRAY — inactive tab text
+$nav-link-hover-color:            $dos-yellow;        // YELLOW — hover
+
+// ── Alerts ────────────────────────────────────────────────────────────────────
+$alert-border-radius: 0;
+
+// ── Modal ─────────────────────────────────────────────────────────────────────
+$modal-content-bg:           $dos-black;
+$modal-content-border-color: $dos-dark-gray;
+
+// =============================================================================
+// Custom component CSS — applied after Bootstrap is imported
+// (kept here so the color variables are in scope)
+// =============================================================================
+
+// Navbar — DOS command bar: dark navy, bright accents
+#top-toolbar .navbar {
+  background-color: $dos-dark-blue !important;
+  border-radius: 0;
+
+  .navbar-brand {
+    color: $dos-yellow !important;
+    font-size: 1.4rem;
+    letter-spacing: 0.05em;
+    &:hover { color: $dos-bright-cyan !important; }
+  }
+
+  .nav-link {
+    color: $dos-white !important;
+    &:hover { color: $dos-yellow !important; }
+  }
+
+  .navbar-toggler {
+    border-color: $dos-light-gray;
+    border-radius: 0;
+  }
+
+  .navbar-toggler-icon {
+    background-color: $dos-light-gray;
+  }
+
+  * { color: $dos-white; }
+}
+
+#top-toolbar {
+  border-bottom: 2px solid $dos-bright-cyan;
+}
+
+// Dropdown — blue panel with red selection bar (like DOS menus)
+.dropdown-menu {
+  background-color: $dos-dark-blue !important;
+  border: 1px solid $dos-bright-cyan !important;
+  border-radius: 0;
+
+  .dropdown-item {
+    color: $dos-white;
+    &:hover, &:focus {
+      background-color: $dos-dark-red;
+      color: $dos-white;
+    }
+  }
+
+  .dropdown-divider {
+    border-top-color: $dos-dark-gray;
+  }
+}
+
+// Breadcrumb — status bar style
+.breadcrumb {
+  background-color: $dos-dark-blue;
+  border-radius: 0;
+  margin-bottom: 0;
+
+  .breadcrumb-item {
+    color: $dos-light-gray;
+    a {
+      color: $dos-bright-cyan;
+      &:hover { color: $dos-yellow; }
+    }
+    &.active { color: $dos-light-gray; }
+    + .breadcrumb-item::before { color: $dos-dark-gray; }
+  }
+}
+
+// Cards — dark body, blue header (like the DOS menu panels)
+.card {
+  border-radius: 0;
+  border-color: $dos-dark-gray;
+
+  .card-header {
+    background-color: $dos-dark-blue;
+    color: $dos-white;
+    border-radius: 0;
+    border-bottom: 1px solid $dos-bright-cyan;
+
+    h1, h2, h3, h4, h5, h6 { color: $dos-white; }
+
+    a {
+      color: $dos-bright-cyan;
+      &:hover { color: $dos-yellow; }
+    }
+
+    // Icons use text-primary which would be invisible on the blue header
+    .text-primary {
+      color: $dos-bright-cyan !important; // LIGHTCYAN — visible on BLUE background
+    }
+  }
+
+  .card-footer {
+    background-color: $dos-dark-blue;
+    border-top: 1px solid $dos-dark-gray;
+  }
+}
+
+// Footer navigation bar
+#footer-navigation .fixed-bottom {
+  background-color: $dos-dark-blue !important;
+  border-top: 2px solid $dos-bright-cyan;
+  border-radius: 0;
+  * { color: $dos-white !important; }
+}
+
+// User profile comments
+.user-comments {
+  .comment {
+    background-color: $dos-black;
+    color: $dos-light-gray;
+    border-left: 3px solid $dos-dark-cyan;
+    border-radius: 0;
+  }
+}
+
+// bg-light / bg-dark — Bootstrap utility overrides for dark theme
+.bg-light {
+  background-color: $dos-dark-blue !important;
+  color: $dos-light-gray !important;
+}
+
+.bg-dark {
+  background-color: $dos-dark-blue !important;
+  color: $dos-white !important;
+}
+
+.border-light {
+  border-color: $dos-dark-gray !important;
+}
+
+.text-dark {
+  color: $dos-light-gray !important;
+}
+
+.text-secondary {
+  color: $dos-light-gray !important;
+}
+
+// card.bg-light — "about" panel on user profile page.
+// The card-body keeps $card-bg (black) so .card-text needs an explicit colour.
+.card.bg-light {
+  .card-body {
+    background-color: $dos-black;
+    color: $dos-light-gray;
+
+    .card-text, p, li, span {
+      color: $dos-light-gray;
+    }
+  }
+}
+
+// Alerts — DOS-style message boxes using CGA background/foreground pairs
+// Mirrors how Nexus 2 displayed system messages (solid colour, high contrast)
+.alert {
+  border-radius: 0;
+  border: none;
+  border-left: 4px solid;
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+
+  &.alert-success {
+    background-color: $dos-dark-green;   // GREEN
+    color: $dos-white;                   // WHITE
+    border-left-color: $dos-bright-green; // LIGHTGREEN
+  }
+
+  &.alert-danger {
+    background-color: $dos-dark-red;     // RED
+    color: $dos-white;                   // WHITE
+    border-left-color: $dos-bright-red;  // LIGHTRED
+  }
+
+  &.alert-warning {
+    background-color: $dos-brown;        // BROWN
+    color: $dos-yellow;                  // YELLOW
+    border-left-color: $dos-yellow;      // YELLOW
+  }
+
+  &.alert-info {
+    background-color: $dos-dark-blue;    // BLUE
+    color: $dos-bright-cyan;             // LIGHTCYAN
+    border-left-color: $dos-bright-cyan; // LIGHTCYAN
+  }
+
+  &.alert-primary {
+    background-color: $dos-dark-blue;    // BLUE
+    color: $dos-white;                   // WHITE
+    border-left-color: $dos-light-gray;  // LIGHTGRAY
+  }
+
+  &.alert-secondary {
+    background-color: $dos-dark-gray;    // DARKGRAY
+    color: $dos-light-gray;              // LIGHTGRAY
+    border-left-color: $dos-light-gray;  // LIGHTGRAY
+  }
+
+  a {
+    color: inherit;
+    text-decoration: underline;
+  }
+}
+
+// Strong — Nexus 2 highlights render as <strong>; show in yellow like DOS highlights
+strong {
+  color: $dos-yellow;
+  font-weight: bold;
+}
+
+// Code / pre — bright cyan terminal style
+code, pre, kbd {
+  font-family: 'VT323', 'Courier New', monospace;
+}
+
+pre {
+  color: $dos-bright-cyan;
+  background-color: $dos-black;
+  border: 1px solid $dos-dark-gray;
+  border-radius: 0;
+}
