@@ -94,6 +94,20 @@ class Nexus2Import extends Command
         Comment::whereIn('user_id', $importedUserIds)->update(['read' => true]);
         Mention::whereIn('user_id', $importedUserIds)->delete();
 
+        // Fix post counts: if a user was imported with totalPosts=0 but actually
+        // authored posts during the import, set their count from the posts table.
+        $this->info('Fixing post counts for imported users...');
+        DB::statement('
+            UPDATE users
+            SET totalPosts = (
+                SELECT COUNT(*) FROM posts WHERE posts.user_id = users.id AND posts.deleted_at IS NULL
+            )
+            WHERE users.id IN (
+                SELECT model_id FROM nexus2_imports WHERE type = \'user\'
+            )
+            AND users.totalPosts = 0
+        ');
+
         // Fire cache rebuild events once
         $this->info('Rebuilding caches...');
         event(new TreeCacheBecameDirty);
