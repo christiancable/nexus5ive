@@ -458,7 +458,7 @@ class Importer
             $nick = trim($post['nick'] ?? '');
             $userId = $nick !== '' ? $this->getOrCreateUser($nick) : $this->getOrCreateUser('unknown');
 
-            $postTime = $this->parseArticleTimestamp($post['timestamp']);
+            $postTime = $this->parseArticleTimestamp($post['timestamp']) ?? Carbon::createFromTimestamp(1);
             $postPopname = $this->cleanText($post['popname']);
             $postSubject = $this->cleanText($post['subject']);
             $postBody = $this->cleanText($post['body']) ?? '';
