@@ -75,6 +75,9 @@ class Nexus2Import extends Command
             });
         } catch (\Exception $e) {
             $this->error("Import failed: {$e->getMessage()}");
+            if ($importer->getCurrentFile()) {
+                $this->error("While processing: {$importer->getCurrentFile()}");
+            }
             $this->line($e->getTraceAsString());
 
             return self::FAILURE;

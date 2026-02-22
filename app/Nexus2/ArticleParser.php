@@ -23,6 +23,13 @@ class ArticleParser
         }
 
         $this->content = file_get_contents($filePath);
+
+        if ($this->isBinary($this->content)) {
+            throw new RuntimeException("File appears to be binary: {$filePath}");
+        }
+
+        // Strip null bytes — legacy text files occasionally contain C-string padding
+        $this->content = str_replace("\x00", '', $this->content);
     }
 
     public function parse(): array
@@ -52,7 +59,19 @@ class ArticleParser
                 continue;
             }
 
-            if ($currentPost !== null && str_starts_with($line, self::MARKER_FROM)) {
+            if (str_starts_with($line, self::MARKER_FROM)) {
+                // A From marker without a preceding timestamp marker means the first
+                // post was written without a timestamp (older article format).
+                if ($currentPost === null) {
+                    $currentPost = [
+                        'timestamp' => null,
+                        'nick' => null,
+                        'popname' => null,
+                        'subject' => null,
+                        'body' => [],
+                    ];
+                }
+
                 $from = trim(substr($line, 2));
                 $this->parseFrom($from, $currentPost);
 
@@ -83,6 +102,39 @@ class ArticleParser
             'preamble' => $this->trimBody($preamble),
             'posts' => $posts,
         ];
+    }
+
+    /**
+     * Detect known binary file formats by magic bytes.
+     */
+    private function isBinary(string $content): bool
+    {
+        // ZIP / JAR / EPUB (PK\x03\x04)
+        if (str_starts_with($content, "PK\x03\x04")) {
+            return true;
+        }
+
+        // DOS/Windows EXE or COM (MZ header)
+        if (str_starts_with($content, 'MZ')) {
+            return true;
+        }
+
+        // gzip (\x1f\x8b)
+        if (str_starts_with($content, "\x1f\x8b")) {
+            return true;
+        }
+
+        // LZH archive (-lh)
+        if (strlen($content) >= 5 && substr($content, 2, 3) === '-lh') {
+            return true;
+        }
+
+        // ARJ archive (\x60\xea)
+        if (str_starts_with($content, "\x60\xea")) {
+            return true;
+        }
+
+        return false;
     }
 
     /**

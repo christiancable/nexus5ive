@@ -54,6 +54,8 @@ class Importer
     /** @var array<string, true> legacy keys already seen (for dry-run dedup) */
     private array $visited = [];
 
+    private string $currentFile = '';
+
     public function __construct(Command $command, string $bbsDir, bool $dryRun = false, ?int $parentSectionId = null, bool $mergeExistingUsers = false, int $privLevel = 100)
     {
         $this->command = $command;
@@ -117,6 +119,7 @@ class Importer
             }
 
             try {
+                $this->currentFile = $udbPath;
                 $parser = new UdbParser($udbPath);
                 $data = $parser->parse();
             } catch (\RuntimeException $e) {
@@ -227,6 +230,7 @@ class Importer
     public function importSections(): void
     {
         $iniPath = $this->bbsDir.'/ONSTUFF/NEXUS.INI';
+        $this->currentFile = $iniPath;
         $ini = file_get_contents($iniPath);
 
         $mainMenuPath = null;
@@ -277,6 +281,7 @@ class Importer
         $this->visited[$legacyKey] = true;
 
         try {
+            $this->currentFile = $mnuPath;
             $parser = new MnuParser($mnuPath);
             $data = $parser->parse($this->privLevel);
         } catch (\RuntimeException $e) {
@@ -317,6 +322,7 @@ class Importer
     private function processMenuItems(string $mnuPath, ?int $sectionId): void
     {
         try {
+            $this->currentFile = $mnuPath;
             $parser = new MnuParser($mnuPath);
             $data = $parser->parse($this->privLevel);
         } catch (\RuntimeException $e) {
@@ -369,6 +375,7 @@ class Importer
         }
 
         try {
+            $this->currentFile = $articlePath;
             $parser = new ArticleParser($articlePath);
             $data = $parser->parse();
         } catch (\RuntimeException $e) {
@@ -482,6 +489,7 @@ class Importer
                 continue;
             }
 
+            $this->currentFile = $commentsPath;
             $content = trim(file_get_contents($commentsPath));
             if ($content === '') {
                 continue;
@@ -787,6 +795,11 @@ class Importer
         $text = trim($text);
 
         return $text !== '' ? $text : null;
+    }
+
+    public function getCurrentFile(): string
+    {
+        return $this->currentFile;
     }
 
     public function getCounts(): array
