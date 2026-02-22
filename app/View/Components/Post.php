@@ -53,7 +53,7 @@ class Post extends Component
 
         // if we are anonymous them we want to see fuzzy times
         if ($anonymous) {
-            $this->formattedTime = $post->time->diffForHumans();
+            $this->formattedTime = $post->time?->diffForHumans() ?? 'Unknown';
         }
 
         $this->content = \App\Helpers\NxCodeHelper::nxDecode($post->text);
