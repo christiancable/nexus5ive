@@ -204,8 +204,8 @@ class Importer
             $user = new User;
             $user->username = $username;
             $user->name = $realName;
-            $emailStub = trim($data['UserID']) !== '' ? $data['UserID'] : $username;
-            $user->email = strtolower($emailStub).'@legacy.nexus2';
+            $emailBase = strtolower(trim($data['UserID']) !== '' ? $data['UserID'] : $username);
+            $user->email = $this->uniqueLegacyEmail($emailBase);
             $user->password = Hash::make(Str::random(64));
             $user->email_verified_at = now();
             $user->popname = $popname;
@@ -782,6 +782,28 @@ class Importer
         } catch (\Exception $e) {
             return null;
         }
+    }
+
+    /**
+     * Return a unique @legacy.nexus2 email address for the given base stub.
+     *
+     * Tries {base}@legacy.nexus2, then {base}1@legacy.nexus2, {base}2@legacy.nexus2, …
+     */
+    private function uniqueLegacyEmail(string $base): string
+    {
+        $candidate = $base.'@legacy.nexus2';
+
+        if (! User::where('email', $candidate)->exists()) {
+            return $candidate;
+        }
+
+        $n = 1;
+        do {
+            $candidate = $base.$n.'@legacy.nexus2';
+            $n++;
+        } while (User::where('email', $candidate)->exists());
+
+        return $candidate;
     }
 
     /**
