@@ -414,7 +414,7 @@ class Importer
         $topic->title = $title;
         $topic->intro = '';
         $topic->section_id = $sectionId;
-        $topic->readonly = $textOnly || str_contains($flags, 'R');
+        $topic->readonly = true;
         $topic->secret = str_contains($flags, 'A');
         $topic->weight = $weight;
         $topic->save();
