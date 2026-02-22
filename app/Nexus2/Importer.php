@@ -396,12 +396,11 @@ class Importer
         $flags = strtoupper($item['flags'] ?? '');
         $posts = $data['posts'];
 
-        // A text-only article (preamble but no posts) becomes a readonly topic
-        // with the preamble as its single synthesised post.
+        // A text-only article has a preamble but no posts.
         $textOnly = count($posts) === 0 && $preamble !== null;
 
         if ($this->dryRun) {
-            $postCount = $textOnly ? 1 : count($posts);
+            $postCount = ($preamble !== null ? 1 : 0) + count($posts);
             $label = $textOnly ? 'text-only' : "{$postCount} posts";
             $this->command->line("  [dry-run] Would import topic: {$title} ({$label})");
             $this->topicsImported++;
@@ -412,7 +411,7 @@ class Importer
 
         $topic = new Topic;
         $topic->title = $title;
-        $topic->intro = $textOnly ? '' : ($preamble ?? '');
+        $topic->intro = '';
         $topic->section_id = $sectionId;
         $topic->readonly = $textOnly || str_contains($flags, 'R');
         $topic->secret = str_contains($flags, 'A');
@@ -422,8 +421,10 @@ class Importer
         Nexus2Import::track('topic', $topicKey, $topic->id);
         $this->topicsImported++;
 
-        if ($textOnly) {
-            $postKey = "post:{$relativeMnu}:{$item['file']}:text";
+        // Any preamble (whether or not there are also regular posts) becomes a
+        // synthetic first post attributed to the SysOp user at Unix epoch+1.
+        if ($preamble !== null) {
+            $postKey = "post:{$relativeMnu}:{$item['file']}:preamble";
 
             if (! Nexus2Import::exists('post', $postKey)) {
                 $newPost = new Post;
@@ -439,7 +440,9 @@ class Importer
                 Nexus2Import::track('post', $postKey, $newPost->id);
                 $this->postsImported++;
             }
+        }
 
+        if ($textOnly) {
             return;
         }
 

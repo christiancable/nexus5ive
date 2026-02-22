@@ -251,6 +251,38 @@ class ImporterTest extends TestCase
         $this->assertStringContains('Welcome to this section', $posts->first()->text);
     }
 
+    public function test_preamble_imported_as_first_post_not_topic_intro(): void
+    {
+        $command = $this->createMockCommand();
+        $importer = new Importer($command, $this->bbsDir);
+
+        $importer->importUsers($this->bbsDir.'/USR');
+        $importer->importSections();
+
+        $topic = Topic::where('title', 'With Preamble')->first();
+        $this->assertNotNull($topic);
+
+        // Preamble must not be stored in intro
+        $this->assertEquals('', $topic->intro);
+
+        $posts = Post::where('topic_id', $topic->id)->orderBy('id')->get();
+
+        // Two posts: the synthetic preamble post and the real post
+        $this->assertCount(2, $posts);
+
+        // First post is the preamble, attributed to SysOp at epoch+1
+        $preamblePost = $posts->first();
+        $this->assertStringContainsString('This is the preamble text', $preamblePost->text);
+        $this->assertEquals(1, $preamblePost->time->timestamp);
+        $sysop = User::where('username', 'SysOp')->first();
+        $this->assertEquals($sysop->id, $preamblePost->user_id);
+
+        // Second post is the real post with its original author and timestamp
+        $realPost = $posts->last();
+        $this->assertEquals('A Real Post', $realPost->title);
+        $this->assertStringContainsString('This is actual post content', $realPost->text);
+    }
+
     public function test_creates_placeholder_users_for_unknown_nicks(): void
     {
         $command = $this->createMockCommand();
@@ -387,6 +419,7 @@ class ImporterTest extends TestCase
             'H Sub Section',
             'a 0 100 d discuss * Discussion',
             'a 0 100 o infopage * Info Page',
+            'a 0 100 w withpreamble * With Preamble',
         ]));
 
         // Create article files with ESC markers
@@ -413,6 +446,15 @@ class ImporterTest extends TestCase
         // Text-only article — preamble but no ESC-delimited posts
         file_put_contents($this->bbsDir.'/SECTIONS/SUB/INFOPAGE',
             "Welcome to this section.\nPlease read the rules.");
+
+        // Article with both a preamble and posts
+        file_put_contents($this->bbsDir.'/SECTIONS/SUB/WITHPREAMBLE', implode("\n", [
+            'This is the preamble text.',
+            "{$esc}\x01Fri Jun 06 08:00:00 1997",
+            "{$esc}\x02Friendly Person) TestUser",
+            "{$esc}\x03A Real Post",
+            'This is actual post content.',
+        ]));
 
         // Private submenu — only reachable via the read=128 folder item
         file_put_contents($this->bbsDir.'/SECTIONS/PRIVSUB/PRIVSUB.MNU', implode("\n", [
