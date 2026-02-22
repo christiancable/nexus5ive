@@ -204,7 +204,8 @@ class Importer
             $user = new User;
             $user->username = $username;
             $user->name = $realName;
-            $user->email = strtolower($username).'@legacy.nexus2';
+            $emailStub = trim($data['UserID']) !== '' ? $data['UserID'] : $username;
+            $user->email = strtolower($emailStub).'@legacy.nexus2';
             $user->password = Hash::make(Str::random(64));
             $user->email_verified_at = now();
             $user->popname = $popname;

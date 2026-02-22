@@ -59,7 +59,7 @@ class ImporterTest extends TestCase
 
         $importer->importUsers($this->bbsDir.'/USR');
 
-        $user = User::where('email', 'testuser@legacy.nexus2')->first();
+        $user = User::where('email', 't.user1@legacy.nexus2')->first();
         $this->assertNotNull($user);
         $this->assertEquals('TestUser', $user->username);
         $this->assertEquals('Test User', $user->name);
@@ -76,7 +76,7 @@ class ImporterTest extends TestCase
 
         $importer->importUsers($this->bbsDir.'/USR');
 
-        $sysop = User::where('email', 'sysopnick@legacy.nexus2')->first();
+        $sysop = User::where('email', 's.admin1@legacy.nexus2')->first();
         $this->assertNotNull($sysop);
         $this->assertTrue($sysop->administrator);
     }
@@ -88,7 +88,7 @@ class ImporterTest extends TestCase
 
         $importer->importUsers($this->bbsDir.'/USR');
 
-        $sysop = User::where('email', 'sysopnick@legacy.nexus2')->first();
+        $sysop = User::where('email', 's.admin1@legacy.nexus2')->first();
         $this->assertEquals('The Boss', $sysop->popname);
     }
 
@@ -99,7 +99,7 @@ class ImporterTest extends TestCase
 
         $importer->importUsers($this->bbsDir.'/USR');
 
-        $user = User::where('email', 'testuser@legacy.nexus2')->first();
+        $user = User::where('email', 't.user1@legacy.nexus2')->first();
         $this->assertEquals('Hello I am a test user', $user->about);
     }
 
@@ -112,9 +112,9 @@ class ImporterTest extends TestCase
 
         $importer->importUsers($this->bbsDir.'/USR');
 
-        $imported = User::where('email', 'testuser_legacy@legacy.nexus2')->first();
+        $imported = User::where('username', 'TestUser_legacy')->first();
         $this->assertNotNull($imported);
-        $this->assertEquals('TestUser_legacy', $imported->username);
+        $this->assertEquals('t.user1@legacy.nexus2', $imported->email);
     }
 
     public function test_merge_existing_users_maps_to_existing_account(): void
@@ -323,7 +323,7 @@ class ImporterTest extends TestCase
         $importer->importSections();
 
         $main = Section::where('title', 'Main Menu')->first();
-        $testUser = User::where('email', 'testuser@legacy.nexus2')->first();
+        $testUser = User::where('email', 't.user1@legacy.nexus2')->first();
 
         $this->assertEquals($testUser->id, $main->user_id);
     }
