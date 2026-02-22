@@ -88,6 +88,46 @@ class NxTextTest extends TestCase
         ];
     }
 
+    #[DataProvider('toMarkdownProvider')]
+    public function testToMarkdown(string $input, string $expected): void
+    {
+        $this->assertEquals($expected, NxText::toMarkdown($input));
+    }
+
+    public static function toMarkdownProvider(): array
+    {
+        return [
+            'plain text unchanged' => [
+                'Hello world',
+                'Hello world',
+            ],
+            'single char highlight with @' => [
+                '@Hello',
+                '**H**ello',
+            ],
+            'multiple @ highlights' => [
+                '@Do@H',
+                '**D**o**H**',
+            ],
+            'phrase highlight with braces' => [
+                '{About the BBS}',
+                '**About the BBS**',
+            ],
+            'mixed @ and brace highlights' => [
+                '@General {Noticeboard}',
+                '**G**eneral **Noticeboard**',
+            ],
+            'text around highlights' => [
+                'Welcome to {the BBS} today',
+                'Welcome to **the BBS** today',
+            ],
+            'unclosed brace closed at end of line' => [
+                '{unclosed text',
+                '**unclosed text**',
+            ],
+        ];
+    }
+
     public function testUnclosedBraceClosedAtEndOfLine(): void
     {
         $input = "{unclosed on line one\nsecond line";

@@ -391,7 +391,7 @@ class Importer
 
         $title = $this->cleanText($item['info']) ?? $item['file'];
 
-        $preamble = $this->cleanText($data['preamble']);
+        $preamble = $this->cleanText($data['preamble'], markdown: true);
 
         $flags = strtoupper($item['flags'] ?? '');
         $posts = $data['posts'];
@@ -461,7 +461,7 @@ class Importer
             $postTime = $this->parseArticleTimestamp($post['timestamp']) ?? Carbon::createFromTimestamp(1);
             $postPopname = $this->cleanText($post['popname']);
             $postSubject = $this->cleanText($post['subject']);
-            $postBody = $this->cleanText($post['body']) ?? '';
+            $postBody = $this->cleanText($post['body'], markdown: true) ?? '';
 
             $newPost = new Post;
             $newPost->title = $postSubject;
@@ -784,15 +784,18 @@ class Importer
     }
 
     /**
-     * Strip Nexus 2 highlights and non-UTF-8 bytes, returning null if nothing remains.
+     * Process Nexus 2 text for storage, returning null if nothing remains.
+     *
+     * When $markdown is true, highlights are converted to Markdown bold (**text**)
+     * rather than stripped — use this for post body text.
      */
-    private function cleanText(?string $text): ?string
+    private function cleanText(?string $text, bool $markdown = false): ?string
     {
         if ($text === null || trim($text) === '') {
             return null;
         }
 
-        $text = NxText::stripHighlights($text);
+        $text = $markdown ? NxText::toMarkdown($text) : NxText::stripHighlights($text);
         // Convert CP437 (DOS) to UTF-8 — handles box-drawing chars etc.
         if (! mb_check_encoding($text, 'UTF-8')) {
             $converted = @iconv('CP437', 'UTF-8//IGNORE', $text);

@@ -18,6 +18,17 @@ class NxText
     }
 
     /**
+     * Convert Nexus 2 highlight markup to Markdown bold.
+     *
+     * @x followed by a single character → **x**
+     * {text} → **text**
+     */
+    public static function toMarkdown(string $text): string
+    {
+        return self::processHighlights($text, '**', '**');
+    }
+
+    /**
      * Convert Nexus 2 highlight markup to Symfony console colour tags.
      */
     public static function toConsole(string $text): string
