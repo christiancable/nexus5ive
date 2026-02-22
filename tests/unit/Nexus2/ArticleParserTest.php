@@ -16,7 +16,7 @@ class ArticleParserTest extends TestCase
         $this->fixturesPath = __DIR__.'/fixtures';
     }
 
-    public function testParseReturnsExpectedStructure(): void
+    public function test_parse_returns_expected_structure(): void
     {
         $parser = new ArticleParser($this->fixturesPath.'/test_article.dat');
         $data = $parser->parse();
@@ -25,7 +25,7 @@ class ArticleParserTest extends TestCase
         $this->assertArrayHasKey('posts', $data);
     }
 
-    public function testParsesPreamble(): void
+    public function test_parses_preamble(): void
     {
         $parser = new ArticleParser($this->fixturesPath.'/test_article.dat');
         $data = $parser->parse();
@@ -34,7 +34,7 @@ class ArticleParserTest extends TestCase
         $this->assertStringContainsString('It can span multiple lines.', $data['preamble']);
     }
 
-    public function testParsesCorrectNumberOfPosts(): void
+    public function test_parses_correct_number_of_posts(): void
     {
         $parser = new ArticleParser($this->fixturesPath.'/test_article.dat');
         $data = $parser->parse();
@@ -42,7 +42,7 @@ class ArticleParserTest extends TestCase
         $this->assertCount(3, $data['posts']);
     }
 
-    public function testParsesTimestamp(): void
+    public function test_parses_timestamp(): void
     {
         $parser = new ArticleParser($this->fixturesPath.'/test_article.dat');
         $data = $parser->parse();
@@ -52,7 +52,7 @@ class ArticleParserTest extends TestCase
         $this->assertEquals('Wed Jun 04 15:30:00 1997', $data['posts'][2]['timestamp']);
     }
 
-    public function testParsesFromWithPopname(): void
+    public function test_parses_from_with_popname(): void
     {
         $parser = new ArticleParser($this->fixturesPath.'/test_article.dat');
         $data = $parser->parse();
@@ -61,7 +61,7 @@ class ArticleParserTest extends TestCase
         $this->assertEquals('{The cool one}', $data['posts'][0]['popname']);
     }
 
-    public function testParsesFromWithoutPopname(): void
+    public function test_parses_from_without_popname(): void
     {
         $parser = new ArticleParser($this->fixturesPath.'/test_article.dat');
         $data = $parser->parse();
@@ -70,7 +70,7 @@ class ArticleParserTest extends TestCase
         $this->assertNull($data['posts'][1]['popname']);
     }
 
-    public function testParsesFromWithHighlightMarkup(): void
+    public function test_parses_from_with_highlight_markup(): void
     {
         $parser = new ArticleParser($this->fixturesPath.'/test_article.dat');
         $data = $parser->parse();
@@ -80,7 +80,7 @@ class ArticleParserTest extends TestCase
         $this->assertEquals('@Do@H @Do@H', $data['posts'][2]['popname']);
     }
 
-    public function testParsesSubject(): void
+    public function test_parses_subject(): void
     {
         $parser = new ArticleParser($this->fixturesPath.'/test_article.dat');
         $data = $parser->parse();
@@ -90,7 +90,7 @@ class ArticleParserTest extends TestCase
         $this->assertEquals('{Important} announcement', $data['posts'][2]['subject']);
     }
 
-    public function testParsesBody(): void
+    public function test_parses_body(): void
     {
         $parser = new ArticleParser($this->fixturesPath.'/test_article.dat');
         $data = $parser->parse();
@@ -99,7 +99,7 @@ class ArticleParserTest extends TestCase
         $this->assertStringContainsString('It has multiple lines.', $data['posts'][0]['body']);
     }
 
-    public function testBodyPreservesRawHighlightMarkup(): void
+    public function test_body_preserves_raw_highlight_markup(): void
     {
         $parser = new ArticleParser($this->fixturesPath.'/test_article.dat');
         $data = $parser->parse();
@@ -108,7 +108,7 @@ class ArticleParserTest extends TestCase
         $this->assertStringContainsString('{this is a phrase}', $data['posts'][2]['body']);
     }
 
-    public function testTrimsLeadingAndTrailingBlankLinesFromBody(): void
+    public function test_trims_leading_and_trailing_blank_lines_from_body(): void
     {
         $parser = new ArticleParser($this->fixturesPath.'/test_article.dat');
         $data = $parser->parse();
@@ -124,7 +124,7 @@ class ArticleParserTest extends TestCase
         }
     }
 
-    public function testMinimalArticleNoPreamble(): void
+    public function test_minimal_article_no_preamble(): void
     {
         $parser = new ArticleParser($this->fixturesPath.'/test_article_minimal.dat');
         $data = $parser->parse();
@@ -136,7 +136,7 @@ class ArticleParserTest extends TestCase
         $this->assertEquals('Single post body.', $data['posts'][0]['body']);
     }
 
-    public function testPreambleOnlyNoPosts(): void
+    public function test_preamble_only_no_posts(): void
     {
         $parser = new ArticleParser($this->fixturesPath.'/test_article_preamble_only.dat');
         $data = $parser->parse();
@@ -145,7 +145,7 @@ class ArticleParserTest extends TestCase
         $this->assertCount(0, $data['posts']);
     }
 
-    public function testThrowsExceptionForMissingFile(): void
+    public function test_throws_exception_for_missing_file(): void
     {
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('File not found');

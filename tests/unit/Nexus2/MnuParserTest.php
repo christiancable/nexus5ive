@@ -16,7 +16,7 @@ class MnuParserTest extends TestCase
         $this->fixturesPath = __DIR__.'/fixtures';
     }
 
-    public function testParseReturnsExpectedStructure(): void
+    public function test_parse_returns_expected_structure(): void
     {
         $parser = new MnuParser($this->fixturesPath.'/test_menu.mnu');
         $data = $parser->parse();
@@ -27,7 +27,7 @@ class MnuParserTest extends TestCase
         $this->assertArrayHasKey('items', $data);
     }
 
-    public function testParsesHeader(): void
+    public function test_parses_header(): void
     {
         $parser = new MnuParser($this->fixturesPath.'/test_menu.mnu');
         $data = $parser->parse();
@@ -35,7 +35,7 @@ class MnuParserTest extends TestCase
         $this->assertEquals('@Test @Menu', $data['header']);
     }
 
-    public function testParsesOwners(): void
+    public function test_parses_owners(): void
     {
         $parser = new MnuParser($this->fixturesPath.'/test_menu.mnu');
         $data = $parser->parse();
@@ -43,7 +43,7 @@ class MnuParserTest extends TestCase
         $this->assertEquals(['fraggle', 'valis'], $data['owners']);
     }
 
-    public function testParsesDirectives(): void
+    public function test_parses_directives(): void
     {
         $parser = new MnuParser($this->fixturesPath.'/test_menu.mnu');
         $data = $parser->parse();
@@ -56,7 +56,7 @@ class MnuParserTest extends TestCase
         $this->assertContains('pagebreak', $commands);
     }
 
-    public function testParsesArticleItems(): void
+    public function test_parses_article_items(): void
     {
         $parser = new MnuParser($this->fixturesPath.'/test_menu.mnu');
         $data = $parser->parse();
@@ -75,7 +75,7 @@ class MnuParserTest extends TestCase
         $this->assertEquals('Whats On', $articles[0]['info']);
     }
 
-    public function testParsesArticleWithHigherPrivileges(): void
+    public function test_parses_article_with_higher_privileges(): void
     {
         $parser = new MnuParser($this->fixturesPath.'/test_menu.mnu');
         $data = $parser->parse();
@@ -93,7 +93,7 @@ class MnuParserTest extends TestCase
         $this->assertEquals('{Secret File}', $secret[0]['info']);
     }
 
-    public function testParsesFolderItems(): void
+    public function test_parses_folder_items(): void
     {
         $parser = new MnuParser($this->fixturesPath.'/test_menu.mnu');
         $data = $parser->parse();
@@ -109,7 +109,7 @@ class MnuParserTest extends TestCase
         $this->assertEquals('{Sub Menu}', $folders[0]['info']);
     }
 
-    public function testParsesCommentItems(): void
+    public function test_parses_comment_items(): void
     {
         $parser = new MnuParser($this->fixturesPath.'/test_menu.mnu');
         $data = $parser->parse();
@@ -122,7 +122,7 @@ class MnuParserTest extends TestCase
         $this->assertEquals('Just a comment', $comments[0]['info']);
     }
 
-    public function testParsesMcommentItems(): void
+    public function test_parses_mcomment_items(): void
     {
         $parser = new MnuParser($this->fixturesPath.'/test_menu.mnu');
         $data = $parser->parse();
@@ -134,7 +134,7 @@ class MnuParserTest extends TestCase
         $this->assertEquals('{Welcome to the test menu}', $mcomments[0]['info']);
     }
 
-    public function testSkipsCommentLines(): void
+    public function test_skips_comment_lines(): void
     {
         $parser = new MnuParser($this->fixturesPath.'/test_menu.mnu');
         $data = $parser->parse();
@@ -148,7 +148,7 @@ class MnuParserTest extends TestCase
         }
     }
 
-    public function testSkipsBlankLines(): void
+    public function test_skips_blank_lines(): void
     {
         $tmpFile = tempnam(sys_get_temp_dir(), 'mnu');
         file_put_contents($tmpFile, "\n\nH Test\n\na 0 100 x test * Info\n\n");
@@ -164,7 +164,7 @@ class MnuParserTest extends TestCase
         }
     }
 
-    public function testDotPrefixedItemNotTreatedAsDirective(): void
+    public function test_dot_prefixed_item_not_treated_as_directive(): void
     {
         $tmpFile = tempnam(sys_get_temp_dir(), 'mnu');
         file_put_contents($tmpFile, ".a 180 180 d diary *u A dot-prefixed article\n");
@@ -183,7 +183,7 @@ class MnuParserTest extends TestCase
         }
     }
 
-    public function testDotIfNotTreatedAsInternalItem(): void
+    public function test_dot_if_not_treated_as_internal_item(): void
     {
         $tmpFile = tempnam(sys_get_temp_dir(), 'mnu');
         file_put_contents($tmpFile, ".if user fraggle\na 0 100 x test * Test\n.endif\n");
@@ -203,7 +203,7 @@ class MnuParserTest extends TestCase
         }
     }
 
-    public function testNullPrivLevelReturnsAllItems(): void
+    public function test_null_priv_level_returns_all_items(): void
     {
         $parser = new MnuParser($this->fixturesPath.'/test_menu.mnu');
         $data = $parser->parse();
@@ -213,7 +213,7 @@ class MnuParserTest extends TestCase
         $this->assertNotEmpty($sysopItems);
     }
 
-    public function testPrivLevelFiltersHighReadItems(): void
+    public function test_priv_level_filters_high_read_items(): void
     {
         $parser = new MnuParser($this->fixturesPath.'/test_menu.mnu');
         $data = $parser->parse(100);
@@ -225,7 +225,7 @@ class MnuParserTest extends TestCase
         }
     }
 
-    public function testPrivLevelZeroShowsOnlyGuestItems(): void
+    public function test_priv_level_zero_shows_only_guest_items(): void
     {
         $parser = new MnuParser($this->fixturesPath.'/test_menu.mnu');
         $data = $parser->parse(0);
@@ -236,7 +236,7 @@ class MnuParserTest extends TestCase
         }
     }
 
-    public function testPrivLevel255ShowsAllItems(): void
+    public function test_priv_level255_shows_all_items(): void
     {
         $parser = new MnuParser($this->fixturesPath.'/test_menu.mnu');
         $allData = $parser->parse();
@@ -247,7 +247,7 @@ class MnuParserTest extends TestCase
         $this->assertCount(count($allData['items']), $sysopData['items']);
     }
 
-    public function testPrivLevelFiltersDotPrefixedItems(): void
+    public function test_priv_level_filters_dot_prefixed_items(): void
     {
         $tmpFile = tempnam(sys_get_temp_dir(), 'mnu');
         file_put_contents($tmpFile, ".a 180 180 d diary *u Secret diary\na 0 100 x public * Public\n");
@@ -263,7 +263,7 @@ class MnuParserTest extends TestCase
         }
     }
 
-    public function testThrowsExceptionForMissingFile(): void
+    public function test_throws_exception_for_missing_file(): void
     {
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('File not found');
@@ -275,7 +275,7 @@ class MnuParserTest extends TestCase
     // .if condition tests
     // -------------------------------------------------------------------------
 
-    public function testIfUserConditionExcludesItems(): void
+    public function test_if_user_condition_excludes_items(): void
     {
         $tmpFile = tempnam(sys_get_temp_dir(), 'mnu');
         file_put_contents($tmpFile, ".if user fraggle\na 0 100 x test * Test\n.endif\n");
@@ -291,7 +291,7 @@ class MnuParserTest extends TestCase
         }
     }
 
-    public function testIfUserListConditionExcludesItems(): void
+    public function test_if_user_list_condition_excludes_items(): void
     {
         $tmpFile = tempnam(sys_get_temp_dir(), 'mnu');
         file_put_contents($tmpFile, ".if user alice bob charlie\na 0 100 x test * Test\n.endif\n");
@@ -307,7 +307,7 @@ class MnuParserTest extends TestCase
         }
     }
 
-    public function testIfSysopConditionExcludesItems(): void
+    public function test_if_sysop_condition_excludes_items(): void
     {
         $tmpFile = tempnam(sys_get_temp_dir(), 'mnu');
         file_put_contents($tmpFile, ".if sysop\na 0 100 x test * Test\n.endif\n");
@@ -322,7 +322,7 @@ class MnuParserTest extends TestCase
         }
     }
 
-    public function testIfOwnerConditionExcludesItems(): void
+    public function test_if_owner_condition_excludes_items(): void
     {
         $tmpFile = tempnam(sys_get_temp_dir(), 'mnu');
         file_put_contents($tmpFile, ".if owner\na 0 100 x test * Test\n.endif\n");
@@ -337,7 +337,7 @@ class MnuParserTest extends TestCase
         }
     }
 
-    public function testIfNotUserIncludesItems(): void
+    public function test_if_not_user_includes_items(): void
     {
         $tmpFile = tempnam(sys_get_temp_dir(), 'mnu');
         file_put_contents($tmpFile, ".if not user fraggle\na 0 100 x test * Test\n.endif\n");
@@ -354,7 +354,7 @@ class MnuParserTest extends TestCase
         }
     }
 
-    public function testIfBangUserIncludesItems(): void
+    public function test_if_bang_user_includes_items(): void
     {
         $tmpFile = tempnam(sys_get_temp_dir(), 'mnu');
         // !user with no space between ! and keyword
@@ -371,7 +371,7 @@ class MnuParserTest extends TestCase
         }
     }
 
-    public function testIfNotUserListIncludesItems(): void
+    public function test_if_not_user_list_includes_items(): void
     {
         $tmpFile = tempnam(sys_get_temp_dir(), 'mnu');
         file_put_contents($tmpFile, ".if not user dummy easy_tiger jimi\nf 0 x \\sections\\buffy.mnu * Buffy\n.endif\n");
@@ -388,7 +388,7 @@ class MnuParserTest extends TestCase
         }
     }
 
-    public function testIfElseIncludesElseBranch(): void
+    public function test_if_else_includes_else_branch(): void
     {
         $tmpFile = tempnam(sys_get_temp_dir(), 'mnu');
         file_put_contents($tmpFile,
@@ -411,7 +411,7 @@ class MnuParserTest extends TestCase
         }
     }
 
-    public function testIfElseExcludesIfBranchWhenConditionFalse(): void
+    public function test_if_else_excludes_if_branch_when_condition_false(): void
     {
         $tmpFile = tempnam(sys_get_temp_dir(), 'mnu');
         file_put_contents($tmpFile,
@@ -433,7 +433,7 @@ class MnuParserTest extends TestCase
         }
     }
 
-    public function testNestedIfBothFalseExcludesItems(): void
+    public function test_nested_if_both_false_excludes_items(): void
     {
         $tmpFile = tempnam(sys_get_temp_dir(), 'mnu');
         file_put_contents($tmpFile,
@@ -454,7 +454,7 @@ class MnuParserTest extends TestCase
         }
     }
 
-    public function testNestedIfOuterFalseExcludesInnerItems(): void
+    public function test_nested_if_outer_false_excludes_inner_items(): void
     {
         $tmpFile = tempnam(sys_get_temp_dir(), 'mnu');
         file_put_contents($tmpFile,
@@ -479,7 +479,7 @@ class MnuParserTest extends TestCase
         }
     }
 
-    public function testIfFolderIsExcluded(): void
+    public function test_if_folder_is_excluded(): void
     {
         $tmpFile = tempnam(sys_get_temp_dir(), 'mnu');
         file_put_contents($tmpFile, ".if user fraggle\nf 0 x \\sections\\sub.mnu * Sub\n.endif\n");
@@ -494,7 +494,7 @@ class MnuParserTest extends TestCase
         }
     }
 
-    public function testItemsOutsideIfAreAlwaysIncluded(): void
+    public function test_items_outside_if_are_always_included(): void
     {
         $tmpFile = tempnam(sys_get_temp_dir(), 'mnu');
         file_put_contents($tmpFile,
@@ -519,7 +519,7 @@ class MnuParserTest extends TestCase
         }
     }
 
-    public function testNoscanPatternItemOutsideIfIsVisible(): void
+    public function test_noscan_pattern_item_outside_if_is_visible(): void
     {
         // Common Nexus 2 pattern: .if inside only sets .noscan, item itself is outside
         $tmpFile = tempnam(sys_get_temp_dir(), 'mnu');
@@ -545,7 +545,7 @@ class MnuParserTest extends TestCase
         }
     }
 
-    public function testIfConditionInFixtureExcludesHiddenItem(): void
+    public function test_if_condition_in_fixture_excludes_hidden_item(): void
     {
         // The main fixture has .if user fraggle valis wrapping the 'hidden' article
         $parser = new MnuParser($this->fixturesPath.'/test_menu.mnu');

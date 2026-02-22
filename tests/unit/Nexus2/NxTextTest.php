@@ -9,7 +9,7 @@ use Tests\TestCase;
 class NxTextTest extends TestCase
 {
     #[DataProvider('stripHighlightsProvider')]
-    public function testStripHighlights(string $input, string $expected): void
+    public function test_strip_highlights(string $input, string $expected): void
     {
         $this->assertEquals($expected, NxText::stripHighlights($input));
     }
@@ -61,7 +61,7 @@ class NxTextTest extends TestCase
     }
 
     #[DataProvider('toConsoleProvider')]
-    public function testToConsole(string $input, string $expected): void
+    public function test_to_console(string $input, string $expected): void
     {
         $this->assertEquals($expected, NxText::toConsole($input));
     }
@@ -75,7 +75,7 @@ class NxTextTest extends TestCase
             ],
             'single char highlight' => [
                 '@Hello',
-                '<fg=yellow>H</>' . 'ello',
+                '<fg=yellow>H</>'.'ello',
             ],
             'phrase highlight' => [
                 '{About the BBS}',
@@ -89,7 +89,7 @@ class NxTextTest extends TestCase
     }
 
     #[DataProvider('toMarkdownProvider')]
-    public function testToMarkdown(string $input, string $expected): void
+    public function test_to_markdown(string $input, string $expected): void
     {
         $this->assertEquals($expected, NxText::toMarkdown($input));
     }
@@ -128,7 +128,7 @@ class NxTextTest extends TestCase
         ];
     }
 
-    public function testUnclosedBraceClosedAtEndOfLine(): void
+    public function test_unclosed_brace_closed_at_end_of_line(): void
     {
         $input = "{unclosed on line one\nsecond line";
         $result = NxText::toConsole($input);
@@ -139,7 +139,7 @@ class NxTextTest extends TestCase
         );
     }
 
-    public function testMultilineEachLineIndependent(): void
+    public function test_multiline_each_line_independent(): void
     {
         $input = "{highlighted line\nnormal line\n{another highlight}";
         $result = NxText::toConsole($input);
@@ -150,7 +150,7 @@ class NxTextTest extends TestCase
         $this->assertEquals('<fg=yellow>another highlight</>', $lines[2]);
     }
 
-    public function testStripHighlightsMultilineUnclosed(): void
+    public function test_strip_highlights_multiline_unclosed(): void
     {
         $input = "{open line\nnext line";
         $result = NxText::stripHighlights($input);

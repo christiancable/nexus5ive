@@ -16,7 +16,7 @@ class UdbParserTest extends TestCase
         $this->fixturesPath = __DIR__.'/fixtures';
     }
 
-    public function testParseReturnsExpectedStringFields(): void
+    public function test_parse_returns_expected_string_fields(): void
     {
         $parser = new UdbParser($this->fixturesPath.'/test_user.udb');
         $data = $parser->parse();
@@ -33,7 +33,7 @@ class UdbParserTest extends TestCase
         $this->assertEquals('HISTORY.3', $data['HistoryFile']);
     }
 
-    public function testParseReturnsExpectedNumericFields(): void
+    public function test_parse_returns_expected_numeric_fields(): void
     {
         $parser = new UdbParser($this->fixturesPath.'/test_user.udb');
         $data = $parser->parse();
@@ -45,7 +45,7 @@ class UdbParserTest extends TestCase
         $this->assertEquals(42, $data['UserNo']);
     }
 
-    public function testRightsLabelDecoding(): void
+    public function test_rights_label_decoding(): void
     {
         $parser = new UdbParser($this->fixturesPath.'/test_user.udb');
         $data = $parser->parse();
@@ -53,7 +53,7 @@ class UdbParserTest extends TestCase
         $this->assertEquals('Moderator', $data['RightsLabel']);
     }
 
-    public function testSysopRightsLabel(): void
+    public function test_sysop_rights_label(): void
     {
         $parser = new UdbParser($this->fixturesPath.'/test_sysop.udb');
         $data = $parser->parse();
@@ -62,7 +62,7 @@ class UdbParserTest extends TestCase
         $this->assertEquals(255, $data['Rights']);
     }
 
-    public function testFlagDecoding(): void
+    public function test_flag_decoding(): void
     {
         $parser = new UdbParser($this->fixturesPath.'/test_user.udb');
         $data = $parser->parse();
@@ -78,7 +78,7 @@ class UdbParserTest extends TestCase
         $this->assertEquals('No', $data['SeeAll']);
     }
 
-    public function testPrivilegeBitfieldDecoding(): void
+    public function test_privilege_bitfield_decoding(): void
     {
         $parser = new UdbParser($this->fixturesPath.'/test_user.udb');
         $data = $parser->parse();
@@ -88,7 +88,7 @@ class UdbParserTest extends TestCase
         $this->assertCount(2, $data['PrivLabels']);
     }
 
-    public function testSysopHasAllPrivileges(): void
+    public function test_sysop_has_all_privileges(): void
     {
         $parser = new UdbParser($this->fixturesPath.'/test_sysop.udb');
         $data = $parser->parse();
@@ -101,7 +101,7 @@ class UdbParserTest extends TestCase
         $this->assertCount(8, $data['PrivLabels']);
     }
 
-    public function testBanBitfieldDecoding(): void
+    public function test_ban_bitfield_decoding(): void
     {
         $parser = new UdbParser($this->fixturesPath.'/test_user.udb');
         $data = $parser->parse();
@@ -110,7 +110,7 @@ class UdbParserTest extends TestCase
         $this->assertCount(1, $data['BanLabels']);
     }
 
-    public function testMaxLoginsField(): void
+    public function test_max_logins_field(): void
     {
         $parser = new UdbParser($this->fixturesPath.'/test_user.udb');
         $data = $parser->parse();
@@ -118,7 +118,7 @@ class UdbParserTest extends TestCase
         $this->assertEquals(3, $data['MaxLogins']);
     }
 
-    public function testSeeAllFlag(): void
+    public function test_see_all_flag(): void
     {
         $parser = new UdbParser($this->fixturesPath.'/test_sysop.udb');
         $data = $parser->parse();
@@ -126,7 +126,7 @@ class UdbParserTest extends TestCase
         $this->assertEquals('Yes', $data['SeeAll']);
     }
 
-    public function testThrowsExceptionForMissingFile(): void
+    public function test_throws_exception_for_missing_file(): void
     {
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('File not found');
@@ -134,7 +134,7 @@ class UdbParserTest extends TestCase
         new UdbParser('/nonexistent/file.udb');
     }
 
-    public function testThrowsExceptionForWrongFileSize(): void
+    public function test_throws_exception_for_wrong_file_size(): void
     {
         $tmpFile = tempnam(sys_get_temp_dir(), 'udb');
         file_put_contents($tmpFile, str_repeat("\0", 100));

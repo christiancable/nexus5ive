@@ -4,11 +4,11 @@ namespace App\Console\Commands;
 
 use App\Events\TreeCacheBecameDirty;
 use App\Models\Comment;
+use App\Models\Mention;
 use App\Models\Post;
 use App\Models\Section;
 use App\Models\Topic;
 use App\Models\User;
-use App\Models\Mention;
 use App\Nexus2\Importer;
 use App\Nexus2\Nexus2Import as Nexus2ImportModel;
 use Illuminate\Console\Command;

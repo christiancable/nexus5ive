@@ -69,6 +69,7 @@ class MnuParser
                 if ($keyword === 'if') {
                     $condition = $this->evaluateCondition($parts[1] ?? '');
                     $ifStack[] = ['condition' => $condition, 'in_else' => false];
+
                     continue;
                 }
 
@@ -76,11 +77,13 @@ class MnuParser
                     if (! empty($ifStack)) {
                         $ifStack[count($ifStack) - 1]['in_else'] = true;
                     }
+
                     continue;
                 }
 
                 if ($keyword === 'endif') {
                     array_pop($ifStack);
+
                     continue;
                 }
 
@@ -246,8 +249,8 @@ class MnuParser
             $n = (int) ($tokens[$pos++] ?? 0);
             $userLevel = 100; // Default user privilege level
             $result = match ($relop) {
-                '<'  => $userLevel < $n,
-                '>'  => $userLevel > $n,
+                '<' => $userLevel < $n,
+                '>' => $userLevel > $n,
                 '<=' => $userLevel <= $n,
                 '>=' => $userLevel >= $n,
                 '==' => $userLevel == $n,

@@ -4,13 +4,12 @@
  * One-time script to generate a test UDB fixture (527 bytes).
  * Run: php tests/unit/Nexus2/fixtures/create_udb_fixture.php
  */
-
 $data = str_repeat("\0", 527);
 
 // Helper to write a null-terminated string at offset
 function writeString(string &$data, int $offset, int $size, string $value): void
 {
-    $bytes = substr($value . str_repeat("\0", $size), 0, $size);
+    $bytes = substr($value.str_repeat("\0", $size), 0, $size);
     for ($i = 0; $i < $size; $i++) {
         $data[$offset + $i] = $bytes[$i];
     }
@@ -79,8 +78,8 @@ writeUint8($data, 277 + 15, 0);  // FLAG_MAIL = 15: Enabled
 writeUint8($data, 277 + 19, 1);  // FLAG_VALIDATED = 19: Yes
 writeUint8($data, 277 + 20, 0);  // FLAG_SEEALL = 20: No
 
-file_put_contents(__DIR__ . '/test_user.udb', $data);
-echo "Created test_user.udb (" . strlen($data) . " bytes)\n";
+file_put_contents(__DIR__.'/test_user.udb', $data);
+echo 'Created test_user.udb ('.strlen($data)." bytes)\n";
 
 // Also create a sysop fixture
 $sysop = str_repeat("\0", 527);
@@ -109,5 +108,5 @@ writeUint8($sysop, 277 + 11, 1);  // TimeMode: 24h
 writeUint8($sysop, 277 + 19, 1);  // Validated: Yes
 writeUint8($sysop, 277 + 20, 1);  // SeeAll: Yes
 
-file_put_contents(__DIR__ . '/test_sysop.udb', $sysop);
-echo "Created test_sysop.udb (" . strlen($sysop) . " bytes)\n";
+file_put_contents(__DIR__.'/test_sysop.udb', $sysop);
+echo 'Created test_sysop.udb ('.strlen($sysop)." bytes)\n";
