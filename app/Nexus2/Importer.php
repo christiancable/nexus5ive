@@ -343,6 +343,11 @@ class Importer
                     $this->command->warn("  Submenu not found: {$item['file']} (from {$mnuPath})");
                 }
             } elseif ($item['type'] === 'article' && isset($item['file']) && ($sectionId !== null || $this->dryRun)) {
+                // Skip binary/downloadable items (B flag) — they are files for download, not text articles
+                if (str_contains(strtoupper($item['flags'] ?? ''), 'B')) {
+                    continue;
+                }
+
                 $this->importArticle($sectionId ?? 0, $item, $mnuDir, $mnuPath, $itemWeight);
                 $itemWeight++;
             }
