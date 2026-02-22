@@ -347,6 +347,128 @@ typedef struct _MENUSTRUCT {
 
 ---
 
+## Article Files
+
+Article files hold the content of a topic — an optional preamble and zero or more posts. There is no fixed extension; the filename is whatever the MNU `file` field specifies (e.g. `WHATSON`, `DIARY`, `discuss`).
+
+**Location**: Typically in the same directory as the referencing `.MNU` file, or at an absolute path from the BBS root (backslash-prefixed).
+
+### Structure
+
+An article file is a plain text file with **ESC-byte markers** to delimit post boundaries and metadata. Lines before the first marker form the **preamble**.
+
+```
+<preamble lines — plain text, no ESC markers>
+
+ESC 0x01 <timestamp>
+ESC 0x02 <popname>) <nick>
+ESC 0x03 <subject>
+<body lines>
+
+ESC 0x01 <timestamp>
+...
+```
+
+| Marker | Hex | Field | Format |
+|--------|-----|-------|--------|
+| `ESC 0x01` | `\x1b\x01` | Timestamp | `Mon Jun 02 14:13:11 1997` |
+| `ESC 0x02` | `\x1b\x02` | From | `PopName) Nick` |
+| `ESC 0x03` | `\x1b\x03` | Subject | Free text |
+
+### From Field Parsing
+
+The `ESC 0x02` line has the format `PopName) Nick`. The last `)` is used as the separator — everything before it is the popname, everything after (trimmed) is the nick. If there is no `)`, the entire value is treated as the nick.
+
+### Text-Only Articles
+
+Some article files contain only preamble text with no ESC-delimited posts. These represent static informational pages (rules, descriptions, notices). During import these become a **readonly topic** with the preamble as a single synthesised post.
+
+### Preamble
+
+Text before the first `ESC 0x01` marker. Displayed as an introduction to the topic. May be empty. May contain NxText highlight markup.
+
+### Timestamps
+
+Article timestamps are in C's `ctime()` format: `"Mon Jun 02 14:13:11 1997"`. Note:
+- Some timestamps in the real data are invalid future dates (e.g. Star Trek stardates entered by users). Any year beyond 2037 must be discarded because MySQL's `TIMESTAMP` type has a maximum of `2038-01-19 03:14:07` UTC.
+- Text-only synthesised posts that have no source timestamp are assigned `1970-01-01 00:00:01 UTC` (MySQL TIMESTAMP minimum) as a sentinel meaning "predates timestamps".
+
+---
+
+## Special Users
+
+### Dummy
+
+`Dummy` was a **system placeholder account** — a way to mark menus as ownerless when no real owner existed. It is not a real user and should not be imported as one. During import, any menu owned by `Dummy` is instead assigned to the `SysOp` system user.
+
+### SysOp (import-created)
+
+A synthetic Nexus5ive user created during import if it does not already exist:
+
+| Field | Value |
+|-------|-------|
+| `username` | `SysOp` |
+| `name` | `System Operator` |
+| `email` | `sysop@legacy.nexus2` |
+| `popname` | `++Beep Boop++` |
+| `location` | `Inside the computers` |
+| `about` | `This the BBS system account and not a real person` |
+
+Receives ownership of all `Dummy`-owned sections and is the author of all text-only article posts.
+
+---
+
+## Text Encoding
+
+Nexus 2 ran on DOS and stored text in **CP437** (OEM Code Page 437). This encoding includes box-drawing characters and other symbols in the upper 128 bytes that have no direct ASCII equivalent.
+
+When importing:
+1. Strip NxText highlight markup first.
+2. If the result is not valid UTF-8, convert from CP437 to UTF-8 using `iconv('CP437', 'UTF-8//IGNORE', $text)`.
+3. `mb_convert_encoding` does **not** support CP437 and will throw — use `iconv`.
+4. Non-convertible bytes are silently dropped (`//IGNORE`).
+
+Some fields (notably INFO.TXT files) may contain raw binary garbage bytes from uninitialised memory — these are handled by the same `//IGNORE` pass.
+
+---
+
+## Path Conventions
+
+MNU `file` fields for folder (submenu) items can use either absolute or relative paths, always written with **DOS backslashes**:
+
+| Path style | Example | Resolution |
+|------------|---------|------------|
+| Absolute (leading `\`) | `\sections\sub\menu.mnu` | Resolve from BBS root directory |
+| Relative (no leading `\`) | `amstrad\amst.mnu` | Resolve relative to the directory of the referencing MNU file |
+
+When resolving paths, apply **case-insensitive matching** at every path segment — the original files were on a case-insensitive DOS filesystem, so directory and file names may differ in case from what the MNU specifies.
+
+---
+
+## Date Formats
+
+### UDB Dates
+
+Created and LastOn dates in the UDB use the format:
+
+```
+Tue 31/10/75 at 14:12:32
+```
+
+To parse: strip the leading day name, replace ` at ` with a space, then parse as `d/m/y H:i:s`. Note the two-digit year — Carbon/PHP interprets years 00–68 as 2000–2068 and 69–99 as 1969–1999.
+
+### Article Timestamps
+
+Article post timestamps use C's `ctime()` format:
+
+```
+Mon Jun 02 14:13:11 1997
+```
+
+Parseable directly by `Carbon::parse()`. Clamp any year > 2037 to `null` due to MySQL TIMESTAMP limitations.
+
+---
+
 ## PHP Implementation
 
 | Class | File | Purpose |

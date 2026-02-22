@@ -200,6 +200,57 @@ class ImporterTest extends TestCase
         $this->assertStringContains('This is the first post', $first->text);
     }
 
+    public function test_priv_filters_high_read_article(): void
+    {
+        $command = $this->createMockCommand();
+        $importer = new Importer($command, $this->bbsDir, privLevel: 100);
+
+        $importer->importUsers($this->bbsDir.'/USR');
+        $importer->importSections();
+
+        // 'Sysop Only' has read=255, should not be imported at priv=100
+        $this->assertNull(Topic::where('title', 'Sysop Only')->first());
+
+        // 'Whats On' has read=0, should still be imported
+        $this->assertNotNull(Topic::where('title', 'Whats On')->first());
+    }
+
+    public function test_priv_filters_high_read_folder_and_its_contents(): void
+    {
+        $command = $this->createMockCommand();
+        $importer = new Importer($command, $this->bbsDir, privLevel: 100);
+
+        $importer->importUsers($this->bbsDir.'/USR');
+        $importer->importSections();
+
+        // 'Private Section' is linked via a read=128 folder — should not be imported at priv=100
+        $this->assertNull(Section::where('title', 'Private Section')->first());
+
+        // Its topic should also be absent
+        $this->assertNull(Topic::where('title', 'Secret Topic')->first());
+
+        // Normal sub section (read=0 folder) should still be imported
+        $this->assertNotNull(Section::where('title', 'Sub Section')->first());
+    }
+
+    public function test_text_only_article_becomes_readonly_topic_with_single_post(): void
+    {
+        $command = $this->createMockCommand();
+        $importer = new Importer($command, $this->bbsDir);
+
+        $importer->importUsers($this->bbsDir.'/USR');
+        $importer->importSections();
+
+        $topic = Topic::where('title', 'Info Page')->first();
+        $this->assertNotNull($topic);
+        $this->assertTrue((bool) $topic->readonly);
+        $this->assertEquals('', $topic->intro);
+
+        $posts = Post::where('topic_id', $topic->id)->get();
+        $this->assertCount(1, $posts);
+        $this->assertStringContains('Welcome to this section', $posts->first()->text);
+    }
+
     public function test_creates_placeholder_users_for_unknown_nicks(): void
     {
         $command = $this->createMockCommand();
@@ -300,6 +351,7 @@ class ImporterTest extends TestCase
         mkdir($this->bbsDir.'/USR/7', 0755, true);
         mkdir($this->bbsDir.'/SECTIONS/MENUS', 0755, true);
         mkdir($this->bbsDir.'/SECTIONS/SUB', 0755, true);
+        mkdir($this->bbsDir.'/SECTIONS/PRIVSUB', 0755, true);
         mkdir($this->bbsDir.'/ONSTUFF', 0755, true);
 
         // Copy UDB fixtures
@@ -318,11 +370,15 @@ class ImporterTest extends TestCase
             "MainMenu \\SECTIONS\\MENUS\\MAIN.MNU\n");
 
         // Create main menu
+        // - sysoponly has read=255 (above default priv of 100, article should be filtered)
+        // - privsubfolder has read=128 (above default priv of 100, entire submenu should be filtered)
         file_put_contents($this->bbsDir.'/SECTIONS/MENUS/MAIN.MNU', implode("\n", [
             '.owner TestUser',
             'H Main Menu',
             'a 0 100 o whatson * Whats On',
+            'a 255 255 s sysoponly * Sysop Only',
             'f 0 s \SECTIONS\SUB\SUB.MNU * Sub Section',
+            'f 128 p \SECTIONS\PRIVSUB\PRIVSUB.MNU * Private Section',
         ]));
 
         // Create sub menu
@@ -330,6 +386,7 @@ class ImporterTest extends TestCase
             '.owner SysopNick',
             'H Sub Section',
             'a 0 100 d discuss * Discussion',
+            'a 0 100 o infopage * Info Page',
         ]));
 
         // Create article files with ESC markers
@@ -351,6 +408,24 @@ class ImporterTest extends TestCase
             "{$esc}\x02The Boss) SysopNick",
             "{$esc}\x03Admin Note",
             'This is an admin post',
+        ]));
+
+        // Text-only article — preamble but no ESC-delimited posts
+        file_put_contents($this->bbsDir.'/SECTIONS/SUB/INFOPAGE',
+            "Welcome to this section.\nPlease read the rules.");
+
+        // Private submenu — only reachable via the read=128 folder item
+        file_put_contents($this->bbsDir.'/SECTIONS/PRIVSUB/PRIVSUB.MNU', implode("\n", [
+            '.owner SysopNick',
+            'H Private Section',
+            'a 0 100 s secret * Secret Topic',
+        ]));
+
+        file_put_contents($this->bbsDir.'/SECTIONS/PRIVSUB/SECRET', implode("\n", [
+            "{$esc}\x01Thu Jun 05 09:00:00 1997",
+            "{$esc}\x02The Boss) SysopNick",
+            "{$esc}\x03Secret Post",
+            'This post should not be imported at default priv',
         ]));
     }
 

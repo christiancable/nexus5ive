@@ -24,6 +24,8 @@ class Importer
 
     private bool $mergeExistingUsers;
 
+    private int $privLevel;
+
     /** @var array<string, int> lowercase nick => user_id */
     private array $nickMap = [];
 
@@ -52,13 +54,14 @@ class Importer
     /** @var array<string, true> legacy keys already seen (for dry-run dedup) */
     private array $visited = [];
 
-    public function __construct(Command $command, string $bbsDir, bool $dryRun = false, ?int $parentSectionId = null, bool $mergeExistingUsers = false)
+    public function __construct(Command $command, string $bbsDir, bool $dryRun = false, ?int $parentSectionId = null, bool $mergeExistingUsers = false, int $privLevel = 100)
     {
         $this->command = $command;
         $this->bbsDir = rtrim($bbsDir, '/');
         $this->dryRun = $dryRun;
         $this->parentSectionId = $parentSectionId;
         $this->mergeExistingUsers = $mergeExistingUsers;
+        $this->privLevel = $privLevel;
     }
 
     public function importAll(): void
@@ -275,7 +278,7 @@ class Importer
 
         try {
             $parser = new MnuParser($mnuPath);
-            $data = $parser->parse();
+            $data = $parser->parse($this->privLevel);
         } catch (\RuntimeException $e) {
             $this->command->warn("  Skipping menu {$mnuPath}: {$e->getMessage()}");
 
@@ -315,7 +318,7 @@ class Importer
     {
         try {
             $parser = new MnuParser($mnuPath);
-            $data = $parser->parse();
+            $data = $parser->parse($this->privLevel);
         } catch (\RuntimeException $e) {
             return;
         }
@@ -378,28 +381,55 @@ class Importer
 
         $preamble = $this->cleanText($data['preamble']);
 
+        $flags = strtoupper($item['flags'] ?? '');
+        $posts = $data['posts'];
+
+        // A text-only article (preamble but no posts) becomes a readonly topic
+        // with the preamble as its single synthesised post.
+        $textOnly = count($posts) === 0 && $preamble !== null;
+
         if ($this->dryRun) {
-            $postCount = count($data['posts']);
-            $this->command->line("  [dry-run] Would import topic: {$title} ({$postCount} posts)");
+            $postCount = $textOnly ? 1 : count($posts);
+            $label = $textOnly ? 'text-only' : "{$postCount} posts";
+            $this->command->line("  [dry-run] Would import topic: {$title} ({$label})");
             $this->topicsImported++;
             $this->postsImported += $postCount;
 
             return;
         }
 
-        $flags = strtoupper($item['flags'] ?? '');
-
         $topic = new Topic;
         $topic->title = $title;
-        $topic->intro = $preamble ?? '';
+        $topic->intro = $textOnly ? '' : ($preamble ?? '');
         $topic->section_id = $sectionId;
-        $topic->readonly = str_contains($flags, 'R');
+        $topic->readonly = $textOnly || str_contains($flags, 'R');
         $topic->secret = str_contains($flags, 'A');
         $topic->weight = $weight;
         $topic->save();
 
         Nexus2Import::track('topic', $topicKey, $topic->id);
         $this->topicsImported++;
+
+        if ($textOnly) {
+            $postKey = "post:{$relativeMnu}:{$item['file']}:text";
+
+            if (! Nexus2Import::exists('post', $postKey)) {
+                $newPost = new Post;
+                $newPost->title = null;
+                $newPost->text = $preamble;
+                $newPost->time = Carbon::createFromTimestamp(1);
+                $newPost->popname = null;
+                $newPost->html = false;
+                $newPost->user_id = $this->getOrCreateSysopUser();
+                $newPost->topic_id = $topic->id;
+                $newPost->save();
+
+                Nexus2Import::track('post', $postKey, $newPost->id);
+                $this->postsImported++;
+            }
+
+            return;
+        }
 
         foreach ($data['posts'] as $index => $post) {
             $postKey = "post:{$relativeMnu}:{$item['file']}:{$index}";
@@ -574,6 +604,10 @@ class Importer
     private function resolveOwner(array $owners): int
     {
         foreach ($owners as $nick) {
+            if (strtolower($nick) === 'dummy') {
+                return $this->getOrCreateSysopUser();
+            }
+
             $lower = strtolower($nick);
             if (isset($this->nickMap[$lower])) {
                 return $this->nickMap[$lower];
@@ -584,6 +618,35 @@ class Importer
         $admin = User::where('administrator', true)->first();
 
         return $admin ? $admin->id : 1;
+    }
+
+    private function getOrCreateSysopUser(): int
+    {
+        $key = 'user:sysop';
+        $cached = Nexus2Import::modelId('user', $key);
+        if ($cached) {
+            return $cached;
+        }
+
+        $user = User::whereRaw('LOWER(username) = ?', ['sysop'])->first();
+
+        if (! $user) {
+            $user = new User;
+            $user->username = 'SysOp';
+            $user->name = 'System Operator';
+            $user->email = 'sysop@legacy.nexus2';
+            $user->popname = '++Beep Boop++';
+            $user->location = 'Inside the computers';
+            $user->about = 'This the BBS system account and not a real person';
+            $user->password = Hash::make(Str::random(64));
+            $user->email_verified_at = now();
+            $user->theme_id = 1;
+            $user->save();
+        }
+
+        Nexus2Import::track('user', $key, $user->id);
+
+        return $user->id;
     }
 
     private function resolveBackslashPath(string $path): string

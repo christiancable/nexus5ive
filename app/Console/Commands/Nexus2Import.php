@@ -20,7 +20,8 @@ class Nexus2Import extends Command
                             {--dry-run : Show what would be imported without making changes}
                             {--path= : Base path to Nexus 2 BBS data (default: untracked/ucl_info/BBS)}
                             {--section= : Import legacy menus under this existing section ID}
-                            {--merge-existing-users : Map legacy nicks to existing accounts instead of creating _legacy duplicates}';
+                            {--merge-existing-users : Map legacy nicks to existing accounts instead of creating _legacy duplicates}
+                            {--priv=100 : Only import menu items with a read privilege level at or below this value}';
 
     protected $description = 'Import legacy Nexus 2 data into Nexus5ive';
 
@@ -30,6 +31,7 @@ class Nexus2Import extends Command
         $dryRun = (bool) $this->option('dry-run');
         $parentSectionId = $this->option('section') ? (int) $this->option('section') : null;
         $mergeExistingUsers = (bool) $this->option('merge-existing-users');
+        $privLevel = (int) $this->option('priv');
 
         if (! $this->validateDataPath($bbsDir)) {
             return self::FAILURE;
@@ -51,7 +53,7 @@ class Nexus2Import extends Command
             $this->info("Importing under section: {$section->title} (ID {$parentSectionId})");
         }
 
-        $importer = new Importer($this, $bbsDir, $dryRun, $parentSectionId, $mergeExistingUsers);
+        $importer = new Importer($this, $bbsDir, $dryRun, $parentSectionId, $mergeExistingUsers, $privLevel);
 
         if ($dryRun) {
             $importer->importAll();
