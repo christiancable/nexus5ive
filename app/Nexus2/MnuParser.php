@@ -31,6 +31,14 @@ class MnuParser
      * Parse the menu file.
      *
      * @param  int|null  $privLevel  If provided, items with read > privLevel are filtered out.
+     *
+     * Conditional blocks (.if/.else/.endif) are evaluated as an unprivileged anonymous user:
+     *   - user <names>  → false (import user is not any specific named user)
+     *   - sysop/owner/author → false
+     *   - hasprivs/exists/load/day/time → false (no special privs or runtime state)
+     *   - privlevel <relop> N → evaluated against default level 100
+     *   - NOT/! prefix negates the result
+     * Items and sub-menus inside inactive .if blocks are excluded from the result.
      */
     public function parse(?int $privLevel = null): array
     {
@@ -41,6 +49,10 @@ class MnuParser
             'items' => [],
         ];
 
+        // IF stack: each entry is ['condition' => bool, 'in_else' => bool]
+        // A block is active when condition XOR in_else is true for every level.
+        $ifStack = [];
+
         foreach ($this->lines as $lineNum => $line) {
             $line = rtrim($line);
 
@@ -49,8 +61,38 @@ class MnuParser
             }
 
             if ($line[0] === '.') {
-                $this->parseDirective($line, $result, $lineNum + 1, $privLevel);
+                $after = substr($line, 1);
+                $parts = preg_split('/\s+/', $after, 2);
+                $keyword = strtolower($parts[0] ?? '');
 
+                // .if / .else / .endif are control flow — not stored as directives
+                if ($keyword === 'if') {
+                    $condition = $this->evaluateCondition($parts[1] ?? '');
+                    $ifStack[] = ['condition' => $condition, 'in_else' => false];
+                    continue;
+                }
+
+                if ($keyword === 'else') {
+                    if (! empty($ifStack)) {
+                        $ifStack[count($ifStack) - 1]['in_else'] = true;
+                    }
+                    continue;
+                }
+
+                if ($keyword === 'endif') {
+                    array_pop($ifStack);
+                    continue;
+                }
+
+                // All other directives only take effect when the if-stack is active
+                if ($this->isIfActive($ifStack)) {
+                    $this->parseDirective($line, $result, $lineNum + 1, $privLevel);
+                }
+
+                continue;
+            }
+
+            if (! $this->isIfActive($ifStack)) {
                 continue;
             }
 
@@ -73,8 +115,152 @@ class MnuParser
         return $result;
     }
 
+    /**
+     * Returns true only when all levels of the if-stack are currently active.
+     *
+     * @param  array<int, array{condition: bool, in_else: bool}>  $ifStack
+     */
+    private function isIfActive(array $ifStack): bool
+    {
+        foreach ($ifStack as $entry) {
+            $active = $entry['in_else'] ? ! $entry['condition'] : $entry['condition'];
+            if (! $active) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Evaluate a .if condition expression as an unprivileged anonymous user.
+     *
+     * Supports: user <names>, sysop, owner, author, hasprivs, exists, load,
+     *           day, time, privlevel <relop> <n>
+     * Boolean connectors: && (and), || (or)
+     * Negation prefix:    ! or not
+     */
+    private function evaluateCondition(string $expression): bool
+    {
+        // Tokenise, expanding !keyword (no space) into ['!', 'keyword']
+        $rawTokens = preg_split('/\s+/', trim($expression), -1, PREG_SPLIT_NO_EMPTY);
+        $tokens = [];
+        foreach ($rawTokens as $t) {
+            if (strlen($t) > 1 && str_starts_with($t, '!')) {
+                $tokens[] = '!';
+                $tokens[] = substr($t, 1);
+            } else {
+                $tokens[] = $t;
+            }
+        }
+
+        if (empty($tokens)) {
+            return false;
+        }
+
+        $pos = 0;
+        $result = $this->parseSingleCondition($tokens, $pos);
+
+        while ($pos < count($tokens)) {
+            $op = strtolower($tokens[$pos]);
+
+            if ($op === '&&' || $op === 'and') {
+                $pos++;
+                $right = $this->parseSingleCondition($tokens, $pos);
+                $result = $result && $right;
+            } elseif ($op === '||' || $op === 'or') {
+                $pos++;
+                $right = $this->parseSingleCondition($tokens, $pos);
+                $result = $result || $right;
+            } else {
+                break;
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * Parse and evaluate a single condition, advancing $pos past consumed tokens.
+     *
+     * @param  string[]  $tokens
+     */
+    private function parseSingleCondition(array $tokens, int &$pos): bool
+    {
+        if ($pos >= count($tokens)) {
+            return false;
+        }
+
+        // Optional NOT prefix
+        $negate = false;
+        if ($tokens[$pos] === '!' || strtolower($tokens[$pos]) === 'not') {
+            $negate = true;
+            $pos++;
+        }
+
+        if ($pos >= count($tokens)) {
+            return $negate;
+        }
+
+        $condType = strtolower($tokens[$pos++]);
+        $result = false;
+
+        if ($condType === 'user') {
+            // Consume all names until a boolean operator or end of tokens
+            while ($pos < count($tokens)) {
+                $t = strtolower($tokens[$pos]);
+                if ($t === '&&' || $t === '||' || $t === 'and' || $t === 'or') {
+                    break;
+                }
+                $pos++;
+            }
+            // Import user is never any named user
+            $result = false;
+        } elseif (in_array($condType, ['sysop', 'owner', 'author'], true)) {
+            $result = false;
+        } elseif ($condType === 'hasprivs') {
+            if ($pos < count($tokens)) {
+                $pos++; // consume privileges string
+            }
+            $result = false;
+        } elseif ($condType === 'exists') {
+            if ($pos < count($tokens)) {
+                $pos++; // consume filename
+            }
+            $result = false;
+        } elseif (in_array($condType, ['load', 'time'], true)) {
+            if ($pos < count($tokens)) {
+                $pos++; // consume relop
+            }
+            if ($pos < count($tokens)) {
+                $pos++; // consume value
+            }
+            $result = false;
+        } elseif ($condType === 'day') {
+            if ($pos < count($tokens)) {
+                $pos++; // consume day name
+            }
+            $result = false;
+        } elseif ($condType === 'privlevel') {
+            $relop = $tokens[$pos++] ?? '>';
+            $n = (int) ($tokens[$pos++] ?? 0);
+            $userLevel = 100; // Default user privilege level
+            $result = match ($relop) {
+                '<'  => $userLevel < $n,
+                '>'  => $userLevel > $n,
+                '<=' => $userLevel <= $n,
+                '>=' => $userLevel >= $n,
+                '==' => $userLevel == $n,
+                '!=' => $userLevel != $n,
+                default => false,
+            };
+        }
+
+        return $negate ? ! $result : $result;
+    }
+
     private const DIRECTIVE_COMMANDS = [
-        'owner', 'if', 'endif', 'else', 'dontscan', 'noscan', 'doscan', 'scan',
+        'owner', 'dontscan', 'noscan', 'doscan', 'scan',
         'pagebreak', 'title', 'flags', 'repeat', 'log', 'include', 'overlay',
         'use', 'quit',
     ];

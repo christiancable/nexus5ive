@@ -1,5 +1,6 @@
 .owner fraggle valis
 H @Test @Menu
+.pagebreak
 m 0 {Welcome to the test menu}
 m 0 ----------------------------
 # this is a comment
