@@ -202,7 +202,9 @@ class SectionController extends Controller
             ->get();
 
         $updatedView = $views->first(function ($view) {
-            return $view->latest_view_date->timestamp != $view->topic->most_recent_post_time->timestamp;
+            $postTime = $view->topic->most_recent_post_time;
+
+            return $postTime && $view->latest_view_date->timestamp != $postTime->timestamp;
         });
 
         if ($updatedView != null) {

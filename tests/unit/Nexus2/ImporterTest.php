@@ -66,6 +66,7 @@ class ImporterTest extends TestCase
         $this->assertEquals(42, $user->totalVisits);
         $this->assertEquals(1234, $user->totalPosts);
         $this->assertFalse($user->administrator);
+        $this->assertTrue($user->is_guest);
         $this->assertNotNull($user->email_verified_at);
     }
 
@@ -79,6 +80,7 @@ class ImporterTest extends TestCase
         $sysop = User::where('email', 's.admin1@legacy.nexus2')->first();
         $this->assertNotNull($sysop);
         $this->assertTrue($sysop->administrator);
+        $this->assertTrue($sysop->is_guest);
     }
 
     public function test_popname_strips_highlights(): void
@@ -294,6 +296,7 @@ class ImporterTest extends TestCase
         // The article fixture has a post from "UnknownNick" not in any UDB
         $placeholder = User::where('username', 'UnknownNick')->first();
         $this->assertNotNull($placeholder);
+        $this->assertTrue($placeholder->is_guest);
         $this->assertTrue(Nexus2Import::exists('user', 'user:placeholder:unknownnick'));
     }
 

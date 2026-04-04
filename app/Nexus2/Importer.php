@@ -248,6 +248,7 @@ class Importer
             $user->totalVisits = (int) $data['TimesOn'];
             $user->totalPosts = (int) $data['TotalEdits'];
             $user->administrator = $data['Rights'] === 255;
+            $user->is_guest = true;
             $user->private = ($data['Hide'] === 'All (invisible)');
             $user->theme_id = 1;
             $user->created_at = $this->parseNexus2Date($data['Created']);
@@ -637,6 +638,7 @@ class Importer
         $user->email = strtolower($username).'_placeholder@legacy.nexus2';
         $user->password = Hash::make(Str::random(64));
         $user->email_verified_at = now();
+        $user->is_guest = true;
         $user->theme_id = 1;
         $user->save();
 
@@ -697,6 +699,7 @@ class Importer
             $user->about = 'This the BBS system account and not a real person';
             $user->password = Hash::make(Str::random(64));
             $user->email_verified_at = now();
+            $user->is_guest = true;
             $user->theme_id = 1;
             $user->save();
         }

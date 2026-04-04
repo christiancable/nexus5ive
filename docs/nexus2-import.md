@@ -65,6 +65,23 @@ Reports what would be created without touching the database. Useful for verifyin
 
 ---
 
+## Imported users are read-only by default
+
+All users created during import (legacy accounts, placeholder accounts, and the SysOp account) are set to `is_guest = true`. This makes the entire archive read-only without requiring `NEXUS_ARCHIVE_MODE`.
+
+To grant a specific user write access (e.g. someone who wants to reclaim their legacy account):
+
+```bash
+php artisan tinker
+> $user = User::where('username', 'theirusername')->firstOrFail();
+> $user->is_guest = false;
+> $user->save();
+```
+
+`NEXUS_ARCHIVE_MODE` remains available as a hard lockout for everyone including the admin — useful during maintenance.
+
+---
+
 ## Step 4: Create the guest account
 
 ```bash
