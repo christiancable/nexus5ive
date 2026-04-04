@@ -43,9 +43,11 @@ $topicLink = action('App\Http\Controllers\Nexus\TopicController@show', ['topic' 
                     <p class="card-text text-muted">
                         <em>{!! substr(strip_tags(App\Helpers\NxCodeHelper::nxDecode($unspoiled)), 0, 140) !!}</em>&hellip;
                     </p>
+                    @can('create', [App\Models\Post::class, $topic])
                     <footer class="d-flex justify-content-end">
-                    <a href="{{$replyLink}}" class="btn btn-primary"> Reply </a>
+                        <a href="{{$replyLink}}" class="btn btn-primary"> Reply </a>
                     </footer>
+                    @endcan
             </div>
         @endif 
 </div>

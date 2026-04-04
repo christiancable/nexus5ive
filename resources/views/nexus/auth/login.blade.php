@@ -78,9 +78,11 @@
 
 
 
+            @if (! config('nexus.archive_mode'))
             <div class="text-center">
                 <p><a href="{{ route('password.request') }}">Forgot Your Password?</a></p>
             </div>
+            @endif
         </div>
     </div> <!-- .container -->
 @endsection
