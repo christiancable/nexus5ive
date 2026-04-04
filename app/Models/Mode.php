@@ -17,6 +17,8 @@ class Mode extends Model
      *
      * @var array<string, string>
      */
+    protected $fillable = ['name', 'welcome', 'theme_id', 'active', 'override'];
+
     protected $casts = [
         'active' => 'bool',
         'override' => 'bool',

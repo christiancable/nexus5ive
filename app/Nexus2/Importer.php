@@ -3,8 +3,10 @@
 namespace App\Nexus2;
 
 use App\Models\Comment;
+use App\Models\Mode;
 use App\Models\Post;
 use App\Models\Section;
+use App\Models\Theme;
 use App\Models\Topic;
 use App\Models\User;
 use Carbon\Carbon;
@@ -84,6 +86,39 @@ class Importer
         $this->command->info('Phase 3: Importing comments...');
         $this->importComments($usrDir);
         $this->command->info("  Comments: {$this->commentsImported} imported, {$this->commentsSkipped} skipped");
+
+        $this->command->info('Phase 4: Configuring default mode...');
+        $this->ensureDefaultMode();
+    }
+
+    private function ensureDefaultMode(): void
+    {
+        if ($this->dryRun) {
+            $this->command->line('  [dry-run] Would create default mode with Nexus 2 theme if not present');
+
+            return;
+        }
+
+        if (Mode::exists()) {
+            $this->command->line('  Mode already exists, skipping');
+
+            return;
+        }
+
+        $nexus2Theme = Theme::where('name', 'like', '%nexus%')->orWhere('name', 'like', '%Nexus%')->first();
+
+        $mode = Mode::create([
+            'name' => 'Default',
+            'active' => true,
+            'override' => $nexus2Theme !== null,
+            'theme_id' => $nexus2Theme?->id,
+        ]);
+
+        if ($nexus2Theme) {
+            $this->command->line("  Created default mode with Nexus 2 theme (override enabled)");
+        } else {
+            $this->command->line('  Created default mode (no Nexus 2 theme found — run nexus:theme add first)');
+        }
     }
 
     public function importUsers(string $usrDir): void
@@ -213,6 +248,7 @@ class Importer
             $user->totalVisits = (int) $data['TimesOn'];
             $user->totalPosts = (int) $data['TotalEdits'];
             $user->administrator = $data['Rights'] === 255;
+            $user->private = ($data['Hide'] === 'All (invisible)');
             $user->theme_id = 1;
             $user->created_at = $this->parseNexus2Date($data['Created']);
             $user->latestLogin = $this->parseNexus2Date($data['LastOn']);
@@ -380,9 +416,15 @@ class Importer
             return;
         }
 
+        $flags = strtoupper($item['flags'] ?? '');
+
         try {
             $this->currentFile = $articlePath;
-            $parser = new ArticleParser($articlePath);
+            $content = null;
+            if (str_contains($flags, 'K')) {
+                $content = Decompressor::decompress(file_get_contents($articlePath));
+            }
+            $parser = new ArticleParser($articlePath, $content);
             $data = $parser->parse();
         } catch (\RuntimeException $e) {
             $this->command->warn("  Skipping article {$articlePath}: {$e->getMessage()}");
@@ -393,8 +435,6 @@ class Importer
         $title = $this->cleanText($item['info']) ?? $item['file'];
 
         $preamble = $this->cleanText($data['preamble'], markdown: true);
-
-        $flags = strtoupper($item['flags'] ?? '');
         $posts = $data['posts'];
 
         // A text-only article has a preamble but no posts.
@@ -431,7 +471,7 @@ class Importer
                 $newPost = new Post;
                 $newPost->title = null;
                 $newPost->text = $preamble;
-                $newPost->time = Carbon::createFromTimestamp(1);
+                $newPost->time = null;
                 $newPost->popname = null;
                 $newPost->html = false;
                 $newPost->user_id = $this->getOrCreateSysopUser();
@@ -459,7 +499,7 @@ class Importer
             $nick = trim($post['nick'] ?? '');
             $userId = $nick !== '' ? $this->getOrCreateUser($nick) : $this->getOrCreateUser('unknown');
 
-            $postTime = $this->parseArticleTimestamp($post['timestamp']) ?? Carbon::createFromTimestamp(1);
+            $postTime = $this->parseArticleTimestamp($post['timestamp']);
             $postPopname = $this->cleanText($post['popname']);
             $postSubject = $this->cleanText($post['subject']);
             $postBody = $this->cleanText($post['body'], markdown: true) ?? '';

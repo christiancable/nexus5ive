@@ -16,13 +16,17 @@ class ArticleParser
 
     private string $content;
 
-    public function __construct(string $filePath)
+    public function __construct(string $filePath, ?string $content = null)
     {
-        if (! file_exists($filePath)) {
-            throw new RuntimeException("File not found: {$filePath}");
-        }
+        if ($content !== null) {
+            $this->content = $content;
+        } else {
+            if (! file_exists($filePath)) {
+                throw new RuntimeException("File not found: {$filePath}");
+            }
 
-        $this->content = file_get_contents($filePath);
+            $this->content = file_get_contents($filePath);
+        }
 
         if ($this->isBinary($this->content)) {
             throw new RuntimeException("File appears to be binary: {$filePath}");

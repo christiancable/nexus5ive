@@ -28,7 +28,7 @@ $topicLink = action('App\Http\Controllers\Nexus\TopicController@show', ['topic' 
         <x-topic-heading title="{{ $topic->title }}" :link=$topicLink :status=$status />
         
         <small class="card-subtitle mb-2 text-muted">
-            Latest post {{$topic->most_recent_post->time->diffForHumans()}} by
+            Latest post {{ $topic->most_recent_post->time?->diffForHumans() ?? 'Date unknown' }} by
             @if ($topic->secret)
                 <strong>Anonymous</strong>
             @else

@@ -270,10 +270,10 @@ class ImporterTest extends TestCase
         // Two posts: the synthetic preamble post and the real post
         $this->assertCount(2, $posts);
 
-        // First post is the preamble, attributed to SysOp at epoch+1
+        // First post is the preamble, attributed to SysOp with no date
         $preamblePost = $posts->first();
         $this->assertStringContainsString('This is the preamble text', $preamblePost->text);
-        $this->assertEquals(1, $preamblePost->time->timestamp);
+        $this->assertNull($preamblePost->time);
         $sysop = User::where('username', 'SysOp')->first();
         $this->assertEquals($sysop->id, $preamblePost->user_id);
 

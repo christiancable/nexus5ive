@@ -38,6 +38,10 @@ class UserPolicy
      */
     public function update(User $user, User $model)
     {
+        if ($user->is_guest) {
+            return false;
+        }
+
         return $user->id === $model->id;
     }
 

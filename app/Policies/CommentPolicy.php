@@ -20,6 +20,11 @@ class CommentPolicy
         //
     }
 
+    public function create(User $user): bool
+    {
+        return ! $user->is_guest;
+    }
+
     /**
      * Determine if the given user can delete the given comment.
      *

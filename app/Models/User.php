@@ -71,6 +71,7 @@ class User extends Authenticatable implements MustVerifyEmail
             'latestLogin' => 'datetime',
             'deleted_at' => 'datetime',
             'administrator' => 'bool',
+            'is_guest' => 'bool',
             'private' => 'bool',
             'banned' => 'bool',
         ];
@@ -295,5 +296,10 @@ class User extends Authenticatable implements MustVerifyEmail
     public function isAdmin(): bool
     {
         return $this->administrator == true;
+    }
+
+    public function isGuest(): bool
+    {
+        return $this->is_guest === true;
     }
 }

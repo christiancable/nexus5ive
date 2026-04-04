@@ -24,7 +24,7 @@ $linkText = implode(' > ', $linkNames);
 
             in <strong>{{ $result->topic->title}}</strong>
         </a>
-        <span class="text-muted"> {{ $result->time->diffForHumans() }}</span>
+        <span class="text-muted"> {{ $result->time?->diffForHumans() ?? 'Date unknown' }}</span>
         <p class="card-text text-muted">
             {!! App\Helpers\NxCodeHelper::nxDecode($result->text) !!}
         </p>
