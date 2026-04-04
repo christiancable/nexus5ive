@@ -75,4 +75,13 @@ The central model. Represents everyone who has an account on the BBS — active 
 
 ## Authorization
 
-Policies are in `app/Policies/UserPolicy.php`. The `is_guest` flag is checked before any admin/owner shortcuts — a guest cannot edit their own settings even though they own their account.
+Policies are in `app/Policies/UserPolicy.php`. The `is_guest` flag is checked before any admin/owner shortcuts — a guest cannot edit their own settings even though they own their account, and an imported admin account with `is_guest = true` is still denied all writes.
+
+All users created by `nexus2:import` receive `is_guest = true`. To unlock a specific user:
+
+```php
+$user->is_guest = false;
+$user->save();
+```
+
+See also `NEXUS_ARCHIVE_MODE` in `config/nexus.php` — when true, a `Gate::before()` hook blocks all write abilities for everyone including admins, independent of `is_guest`.

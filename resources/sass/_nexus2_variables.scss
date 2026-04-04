@@ -18,15 +18,33 @@ $dos-yellow:         #FFFF55;
 $dos-white:          #FFFFFF;
 
 // ── Typography ───────────────────────────────────────────────────────────────
-// JetBrains Mono (body) + Space Mono (headings)
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Space+Mono:wght@400;700&display=swap');
+// JetBrains Mono throughout — DOS terminals used a single fixed-size font
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
 
 $font-family-monospace:  'JetBrains Mono', 'Courier New', monospace;
 $font-family-sans-serif: 'JetBrains Mono', 'Courier New', monospace;
-$headings-font-family:   'Space Mono', 'Courier New', monospace;
+$headings-font-family:   'JetBrains Mono', 'Courier New', monospace;
 $font-size-base:         0.9rem;
 $line-height-base:       1.6;
-$headings-line-height:   1.3;
+$headings-line-height:   1.6;
+
+// DOS terminals have no font-size hierarchy — everything is the same size
+$h1-font-size:      $font-size-base;
+$h2-font-size:      $font-size-base;
+$h3-font-size:      $font-size-base;
+$h4-font-size:      $font-size-base;
+$h5-font-size:      $font-size-base;
+$h6-font-size:      $font-size-base;
+$lead-font-size:    $font-size-base;
+$small-font-size:   1em;   // <small> stays the same size as body text
+$display-font-sizes: (
+  1: $font-size-base,
+  2: $font-size-base,
+  3: $font-size-base,
+  4: $font-size-base,
+  5: $font-size-base,
+  6: $font-size-base,
+);
 
 // ── Body ─────────────────────────────────────────────────────────────────────
 $body-bg:    $dos-black;
@@ -65,7 +83,7 @@ $theme-colors: (
 
 // ── Headings & links ─────────────────────────────────────────────────────────
 // Menu[HIGHLIGHT]=GREEN (#00AA00), article highlights=YELLOW (#FFFF55)
-$headings-color:   $dos-bright-cyan;              // LIGHTCYAN — section headers
+$headings-color:   $dos-bright-green;             // LIGHTGREEN — section headers (matches Nexus 2 menu screenshot)
 $link-color:       $dos-dark-green;               // GREEN = Menu HIGHLIGHT
 $link-hover-color: $dos-bright-green;             // LIGHTGREEN — brighter on hover
 
@@ -238,33 +256,62 @@ $modal-content-border-color: $dos-dark-gray;
   }
 }
 
-// Cards — dark body, blue header (like the DOS menu panels)
+// Cards — minimal DOS list-item style
+// Section and topic cards look like menu entries, not Bootstrap panels.
 .card {
   border-radius: 0;
   border-color: $dos-dark-gray;
+  margin-bottom: 0.25rem !important;  // pack items close together
 
+  // Card header: transparent background, no blue
   .card-header {
-    background-color: $dos-dark-blue;
-    color: $dos-white;
+    background-color: transparent !important;
+    color: $dos-bright-green;
     border-radius: 0;
-    border-bottom: 1px solid $dos-bright-cyan;
+    border-bottom: 1px solid $dos-dark-gray;
+    padding: 0.3rem 0.75rem;
 
-    h1, h2, h3, h4, h5, h6 { color: $dos-white; }
+    h1, h2, h3, h4, h5, h6, .card-title { color: $dos-bright-green; }
 
-    a {
-      color: $dos-bright-cyan;
+    // Topic title: direct-child <a> wrapping h2.card-title (latest/unread views)
+    // Status prefix is handled by .card-title:has() rules below
+    > a {
+      color: $dos-bright-green;
+      text-decoration: none;
       &:hover { color: $dos-yellow; }
     }
 
-    // Icons use text-primary which would be invisible on the blue header
-    .text-primary {
-      color: $dos-bright-cyan !important; // LIGHTCYAN — visible on BLUE background
+    // Section title: <a> nested inside h2.card-title (section _view subsections)
+    // Add the » prefix here since there are no status icons on section cards
+    .card-title a {
+      color: $dos-bright-green;
+      text-decoration: none;
+      &::before { content: '» '; color: $dos-yellow; }
+      &:hover { color: $dos-yellow; }
+    }
+
+    // Hide heroicons in card-header titles (latest posts view puts heading in header)
+    .card-title .icon_large { display: none; }
+
+    // Status prefix on h2.card-title for topic headings in card-header context
+    .card-title:has(.text-danger)::before  { content: '[*]'; color: $dos-bright-red;   margin-right: 0.4em; }
+    .card-title:has(.text-success)::before { content: '[+]'; color: $dos-bright-green; margin-right: 0.4em; }
+    .card-title:has(.text-muted)::before   { content: '[-]'; color: $dos-dark-gray;    margin-right: 0.4em; }
+    .card-title:has(.text-primary)::before { content: '[\00B7]'; color: $dos-dark-gray; margin-right: 0.4em; }
+
+    // Subtitle line ("Latest post N ago by @user in Section") — keep muted, no prefix
+    .card-subtitle {
+      font-size: 1em;
+      color: $dos-dark-gray;
+      a { color: $dos-dark-green; &:hover { color: $dos-bright-green; } }
     }
   }
 
+  // Card footer: transparent
   .card-footer {
-    background-color: $dos-dark-blue;
+    background-color: transparent;
     border-top: 1px solid $dos-dark-gray;
+    padding: 0.3rem 0.75rem;
   }
 }
 
@@ -388,4 +435,117 @@ pre {
   background-color: $dos-black;
   border: 1px solid $dos-dark-gray;
   border-radius: 0;
+}
+
+// ── DOS article view — post cards ────────────────────────────────────────────
+// Styled to match the original Nexus 2 article reader:
+//   ————«Tue May 04 21:19:02 1999»————
+//   From   : @username (popname)
+//   <body text>
+
+// Timestamp: right-aligned, white text with «» decorators.
+// Unread posts use $dos-bright-cyan to remain visually distinct.
+.card-body > small {
+  display: block;
+  text-align: right;
+  color: $dos-white;
+  margin-bottom: 0.15rem;
+
+  &::before { content: '\00AB'; margin-right: 0.2em; } // «
+  &::after  { content: '\00BB'; margin-left: 0.2em; }  // »
+}
+
+.card-body > small.text-info {
+  color: $dos-bright-cyan !important;
+}
+
+// Author line: "From   : @username — popname" in DOS yellow
+.card-body > .d-flex > div:first-child {
+  color: $dos-yellow;
+
+  &::before {
+    content: 'From: ';
+    color: $dos-yellow;
+  }
+
+  // @ symbol (text-muted) → yellow to match the From: colour
+  .text-muted {
+    color: $dos-yellow !important;
+  }
+
+  // Username mark: remove the red background, show in yellow
+  mark {
+    background-color: transparent;
+    color: $dos-yellow;
+
+    a {
+      color: $dos-yellow;
+      &:hover { color: $dos-white; }
+    }
+  }
+}
+
+// Separator rule inside post body — faint yellow line after the timestamp
+.card-text > hr {
+  border-color: $dos-yellow;
+  opacity: 0.25;
+}
+
+// ── Topic/section menu list items ─────────────────────────────────────────────
+// Topics in a section listing: compact, text-based, DOS menu style.
+// Heroicons are hidden and replaced by single ASCII status characters.
+
+// Collapse the empty card-body that appears between a section card-header and
+// its card-footer (the intro text is empty for most imported sections).
+.card-header + .card-body {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.card-body {
+  padding: 0.3rem 0.75rem;
+
+  // Topic title link: bright green, yellow on hover (matches section headers)
+  .card-title {
+    margin-bottom: 0.1rem;
+
+    a {
+      color: $dos-bright-green;
+      text-decoration: none;
+      &:hover { color: $dos-yellow; }
+    }
+
+    // Hide heroicons — status communicated by the prefix character instead
+    .icon_large { display: none; }
+
+    // ASCII status prefix injected before the title text via :has()
+    // new posts  → [*] in bright red
+    &:has(.text-danger)::before  { content: '[*]'; color: $dos-bright-red;   margin-right: 0.4em; }
+    // never read → [+] in bright green
+    &:has(.text-success)::before { content: '[+]'; color: $dos-bright-green; margin-right: 0.4em; }
+    // unsubscribed → [-] in dark gray
+    &:has(.text-muted)::before   { content: '[-]'; color: $dos-dark-gray;    margin-right: 0.4em; }
+    // read, nothing new → [·] in dark gray
+    &:has(.text-primary)::before { content: '[\00B7]'; color: $dos-dark-gray; margin-right: 0.4em; }
+  }
+
+  // Intro text and latest-post footer: minimal vertical spacing
+  .card-text { margin-bottom: 0.1rem; }
+
+  footer.d-flex { margin-top: 0.1rem; }
+}
+
+// Reply button — de-emphasised to a plain text link in the DOS theme
+// (the prominent blue Bootstrap button is out of place)
+.card-body .btn.btn-primary {
+  background-color: transparent;
+  border: 1px solid $dos-dark-gray;
+  color: $dos-dark-gray;
+  font-size: 1em;
+  padding: 0.1rem 0.5rem;
+  &:hover {
+    background-color: transparent;
+    border-color: $dos-bright-green;
+    color: $dos-bright-green;
+  }
 }

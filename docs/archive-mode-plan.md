@@ -4,7 +4,7 @@
 
 **Core archive mode: ✅ COMPLETE**
 **Nexus 2 decompression support: ✅ COMPLETE**
-**Nexus 2 full import command: 🔲 Pending** (see separate plan)
+**Nexus 2 full import command: ✅ COMPLETE**
 
 ---
 
@@ -24,42 +24,73 @@ there — via shared credentials.
 
 ---
 
-## Approach: `is_guest` account level + shared credentials ✅
+## How read-only enforcement works
 
-Authentication stays in place — the site is not public. Access is controlled by
-giving people either the Guest account credentials or the password to their own
-imported legacy account.
+There are two independent mechanisms. Understanding both is important.
 
-A new **`is_guest` boolean flag** is added to the users table, mirroring the
-existing `administrator` flag. A Guest user account is created with this flag set.
-Policies check `is_guest` to deny all write operations, so the flag works for the
-shared Guest account and can equally be applied to any other account that should
-be read-only.
+### `is_guest` flag (per-user)
 
-- No self-registration — you either have your original legacy account or you use Guest
-- The Nexus 2 theme is enforced globally
+`is_guest` is a boolean on the `User` model. When true, all write policies return
+`false` for that user — regardless of any other flags including `administrator`.
 
-This requires minimal code changes and fits naturally into the existing
-authorization architecture.
+Checks happen in: `PostPolicy::create()`, `CommentPolicy::create()`,
+`UserPolicy::update()`, `ChatPolicy::create()`, and `CommentController::destroyAll()`.
+
+**All users created by `nexus2:import` get `is_guest = true` automatically** —
+legacy accounts, placeholder accounts, and the SysOp account. This means the archive
+is read-only from the moment import completes, with no `.env` changes needed.
+
+The fresh admin account (created outside the import) is unaffected and retains full
+write access. To grant a specific imported user write access:
+
+```bash
+php artisan tinker
+> $user = User::where('username', 'theirusername')->firstOrFail();
+> $user->is_guest = false;
+> $user->save();
+```
+
+### `NEXUS_ARCHIVE_MODE` (global lockout)
+
+`NEXUS_ARCHIVE_MODE=true` in `.env` registers a `Gate::before()` hook that returns
+`false` for `create`, `update`, `delete`, and `restore` abilities for **every** user,
+including the admin. It is a hard maintenance lockout.
+
+```
+NEXUS_ARCHIVE_MODE=true   # nobody can write, including admins
+NEXUS_ARCHIVE_MODE=false  # normal operation, is_guest still applies per-user
+```
+
+### How they interact
+
+| Scenario | `is_guest` | `NEXUS_ARCHIVE_MODE` |
+|----------|-----------|---------------------|
+| Imported legacy user blocked | ✓ | ✓ |
+| Shared Guest account blocked | ✓ | ✓ |
+| Fresh admin account blocked | ✗ | ✓ |
+| Per-user granular control | ✓ | ✗ |
+
+**In practice:** `is_guest` handles day-to-day enforcement. `NEXUS_ARCHIVE_MODE`
+is only needed if you want to prevent the admin from writing too — e.g. during
+a content freeze or before handing the archive to someone else.
 
 ---
 
-## What the Guest account can do
+## What users can do
 
-| Action | Guest | Legacy user (imported) |
-|--------|-------|----------------------|
-| Browse sections | ✓ | ✓ |
-| Read topics & posts | ✓ | ✓ |
-| View user profiles | ✓ | ✓ |
-| Search | ✓ | ✓ |
-| Post / reply | ✗ | ✗ (all topics readonly) |
-| Comment on profiles | ✗ | ✗ |
-| Change settings / theme | ✗ | ✓ (own settings only) |
-| Access admin panel | ✗ | ✗ |
+| Action | Guest (shared) | Legacy user (imported) | Admin |
+|--------|---------------|----------------------|-------|
+| Browse sections | ✓ | ✓ | ✓ |
+| Read topics & posts | ✓ | ✓ | ✓ |
+| View user profiles | ✓ | ✓ | ✓ |
+| Search | ✓ | ✓ | ✓ |
+| Post / reply | ✗ | ✗ | ✓ |
+| Comment on profiles | ✗ | ✗ | ✓ |
+| Change settings / theme | ✗ | ✗ | ✓ |
+| Access admin panel | ✗ | ✗ | ✓ |
 
-All imported topics are already `readonly = true`, so even legacy account holders
-cannot post. The Guest account just needs to be additionally prevented from
-commenting on user profiles and changing settings.
+Legacy users can be individually unlocked (set `is_guest = false`) if they want to
+reclaim their account and participate.
 
 ---
 
@@ -142,9 +173,6 @@ Gate::before(function (User $user, string $ability) {
 });
 ```
 
-This makes the entire install read-only when `NEXUS_ARCHIVE_MODE=true`. Admins
-toggle the flag to `false` to perform maintenance tasks.
-
 ---
 
 ### 7. `destroyAll` (clear profile comments) blocked for guests ✅
@@ -184,10 +212,6 @@ Pre-processing normalises DOS line endings (`\r\n` → `\n`) and strips the DOS
 EOF marker (`\x1A`) before byte-level decoding, matching what the original C
 compressor assumed about its input.
 
-The compressor avoids run-length counts of 26 (`\x1A`) and 13 (`\x0D`) by
-splitting them into count-1 + extra literal; the decompressor handles this
-naturally without special logic.
-
 **`app/Nexus2/ArticleParser.php`** — updated constructor:
 `__construct(string $filePath, ?string $content = null)` — uses `$content`
 directly if provided, otherwise reads from disk.
@@ -198,26 +222,46 @@ result to `ArticleParser`.
 
 ---
 
-### 10. Default theme: Nexus 2 for all users
+### 10. All imported users are read-only by default ✅
 
-In the archive install, force the Nexus 2 theme globally using the existing
-**Modes** system — create an active Mode with `override = true` pointing to the
-Nexus 2 theme. No code change needed — this is a database/configuration step
-at install time.
+`nexus2:import` sets `is_guest = true` on all created users — legacy accounts,
+placeholder accounts (for post authors not found in the UDB), and the SysOp
+system account. This means the archive is read-only immediately after import
+without any `.env` changes.
 
 ---
 
-### 11. Disable registration
+### 11. Undated posts ✅
+
+Posts with no timestamp in the source data store `null` in the `time` column
+rather than a fake epoch date. Views display "Date unknown" for these posts.
+The leap function skips topics where no dated posts exist.
+
+---
+
+### 12. Default mode created on import ✅
+
+`nexus2:import` creates a default `Mode` record (if none exists) pointing to the
+Nexus 2 theme with `override = true`. The `Settings` Livewire component also
+creates a default Mode if none exists when the admin first visits the settings page.
+
+---
+
+### 13. Default theme: Nexus 2 for all users
+
+In the archive install, force the Nexus 2 theme globally using the existing
+**Modes** system — create an active Mode with `override = true` pointing to the
+Nexus 2 theme. The import handles this automatically (step 12).
+
+---
+
+### 14. Disable registration
 
 Set in `.env`:
 
 ```
 NEXUS_ALLOW_REGISTRATIONS=false
 ```
-
-This already hides the "Join" button. Note: search engine indexing is not a
-concern — the site requires login for all content, so crawlers cannot access
-anything beyond the login page.
 
 ---
 
@@ -241,6 +285,10 @@ anything beyond the login page.
   - Mixed sequence validated against known BLAKE7 file header
   - Integration test against real compressed BLAKE7 file (skipped if fixture absent)
 
+- **`tests/Browser/NextTest.php`** — leap tests covering:
+  - Topic with only undated posts does not crash leap
+  - Topic with mixed dated/undated posts uses most recent dated post time
+
 ---
 
 ## Deployment steps
@@ -248,26 +296,30 @@ anything beyond the login page.
 1. Clone the repo and configure `.env`:
    ```
    APP_NAME="Nexus 2 Archive"
-   NEXUS_ARCHIVE_MODE=true
    NEXUS_ALLOW_REGISTRATIONS=false
    ```
 2. Run migrations (`php artisan migrate`)
-3. Run `php artisan nexus:install` to create the admin user and root section
-4. Run `php artisan nexus2:import` to import all legacy content
-5. Run `php artisan nexus:create-guest Guest` to create the shared Guest account
-6. Set up an active Mode with `override = true` pointing to the Nexus 2 theme
-7. Share the Guest credentials with former Nexus users (e.g. via a private message
-   to known members, or a page on an existing community site)
+3. Build frontend assets (`npm run build`)
+4. Register the Nexus 2 theme: `php artisan nexus:theme add --name="Nexus 2" --path="resources/sass/nexus2.scss"`
+5. Run `php artisan nexus2:import` — imports all content, creates default Mode, sets all users to `is_guest = true`
+6. Run `php artisan nexus:create-guest Guest` to create the shared Guest account
+7. Set the Guest account password: `php artisan nexus:set-password Guest`
+8. Share the Guest credentials with former Nexus users
+
+`NEXUS_ARCHIVE_MODE=true` is optional — only needed if you want to lock out the
+admin account too (e.g. before handing the archive to someone else).
 
 ---
 
 ## Access model
 
-**Option C (chosen)**: Both shared Guest account and individual legacy accounts.
+**Both shared Guest account and individual legacy accounts.**
 
-Start with a shared Guest account for casual browsing. Former users who want to
-reclaim their identity can contact the admin, who sets a password for their imported
-account via `php artisan tinker` or a future `nexus:set-password` command.
+- The shared Guest account is for casual browsing
+- All imported legacy accounts are read-only by default (`is_guest = true`)
+- Former users who want to reclaim write access can contact the admin, who sets
+  `is_guest = false` for their account and assigns a password via
+  `php artisan nexus:set-password {username}`
 
 ---
 
