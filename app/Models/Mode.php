@@ -12,11 +12,7 @@ class Mode extends Model
 {
     use HasFactory;
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array<string, string>
-     */
+    /** @var list<string> */
     protected $fillable = ['name', 'welcome', 'theme_id', 'active', 'override'];
 
     protected $casts = [

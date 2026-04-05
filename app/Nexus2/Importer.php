@@ -472,6 +472,7 @@ class Importer
                 $newPost = new Post;
                 $newPost->title = null;
                 $newPost->text = $preamble;
+                /** @phpstan-ignore assign.propertyType */
                 $newPost->time = null;
                 $newPost->popname = null;
                 $newPost->html = false;
@@ -753,7 +754,7 @@ class Importer
         $resolved = $this->bbsDir;
         $remaining = substr($path, strlen($this->bbsDir) + 1);
 
-        if ($remaining === false || $remaining === '') {
+        if ($remaining === '') {
             return null;
         }
 

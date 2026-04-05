@@ -6,8 +6,6 @@ use RuntimeException;
 
 class ArticleParser
 {
-    private const ESC = "\x1b";
-
     private const MARKER_TIMESTAMP = "\x1b\x01";
 
     private const MARKER_FROM = "\x1b\x02";
