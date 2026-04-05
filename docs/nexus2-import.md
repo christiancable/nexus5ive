@@ -95,7 +95,7 @@ Creates a shared read-only account (`is_guest = true`) for people who don't have
 ## Step 5: Set the guest account password
 
 ```bash
-php artisan nexus:set-password Guest
+php artisan nexus:setpassword Guest
 ```
 
 Follow the prompts to set a memorable shared password.
