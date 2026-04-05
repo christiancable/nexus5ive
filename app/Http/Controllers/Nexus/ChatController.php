@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Nexus;
 use App\Helpers\ActivityHelper;
 use App\Helpers\BreadcrumbHelper;
 use App\Http\Controllers\Controller;
+use App\Models\Chat;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -12,6 +13,8 @@ class ChatController extends Controller
 {
     public function index(Request $request, ?User $user)
     {
+        $this->authorize('viewAny', Chat::class);
+
         $breadcrumbs = BreadcrumbHelper::breadcumbForUtility('Chat');
         $selectedUser = null;
 
