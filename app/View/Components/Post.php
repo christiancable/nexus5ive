@@ -45,15 +45,16 @@ class Post extends Component
         $this->anonymous = $anonymous;
 
         $this->timeClass = 'text-muted';
-        if ($readProgress < $post->time) {
+        if ($post->time && $readProgress < $post->time) {
             $this->timeClass = 'text-info';
         }
 
-        $this->formattedTime = date('D, F jS Y - H:i', strtotime($post->time));
-
-        // if we are anonymous them we want to see fuzzy times
-        if ($anonymous) {
+        if (! $post->time) {
+            $this->formattedTime = 'Date unknown';
+        } elseif ($anonymous) {
             $this->formattedTime = $post->time->diffForHumans();
+        } else {
+            $this->formattedTime = $post->time->format('D, F jS Y - H:i');
         }
 
         $this->content = \App\Helpers\NxCodeHelper::nxDecode($post->text);

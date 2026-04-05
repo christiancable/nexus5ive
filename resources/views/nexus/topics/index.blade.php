@@ -68,7 +68,7 @@
                     @if (
                         $post['id'] == $latestPost['id'] &&
                             $post->author->id == Auth::user()->id &&
-                            $post->time->diffInSeconds() <= config('nexus.recent_edit'))
+                            $post->time?->diffInSeconds() <= config('nexus.recent_edit'))
                         <?php
                         $forceCogMenu = true; //show cog menu for recent post
                         $allowDelete = false;

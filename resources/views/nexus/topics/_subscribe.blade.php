@@ -1,3 +1,4 @@
+@if(! Auth::user()->isGuest())
 <form action="{{ route('topic.updateSubscription', ['topic' => $topic->id]) }}" method="POST" class="form">
     @csrf
     <button class="btn btn-link">
@@ -12,3 +13,4 @@
         @endif
     </button>
 </form>
+@endif

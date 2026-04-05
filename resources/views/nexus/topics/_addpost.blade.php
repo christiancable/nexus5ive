@@ -4,8 +4,10 @@
             <p>{!!__('nexus.topic.closed.normal')!!}</p>
         </div>
     @else
-        {{-- only show the post box if we are on the first page --}}
-        @if ($postsChunk->currentPage() === 1)
-        	  @include('nexus.posts.create', compact('topic', 'replyingTo'))
-        @endif
+        @can('create', [App\Models\Post::class, $topic])
+            {{-- only show the post box if we are on the first page --}}
+            @if ($postsChunk->currentPage() === 1)
+                @include('nexus.posts.create', compact('topic', 'replyingTo'))
+            @endif
+        @endcan
     @endif

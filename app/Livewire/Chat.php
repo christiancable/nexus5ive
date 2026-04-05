@@ -47,7 +47,7 @@ class Chat extends Component
         // find or create a chat of this user
         $this->selectedChat = ChatModel::where([
             'owner_id' => Auth::id(),
-            'partner_id' => $this->selectedUser->id
+            'partner_id' => $this->selectedUser->id,
         ])->first();
         $this->loadMessages();
     }
@@ -66,13 +66,12 @@ class Chat extends Component
     {
         $this->chats = $this->user->chats;
 
-        if (!$this->selectedChat && $this->selectedUser) {
+        if (! $this->selectedChat && $this->selectedUser) {
             $this->selectedChat = ChatModel::where([
                 'owner_id' => Auth::id(),
-                'partner_id' => $this->selectedUser->id
+                'partner_id' => $this->selectedUser->id,
             ])->first();
         }
-
 
         if ($this->selectedChat) {
             $this->messages = $this->selectedChat->chatMessages;
@@ -91,6 +90,8 @@ class Chat extends Component
 
     public function sendMessage()
     {
+        $this->authorize('create', \App\Models\Chat::class);
+
         if ($this->selectedUser && $this->newMessage) {
             ChatHelper::sendMessage(Auth::id(), $this->selectedUser->id, $this->newMessage);
             $this->newMessage = '';

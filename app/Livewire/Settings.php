@@ -32,9 +32,19 @@ class Settings extends Component
 
     public function mount()
     {
-        $this->modes = Mode::all()->keyBy('id');
         $this->themes = Theme::all()->keyBy('id');
         $this->currentMode = Mode::where('active', 1)->first() ?? Mode::first();
+
+        if (! $this->currentMode) {
+            $this->currentMode = Mode::create([
+                'name' => 'Default',
+                'active' => true,
+                'override' => false,
+                'theme_id' => Theme::first()?->id,
+            ]);
+        }
+
+        $this->modes = Mode::all()->keyBy('id');
         $this->selectedMode = $this->currentMode->id;
         $this->changeCurrentMode();
     }

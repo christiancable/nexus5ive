@@ -155,6 +155,73 @@ class NextTest extends DuskTestCase
     }
 
     #[Test]
+    public function leapDoesNotCrashWhenSubscribedTopicHasOnlyUndatedPosts(): void
+    {
+        /*
+        GIVEN a user is subscribed to a topic
+        AND that topic only contains posts with no timestamp (null time)
+        WHEN the user clicks 'Next'
+        THEN leap does not crash
+        AND the user sees the no updated topics found message (undated posts are skipped)
+        */
+        $user = $this->user;
+        $noTopicsMsg = $this->noTopicsMsg;
+
+        \App\Helpers\ViewHelper::subscribeToTopic($user, $this->topic1);
+
+        Post::factory()->create([
+            'topic_id' => $this->topic1->id,
+            'user_id' => $this->user->id,
+            'time' => null,
+        ]);
+
+        $this->browse(function ($browser) use ($user, $noTopicsMsg) {
+            $browser->loginAs($user)
+                ->visit('/')
+                ->press('@toolbar-next')
+                ->assertSee($noTopicsMsg);
+        });
+    }
+
+    #[Test]
+    public function leapWorksCorrectlyWhenTopicHasMixOfDatedAndUndatedPosts(): void
+    {
+        /*
+        GIVEN a user is subscribed to a topic
+        AND that topic contains a mix of dated and undated posts
+        WHEN the user clicks 'Next'
+        THEN leap uses the most recent dated post's time for comparison
+        AND the user is taken to the topic (because the dated post is unread)
+        */
+        $user = $this->user;
+        $newTopicsMsg = $this->newTopicsMsg;
+        $topic1 = $this->topic1;
+
+        \App\Helpers\ViewHelper::subscribeToTopic($user, $this->topic1);
+
+        // Undated post (imported legacy content)
+        Post::factory()->create([
+            'topic_id' => $this->topic1->id,
+            'user_id' => $this->user->id,
+            'time' => null,
+        ]);
+
+        // Dated post (newer activity)
+        Post::factory()->create([
+            'topic_id' => $this->topic1->id,
+            'user_id' => $this->user->id,
+        ]);
+
+        $this->browse(function ($browser) use ($user, $newTopicsMsg, $topic1) {
+            $browser->loginAs($user)
+                ->visit('/')
+                ->press('@toolbar-next')
+                ->assertPathIs('/section/'.$topic1->section->id)
+                ->assertSee($newTopicsMsg.$topic1->title);
+        });
+    }
+
+    #[Test]
     public function userCanMarkAllSubscribedTopicsAsRead(): void
     {
         /*

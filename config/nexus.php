@@ -27,4 +27,5 @@ return [
     'logo_image' => env('NEXUS_LOGO_IMAGE'),
     'subtitle' => env('NEXUS_SUBTITLE', ''),
     'log_verified_user_level' => env('NEXUS_LOG_VERIFIED_USER_LEVEL', 'alert'),
+    'archive_mode' => env('NEXUS_ARCHIVE_MODE', false),
 ];

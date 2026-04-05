@@ -19,6 +19,7 @@
                 @endif
             </a>
 
+            @can('create', App\Models\Chat::class)
             <a class="dropdown-item" href="{{ action('App\Http\Controllers\Nexus\ChatController@index') }}">
                 <x-heroicon-m-chat-bubble-left-right class="icon_mini me-1" aria-hidden="true" />Chat
                 @if ($messagesCount)
@@ -37,6 +38,7 @@
                     @endforeach
                 </span>
             @endif
+            @endcan
 
             @if ($user->administrator)
                 <div role="separator" class="dropdown-divider"></div>

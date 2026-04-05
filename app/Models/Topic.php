@@ -99,7 +99,8 @@ class Topic extends Model
     }
 
     // phpcs:disable PSR1.Methods.CamelCapsMethodName
-    public function most_recent_post()
+    /** @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Post, $this> */
+    public function most_recent_post(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         // phpcs:enable
         return $this->belongsTo(Post::class);

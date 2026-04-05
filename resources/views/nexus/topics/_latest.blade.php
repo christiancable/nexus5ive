@@ -28,7 +28,7 @@ $topicLink = action('App\Http\Controllers\Nexus\TopicController@show', ['topic' 
         <x-topic-heading title="{{ $topic->title }}" :link=$topicLink :status=$status />
         
         <small class="card-subtitle mb-2 text-muted">
-            Latest post {{$topic->most_recent_post->time->diffForHumans()}} by
+            Latest post {{ $topic->most_recent_post->time?->diffForHumans() ?? 'Date unknown' }} by
             @if ($topic->secret)
                 <strong>Anonymous</strong>
             @else
@@ -43,9 +43,11 @@ $topicLink = action('App\Http\Controllers\Nexus\TopicController@show', ['topic' 
                     <p class="card-text text-muted">
                         <em>{!! substr(strip_tags(App\Helpers\NxCodeHelper::nxDecode($unspoiled)), 0, 140) !!}</em>&hellip;
                     </p>
+                    @can('create', [App\Models\Post::class, $topic])
                     <footer class="d-flex justify-content-end">
-                    <a href="{{$replyLink}}" class="btn btn-primary"> Reply </a>
+                        <a href="{{$replyLink}}" class="btn btn-primary"> Reply </a>
                     </footer>
+                    @endcan
             </div>
         @endif 
 </div>

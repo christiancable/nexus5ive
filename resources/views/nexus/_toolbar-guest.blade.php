@@ -21,7 +21,7 @@
 			</span>
 
 			<!-- Right Side Of Navbar -->
-			@if (!isset($hideRegistration))
+			@if (!isset($hideRegistration) && ! config('nexus.archive_mode'))
 				@if (config('nexus.allow_registrations'))
 				<ul class="navbar-nav ms-auto">
 					<li class="nav-item">
@@ -30,7 +30,7 @@
 						{{ __('Join') }}</a>
 					</li>
 				</ul>
-				@endif 
-            @endif 
+				@endif
+            @endif
 	</div>
 </nav>
