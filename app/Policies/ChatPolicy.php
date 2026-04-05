@@ -11,7 +11,7 @@ class ChatPolicy
 
     public function viewAny(User $user): bool
     {
-        return ! $user->is_guest && ! config('nexus.archive_mode');
+        return ! $user->is_guest;
     }
 
     public function create(User $user): bool
