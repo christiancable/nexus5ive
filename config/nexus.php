@@ -22,6 +22,7 @@ return [
     'topic_pagination' => env('NEXUS_TOPIC_PAGINATION', 5),
     'comment_pagination' => env('NEXUS_COMMENT_PAGINATION', 50),
     'notification_check_interval' => env('NEXUS_NOTIFICATION_CHECK_INTERVAL', 5), // how often should the app poll for notifications in seconds
+    'chat_poll_interval' => env('NEXUS_CHAT_POLL_INTERVAL', 1), // how often should the chat poll for new messages in seconds
     'google_anaytics_activate' => env('GOOGLE_ANAYTICS_ACTIVATE', false),
     'google_analytics_id' => env('GOOGLE_ANALYTICS_ID'),
     'logo_image' => env('NEXUS_LOGO_IMAGE'),

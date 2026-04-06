@@ -31,7 +31,7 @@ class Chat extends Component
 
     public function mount(Request $request)
     {
-        $this->pollingInterval = 1;
+        $this->pollingInterval = config('nexus.chat_poll_interval');
         $this->users = User::where('id', '!=', Auth::id())->verified()->orderBy('username')->get();
         $this->messages = collect();
         $this->user = $request->user();
