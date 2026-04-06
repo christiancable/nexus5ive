@@ -20,6 +20,9 @@ abstract class DuskTestCase extends BaseTestCase
         if (! static::runningInSail()) {
             static::startChromeDriver(['--port=9515']);
         }
+
+        // Ensure .env.dusk values are used rather than any stale config cache
+        shell_exec('php artisan config:clear 2>/dev/null');
     }
 
     /**
