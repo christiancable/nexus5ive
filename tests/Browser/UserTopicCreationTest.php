@@ -1,150 +1,95 @@
 <?php
 
-namespace Tests\Browser;
-
 use App\Http\Controllers\Nexus\SectionController;
 use App\Models\Post;
 use App\Models\Section;
 use App\Models\Topic;
 use App\Models\User;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Laravel\Dusk\Browser;
-use PHPUnit\Framework\Attributes\Group;
-use PHPUnit\Framework\Attributes\Test;
-use Tests\DuskTestCase;
+use function Pest\Laravel\actingAs;
 
-class UserTopicCreationTest extends DuskTestCase
-{
-    use DatabaseMigrations;
+beforeEach(function () {
+    $this->moderator = User::factory()->create();
+    $this->normalUser = User::factory()->create();
 
-    protected User $moderator;
+    $this->home = Section::factory()
+        ->for($this->moderator, 'moderator')
+        ->create(['parent_id' => null]);
 
-    protected User $normalUser;
+    $this->section = Section::factory()
+        ->for($this->moderator, 'moderator')
+        ->for($this->home, 'parent')
+        ->create(['allow_user_topics' => false]);
+});
 
-    protected Section $home;
+test('section edit form has allow user topics checkbox', function () {
+    actingAs($this->moderator);
 
-    protected Section $section;
+    $page = visit(action([SectionController::class, 'show'], ['section' => $this->section]));
 
-    protected function setUp(): void
-    {
-        parent::setUp();
+    $page->script("document.querySelector('#section-edit{$this->section->id}').classList.add('show', 'active');");
 
-        $this->moderator = User::factory()->create();
-        $this->normalUser = User::factory()->create();
+    $page->assertPresent('#allow_user_topics_'.$this->section->id)
+        ->assertSee('Allow all users to create topics');
+});
 
-        $this->home = Section::factory()
-            ->for($this->moderator, 'moderator')
-            ->create(['parent_id' => null]);
+test('moderator sees all topic options', function () {
+    actingAs($this->moderator);
 
-        $this->section = Section::factory()
-            ->for($this->moderator, 'moderator')
-            ->for($this->home, 'parent')
-            ->create(['allow_user_topics' => false]);
-    }
+    visit(action([SectionController::class, 'show'], ['section' => $this->section]))
+        ->click('[data-bs-target="#addTopicForm"]')
+        ->assertVisible('input#secret[type="checkbox"]')
+        ->assertVisible('input#readonly[type="checkbox"]')
+        ->assertVisible('select[name="weight"]');
+});
 
-    #[Test]
-    public function section_edit_form_has_allow_user_topics_checkbox(): void
-    {
-        $this->browse(function (Browser $browser) {
-            $browser->loginAs($this->moderator)
-                ->visit(action([SectionController::class, 'show'], ['section' => $this->section]));
+test('normal user does not see add topic when disabled', function () {
+    actingAs($this->normalUser);
 
-            // Use JavaScript to show the edit form directly
-            $browser->script("document.querySelector('#section-edit{$this->section->id}').classList.add('show', 'active');");
+    visit(action([SectionController::class, 'show'], ['section' => $this->section]))
+        ->assertDontSee('Add New Topic');
+});
 
-            $browser->pause(300)
-                ->assertPresent('#allow_user_topics_'.$this->section->id)
-                ->assertSee('Allow all users to create topics');
-        });
-    }
+test('normal user sees add topic when enabled', function () {
+    $this->section->update(['allow_user_topics' => true]);
 
-    #[Test]
-    public function moderator_sees_all_topic_options(): void
-    {
-        $this->browse(function (Browser $browser) {
-            $browser->loginAs($this->moderator)
-                ->visit(action([SectionController::class, 'show'], ['section' => $this->section]))
-                ->click('[data-bs-target="#addTopicForm"]')
-                ->waitFor('#addTopicForm.show')
-                ->assertVisible('input#secret[type="checkbox"]')
-                ->assertVisible('input#readonly[type="checkbox"]')
-                ->assertVisible('select[name="weight"]');
-        });
-    }
+    actingAs($this->normalUser);
 
-    #[Test]
-    public function normal_user_does_not_see_add_topic_when_disabled(): void
-    {
-        $this->browse(function (Browser $browser) {
-            $browser->loginAs($this->normalUser)
-                ->visit(action([SectionController::class, 'show'], ['section' => $this->section]))
-                ->assertDontSee('Add New Topic');
-        });
-    }
+    visit(action([SectionController::class, 'show'], ['section' => $this->section]))
+        ->assertSee('Add New Topic');
+});
 
-    #[Test]
-    public function normal_user_sees_add_topic_when_enabled(): void
-    {
-        $this->section->update(['allow_user_topics' => true]);
+test('normal user does not see moderator only options', function () {
+    $this->section->update(['allow_user_topics' => true]);
 
-        $this->browse(function (Browser $browser) {
-            $browser->loginAs($this->normalUser)
-                ->visit(action([SectionController::class, 'show'], ['section' => $this->section]))
-                ->assertSee('Add New Topic');
-        });
-    }
+    actingAs($this->normalUser);
 
-    /**
-     * SLOW (~16s): Multiple assertMissing calls wait for implicit timeout before asserting.
-     */
-    #[Test]
-    #[Group('slow')]
-    public function normal_user_does_not_see_moderator_only_options(): void
-    {
-        $this->section->update(['allow_user_topics' => true]);
+    visit(action([SectionController::class, 'show'], ['section' => $this->section]))
+        ->click('[data-bs-target="#addTopicForm"]')
+        ->assertMissing('input[name="secret"][type="checkbox"]')
+        ->assertMissing('input[name="readonly"][type="checkbox"]')
+        ->assertMissing('select[name="weight"]');
+});
 
-        $this->browse(function (Browser $browser) {
-            $browser->loginAs($this->normalUser)
-                ->visit(action([SectionController::class, 'show'], ['section' => $this->section]))
-                ->click('[data-bs-target="#addTopicForm"]')
-                ->waitFor('#addTopicForm.show')
-                ->assertMissing('input[name="secret"][type="checkbox"]')
-                ->assertMissing('input[name="readonly"][type="checkbox"]')
-                ->assertMissing('select[name="weight"]');
-        });
-    }
+test('normal user can create topic', function () {
+    $this->section->update(['allow_user_topics' => true]);
 
-    /**
-     * SLOW (~31s): waitForText after form submission waits for page content to appear.
-     */
-    #[Test]
-    #[Group('slow')]
-    public function normal_user_can_create_topic(): void
-    {
-        $this->section->update(['allow_user_topics' => true]);
+    actingAs($this->normalUser);
 
-        $this->browse(function (Browser $browser) {
-            $browser->loginAs($this->normalUser)
-                ->visit(action([SectionController::class, 'show'], ['section' => $this->section]))
-                ->click('[data-bs-target="#addTopicForm"]')
-                ->waitFor('#addTopicForm.show')
-                ->type('title', 'My New Topic')
-                ->type('intro', 'This is my topic introduction')
-                ->press('Add Topic')
-                ->waitForText('My New Topic');
+    visit(action([SectionController::class, 'show'], ['section' => $this->section]))
+        ->click('[data-bs-target="#addTopicForm"]')
+        ->type('title', 'My New Topic')
+        ->type('intro', 'This is my topic introduction')
+        ->press('Add Topic')
+        ->assertSee('My New Topic');
 
-            // Verify topic was created with default values
-            $topic = Topic::where('title', 'My New Topic')->first();
-            $this->assertNotNull($topic);
-            $this->assertEquals(0, $topic->secret);
-            $this->assertEquals(0, $topic->readonly);
-            $this->assertEquals(0, $topic->weight);
+    $topic = Topic::where('title', 'My New Topic')->first();
+    expect($topic)->not->toBeNull();
+    expect($topic->secret)->toBe(0);
+    expect($topic->readonly)->toBe(0);
+    expect($topic->weight)->toBe(0);
 
-            // Verify an initial post was created
-            $post = Post::where('topic_id', $topic->id)->first();
-            $this->assertNotNull($post);
-            $this->assertEquals('This is my topic introduction', $post->text);
-            $this->assertEquals($this->normalUser->id, $post->user_id);
-        });
-    }
-}
+    $post = Post::where('topic_id', $topic->id)->first();
+    expect($post)->not->toBeNull();
+    expect($post->text)->toBe('This is my topic introduction');
+    expect($post->user_id)->toBe($this->normalUser->id);
+});

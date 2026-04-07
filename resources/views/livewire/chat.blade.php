@@ -5,7 +5,7 @@
 
             <div class="card mb-sm-3 mb-md-0 h-100">
                 <div class="card-body chat_user_list_container p-0 h-100">
-                    <ul class="list-group list-group-flush chat_user_list overflow-auto h-100 py-1" dusk="chat-list">
+                    <ul class="list-group list-group-flush chat_user_list overflow-auto h-100 py-1" dusk="chat-list" data-test="chat-list">
                         @foreach ($chats as $chat)
                             <x-chat.user :user="$chat->partner" :chat_id="$chat->id" :active="$selectedChat && $selectedChat->id == $chat->id" :is_read="$chat->is_read" />
                         @endforeach
@@ -26,7 +26,7 @@
 
 
                     <div class="card-body p-0 flex-grow-1 h-75">
-                        <div class="pe-2 ps-2 overflow-auto h-100 d-flex flex-column-reverse" dusk="chat-messages">
+                        <div class="pe-2 ps-2 overflow-auto h-100 d-flex flex-column-reverse" dusk="chat-messages" data-test="chat-messages">
                             @foreach ($messages->reverse() as $message)
                                 <x-chat.message :message="$message" />
                             @endforeach
@@ -36,9 +36,9 @@
                     <div class="card-footer flex-shrink-1">
                         <div class="input-group">
                             <input type="text" wire:model="newMessage" wire:keydown.enter="sendMessage"
-                                dusk="chat-input" class="form-control type_msg" placeholder="Type your message...">
+                                dusk="chat-input" data-test="chat-input" class="form-control type_msg" placeholder="Type your message...">
                             <button wire:click="sendMessage" class="btn btn-primary send_btn" type="button"
-                                dusk="chat-send-button">
+                                dusk="chat-send-button" data-test="chat-send-button">
                                 <x-heroicon-s-paper-airplane class="icon_mini" />
                             </button>
                         </div>
