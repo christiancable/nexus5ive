@@ -1,7 +1,7 @@
 @if ($errors->userUpdate->any())
     @include('nexus.forms._errors', ['errors' => $errors->userUpdate->all()])
 @endif
-<form action="{{ route('users.update', $user->username) }}" method="POST" class="form" enctype="multipart/form-data">
+<form action="{{ route('users.update', $user->username) }}" method="POST" class="form">
     @csrf
     @method('PATCH')
 
@@ -56,7 +56,7 @@
 <div class="row d-flex align-items-center">
     <div class="mb-3 col-12 col-md-6">
         <label for="theme" class="me-3">Theme</label>
-        <select name="theme_id" class="form-select form-select" dusk="theme_select">
+        <select name="theme_id" class="form-select form-select" dusk="theme_select" data-test="theme_select">
             @foreach($themes as $themeId => $themeName)
                 <option value="{{ $themeId }}" {{ $user->theme->id == $themeId ? 'selected' : '' }}>{{ $themeName }}</option>
             @endforeach

@@ -10,3 +10,11 @@ parameters:
     level: 5
 
     treatPhpDocTypesAsCertain: false
+
+    ignoreErrors:
+        # Laravel view() helper uses string literals that are valid view paths,
+        # but PHPStan cannot verify view-string types statically for these scaffold files.
+        - identifier: argument.type
+          paths:
+              - app/View/Components
+              - app/Http/Controllers/Auth/ConfirmablePasswordController.php

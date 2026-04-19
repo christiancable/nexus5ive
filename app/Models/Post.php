@@ -4,6 +4,7 @@ namespace App\Models;
 
 /**
  * @property \App\Models\Topic $topic
+ * @property \Carbon\Carbon|null $time
  */
 
 use App\Events\MostRecentPostForSectionBecameDirty;

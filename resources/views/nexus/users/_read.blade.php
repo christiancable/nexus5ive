@@ -1,15 +1,15 @@
 
 <div class="row mb-3">
 
-    <dl class="col">        
+    <dl class="col">
     @if ($user->private != true)
         <dt>Email</dt><dd><a href="mailto:{{$user->email}}">{{$user->email}}</a></dd>
-    @else
-        <dt>Email</dt><dd><em>Hidden</em></dd>
-    @endif
         <dt>Location</dt><dd>{{$user->location}}</dd>
         <dt>Favourite Film</dt><dd>{{$user->favouriteMovie}}</dd>
         <dt>Favourite Band</dt><dd>{{$user->favouriteMusic}}</dd>
+    @else
+        <dt>Email</dt><dd><em>Hidden</em></dd>
+    @endif
     </dl>
 
     <div class="col">

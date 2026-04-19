@@ -1,0 +1,27 @@
+// Nexus 2 — DOS theme
+
+// Standalone partials (pure CSS, no Bootstrap dependencies — safe to precede Bootstrap)
+@use '_livewire' as *;
+@use '_hero_icons' as *;
+@use '_youtube' as *;
+@use '_images' as *;
+@use '_spoiler' as *;
+@use '_blockquote' as *;
+
+@import '_nexus2_variables';
+
+@import 'bootstrap/scss/bootstrap';
+
+@import '_links';
+@import '_chat';
+@import '_footer_nav';
+@import '_ios_tweaks';
+
+// Spoiler text — hidden until hover, dark on dark
+.spoiler {
+    background: $dos-dark-gray;
+    color: $dos-dark-gray;
+    &:hover {
+        color: $dos-bright-green;
+    }
+}

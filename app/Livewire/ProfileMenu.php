@@ -38,7 +38,7 @@ class ProfileMenu extends Component
         $this->commentsCount = $this->user->newCommentCount();
         $this->messagesCount = $this->user->unreadChatCount();
         $this->notificationCount = $this->commentsCount + $this->messagesCount;
-        $this->unreadChats = $this->user->unreadChats;
+        $this->unreadChats = $this->user->unreadChats()->get();
 
         // administrator see a count of open moderation reports with their notifications
         if ($this->user->isAdmin()) {

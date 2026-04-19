@@ -44,6 +44,7 @@ class CommentController extends Controller
     public function destroy(DestroyComment $request, Comment $comment)
     {
         $comment->delete();
+
         return redirect()->route('users.show', ['user' => $request->user()]);
     }
 
@@ -54,6 +55,10 @@ class CommentController extends Controller
      */
     public function destroyAll(Request $request)
     {
+        if ($request->user()->cannot('update', $request->user())) {
+            abort(403);
+        }
+
         $request->user()->clearComments();
 
         return back();

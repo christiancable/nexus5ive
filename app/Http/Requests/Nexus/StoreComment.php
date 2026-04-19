@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Nexus;
 
+use App\Models\Comment;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreComment extends FormRequest
@@ -15,12 +16,10 @@ class StoreComment extends FormRequest
 
     /**
      * Determine if the user is authorized to make this request.
-     *
-     * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
-        return true;
+        return $this->user()->can('create', Comment::class);
     }
 
     /**

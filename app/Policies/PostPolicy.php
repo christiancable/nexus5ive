@@ -28,6 +28,10 @@ class PostPolicy
      */
     public function create(User $user, Topic $topic)
     {
+        if ($user->is_guest) {
+            return false;
+        }
+
         // admins can always create new posts
         if ($user->administrator) {
             return true;

@@ -4,6 +4,6 @@
     <input type="hidden" name="user_id" value="{{ $user->id }}">
     
     <div class="mb-3">
-        <button type="submit" class="btn btn-danger form-control" dusk="btn-clear-all-comments">Clear All Comments</button>
+        <button type="submit" class="btn btn-danger form-control" dusk="btn-clear-all-comments" data-test="btn-clear-all-comments">Clear All Comments</button>
     </div>
 </form>

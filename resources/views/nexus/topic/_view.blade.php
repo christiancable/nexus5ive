@@ -25,7 +25,7 @@ $topicLink = action('App\Http\Controllers\Nexus\TopicController@show', ['topic' 
                     @else
                     <x-profile-link :user="$topic->most_recent_post->author" /> 
                     @endif
-                    {{ $topic->most_recent_post->time->diffForHumans() }}
+                    {{ $topic->most_recent_post->time?->diffForHumans() ?? 'Date unknown' }}
                 </p>
             </footer>
         @endif

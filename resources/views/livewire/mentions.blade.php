@@ -9,9 +9,9 @@
                     role="button"
                     :aria-expanded="open"
                     id="mentiondropdown"
-                    dusk='mentions-menu-toggle'>
+                    dusk='mentions-menu-toggle' data-test='mentions-menu-toggle'>
                     <x-heroicon-s-bell-alert class="icon_mini me-1" aria-hidden="true" />
-                    <span class="badge  text-bg-danger" dusk='mentions-count'>{{ $mentionsCount }}</span>
+                    <span class="badge  text-bg-danger" dusk='mentions-count' data-test='mentions-count'>{{ $mentionsCount }}</span>
                 </a>
 
                 <div wire:ignore.self 
@@ -32,7 +32,7 @@
 
 
                     <button type="submit" class="btn btn-link dropdown-item" id="Clear All Mentions"
-                        dusk="mentions-clear" wire:click="clearMentions">
+                        dusk="mentions-clear" data-test="mentions-clear" wire:click="clearMentions">
                         <x-heroicon-s-check class="icon_mini me-1" aria-hidden="true" />Clear All
                         Mentions
                     </button>

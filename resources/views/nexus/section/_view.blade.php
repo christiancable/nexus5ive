@@ -49,7 +49,7 @@
 		action('App\Http\Controllers\Nexus\TopicController@show', ['topic' => $subSection->most_recent_post->topic->id])}}">
                         {{-- @todo egear load the most_recent_post->topic --}}
                         {{ $subSection->most_recent_post->topic->title }}</a>,
-                    {{ $subSection->most_recent_post->time->diffForHumans() }}
+                    {{ $subSection->most_recent_post->time?->diffForHumans() ?? 'Date unknown' }}
             </p>
     @endif
     </footer>

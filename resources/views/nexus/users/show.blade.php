@@ -11,7 +11,7 @@
 @section('content')
     <div class="container">
 
-        @if (Auth::user()->id == $user->id)
+        @if (Auth::user()->id == $user->id && Auth::user()->can('update', $user))
             <x-heading heading="{{ $user->username }}" />
             @include('nexus.users._edit', $user)
         @else
@@ -21,7 +21,9 @@
 
         <h2 id="comments">Comments</h2>
 
-        @include('nexus.comments.create', $user)
+        @can('create', App\Models\Comment::class)
+            @include('nexus.comments.create', $user)
+        @endcan
 
         @if (count($comments))
             <table class="table table-striped user-comments">
@@ -35,7 +37,7 @@
                     @endforeach
                 </tbody>
             </table>
-            @if (Auth::user()->id == $user->id)
+            @if (Auth::user()->id == $user->id && Auth::user()->can('update', $user))
                 @include('nexus.comments._clear', $user)
             @endif
             {{ $comments->links() }}

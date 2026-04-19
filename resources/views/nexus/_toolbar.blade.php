@@ -35,7 +35,7 @@
                     <li class="nav-item">
                         <a {!! App\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Catch-Up') !!}
                             href="{{ action('App\Http\Controllers\Nexus\SectionController@leap') }}"
-                            class="nav-link me-1" dusk="toolbar-next">
+                            class="nav-link me-1" dusk="toolbar-next" data-test="toolbar-next">
                             <x-heroicon-s-arrow-right-circle class="icon_mini me-1" aria-hidden="true" />Next</a>
                     </li>
 

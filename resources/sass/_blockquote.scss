@@ -5,17 +5,17 @@ blockquote {
   background-color: rgba(0, 0, 0, 0.03);
   border-radius: 0.5rem;
   font-style: italic;
-  color: $body-color;
+  color: var(--bs-body-color);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 blockquote::before {
-  content: "“";
+  content: "\201C";
   position: absolute;
   top: 1rem;
   left: 1rem;
   font-size: 3rem;
-  color: $primary;
+  color: var(--bs-primary);
   opacity: 0.3;
   line-height: 1;
   pointer-events: none;
