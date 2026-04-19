@@ -1,8 +1,8 @@
 <ul class="nav navbar-nav" wire:poll.{{ $pollingInterval }}s="fetchNotifications">
     <li class="dropdown nav-item" x-data="{ open: false }">
 
-        <a href="#" class="dropdown-toggle nav-link" aria-haspopup="true" aria-expanded="false" wire:click.prevent
-            @click="open = !open" id="profiledropdown">
+        <a href="#" class="dropdown-toggle nav-link" aria-haspopup="true" aria-expanded="false"
+            @click.prevent="open = !open" id="profiledropdown">
             {{ $user->username }} &ndash; {{ $user->popname }}
             @if ($notificationCount)
                 <span class="badge text-bg-danger">{{ $notificationCount }}</span>
