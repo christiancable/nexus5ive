@@ -2,6 +2,14 @@ import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 
 export default defineConfig({
+    css: {
+        preprocessorOptions: {
+            scss: {
+                // Bootstrap 5.x uses deprecated Sass features internally; silence until Bootstrap 6
+                silenceDeprecations: ['import', 'global-builtin', 'color-functions', 'if-function'],
+            },
+        },
+    },
     plugins: [
         laravel({
             input: [
