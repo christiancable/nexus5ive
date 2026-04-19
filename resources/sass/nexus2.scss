@@ -1,16 +1,19 @@
 // Nexus 2 — DOS theme
+
+// Standalone partials (pure CSS, no Bootstrap dependencies — safe to precede Bootstrap)
+@use '_livewire' as *;
+@use '_hero_icons' as *;
+@use '_youtube' as *;
+@use '_images' as *;
+@use '_spoiler' as *;
+@use '_blockquote' as *;
+
 @import '_nexus2_variables';
 
 @import 'bootstrap/scss/bootstrap';
 
 @import '_links';
-@import '_blockquote';
-@import '_spoiler';
-@import '_livewire';
-@import '_hero_icons';
-@import '_youtube';
 @import '_chat';
-@import '_images';
 @import '_footer_nav';
 @import '_ios_tweaks';
 
