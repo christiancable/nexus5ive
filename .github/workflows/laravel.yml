@@ -51,7 +51,10 @@ jobs:
     - name: Build with Vite
       run: npm run build 2>/dev/null || npm run build
 
-    - name: Execute PHP tests (Unit and Feature tests) via PHPUnit
+    - name: Install Playwright browsers
+      run: npx playwright install --with-deps chromium
+
+    - name: Execute PHP tests (Unit, Feature, and Browser)
       env:
         DB_CONNECTION: mysql
         DB_HOST: 127.0.0.1

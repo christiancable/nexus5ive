@@ -1,109 +1,54 @@
 <?php
 
-namespace Tests\Browser;
-
 use App\Models\Post;
 use App\Models\Section;
 use App\Models\Topic;
 use App\Models\User;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use PHPUnit\Framework\Attributes\Group;
-use PHPUnit\Framework\Attributes\Test;
-use Tests\DuskTestCase;
+use function Pest\Laravel\actingAs;
 
-class MentionsTest extends DuskTestCase
-{
-    use DatabaseMigrations;
+beforeEach(function () {
+    $this->user = User::factory()->create();
+    $this->anotherUser = User::factory()->create();
+    $this->home = Section::factory()->create([
+        'parent_id' => null,
+        'user_id' => $this->user->id,
+    ]);
+    $this->topic = Topic::factory()->create([
+        'section_id' => $this->home->id,
+    ]);
+});
 
-    protected $user;
+test('user with no mentions does not see option to clear mentions', function () {
+    actingAs($this->user);
 
-    protected $home;
+    visit('/')
+        ->assertMissing('@mentions-count');
+});
 
-    protected $topic;
+test('user with mentions can see they have mentions', function () {
+    $post = Post::factory()->create([
+        'topic_id' => $this->topic->id,
+        'user_id' => $this->anotherUser->id,
+    ]);
+    $this->user->addMention($post);
 
-    protected $anotherUser;
+    actingAs($this->user);
 
-    protected function setUp(): void
-    {
-        parent::setUp();
+    visit('/')
+        ->assertPresent('@mentions-count');
+});
 
-        $this->user = User::factory()->create();
-        $this->anotherUser = User::factory()->create();
-        $this->home = Section::factory()->create([
-            'parent_id' => null,
-            'user_id' => $this->user->id,
-        ]);
-        $this->topic = Topic::factory()->create([
-            'section_id' => $this->home->id,
-        ]);
-    }
+test('user with mentions can clear mentions', function () {
+    $post = Post::factory()->create([
+        'topic_id' => $this->topic->id,
+        'user_id' => $this->anotherUser->id,
+    ]);
+    $this->user->addMention($post);
 
-    /**
-     * SLOW (~6s): assertMissing waits for implicit timeout before asserting element is absent.
-     */
-    #[Test]
-    #[Group('slow')]
-    public function userWithNoMentionsDoesNotSeeOptionToClearMentions(): void
-    {
-        $user = $this->user;
+    actingAs($this->user);
 
-        $this->browse(function ($browser) use ($user) {
-            $browser->loginAs($user)
-                ->visit('/')
-                ->assertMissing('@mentions-count');
-        });
-    }
-
-    #[Test]
-    public function userWithMentionsCanSeeTheyHaveMentions(): void
-    {
-        // GIVEN we have a user with no mentions
-        $user = $this->user;
-
-        // WHEN that user is mentioned in a topic
-        $post = Post::factory()->create([
-            'topic_id' => $this->topic->id,
-            'user_id' => $this->anotherUser->id,
-        ]);
-        $this->user->addMention($post);
-
-        $this->browse(function ($browser) use ($user) {
-            // THEN the user can see they have mentions
-            $browser->loginAs($user)
-                ->visit('/')
-                ->assertPresent('@mentions-count');
-        });
-    }
-
-    /**
-     * SLOW (~11s): waitUntilMissing has implicit wait timeout for element to disappear.
-     */
-    #[Test]
-    #[Group('slow')]
-    public function userWithMentionsCanClearMentions(): void
-    {
-        // GIVEN we have a user with no mentions
-        $user = $this->user;
-
-        // WHEN that user is mentioned in a topic
-        $post = Post::factory()->create([
-            'topic_id' => $this->topic->id,
-            'user_id' => $this->anotherUser->id,
-        ]);
-        $this->user->addMention($post);
-
-        $this->browse(function ($browser) use ($user) {
-            // WHEN the user clears all mentions
-            $browser->loginAs($user);
-
-            $browser
-                ->visit('/')
-                ->click('@mentions-menu-toggle')
-                ->press('@mentions-clear')
-                ->waitUntilMissing('@mentions-count');
-
-            // THEN the user no-longer sees they have mentions
-            $browser->assertMissing('@mentions-count');
-        });
-    }
-}
+    visit('/')
+        ->click('@mentions-menu-toggle')
+        ->press('@mentions-clear')
+        ->assertMissing('@mentions-count');
+});
