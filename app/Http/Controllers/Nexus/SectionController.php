@@ -6,6 +6,7 @@ use App\Helpers\ActivityHelper;
 use App\Helpers\BreadcrumbHelper;
 use App\Helpers\FlashHelper;
 use App\Helpers\TopicHelper;
+use App\Helpers\ViewHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Nexus\StoreSection;
 use App\Http\Requests\Nexus\UpdateSection;
@@ -197,26 +198,19 @@ class SectionController extends Controller
     public function leap(Request $request)
     {
         $views = View::subscribed()
-            ->with('topic')
+            ->with('topic.latestPostByTime')
             ->where('user_id', $request->user()->id)
-            ->get();
+            ->get()
+            ->sortByDesc(fn ($view) => $view->topic->latestPostByTime?->time->timestamp ?? 0);
 
-        $updatedView = $views->first(function ($view) {
-            $postTime = $view->topic->most_recent_post_time;
+        $updatedView = $views->first(fn ($view) => ViewHelper::viewHasUnreadPosts($view));
 
-            return $postTime && $view->latest_view_date->timestamp != $postTime->timestamp;
-        });
-
-        if ($updatedView != null) {
+        if ($updatedView !== null) {
             $destinationTopic = $updatedView->topic;
 
-            // set alert
-            $topicURL = action('App\Http\Controllers\Nexus\TopicController@show', ['topic' => $destinationTopic->id]);
-            // force the url to be relative so we don't later make this open in the new window
-            $topicURL = str_replace(url('/'), '', $topicURL);
+            $topicURL = action('App\Http\Controllers\Nexus\TopicController@show', ['topic' => $destinationTopic->id], false);
             $topicTitle = $destinationTopic->title;
-            $subscribeAllURL = action('App\Http\Controllers\Nexus\TopicController@markAllSubscribedTopicsAsRead');
-            $subscribeAllURL = str_replace(url('/'), '', $subscribeAllURL);
+            $subscribeAllURL = action('App\Http\Controllers\Nexus\TopicController@markAllSubscribedTopicsAsRead', [], false);
             $message = <<< Markdown
 People have been talking! New posts found in **[$topicTitle]($topicURL)**
 
@@ -224,17 +218,13 @@ Seeing too many old topics then **[mark all subscribed topics as read]($subscrib
 Markdown;
             FlashHelper::showAlert($message, 'success');
 
-            // redirect to the parent section of the unread topic
             return redirect()->action(
                 'App\Http\Controllers\Nexus\SectionController@show',
                 ['section' => $destinationTopic->section->id]
             );
         } else {
-            // set alert
             $message = 'No updated topics found. Why not start a new conversation or read more sections?';
             FlashHelper::showAlert($message, 'warning');
-
-            // redirect to main menu
 
             $home = Section::firstOrFail();
 

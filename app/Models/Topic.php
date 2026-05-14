@@ -6,13 +6,17 @@ use App\Events\MostRecentPostForSectionBecameDirty;
 use App\Events\TreeCacheBecameDirty;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Log;
 
 /**
- * @property-read \App\Models\Section $section
- * @property-read \App\Models\Post|null $most_recent_post
+ * @property-read Section $section
+ * @property-read Post|null $most_recent_post
  */
 class Topic extends Model
 {
@@ -81,7 +85,7 @@ class Topic extends Model
      * returns the time of the most recent post
      * if the topic has no posts then return the created time of the topic
      */
-    public function getMostRecentPostTimeAttribute(): ?\Illuminate\Support\Carbon
+    public function getMostRecentPostTimeAttribute(): ?Carbon
     {
 
         $latestPost = Post::select('time')
@@ -95,19 +99,30 @@ class Topic extends Model
             $result = $this->created_at;
         }
 
-        return $result instanceof \Illuminate\Support\Carbon ? $result : null;
+        return $result instanceof Carbon ? $result : null;
     }
 
     // phpcs:disable PSR1.Methods.CamelCapsMethodName
-    /** @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Post, $this> */
-    public function most_recent_post(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    /** @return BelongsTo<Post, $this> */
+    public function most_recent_post(): BelongsTo
     {
         // phpcs:enable
         return $this->belongsTo(Post::class);
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<Section, $this>
+     * The post with the latest non-null time value, eagerly loadable without N+1.
+     * Equivalent to getMostRecentPostTimeAttribute but usable in with().
+     *
+     * @return HasOne<Post, $this>
+     */
+    public function latestPostByTime(): HasOne
+    {
+        return $this->hasOne(Post::class)->ofMany('time', 'max');
+    }
+
+    /**
+     * @return BelongsTo<Section, $this>
      */
     public function section()
     {
@@ -115,7 +130,7 @@ class Topic extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany<Post, $this>
+     * @return HasMany<Post, $this>
      */
     public function posts()
     {
@@ -125,7 +140,7 @@ class Topic extends Model
     /**
      * posts but in reverse order
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany<Post, $this>
+     * @return HasMany<Post, $this>
      */
     public function reversedPosts()
     {
@@ -133,7 +148,7 @@ class Topic extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany<View, $this>
+     * @return HasMany<View, $this>
      */
     public function views()
     {

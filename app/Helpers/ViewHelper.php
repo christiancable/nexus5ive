@@ -48,32 +48,43 @@ class ViewHelper
     }
 
     /**
-     * reports if a given topic has been updated since the a user last read
+     * Reports whether a topic has posts newer than when the user last read it.
+     * Requires the View to have topic and topic.most_recent_post already loaded
+     * to avoid N+1 queries.
+     */
+    public static function viewHasUnreadPosts(View $view): bool
+    {
+        $postTime = $view->topic->latestPostByTime?->time;
+
+        if (! $postTime) {
+            return false;
+        }
+
+        return $postTime->timestamp !== $view->latest_view_date->timestamp;
+    }
+
+    /**
+     * Reports if a given topic has been updated since the user last read it.
      *
      * @param  User  $user  - the user
      * @param  Topic  $topic  - a topic
      * @return bool has the topic being updated or not
      */
-    public static function topicHasUnreadPosts(User $user, Topic $topic)
+    public static function topicHasUnreadPosts(User $user, Topic $topic): bool
     {
-        $return = true;
-        $mostRecentlyReadPostDate = \App\Helpers\ViewHelper::getReadProgress($user, $topic);
+        $latestViewDate = static::getReadProgress($user, $topic);
 
-        if ($mostRecentlyReadPostDate) {
-            if ($mostRecentlyReadPostDate != $topic->most_recent_post_time) {
-                $return = true;
-            } else {
-                $return = false;
-            }
-        } else {
-            $return = false;
+        if (! $latestViewDate) {
+            return false;
         }
 
-        if (! $topic->most_recent_post_time) {
-            $return = false;
+        $postTime = $topic->most_recent_post_time;
+
+        if (! $postTime) {
+            return false;
         }
 
-        return $return;
+        return $postTime->gt($latestViewDate);
     }
 
     /**
@@ -91,7 +102,7 @@ class ViewHelper
             'unsubscribed' => false,
         ];
 
-        $mostRecentlyReadPostDate = \App\Helpers\ViewHelper::getReadProgress($user, $topic);
+        $mostRecentlyReadPostDate = ViewHelper::getReadProgress($user, $topic);
         $mostRecentPostDate = $topic->most_recent_post_time;
 
         $view = View::where('topic_id', $topic->id)->where('user_id', $user->id)->first();
