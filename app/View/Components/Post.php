@@ -2,6 +2,7 @@
 
 namespace App\View\Components;
 
+use App\Helpers\NxCodeHelper;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
@@ -57,7 +58,7 @@ class Post extends Component
             $this->formattedTime = $post->time->format('D, F jS Y - H:i');
         }
 
-        $this->content = \App\Helpers\NxCodeHelper::nxDecode($post->text);
+        $this->content = NxCodeHelper::nxDecode($post->text);
 
         // if this post has been edited then show details of who edited it
         $this->editedByInfo = null;
@@ -66,7 +67,7 @@ class Post extends Component
             if ($this->anonymous) {
                 $this->editedByInfo = "Edited by <strong>Anonymous</strong> around {$post->updated_at->diffForHumans()}";
             } else {
-                $this->editedByInfo = "Edited by <strong>{$post->editor->username}</strong> at {$post->updated_at->format('D, F jS Y - H:i')}";
+                $this->editedByInfo = 'Edited by <strong>'.e($post->editor->username).'</strong> at '.$post->updated_at->format('D, F jS Y - H:i');
             }
         }
     }

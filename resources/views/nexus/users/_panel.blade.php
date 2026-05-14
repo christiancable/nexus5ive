@@ -8,7 +8,7 @@
         @endif
 
         <p class="card-text text-secondary">
-            {!! ($user->popname) ? "<q><em>$user->popname</em></q>" : "<br>" !!}
+            @if($user->popname)<q><em>{{ $user->popname }}</em></q>@else<br>@endif
         </p>
 
         <div class="row text-secondary mb-3">
