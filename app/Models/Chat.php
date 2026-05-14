@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Chat extends Model
@@ -18,10 +20,14 @@ class Chat extends Model
         return $this->hasMany(ChatMessage::class);
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne<User, $this>
-     */
-    public function partner()
+    /** @return MorphMany<Report, $this> */
+    public function reports(): MorphMany
+    {
+        return $this->morphMany(Report::class, 'reportable');
+    }
+
+    /** @return HasOne<User, $this> */
+    public function partner(): HasOne
     {
         return $this->hasOne(User::class, 'id', 'partner_id');
     }

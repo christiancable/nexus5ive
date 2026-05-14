@@ -90,7 +90,6 @@ class ReportController extends Controller
         $action = match ($type) {
             'post' => action('App\Http\Controllers\Nexus\TopicController@show', ['topic' => $reportable->topic->id]),
             'chat' => action('App\Http\Controllers\Nexus\ChatController@index'),
-            default => action('App\Http\Controllers\Nexus\SectionController@index'),
         };
 
         return redirect($action);
