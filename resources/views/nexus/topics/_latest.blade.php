@@ -1,20 +1,15 @@
 <?php
-$status = \App\Helpers\ViewHelper::getTopicStatus(Auth::user(), $topic);
+$latestPost = $topic->latestPostByTime;
+$view = $views[$topic->id] ?? null;
+$status = \App\Helpers\ViewHelper::getTopicStatus(Auth::user(), $topic, $view);
 
-// author display
-$authorUrl = action('App\Http\Controllers\Nexus\UserController@show', ['user' => $topic->most_recent_post->author->username]);
-$authorName = $topic->most_recent_post->author->username;
-        
-// remove the spoilers
 $pattern = '/\[spoiler-\](.*)\[-spoiler\]/iU';
-$unspoiled = preg_replace($pattern, 'XXXXXX', $topic->most_recent_post->text);
 
 $replyLink = action('App\Http\Controllers\Nexus\TopicController@show', [
     'topic' => $topic->id,
     'reply' => true
 ]);
 
-// links
 $sectionLink = action('App\Http\Controllers\Nexus\SectionController@show', ['section' => $topic->section->id]);
 $topicLink = action('App\Http\Controllers\Nexus\TopicController@show', ['topic' => $topic->id]);
 ?>
@@ -26,22 +21,24 @@ $topicLink = action('App\Http\Controllers\Nexus\TopicController@show', ['topic' 
             <x-heroicon-s-bookmark class="icon_large text-warning position-absolute top-0 end-0 mt-2 me-2" title="Sticky" />
         @endif
         <x-topic-heading title="{{ $topic->title }}" :link=$topicLink :status=$status />
-        
+
+        @if($latestPost)
         <small class="card-subtitle mb-2 text-muted">
-            Latest post {{ $topic->most_recent_post->time?->diffForHumans() ?? 'Date unknown' }} by
+            Latest post {{ $latestPost->time?->diffForHumans() ?? 'Date unknown' }} by
             @if ($topic->secret)
                 <strong>Anonymous</strong>
             @else
-                <x-profile-link :url=$authorUrl :username=$authorName />
+                <x-profile-link :url="action('App\Http\Controllers\Nexus\UserController@show', ['user' => $latestPost->author->username])" :username="$latestPost->author->username" />
             @endif
-            in 
+            in
             <a href="{{$sectionLink}}">{{$topic->section->title}}</a>
         </small>
+        @endif
         </div>
-        @if($status['unsubscribed'] != true)
+        @if(!$status['unsubscribed'] && $latestPost)
             <div class="card-body">
                     <p class="card-text text-muted">
-                        <em>{!! substr(strip_tags(App\Helpers\NxCodeHelper::nxDecode($unspoiled)), 0, 140) !!}</em>&hellip;
+                        <em>{!! substr(strip_tags(App\Helpers\NxCodeHelper::nxDecode(preg_replace($pattern, 'XXXXXX', $latestPost->text))), 0, 140) !!}</em>&hellip;
                     </p>
                     @can('create', [App\Models\Post::class, $topic])
                     <footer class="d-flex justify-content-end">
@@ -49,6 +46,5 @@ $topicLink = action('App\Http\Controllers\Nexus\TopicController@show', ['topic' 
                     </footer>
                     @endcan
             </div>
-        @endif 
+        @endif
 </div>
-

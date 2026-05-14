@@ -55,9 +55,7 @@ ORDER BY tt.id desc limit $maxresults
 SQL;
 
         $allTopicIDs = Arr::pluck(\DB::select($sql), 'topic_id');
-        // $topics = \App\Topic::with('most_recent_post', 'most_recent_post.author', 'section')
-        // removed most_recent_post from the eager loading here as it was killing memory in large forums
-        $topics = Topic::with('section')
+        $topics = Topic::with(['section', 'latestPostByTime.author'])
             ->whereIn('id', $allTopicIDs)->get();
 
         // sorting here rather than in SQL because FIELD is MySQL only and so fails tests

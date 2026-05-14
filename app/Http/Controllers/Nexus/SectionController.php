@@ -179,6 +179,12 @@ class SectionController extends Controller
     {
         $heading = 'Latest Posts';
         $topics = TopicHelper::recentTopics();
+
+        $views = View::where('user_id', $request->user()->id)
+            ->whereIn('topic_id', $topics->pluck('id'))
+            ->get()
+            ->keyBy('topic_id');
+
         $breadcrumbs = BreadcrumbHelper::breadcumbForUtility($heading);
 
         ActivityHelper::updateActivity(
@@ -187,7 +193,7 @@ class SectionController extends Controller
             action('App\Http\Controllers\Nexus\SectionController@latest')
         );
 
-        return view('nexus.topics.unread', compact('topics', 'breadcrumbs'));
+        return view('nexus.topics.unread', compact('topics', 'breadcrumbs', 'views'));
     }
 
     /**

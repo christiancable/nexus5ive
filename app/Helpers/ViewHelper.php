@@ -92,9 +92,10 @@ class ViewHelper
      *
      * @param  User  $user  - the user
      * @param  Topic  $topic  - a topic
+     * @param  View|null  $view  - pre-loaded View record to avoid extra queries
      * @return array - of status values
      */
-    public static function getTopicStatus(User $user, Topic $topic)
+    public static function getTopicStatus(User $user, Topic $topic, ?View $view = null): array
     {
         $status = [
             'new_posts' => false,
@@ -102,23 +103,28 @@ class ViewHelper
             'unsubscribed' => false,
         ];
 
-        $mostRecentlyReadPostDate = ViewHelper::getReadProgress($user, $topic);
-        $mostRecentPostDate = $topic->most_recent_post_time;
+        $view = $view ?? View::where('topic_id', $topic->id)->where('user_id', $user->id)->first();
 
-        $view = View::where('topic_id', $topic->id)->where('user_id', $user->id)->first();
-
-        if ($view !== null) {
-            if ($view->unsubscribed != 0) {
-                $status['unsubscribed'] = true;
-            }
-
-            if ($mostRecentPostDate !== null && $mostRecentlyReadPostDate !== false) {
-                if ($mostRecentPostDate->gt($mostRecentlyReadPostDate)) {
-                    $status['new_posts'] = true;
-                }
-            }
-        } else {
+        if ($view === null) {
             $status['never_read'] = true;
+
+            return $status;
+        }
+
+        if ($view->unsubscribed) {
+            $status['unsubscribed'] = true;
+        }
+
+        $mostRecentPostDate = $topic->relationLoaded('latestPostByTime')
+            ? $topic->latestPostByTime?->time
+            : $topic->most_recent_post_time;
+
+        $latestViewDate = $view->latest_view_date;
+
+        if ($mostRecentPostDate !== null && $latestViewDate !== null) {
+            if ($mostRecentPostDate->gt($latestViewDate)) {
+                $status['new_posts'] = true;
+            }
         }
 
         return $status;
