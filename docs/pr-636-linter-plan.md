@@ -9,7 +9,7 @@
 | 3 | Create `StoreReport` + `UpdateReport` Form Requests | ✅ Done |
 | 4 | Add return type hints to `ReportController` | ✅ Done |
 | 5 | Audit and update config files against Laravel 13 defaults | ✅ Done |
-| 6 | Broad type hints pass (167 methods across all controllers/models) | ⏳ Deferred |
+| 6 | Broad type hints pass (167 methods across all controllers/models) | ✅ Done |
 | 7 | Non-resource controller refactor | ❌ Skipped |
 
 ---
@@ -50,13 +50,15 @@
 
 ---
 
-## Deferred: Broad type hints pass
+### 6. Broad type hints pass
 
-167 methods across controllers and models are missing return type hints. The Shift recommendation is to use the [Laravel Shift Workbench](https://laravelshift.com/workbench) *Laravel Type Hints* task to automate this. Doing it manually carries a high typo risk with limited benefit.
+39 files (controllers, models, Form Requests, Livewire components) received PHP 8 return type declarations.
 
-Files with the most missing hints:
-- `app/Models/` — 68 methods (Eloquent relationships, scopes, accessors)
-- `app/Http/Controllers/Nexus/` — 45 controller action methods
+**Key decisions:**
+- Livewire action methods that `return redirect()` were left untyped — Livewire 4 returns its own `Livewire\Features\SupportRedirects\Redirector` class (not `Illuminate\Http\RedirectResponse`), so declaring `RedirectResponse` causes a runtime `TypeError` that manifests as a 403 abort in the Livewire request handler. Affected methods: `PostCompose::save()`, `SearchMenu::performSearch()`.
+- Eloquent relationship methods typed with specific relation classes (`BelongsTo`, `HasMany`, `HasOne`, `MorphTo`, `MorphMany`).
+- `Userlist::fetchUsers()` annotated with `@return Collection<int, User>` PHPDoc alongside the PHP type hint so PHPStan can resolve the generic element type.
+- Pre-existing PHPStan errors left untouched: `RestoreController` (`HasMany::onlyTrashed()` — Larastan limitation), `Nexus2/Importer` (`usort` unresolvable type).
 
 ## Skipped: Non-resource controller actions
 
