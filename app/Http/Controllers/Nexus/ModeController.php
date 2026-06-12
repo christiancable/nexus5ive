@@ -7,15 +7,14 @@ use App\Helpers\BreadcrumbHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Mode;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class ModeController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\View\View
      */
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         ActivityHelper::updateActivity(
             $request->user()->id,
@@ -33,60 +32,33 @@ class ModeController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return void
      */
-    public function create()
+    public function create(): void
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @return void
-     */
-    public function store(Request $request)
+    public function store(Request $request): void
     {
         //
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @return void
-     */
-    public function show(Mode $mode)
+    public function show(Mode $mode): void
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @return void
-     */
-    public function edit(Mode $mode)
+    public function edit(Mode $mode): void
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @return void
-     */
-    public function update(Request $request, Mode $mode)
+    public function update(Request $request, Mode $mode): void
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @return void
-     */
-    public function destroy(Mode $mode)
+    public function destroy(Mode $mode): void
     {
         //
     }

@@ -9,10 +9,11 @@ use App\Models\Chat;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\View\View;
 
 class ChatController extends Controller
 {
-    public function index(Request $request, ?User $user)
+    public function index(Request $request, ?User $user): View
     {
         Gate::authorize('viewAny', Chat::class);
 

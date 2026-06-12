@@ -7,6 +7,7 @@ use App\Helpers\BreadcrumbHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Nexus\SearchRequest;
 use App\Models\Post;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -18,10 +19,8 @@ class SearchController extends Controller
 
     /**
      * Display a search page
-     *
-     * @return View
      */
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         $text = 'Search';
         $results = null;
@@ -42,7 +41,7 @@ class SearchController extends Controller
     /**
      * submit the search request
      */
-    public function submitSearch(SearchRequest $request)
+    public function submitSearch(SearchRequest $request): RedirectResponse
     {
         $input = $request->all();
         $searchText = $input['text'];
@@ -54,14 +53,12 @@ class SearchController extends Controller
      * perform a search against all the posts and
      * return some results
      *
-     * @param  string  $text
-     * @return View
      *
      * @todo - ignore word order
      * @todo - remove stop words
      * @todo - deal with exact phrases
      */
-    public function find(Request $request, $text)
+    public function find(Request $request, string $text): View
     {
 
         $phraseSearch = false;

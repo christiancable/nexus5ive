@@ -17,10 +17,8 @@ class StoreTopic extends FormRequest
 
     /**
      * Determine if the user is authorized to make this request.
-     *
-     * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         $section = Section::findOrFail($this->input('section_id'));
 
@@ -30,10 +28,8 @@ class StoreTopic extends FormRequest
 
     /**
      * Get the validation rules that apply to the request.
-     *
-     * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'title' => 'required',
@@ -51,9 +47,8 @@ class StoreTopic extends FormRequest
      *
      * @param  string|null  $key
      * @param  mixed  $default
-     * @return mixed
      */
-    public function validated($key = null, $default = null)
+    public function validated($key = null, $default = null): mixed
     {
         $validated = parent::validated($key, $default);
 
@@ -73,7 +68,7 @@ class StoreTopic extends FormRequest
         return $validated;
     }
 
-    public function messages()
+    public function messages(): array
     {
         return [
             'title.required' => 'Title is required. Think of this as the subject to be discussed',

@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class View extends Model
@@ -15,13 +17,13 @@ class View extends Model
         'deleted_at' => 'datetime',
     ];
 
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<Topic, $this>
+     * @return BelongsTo<Topic, $this>
      */
     public function topic()
     {
@@ -30,11 +32,8 @@ class View extends Model
 
     /**
      * Scope a query to only include views to subscribed topics.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeSubscribed($query)
+    public function scopeSubscribed(Builder $query): Builder
     {
         return $query->where('unsubscribed', false);
     }

@@ -7,6 +7,7 @@ use App\Models\Mode;
 use App\Models\Theme;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\View\View;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
@@ -30,7 +31,7 @@ class Settings extends Component
     #[Validate('required', message: 'Please fill out your date of birth.')]
     public $override;
 
-    public function mount()
+    public function mount(): void
     {
         $this->themes = Theme::all()->keyBy('id');
         $this->currentMode = Mode::where('active', 1)->first() ?? Mode::first();
@@ -61,7 +62,7 @@ class Settings extends Component
         $this->selectedTheme = $this->currentMode->theme_id;
     }
 
-    public function save(Request $request)
+    public function save(Request $request): void
     {
         // if user cannot save mode then bail
         if ($request->user()->cannot('update', Mode::class)) {
@@ -79,7 +80,7 @@ class Settings extends Component
         $this->redirect(route('theme.index'));
     }
 
-    public function setBBSMode(Request $request)
+    public function setBBSMode(Request $request): void
     {
         // if user cannot save mode then bail
         if ($request->user()->cannot('update', Mode::class)) {
@@ -101,7 +102,7 @@ class Settings extends Component
         $this->redirect(route('theme.index'));
     }
 
-    public function render()
+    public function render(): View
     {
         return view('livewire.settings');
     }

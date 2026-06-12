@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * @property-read \App\Models\Theme $theme
+ * @property-read Theme $theme
  */
 class Mode extends Model
 {
@@ -21,20 +23,17 @@ class Mode extends Model
     ];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<Theme, $this>
+     * @return BelongsTo<Theme, $this>
      */
-    public function theme()
+    public function theme(): BelongsTo
     {
         return $this->belongsTo(Theme::class);
     }
 
     /**
      * Scope a query to only include active mode
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeActive($query)
+    public function scopeActive(Builder $query): Builder
     {
         return $query->where('active', true);
     }

@@ -22,10 +22,8 @@ class TopicController extends Controller
 {
     /**
      * Store a newly created resource in storage.
-     *
-     * @return RedirectResponse
      */
-    public function store(StoreTopic $request)
+    public function store(StoreTopic $request): RedirectResponse
     {
         $topic = Topic::create($request->validated());
 
@@ -46,10 +44,8 @@ class TopicController extends Controller
 
     /**
      * Display the specified resource.
-     *
-     * @return View
      */
-    public function show(Request $request, Topic $topic)
+    public function show(Request $request, Topic $topic): View
     {
         $posts = $topic->reversedPosts()->with('author');
 
@@ -103,10 +99,8 @@ class TopicController extends Controller
 
     /**
      * Update the topic
-     *
-     * @return RedirectResponse
      */
-    public function update(UpdateTopic $request, Topic $topic)
+    public function update(UpdateTopic $request, Topic $topic): RedirectResponse
     {
         $formName = "topicUpdate{$topic->id}";
         $topicDetails = $request->validated()[$formName];
@@ -133,10 +127,8 @@ class TopicController extends Controller
 
     /**
      * destroy the topic
-     *
-     * @return RedirectResponse
      */
-    public function destroy(DestroyTopic $request, Topic $topic)
+    public function destroy(DestroyTopic $request, Topic $topic): RedirectResponse
     {
         $section_id = $topic->section->id;
         $topic->delete();
@@ -147,10 +139,8 @@ class TopicController extends Controller
     /**
      * updateSubscription
      * toggles a users subscription to the topic
-     *
-     * @return RedirectResponse
      */
-    public function updateSubscription(SubscribeTopic $request, Topic $topic)
+    public function updateSubscription(SubscribeTopic $request, Topic $topic): RedirectResponse
     {
         $input = $request->validated();
         if ($input['command'] === 'subscribe') {
@@ -170,10 +160,8 @@ class TopicController extends Controller
      * markAllSubscribedTopicsAsRead
      *
      * update the latest read time for each subscribed topic
-     *
-     * @return RedirectResponse
      */
-    public function markAllSubscribedTopicsAsRead(Request $request)
+    public function markAllSubscribedTopicsAsRead(Request $request): RedirectResponse
     {
         ViewHelper::catchUpCatchUp($request->user());
 

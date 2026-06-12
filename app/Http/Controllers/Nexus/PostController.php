@@ -7,15 +7,14 @@ use App\Http\Requests\Nexus\UpdatePost;
 use App\Models\Post;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class PostController extends Controller
 {
     /**
      * Update the specified resource in storage.
-     *
-     * @return RedirectResponse
      */
-    public function update(UpdatePost $request, Post $post)
+    public function update(UpdatePost $request, Post $post): RedirectResponse
     {
         if ($request->user()->cannot('update', $post)) {
             abort(403);
@@ -32,10 +31,8 @@ class PostController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @return RedirectResponse
      */
-    public function destroy(Request $request, Post $post)
+    public function destroy(Request $request, Post $post): RedirectResponse
     {
         if ($request->user()->cannot('delete', $post)) {
             abort(403);
@@ -50,7 +47,7 @@ class PostController extends Controller
     /**
      * flag a post for moderation
      */
-    public function report(Request $request, Post $post)
+    public function report(Request $request, Post $post): View
     {
         // for annoy topics can the reporter see details?
         $anonymous = ! ($request->user()->can('viewDetails', $post->topic));

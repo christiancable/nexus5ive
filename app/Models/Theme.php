@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Theme extends Model
 {
@@ -19,7 +20,7 @@ class Theme extends Model
     ];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany<User, $this>
+     * @return HasMany<User, $this>
      */
     public function users()
     {
@@ -29,10 +30,8 @@ class Theme extends Model
     /**
      * GetUCNameAttribute
      * the name field in sentence case
-     *
-     * @return string
      */
-    public function getUCNameAttribute()
+    public function getUCNameAttribute(): string
     {
         return ucwords($this->name);
     }
@@ -40,10 +39,8 @@ class Theme extends Model
     /**
      * GetExternalAttribute
      * is the theme css internal or external
-     *
-     * @return bool
      */
-    public function getExternalAttribute()
+    public function getExternalAttribute(): bool
     {
         return strpos($this->path, 'http') === 0;
     }

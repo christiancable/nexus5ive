@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Chat extends Model
@@ -13,15 +15,15 @@ class Chat extends Model
 
     protected $fillable = ['owner_id', 'partner_id'];
 
-    public function chatMessages()
+    public function chatMessages(): HasMany
     {
         return $this->hasMany(ChatMessage::class);
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne<User, $this>
+     * @return HasOne<User, $this>
      */
-    public function partner()
+    public function partner(): HasOne
     {
         return $this->hasOne(User::class, 'id', 'partner_id');
     }

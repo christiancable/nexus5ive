@@ -5,6 +5,8 @@ namespace App\Models;
 use App\Helpers\TreeHelper;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
@@ -12,11 +14,11 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 /**
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Section> $sections
- * @property-read \App\Models\Section|null $parent
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Topic> $trashedTopics
- * @property-read \App\Models\User $moderator
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Topic> $topics
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Section> $sections
+ * @property-read Section|null $parent
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Topic> $trashedTopics
+ * @property-read User $moderator
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Topic> $topics
  */
 class Section extends Model
 {
@@ -30,7 +32,7 @@ class Section extends Model
 
     protected $fillable = ['id', 'title', 'intro', 'user_id', 'parent_id', 'weight', 'allow_user_topics'];
 
-    public static function boot()
+    public static function boot(): void
     {
         parent::boot();
 
@@ -67,19 +69,19 @@ class Section extends Model
 
     // users
 
-    public function moderator()
+    public function moderator(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
     // sections
 
-    public function parent()
+    public function parent(): BelongsTo
     {
         return $this->belongsTo(Section::class, 'parent_id', 'id');
     }
 
-    public function sections()
+    public function sections(): HasMany
     {
         return $this->hasMany(Section::class, 'parent_id', 'id')->orderBy('weight', 'asc');
     }
@@ -87,7 +89,7 @@ class Section extends Model
     /**
      * @return Collection - all descendant sections
      */
-    public function allChildSections()
+    public function allChildSections(): Collection
     {
         $allChildSections = new Collection;
         foreach ($this->sections as $child) {
@@ -98,7 +100,7 @@ class Section extends Model
         return $allChildSections;
     }
 
-    private static function listChildren(Section $section, $children)
+    private static function listChildren(Section $section, Collection $children): Collection
     {
         foreach ($section->sections as $child) {
             $children->prepend($child);
@@ -108,16 +110,16 @@ class Section extends Model
         return $children;
     }
 
-    public function getIsHomeAttribute()
+    public function getIsHomeAttribute(): bool
     {
         return $this->parent_id === null;
     }
 
     // topics
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany<Topic, $this>
+     * @return HasMany<Topic, $this>
      */
-    public function topics()
+    public function topics(): HasMany
     {
         $query = $this->hasMany(Topic::class);
 
@@ -137,16 +139,16 @@ class Section extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany<Topic, $this>
+     * @return HasMany<Topic, $this>
      */
-    public function trashedTopics()
+    public function trashedTopics(): HasMany
     {
         return $this->topics()->onlyTrashed();
     }
 
     // posts
 
-    public function getMostRecentPostAttribute()
+    public function getMostRecentPostAttribute(): ?Post
     {
         $cacheKey = 'mostRecentPost'.$this->id;
 
@@ -158,7 +160,7 @@ class Section extends Model
         );
     }
 
-    public static function forgetMostRecentPostAttribute($section_id = null)
+    public static function forgetMostRecentPostAttribute(?int $section_id = null): void
     {
         $cacheKey = 'mostRecentPost'.$section_id;
         Cache::forget($cacheKey);
@@ -171,7 +173,7 @@ class Section extends Model
      *
      * @return Post|null - the most recent post for the section or null
      */
-    private function recalculateMostRecentPost()
+    private function recalculateMostRecentPost(): ?Post
     {
         if ($this->topics->isEmpty()) {
             return null;
@@ -187,7 +189,7 @@ class Section extends Model
         return $latestPost;
     }
 
-    public function slug()
+    public function slug(): string
     {
         return Str::slug($this->title, '-');
     }

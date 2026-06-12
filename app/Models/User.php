@@ -4,7 +4,12 @@ namespace App\Models;
 
 use App\Events\UserCreated;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -12,15 +17,15 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
 
 /**
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Post> $posts
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Comment> $comments
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Section> $sections
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\View> $views
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Chat> $chats
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Mention> $mentions
- * @property-read \App\Models\Activity $activity
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Comment> $givenComments
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Comment> $modifiedPosts
+ * @property-read Collection<int, Post> $posts
+ * @property-read Collection<int, Comment> $comments
+ * @property-read Collection<int, Section> $sections
+ * @property-read Collection<int, View> $views
+ * @property-read Collection<int, Chat> $chats
+ * @property-read Collection<int, Mention> $mentions
+ * @property-read Activity $activity
+ * @property-read Collection<int, Comment> $givenComments
+ * @property-read Collection<int, Comment> $modifiedPosts
  * @property string $username
  * @property string $email
  */
@@ -80,15 +85,13 @@ class User extends Authenticatable implements MustVerifyEmail
     // below is copypasta of old
     /**
      * Get the route key for the model.
-     *
-     * @return string
      */
-    public function getRouteKeyName()
+    public function getRouteKeyName(): string
     {
         return 'username';
     }
 
-    public static function boot()
+    public static function boot(): void
     {
         parent::boot();
         // Attach event handler, on deleting of the user
@@ -140,57 +143,57 @@ class User extends Authenticatable implements MustVerifyEmail
 
     /* related models */
 
-    public function mentions()
+    public function mentions(): HasMany
     {
         return $this->hasMany(Mention::class)->orderBy('id', 'desc');
     }
 
-    public function comments()
+    public function comments(): HasMany
     {
         return $this->hasMany(Comment::class, 'user_id', 'id')->orderBy('id', 'desc');
     }
 
-    public function givenComments()
+    public function givenComments(): HasMany
     {
         return $this->hasMany(Comment::class, 'author_id', 'id')->orderBy('id', 'desc');
     }
 
-    public function sections()
+    public function sections(): HasMany
     {
         return $this->hasMany(Section::class);
     }
 
-    public function views()
+    public function views(): HasMany
     {
         return $this->hasMany(View::class)->orderBy('latest_view_date', 'desc');
     }
 
-    public function posts()
+    public function posts(): HasMany
     {
         return $this->hasMany(Post::class);
     }
 
-    public function modifiedPosts()
+    public function modifiedPosts(): HasMany
     {
         return $this->hasMany(Post::class, 'update_user_id', 'id');
     }
 
-    public function chats()
+    public function chats(): HasMany
     {
         return $this->hasMany(Chat::class, 'owner_id')->orderBy('updated_at', 'desc');
     }
 
-    public function unreadChats()
+    public function unreadChats(): HasMany
     {
         return $this->chats()->where('is_read', false)->orderBy('updated_at', 'desc');
     }
 
-    public function activity()
+    public function activity(): HasOne
     {
         return $this->hasOne(Activity::class);
     }
 
-    public function theme()
+    public function theme(): BelongsTo
     {
         return $this->belongsTo(Theme::class);
     }
@@ -198,7 +201,7 @@ class User extends Authenticatable implements MustVerifyEmail
     /*
       returns collection of trashed topics
     */
-    public function getTrashedTopicsAttribute()
+    public function getTrashedTopicsAttribute(): Collection
     {
         /*
             @todo: why does the hasManyThrough not work here?
@@ -215,40 +218,40 @@ class User extends Authenticatable implements MustVerifyEmail
     }
     /* helper methods */
 
-    public function incrementTotalPosts()
+    public function incrementTotalPosts(): void
     {
         $this->totalPosts = $this->totalPosts + 1;
         $this->save();
     }
 
     /* returns number of unread comments */
-    public function newCommentCount()
+    public function newCommentCount(): int
     {
         return $this->comments()->where('read', false)->select('id')->count();
     }
 
-    public function markCommentsAsRead()
+    public function markCommentsAsRead(): void
     {
         Comment::where('user_id', $this->id)->update(['read' => true]);
     }
 
-    public function clearComments()
+    public function clearComments(): void
     {
         $this->comments()->delete();
     }
 
-    public function unreadChatCount()
+    public function unreadChatCount(): int
     {
         return $this->chats()->where('is_read', false)->select('id')->count();
     }
 
     // dealing with @ mentions
-    public function clearMentions()
+    public function clearMentions(): void
     {
         $this->mentions()->delete();
     }
 
-    public function addMention(Post $post)
+    public function addMention(Post $post): void
     {
         $mention = new Mention;
         $mention->user_id = $this->id;
@@ -256,12 +259,12 @@ class User extends Authenticatable implements MustVerifyEmail
         $this->mentions()->save($mention);
     }
 
-    public function removeMentions(array $posts)
+    public function removeMentions(array $posts): void
     {
         $this->mentions()->whereIn('post_id', Arr::pluck($posts, 'id'))->delete();
     }
 
-    public function notificationCount()
+    public function notificationCount(): int
     {
         $count = 0;
         $count = $count + $this->unreadChatCount();
@@ -273,22 +276,16 @@ class User extends Authenticatable implements MustVerifyEmail
 
     /**
      * exclude unverified users
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeVerified($query)
+    public function scopeVerified(Builder $query): Builder
     {
         return $query->where('email_verified_at', '<>', null);
     }
 
     /**
      * exclude verified users
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeUnverified($query)
+    public function scopeUnverified(Builder $query): Builder
     {
         return $query->where('email_verified_at', '=', null);
     }

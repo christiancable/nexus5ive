@@ -14,10 +14,8 @@ class CommentController extends Controller
 {
     /**
      * Store a newly created resource in storage.
-     *
-     * @return RedirectResponse
      */
-    public function store(StoreComment $request)
+    public function store(StoreComment $request): RedirectResponse
     {
         $input = $request->validated();
         $commentedUser = User::findOrFail($input['user_id']);
@@ -38,10 +36,8 @@ class CommentController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @return RedirectResponse
      */
-    public function destroy(DestroyComment $request, Comment $comment)
+    public function destroy(DestroyComment $request, Comment $comment): RedirectResponse
     {
         $comment->delete();
 
@@ -53,7 +49,7 @@ class CommentController extends Controller
      *
      * @return RedirectResponse - redirection to the calling page
      */
-    public function destroyAll(Request $request)
+    public function destroyAll(Request $request): RedirectResponse
     {
         if ($request->user()->cannot('update', $request->user())) {
             abort(403);
