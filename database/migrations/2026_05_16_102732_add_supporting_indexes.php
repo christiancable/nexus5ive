@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -72,10 +73,15 @@ return new class extends Migration
         }
 
         // Covers ActivityHelper::recentActivities: WHERE time >= ?
-        // Also fixes the zero-date default that causes MySQL strict mode to reject any ALTER TABLE on this table.
-        Schema::table('activities', function (Blueprint $table) {
-            $table->timestamp('time')->useCurrent()->change();
-        });
+        // Also fixes zero-date defaults on all three timestamp columns in activities — MySQL validates
+        // every column default on any ALTER TABLE, so all must be fixed in one statement.
+        // (fix_timestamp_defaults missed this table; same pattern used there for all other tables.)
+        if (DB::getDriverName() === 'mysql') {
+            DB::statement('ALTER TABLE `activities`
+                MODIFY `time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                MODIFY `created_at` TIMESTAMP NULL DEFAULT NULL,
+                MODIFY `updated_at` TIMESTAMP NULL DEFAULT NULL');
+        }
 
         if (! Schema::hasIndex('activities', 'activities_time_index')) {
             Schema::table('activities', function (Blueprint $table) {
