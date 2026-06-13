@@ -121,4 +121,29 @@ class ReportModelTest extends TestCase
 
         $this->assertEquals('No content', $report->snapshot_text);
     }
+
+    #[Test]
+    public function reportable_link_returns_url_for_post_reportable(): void
+    {
+        $report = Report::factory()->create([
+            'reportable_type' => Post::class,
+            'reportable_id' => $this->post->id,
+            'reason' => 'spam',
+            'status' => 'new',
+        ]);
+
+        $this->assertIsString($report->reportable_link);
+        $this->assertStringContainsString((string) $this->post->topic_id, $report->reportable_link);
+    }
+
+    #[Test]
+    public function reportable_link_returns_null_when_reportable_is_not_a_post(): void
+    {
+        // Create a report not morphed to a Post by using a non-existent/mismatched morph
+        $report = new Report;
+        $report->reportable_type = 'App\\Models\\Topic'; // not a Post
+        $report->reportable_id = 0;
+
+        $this->assertNull($report->reportable_link);
+    }
 }

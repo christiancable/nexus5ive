@@ -17,6 +17,79 @@
 
 ---
 
+## Round 2 — Improvable gaps (68.1% baseline)
+
+| # | File | Priority | Status |
+|---|------|----------|--------|
+| 7 | `tests/Feature/Policies/TopicPolicyTest.php` | High | ✅ Done (15 tests) |
+| 8 | `tests/Feature/Policies/UserPolicyTest.php` | Medium | ✅ Done (3 tests) |
+| 9 | `tests/Unit/View/Components/UserCardTest.php` | Low | ✅ Done (10 tests) |
+| 10 | `tests/Feature/Models/ReportModelTest.php` (extend) | Medium | ✅ Done (+2 tests) |
+| 11 | `tests/Feature/Livewire/SettingsTest.php` | Medium | ✅ Done (5 tests) |
+| 12 | `tests/Feature/Livewire/PostComposeTest.php` | Medium | ✅ Done (2 tests) |
+
+**Coverage: 68.1% → 69.8% (+1.7pp). Tests: 334 → 372 (+38 tests).**
+
+**Note:** `TopicPolicy::create` dispatches to TopicPolicy (not SectionPolicy) via `$user->can('create', [Topic::class, $section])` — passing the model class string as the first array element routes to the correct policy when the additional argument is a different model type.
+
+### 7. `TopicPolicyTest` — all methods including `before()` admin bypass
+
+- `admin_bypasses_all_checks` — before() returns true for admin
+- `viewDetails_returns_true_for_non_secret_topic`
+- `viewDetails_returns_true_for_moderator_of_secret_topic`
+- `viewDetails_returns_false_for_non_moderator_of_secret_topic`
+- `create_allows_section_moderator`
+- `create_allows_user_when_section_permits_user_topics`
+- `create_denies_regular_user_when_section_disallows_topics`
+- `update_allows_section_moderator`
+- `update_denies_non_moderator`
+- `move_allows_moderator_of_both_sections`
+- `move_denies_when_not_moderating_destination`
+- `delete_allows_section_moderator`
+- `delete_denies_non_moderator`
+- `reply_allows_moderator_on_readonly_topic`
+- `reply_allows_regular_user_on_open_topic`
+- `reply_denies_regular_user_on_readonly_topic`
+
+### 8. `UserPolicyTest` — update authorization
+
+- `user_can_update_their_own_profile`
+- `user_cannot_update_another_users_profile`
+- `guest_cannot_update_any_profile`
+
+### 9. `UserCardTest` — pure unit tests for score-based CSS helpers
+
+- `classy_returns_text_secondary_for_very_low_score`
+- `classy_returns_text_dark_for_low_score`
+- `classy_returns_text_info_for_medium_score`
+- `classy_returns_text_primary_for_high_score`
+- `classy_returns_text_success_for_very_high_score`
+- `classy_returns_text_danger_for_max_score`
+- `heading_background_is_light_for_zero_score`
+- `heading_background_is_info_for_nonzero_score`
+- `heading_foreground_is_secondary_for_zero_score`
+- `heading_foreground_is_white_for_nonzero_score`
+
+### 10. `ReportModelTest` (extend) — reportable_link accessor
+
+- `reportable_link_returns_url_for_post_reportable`
+- `reportable_link_returns_null_for_non_post_morph`
+
+### 11. `SettingsTest` — Livewire Settings component
+
+- `admin_can_render_settings_component`
+- `admin_can_save_mode_settings`
+- `admin_can_set_bbs_mode`
+- `non_admin_cannot_save_settings`
+- `non_admin_cannot_set_bbs_mode`
+
+### 12. `PostComposeTest` — Livewire PostCompose mount
+
+- `mount_without_reply_leaves_text_empty`
+- `mount_with_reply_prefills_text_with_quoted_content`
+
+---
+
 ## 1. `ReportModelTest` — scopes and accessors on `Models/Report`
 
 **Tests:**
