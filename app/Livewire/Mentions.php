@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 use Livewire\Component;
 
 class Mentions extends Component
@@ -15,26 +16,26 @@ class Mentions extends Component
 
     public $pollingInterval = 5;
 
-    public function mount(Request $request)
+    public function mount(Request $request): void
     {
         $this->pollingInterval = config('nexus.notification_check_interval');
         $this->user = $request->user();
         $this->fetchMentions();
     }
 
-    public function fetchMentions()
+    public function fetchMentions(): void
     {
         $this->mentions = $this->user->mentions;
         $this->mentionsCount = count($this->mentions);
     }
 
-    public function clearMentions()
+    public function clearMentions(): void
     {
         $this->user->clearMentions();
         $this->fetchMentions();
     }
 
-    public function render()
+    public function render(): View
     {
         return view('livewire.mentions');
     }

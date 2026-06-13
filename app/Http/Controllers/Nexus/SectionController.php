@@ -19,10 +19,8 @@ class SectionController extends Controller
 {
     /**
      * Store a newly created resource in storage.
-     *
-     * @return RedirectResponse
      */
-    public function store(StoreSection $request)
+    public function store(StoreSection $request): RedirectResponse
     {
         $parentSection = Section::findOrFail(request('parent_id'));
 
@@ -45,7 +43,7 @@ class SectionController extends Controller
     /**
      * Display the index of sections which in this case is our BBS home
      */
-    public function index(Request $request)
+    public function index(Request $request): RedirectResponse
     {
         $section = Section::firstOrFail();
 
@@ -56,9 +54,8 @@ class SectionController extends Controller
      * Display the specified resource.
      *
      * @param  Section  $section  optional
-     * @return \Illuminate\View\View
      */
-    public function show(Request $request, Section $section)
+    public function show(Request $request, Section $section): \Illuminate\View\View
     {
         // lazy eager load relationships (except topics, which we paginate separately)
         $section->load(
@@ -102,10 +99,8 @@ class SectionController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @return RedirectResponse
      */
-    public function update(UpdateSection $request, Section $section)
+    public function update(UpdateSection $request, Section $section): RedirectResponse
     {
         // can user update the details?
         if ($request->user()->cannot('update', $section)) {
@@ -148,10 +143,8 @@ class SectionController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @return RedirectResponse
      */
-    public function destroy(Request $request, Section $section)
+    public function destroy(Request $request, Section $section): RedirectResponse
     {
         if ($request->user()->cannot('delete', $section)) {
             abort(403);
@@ -171,10 +164,8 @@ class SectionController extends Controller
 
     /**
      * Shows the Latest Posts screen
-     *
-     * @return \Illuminate\View\View
      */
-    public function latest(Request $request)
+    public function latest(Request $request): \Illuminate\View\View
     {
         $heading = 'Latest Posts';
         $topics = TopicHelper::recentTopics();
@@ -191,10 +182,8 @@ class SectionController extends Controller
 
     /**
      * redirects a visitor to a section with an updated topic
-     *
-     * @return RedirectResponse
      */
-    public function leap(Request $request)
+    public function leap(Request $request): RedirectResponse
     {
         $views = View::subscribed()
             ->with('topic')

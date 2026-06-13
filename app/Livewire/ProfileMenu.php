@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Report;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 use Livewire\Component;
 
 class ProfileMenu extends Component
@@ -24,7 +25,7 @@ class ProfileMenu extends Component
 
     public $reportsCount = 0;
 
-    public function mount(Request $request)
+    public function mount(Request $request): void
     {
         $this->pollingInterval = config('nexus.notification_check_interval');
         $this->user = $request->user();
@@ -32,7 +33,7 @@ class ProfileMenu extends Component
         $this->fetchNotifications();
     }
 
-    public function fetchNotifications()
+    public function fetchNotifications(): void
     {
         $this->sectionsCount = count($this->user->sections);
         $this->commentsCount = $this->user->newCommentCount();
@@ -47,7 +48,7 @@ class ProfileMenu extends Component
         }
     }
 
-    public function render()
+    public function render(): View
     {
         return view('livewire.profile-menu');
     }

@@ -9,17 +9,17 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Nexus\UpdateUser;
 use App\Models\Theme;
 use App\Models\User;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\View\View;
 
 class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\View\View
      */
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         // this logic instead becomes showing the view for the userlist
         ActivityHelper::updateActivity(
@@ -34,10 +34,8 @@ class UserController extends Controller
 
     /**
      * show a user
-     *
-     * @return \Illuminate\View\View
      */
-    public function show(Request $request, User $user)
+    public function show(Request $request, User $user): View
     {
         // lazy eager load the users comments
         $user->load('comments', 'comments.author');
@@ -71,20 +69,16 @@ class UserController extends Controller
     /**
      * edit
      * this just forwards to the $this->show because edit and show are combined
-     *
-     * @return \Illuminate\View\View
      */
-    public function edit(UpdateUser $request, User $user)
+    public function edit(UpdateUser $request, User $user): View
     {
         return $this->show($request, $user);
     }
 
     /**
      * Update the user
-     *
-     * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(UpdateUser $request, User $user)
+    public function update(UpdateUser $request, User $user): RedirectResponse
     {
         $input = $request->all();
         if ($request->user()->cannot('update', $user)) {

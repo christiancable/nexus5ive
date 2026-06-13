@@ -7,6 +7,7 @@ use App\Models\Chat as ChatModel;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 use Livewire\Component;
 
 class Chat extends Component
@@ -29,7 +30,7 @@ class Chat extends Component
 
     public $newChatUser;
 
-    public function mount(Request $request)
+    public function mount(Request $request): void
     {
         $this->pollingInterval = config('nexus.chat_poll_interval');
         $this->users = User::where('id', '!=', Auth::id())->verified()->orderBy('username')->get();
@@ -41,7 +42,7 @@ class Chat extends Component
     /*
      load a chat by selecting the user from a dropdown or url action
     */
-    public function selectUser($userId)
+    public function selectUser(int $userId): void
     {
         $this->selectedUser = User::find($userId);
         // find or create a chat of this user
@@ -55,14 +56,14 @@ class Chat extends Component
     /*
     load a chat by choosing from existing chat list
     */
-    public function selectChat($chatId)
+    public function selectChat(int $chatId): void
     {
         $this->selectedChat = ChatModel::find($chatId);
         $this->selectedUser = $this->selectedChat->partner;
         $this->loadMessages();
     }
 
-    public function loadMessages()
+    public function loadMessages(): void
     {
         $this->chats = $this->user->chats;
 
@@ -88,9 +89,9 @@ class Chat extends Component
         }
     }
 
-    public function sendMessage()
+    public function sendMessage(): void
     {
-        $this->authorize('create', \App\Models\Chat::class);
+        $this->authorize('create', ChatModel::class);
 
         if ($this->selectedUser && $this->newMessage) {
             ChatHelper::sendMessage(Auth::id(), $this->selectedUser->id, $this->newMessage);
@@ -99,7 +100,7 @@ class Chat extends Component
         }
     }
 
-    public function render()
+    public function render(): View
     {
         return view('livewire.chat');
     }

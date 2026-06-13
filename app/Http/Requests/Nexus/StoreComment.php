@@ -24,10 +24,8 @@ class StoreComment extends FormRequest
 
     /**
      * Get the validation rules that apply to the request.
-     *
-     * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'text' => 'required',
@@ -35,7 +33,7 @@ class StoreComment extends FormRequest
         ];
     }
 
-    public function messages()
+    public function messages(): array
     {
         return [
             'text.required' => 'Comment Text required',
