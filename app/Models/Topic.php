@@ -6,13 +6,16 @@ use App\Events\MostRecentPostForSectionBecameDirty;
 use App\Events\TreeCacheBecameDirty;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Log;
 
 /**
- * @property-read \App\Models\Section $section
- * @property-read \App\Models\Post|null $most_recent_post
+ * @property-read Section $section
+ * @property-read Post|null $most_recent_post
  */
 class Topic extends Model
 {
@@ -34,7 +37,7 @@ class Topic extends Model
         'sticky',
     ];
 
-    public static function boot()
+    public static function boot(): void
     {
         parent::boot();
 
@@ -81,7 +84,7 @@ class Topic extends Model
      * returns the time of the most recent post
      * if the topic has no posts then return the created time of the topic
      */
-    public function getMostRecentPostTimeAttribute(): ?\Illuminate\Support\Carbon
+    public function getMostRecentPostTimeAttribute(): ?Carbon
     {
 
         $latestPost = Post::select('time')
@@ -95,29 +98,29 @@ class Topic extends Model
             $result = $this->created_at;
         }
 
-        return $result instanceof \Illuminate\Support\Carbon ? $result : null;
+        return $result instanceof Carbon ? $result : null;
     }
 
     // phpcs:disable PSR1.Methods.CamelCapsMethodName
-    /** @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Post, $this> */
-    public function most_recent_post(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    /** @return BelongsTo<Post, $this> */
+    public function most_recent_post(): BelongsTo
     {
         // phpcs:enable
         return $this->belongsTo(Post::class);
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<Section, $this>
+     * @return BelongsTo<Section, $this>
      */
-    public function section()
+    public function section(): BelongsTo
     {
         return $this->belongsTo(Section::class);
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany<Post, $this>
+     * @return HasMany<Post, $this>
      */
-    public function posts()
+    public function posts(): HasMany
     {
         return $this->hasMany(Post::class)->orderBy('id', 'asc');
     }
@@ -125,17 +128,17 @@ class Topic extends Model
     /**
      * posts but in reverse order
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany<Post, $this>
+     * @return HasMany<Post, $this>
      */
-    public function reversedPosts()
+    public function reversedPosts(): HasMany
     {
         return $this->hasMany(Post::class)->orderBy('id', 'desc');
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany<View, $this>
+     * @return HasMany<View, $this>
      */
-    public function views()
+    public function views(): HasMany
     {
         return $this->hasMany(View::class)->orderBy('latest_view_date', 'desc');
     }

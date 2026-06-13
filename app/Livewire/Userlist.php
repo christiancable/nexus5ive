@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
+use Illuminate\View\View;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
 
@@ -15,7 +16,10 @@ class Userlist extends Component
 
     public Collection $allUsers;
 
-    public function fetchUsers()
+    /**
+     * @return \Illuminate\Database\Eloquent\Collection<int, User>
+     */
+    public function fetchUsers(): \Illuminate\Database\Eloquent\Collection
     {
         $seconds = 5 * 60;
 
@@ -28,7 +32,7 @@ class Userlist extends Component
     }
 
     #[Computed]
-    public function users()
+    public function users(): Collection
     {
         $allUsers = $this->fetchUsers();
 
@@ -45,7 +49,7 @@ class Userlist extends Component
         return $results;
     }
 
-    public function render()
+    public function render(): View
     {
         return view('livewire.userlist');
     }

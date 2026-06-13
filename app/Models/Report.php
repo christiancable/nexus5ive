@@ -2,8 +2,14 @@
 
 namespace App\Models;
 
+use App\Helpers\TopicHelper;
+use Database\Factories\ReportFactory;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -11,7 +17,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Report extends Model
 {
-    /** @use HasFactory<\Database\Factories\ReportFactory> */
+    /** @use HasFactory<ReportFactory> */
     use HasFactory, SoftDeletes;
 
     protected $casts = [
@@ -32,7 +38,7 @@ class Report extends Model
         'other' => 'Other',
     ];
 
-    public function reportable()
+    public function reportable(): MorphTo
     {
         return $this->morphTo();
     }
@@ -41,7 +47,7 @@ class Report extends Model
      * the user who reported this - optional
      * as this could be an annoy report
      */
-    public function reporter()
+    public function reporter(): BelongsTo
     {
         return $this->belongsTo(User::class, 'reporter_id');
     }
@@ -49,7 +55,7 @@ class Report extends Model
     /**
      * the moderator dealing with this report
      */
-    public function moderator()
+    public function moderator(): BelongsTo
     {
         return $this->belongsTo(User::class, 'moderator_id');
     }
@@ -57,7 +63,7 @@ class Report extends Model
     /**
      * reports still in progress
      */
-    public function scopeOpen($query)
+    public function scopeOpen(Builder $query): Builder
     {
         return $query->whereNot('status', 'closed');
     }
@@ -65,7 +71,7 @@ class Report extends Model
     /**
      * reports that have been dealt with
      */
-    public function scopeClosed($query)
+    public function scopeClosed(Builder $query): Builder
     {
         return $query->where('status', 'closed');
     }
@@ -76,13 +82,13 @@ class Report extends Model
     public function getReportableLinkAttribute(): ?string
     {
         if ($this->reportable instanceof Post) {
-            return \App\Helpers\TopicHelper::routeToPost($this->reportable);
+            return TopicHelper::routeToPost($this->reportable);
         }
 
         return null;
     }
 
-    public function getStatusBadgeClassAttribute()
+    public function getStatusBadgeClassAttribute(): string
     {
         return match ($this->status) {
             'new' => 'bg-warning text-dark',
@@ -92,12 +98,12 @@ class Report extends Model
         };
     }
 
-    public function getStatusLabelAttribute()
+    public function getStatusLabelAttribute(): string
     {
         return self::STATUSES[$this->status] ?? 'Unknown';
     }
 
-    public function getReasonLabelAttribute()
+    public function getReasonLabelAttribute(): string
     {
         return self::REASONS[$this->reason] ?? 'Unknown';
     }
@@ -107,13 +113,13 @@ class Report extends Model
      *
      * @todo show different previews for the type of report
      */
-    public function getSnapshotTextAttribute()
+    public function getSnapshotTextAttribute(): string
     {
         return $this->reported_content_snapshot['text'] ?? 'No content';
     }
 
     // a report can have many moderation notes
-    public function moderationNotes()
+    public function moderationNotes(): HasMany
     {
         return $this->hasMany(ModerationNote::class);
     }

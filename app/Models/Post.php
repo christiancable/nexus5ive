@@ -3,13 +3,16 @@
 namespace App\Models;
 
 /**
- * @property \App\Models\Topic $topic
- * @property \Carbon\Carbon|null $time
+ * @property Topic $topic
+ * @property Carbon|null $time
  */
 
 use App\Events\MostRecentPostForSectionBecameDirty;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Post extends Model
@@ -24,7 +27,7 @@ class Post extends Model
 
     protected $fillable = ['title', 'text', 'time', 'popname', 'html', 'user_id', 'topic_id', 'update_user_id'];
 
-    public static function boot()
+    public static function boot(): void
     {
         parent::boot();
 
@@ -41,7 +44,7 @@ class Post extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<Topic, $this>
+     * @return BelongsTo<Topic, $this>
      */
     public function topic()
     {
@@ -49,7 +52,7 @@ class Post extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<User, $this>
+     * @return BelongsTo<User, $this>
      */
     public function author()
     {
@@ -57,7 +60,7 @@ class Post extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<User, $this>
+     * @return BelongsTo<User, $this>
      */
     public function editor()
     {
@@ -67,7 +70,7 @@ class Post extends Model
     /**
      * moderation reports for this post
      */
-    public function reports()
+    public function reports(): MorphMany
     {
         return $this->morphMany(Report::class, 'reportable');
     }

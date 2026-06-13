@@ -15,10 +15,8 @@ class RestoreController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return View
      */
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         $trashedSections = Section::onlyTrashed()
             ->where('user_id', $request->user()->id)
@@ -51,9 +49,8 @@ class RestoreController extends Controller
      * Restore a trashed section
      *
      * @param  int  $id  - the trashed section
-     * @return RedirectResponse
      */
-    public function section(Request $request, $id)
+    public function section(Request $request, int $id): RedirectResponse
     {
         $trashedSection = Section::onlyTrashed()->findOrFail($id);
         $destinationSection = Section::findOrFail($request->destination);
@@ -73,9 +70,8 @@ class RestoreController extends Controller
      * Restore a trashed topic
      *
      * @param  int  $id  - the trashed topic
-     * @return RedirectResponse
      */
-    public function topic(Request $request, $id)
+    public function topic(Request $request, int $id): RedirectResponse
     {
         $trashedTopic = Topic::onlyTrashed()->findOrFail($id);
         $destinationSection = Section::findOrFail($request->destination);

@@ -9,6 +9,7 @@ use App\Http\Controllers\Nexus\TopicController;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\View\View;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
@@ -33,7 +34,7 @@ class PostCompose extends Component
 
     public $help;
 
-    public function mount()
+    public function mount(): void
     {
         $this->help = BoilerplateHelper::formattingHelp();
         if ($this->reply) {
@@ -52,7 +53,7 @@ class PostCompose extends Component
         }
     }
 
-    public function render()
+    public function render(): View
     {
         return view('livewire.post-compose');
     }
@@ -89,13 +90,13 @@ class PostCompose extends Component
         return redirect()->to($redirect);
     }
 
-    public function showCompose()
+    public function showCompose(): void
     {
         $this->previewActive = false;
         $this->composeActive = true;
     }
 
-    public function showPreview()
+    public function showPreview(): void
     {
         $this->postPreview = NxCodeHelper::nxDecode($this->text);
         $this->previewActive = true;

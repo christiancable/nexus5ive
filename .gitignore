@@ -19,5 +19,9 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+/.agents
+/.claude
+/.kiro
+/skills-lock.json
 .DS_Store
 /untracked

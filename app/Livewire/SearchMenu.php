@@ -3,8 +3,10 @@
 namespace App\Livewire;
 
 use App\Helpers\TreeHelper;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
+use Illuminate\View\View;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
 
@@ -16,12 +18,12 @@ class SearchMenu extends Component
 
     public $locations;
 
-    public function mount()
+    public function mount(): void
     {
         $this->fetchTree();
     }
 
-    public function fetchTree()
+    public function fetchTree(): void
     {
         $this->locations = collect(Cache::rememberForever('tree', function () {
             return TreeHelper::tree();
@@ -36,7 +38,7 @@ class SearchMenu extends Component
     }
 
     #[Computed]
-    public function matchedLocations()
+    public function matchedLocations(): Collection
     {
         $results = collect();
 
@@ -57,7 +59,7 @@ class SearchMenu extends Component
         return $results;
     }
 
-    public function render()
+    public function render(): View
     {
         return view('livewire.search-menu');
     }
