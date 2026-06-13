@@ -1,0 +1,359 @@
+# Plan: Allow Users to Create Topics in Sections
+
+## Overview
+
+Add a feature allowing section moderators to enable topic creation by regular users. When enabled, any authenticated user can create topics in that section. Regular users cannot set Anonymous, Read Only, or Order options - these are moderator-only features.
+
+## Implementation Steps
+
+### 1. Database Migration
+
+Create migration to add `allow_user_topics` boolean column to sections table.
+
+**File:** `database/migrations/YYYY_MM_DD_HHMMSS_add_allow_user_topics_to_sections_table.php`
+
+```php
+Schema::table('sections', function (Blueprint $table) {
+    $table->boolean('allow_user_topics')->default(false)->after('weight');
+});
+```
+
+### 2. Update Section Model
+
+**File:** `app/Models/Section.php`
+
+- Add `'allow_user_topics'` to `$fillable` array (line 30)
+- Add `'allow_user_topics' => 'boolean'` to `$casts` array (line 26-28)
+
+### 3. Update TopicPolicy
+
+**File:** `app/Policies/TopicPolicy.php`
+
+Modify `create()` method (lines 54-57):
+
+```php
+public function create(User $user, Section $section)
+{
+    // Moderator can always create topics
+    if ($user->id === $section->moderator->id) {
+        return true;
+    }
+
+    // Any authenticated user can create if section allows it
+    return $section->allow_user_topics;
+}
+```
+
+### 4. Update Section View
+
+**File:** `resources/views/nexus/sections/index.blade.php`
+
+Change line 33-35 from hardcoded moderator check to policy-based check:
+
+```blade
+@can('create', [App\Models\Topic::class, $section])
+    @include('nexus.sections._add-topic', ['section' => $section, 'isModerator' => Auth::user()->id === $section->user_id])
+@endcan
+```
+
+### 5. Update Topic Create Form (Hide moderator-only options)
+
+**File:** `resources/views/nexus/topics/_create.blade.php`
+
+Wrap the Anonymous, Read Only, and Order fields in a moderator check (lines 16-37):
+
+```blade
+@if($isModerator ?? false)
+<div class="d-md-flex justify-content-md-between">
+    <fieldset>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="1" id="secret" name="secret">
+            <label class="form-check-label" for="secret">Anonymous</label>
+        </div>
+
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="1" id="readonly" name="readonly">
+            <label class="form-check-label" for="readonly">Read Only</label>
+        </div>
+    </fieldset>
+
+    <div class="mb-3 d-flex align-items-center">
+        <label for="weight" class="me-sm-2">Order</label>
+        <select name="weight" class="form-select form-select">
+            @for ($i = 0; $i <= 10; $i++)
+                <option value="{{ $i }}">{{ $i }}</option>
+            @endfor
+        </select>
+    </div>
+</div>
+@endif
+```
+
+### 6. Update StoreTopic Form Request (Backend enforcement)
+
+**File:** `app/Http/Requests/Nexus/StoreTopic.php`
+
+Override `validated()` to force default values for non-moderators:
+
+```php
+public function validated($key = null, $default = null)
+{
+    $validated = parent::validated($key, $default);
+
+    // If returning a specific key, return as-is
+    if ($key !== null) {
+        return $validated;
+    }
+
+    // Force default values for non-moderators
+    $section = Section::findOrFail($this->input('section_id'));
+    if ($this->user()->id !== $section->moderator->id) {
+        $validated['secret'] = 0;
+        $validated['readonly'] = 0;
+        $validated['weight'] = 0;
+    }
+
+    return $validated;
+}
+```
+
+Also update `rules()` to make weight/secret/readonly optional (they'll be forced for non-moderators):
+
+```php
+public function rules()
+{
+    return [
+        'title' => 'required',
+        'intro' => 'required',
+        'section_id' => 'required|numeric|exists:sections,id',
+        'weight' => 'nullable|numeric',
+        'secret' => 'nullable|numeric',
+        'readonly' => 'nullable|numeric',
+    ];
+}
+```
+
+### 7. Add Toggle to Section Edit Form
+
+**File:** `resources/views/nexus/section-heading/_edit.blade.php`
+
+Add checkbox before the submit button (before line 24):
+
+```blade
+<input type="hidden" name="form[{{ $formName }}][allow_user_topics]" value="0">
+<div class="mb-3">
+    <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox"
+               id="allow_user_topics_{{ $section->id }}"
+               name="form[{{ $formName }}][allow_user_topics]"
+               value="1"
+               {{ $section->allow_user_topics ? 'checked' : '' }}>
+        <label class="form-check-label" for="allow_user_topics_{{ $section->id }}">
+            Allow all users to create topics
+        </label>
+    </div>
+</div>
+```
+
+### 8. Update Form Request Validation
+
+**File:** `app/Http/Requests/Nexus/UpdateSection.php`
+
+Add validation rule in `rules()` method (around line 39):
+
+```php
+"form.{$formName}.allow_user_topics" => 'boolean',
+```
+
+### 9. Update SectionController
+
+**File:** `app/Http/Controllers/Nexus/SectionController.php`
+
+Add to `$updatedSectionDetails` array in `update()` method (line 118):
+
+```php
+'allow_user_topics' => $request->validated()['form'][$formName]['allow_user_topics'] ?? false,
+```
+
+### 10. Create Dusk Browser Tests
+
+**File:** `tests/Browser/UserTopicCreationTest.php`
+
+```php
+<?php
+
+namespace Tests\Browser;
+
+use App\Http\Controllers\Nexus\SectionController;
+use App\Models\Section;
+use App\Models\Topic;
+use App\Models\User;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Laravel\Dusk\Browser;
+use PHPUnit\Framework\Attributes\Test;
+use Tests\DuskTestCase;
+
+class UserTopicCreationTest extends DuskTestCase
+{
+    use DatabaseMigrations;
+
+    protected User $moderator;
+    protected User $normalUser;
+    protected Section $home;
+    protected Section $section;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->moderator = User::factory()->create();
+        $this->normalUser = User::factory()->create();
+
+        $this->home = Section::factory()
+            ->for($this->moderator, 'moderator')
+            ->create(['parent_id' => null]);
+
+        $this->section = Section::factory()
+            ->for($this->moderator, 'moderator')
+            ->for($this->home, 'parent')
+            ->create(['allow_user_topics' => false]);
+    }
+
+    #[Test]
+    public function moderator_can_enable_allow_user_topics_setting(): void
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs($this->moderator)
+                ->visit(action([SectionController::class, 'show'], ['section' => $this->section]))
+                ->click('[data-bs-target="#sectionEdit"]')
+                ->waitFor('#allow_user_topics_' . $this->section->id)
+                ->check('#allow_user_topics_' . $this->section->id)
+                ->press('Save Changes')
+                ->waitForLocation('/section/' . $this->section->id);
+
+            $this->section->refresh();
+            $this->assertTrue($this->section->allow_user_topics);
+        });
+    }
+
+    #[Test]
+    public function moderator_sees_all_topic_options(): void
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs($this->moderator)
+                ->visit(action([SectionController::class, 'show'], ['section' => $this->section]))
+                ->click('[data-bs-target="#addTopicForm"]')
+                ->waitFor('#addTopicForm.show')
+                ->assertVisible('input[name="secret"]')
+                ->assertVisible('input[name="readonly"]')
+                ->assertVisible('select[name="weight"]');
+        });
+    }
+
+    #[Test]
+    public function normal_user_does_not_see_add_topic_when_disabled(): void
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs($this->normalUser)
+                ->visit(action([SectionController::class, 'show'], ['section' => $this->section]))
+                ->assertDontSee('Add New Topic');
+        });
+    }
+
+    #[Test]
+    public function normal_user_sees_add_topic_when_enabled(): void
+    {
+        $this->section->update(['allow_user_topics' => true]);
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs($this->normalUser)
+                ->visit(action([SectionController::class, 'show'], ['section' => $this->section]))
+                ->assertSee('Add New Topic');
+        });
+    }
+
+    #[Test]
+    public function normal_user_does_not_see_moderator_only_options(): void
+    {
+        $this->section->update(['allow_user_topics' => true]);
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs($this->normalUser)
+                ->visit(action([SectionController::class, 'show'], ['section' => $this->section]))
+                ->click('[data-bs-target="#addTopicForm"]')
+                ->waitFor('#addTopicForm.show')
+                ->assertMissing('input[name="secret"][type="checkbox"]')
+                ->assertMissing('input[name="readonly"][type="checkbox"]')
+                ->assertMissing('select[name="weight"]');
+        });
+    }
+
+    #[Test]
+    public function normal_user_can_create_topic(): void
+    {
+        $this->section->update(['allow_user_topics' => true]);
+
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs($this->normalUser)
+                ->visit(action([SectionController::class, 'show'], ['section' => $this->section]))
+                ->click('[data-bs-target="#addTopicForm"]')
+                ->waitFor('#addTopicForm.show')
+                ->type('title', 'My New Topic')
+                ->type('intro', 'This is my topic introduction')
+                ->press('Add Topic')
+                ->waitForText('My New Topic');
+
+            // Verify topic was created with default values
+            $topic = Topic::where('title', 'My New Topic')->first();
+            $this->assertNotNull($topic);
+            $this->assertEquals(0, $topic->secret);
+            $this->assertEquals(0, $topic->readonly);
+            $this->assertEquals(0, $topic->weight);
+        });
+    }
+
+    #[Test]
+    public function normal_user_cannot_bypass_restrictions_via_post(): void
+    {
+        $this->section->update(['allow_user_topics' => true]);
+
+        // Attempt to create topic with restricted options via direct POST
+        $response = $this->actingAs($this->normalUser)->post(route('topic.store'), [
+            'title' => 'Hacked Topic',
+            'intro' => 'Trying to bypass',
+            'section_id' => $this->section->id,
+            'secret' => 1,
+            'readonly' => 1,
+            'weight' => 5,
+        ]);
+
+        // Topic should be created but with forced default values
+        $topic = Topic::where('title', 'Hacked Topic')->first();
+        $this->assertNotNull($topic);
+        $this->assertEquals(0, $topic->secret);
+        $this->assertEquals(0, $topic->readonly);
+        $this->assertEquals(0, $topic->weight);
+    }
+}
+```
+
+## Files to Modify
+
+| File | Change |
+|------|--------|
+| `database/migrations/` | New migration file |
+| `app/Models/Section.php` | Add fillable + cast |
+| `app/Policies/TopicPolicy.php` | Update create() logic |
+| `resources/views/nexus/sections/index.blade.php` | Use @can directive, pass isModerator |
+| `resources/views/nexus/topics/_create.blade.php` | Hide moderator-only fields |
+| `app/Http/Requests/Nexus/StoreTopic.php` | Force defaults for non-moderators |
+| `resources/views/nexus/section-heading/_edit.blade.php` | Add toggle UI |
+| `app/Http/Requests/Nexus/UpdateSection.php` | Add validation rule |
+| `app/Http/Controllers/Nexus/SectionController.php` | Include field in update |
+| `tests/Browser/UserTopicCreationTest.php` | New Dusk test file |
+
+## Verification
+
+1. Run migration: `sail artisan migrate`
+2. Run existing tests: `sail artisan test`
+3. Run Dusk tests: `sail artisan dusk tests/Browser/UserTopicCreationTest.php`

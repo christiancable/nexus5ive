@@ -1,0 +1,15 @@
+{
+    "agents": [
+        "claude_code"
+    ],
+    "cloud": false,
+    "guidelines": true,
+    "mcp": true,
+    "nightwatch_mcp": false,
+    "sail": true,
+    "skills": [
+        "laravel-best-practices",
+        "livewire-development",
+        "pest-testing"
+    ]
+}
