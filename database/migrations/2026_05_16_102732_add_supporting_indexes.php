@@ -49,6 +49,11 @@ return new class extends Migration
         });
 
         // Covers ActivityHelper::recentActivities: WHERE time >= ?
+        // Also fixes the zero-date default that causes MySQL strict mode to reject any ALTER TABLE on this table.
+        Schema::table('activities', function (Blueprint $table) {
+            $table->timestamp('time')->useCurrent()->change();
+        });
+
         Schema::table('activities', function (Blueprint $table) {
             $table->index('time', 'activities_time_index');
         });
