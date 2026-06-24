@@ -13,7 +13,7 @@ return new class extends Migration
     public function up(): void
     {
         // Only run on MySQL/MariaDB - SQLite doesn't have this issue
-        if (DB::getDriverName() !== 'mysql') {
+        if (! in_array(DB::getDriverName(), ['mysql', 'mariadb'])) {
             return;
         }
 

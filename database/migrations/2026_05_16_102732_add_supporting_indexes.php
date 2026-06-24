@@ -76,7 +76,7 @@ return new class extends Migration
         // Also fixes zero-date defaults on all three timestamp columns in activities — MySQL validates
         // every column default on any ALTER TABLE, so all must be fixed in one statement.
         // (fix_timestamp_defaults missed this table; same pattern used there for all other tables.)
-        if (DB::getDriverName() === 'mysql') {
+        if (in_array(DB::getDriverName(), ['mysql', 'mariadb'])) {
             DB::statement('ALTER TABLE `activities`
                 MODIFY `time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
                 MODIFY `created_at` TIMESTAMP NULL DEFAULT NULL,
