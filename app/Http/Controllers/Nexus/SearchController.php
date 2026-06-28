@@ -30,7 +30,7 @@ class SearchController extends Controller
         ActivityHelper::updateActivity(
             $request->user()->id,
             'Searching',
-            action('App\Http\Controllers\Nexus\SearchController@index')
+            route('search.index')
         );
 
         return view(
@@ -47,7 +47,7 @@ class SearchController extends Controller
         $input = $request->all();
         $searchText = $input['text'];
 
-        return redirect(action('App\Http\Controllers\Nexus\SearchController@find', ['text' => $searchText]));
+        return redirect()->route('search.find', ['text' => $searchText]);
     }
 
     /**
@@ -60,7 +60,7 @@ class SearchController extends Controller
         ActivityHelper::updateActivity(
             $request->user()->id,
             'Searching',
-            action('App\Http\Controllers\Nexus\SearchController@index')
+            route('search.index')
         );
 
         $breadcrumbs = BreadcrumbHelper::breadcumbForUtility('Search');

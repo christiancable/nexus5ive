@@ -35,7 +35,7 @@ class SectionController extends Controller
             'intro' => request('intro'),
         ]);
 
-        $redirect = action('App\Http\Controllers\Nexus\SectionController@show', ['section' => $section->id]);
+        $redirect = route('section.show', ['section' => $section->id]);
 
         return redirect($redirect);
     }
@@ -47,7 +47,7 @@ class SectionController extends Controller
     {
         $section = Section::firstOrFail();
 
-        return redirect(action('App\Http\Controllers\Nexus\SectionController@show', ['section' => $section->id]));
+        return redirect(route('section.show', ['section' => $section->id]));
     }
 
     /**
@@ -76,7 +76,7 @@ class SectionController extends Controller
         ActivityHelper::updateActivity(
             $request->user()->id,
             "Browsing <em>{$section->title}</em>",
-            action('App\Http\Controllers\Nexus\SectionController@show', ['section' => $section->id])
+            route('section.show', ['section' => $section->id])
         );
 
         // if the user can moderate the section then they could potentially update subsections
@@ -157,9 +157,8 @@ class SectionController extends Controller
         $section->save();
 
         $section->delete();
-        $redirect = action('App\Http\Controllers\Nexus\SectionController@show', ['section' => $parent_id]);
 
-        return redirect($redirect);
+        return redirect()->route('section.show', ['section' => $parent_id]);
     }
 
     /**
@@ -174,7 +173,7 @@ class SectionController extends Controller
         ActivityHelper::updateActivity(
             $request->user()->id,
             'Viewing <em>Latest posts</em>',
-            action('App\Http\Controllers\Nexus\SectionController@latest')
+            route('latest')
         );
 
         return view('nexus.topics.unread', compact('topics', 'breadcrumbs'));
@@ -200,11 +199,11 @@ class SectionController extends Controller
             $destinationTopic = $updatedView->topic;
 
             // set alert
-            $topicURL = action('App\Http\Controllers\Nexus\TopicController@show', ['topic' => $destinationTopic->id]);
+            $topicURL = route('topic.show', ['topic' => $destinationTopic->id]);
             // force the url to be relative so we don't later make this open in the new window
             $topicURL = str_replace(url('/'), '', $topicURL);
             $topicTitle = $destinationTopic->title;
-            $subscribeAllURL = action('App\Http\Controllers\Nexus\TopicController@markAllSubscribedTopicsAsRead');
+            $subscribeAllURL = route('topic.markAllRead');
             $subscribeAllURL = str_replace(url('/'), '', $subscribeAllURL);
             $message = <<< Markdown
 People have been talking! New posts found in **[$topicTitle]($topicURL)**
@@ -214,10 +213,7 @@ Markdown;
             FlashHelper::showAlert($message, 'success');
 
             // redirect to the parent section of the unread topic
-            return redirect()->action(
-                'App\Http\Controllers\Nexus\SectionController@show',
-                ['section' => $destinationTopic->section->id]
-            );
+            return redirect()->route('section.show', ['section' => $destinationTopic->section->id]);
         } else {
             // set alert
             $message = 'No updated topics found. Why not start a new conversation or read more sections?';
@@ -227,7 +223,7 @@ Markdown;
 
             $home = Section::firstOrFail();
 
-            return redirect(action('App\Http\Controllers\Nexus\SectionController@show', ['section' => $home->id]));
+            return redirect()->route('section.show', ['section' => $home->id]);
         }
     }
 }

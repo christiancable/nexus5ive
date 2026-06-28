@@ -127,4 +127,21 @@ class SearchControllerTest extends TestCase
         $response->assertOk();
         $response->assertSee('exact phrase');
     }
+
+    #[Test]
+    public function find_with_quoted_phrase_does_not_match_posts_missing_the_phrase(): void
+    {
+        $owner = User::factory()->forTheme()->create();
+        $section = Section::factory()->for($owner, 'moderator')->for(Section::first(), 'parent')->create();
+        $topic = Topic::factory()->for($section)->create();
+
+        // Post contains both words but not as an adjacent phrase
+        Post::factory()->for($topic)->for($owner, 'author')->create(['text' => 'exact and then much later phrase']);
+
+        $response = $this->actingAs($this->user)
+            ->get('/search/'.rawurlencode('"exact phrase"'));
+
+        $response->assertOk();
+        $response->assertDontSee('exact and then much later phrase');
+    }
 }

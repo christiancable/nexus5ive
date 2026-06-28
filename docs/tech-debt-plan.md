@@ -136,7 +136,7 @@ Three issues in one method:
 ### 8. Migrate `action()` calls to named `route()` calls
 **Priority**: Medium  
 **Effort**: L (half day)  
-**Status**: [ ] Todo
+**Status**: [x] Done
 
 20+ uses of `action('App\Http\...\ControllerName@method', [...])` across 6 controllers. Named routes are refactor-safe and are the Laravel convention. Several methods in the same controllers already use `route()`.
 
@@ -225,7 +225,7 @@ Non-security updates available:
 | 5 | Extract `findViewRecord()` in `ViewHelper` | Medium | S | ✅ Done |
 | 6 | Clean up `SearchController::find` | Medium | S | ✅ Done |
 | 7 | Scope `User::all()` in `SectionController` | High | S | ✅ Done |
-| 8 | Migrate `action()` to `route()` | Medium | L | Backlog |
+| 8 | Migrate `action()` to `route()` | Medium | L | ✅ Done |
 | 9 | Fix `User::boot()` deleting hook | Medium | M | Backlog |
 | 10 | Type `Chat` Livewire properties | Low | S | Backlog |
 | 11 | Resolve `User` `hasManyThrough` TODO | Low | M | Backlog |

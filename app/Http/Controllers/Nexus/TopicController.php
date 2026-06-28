@@ -66,7 +66,7 @@ class TopicController extends Controller
         ActivityHelper::updateActivity(
             $request->user()->id,
             "Reading <em>{$topic->title}</em>",
-            action('App\Http\Controllers\Nexus\TopicController@show', ['topic' => $topic->id])
+            route('topic.show', ['topic' => $topic->id])
         );
 
         // if replying then include a copy of what we are replying to
