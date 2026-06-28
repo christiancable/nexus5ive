@@ -24,17 +24,14 @@ class RestoreController extends Controller
             ->get();
 
         // add trashed sections which are children of moderated sections which are not moderated by the user
-        // @todo: can this be a query?
-        foreach ($request->user()->sections as $moderatedSections) {
-            $unmoderatedSections = $moderatedSections
-                ->sections()
-                ->onlyTrashed()
-                ->with('trashedTopics')
-                ->where('user_id', '!=', $request->user()->id)
-                ->get();
-            foreach ($unmoderatedSections as $unmoderatedSection) {
-                $trashedSections->push($unmoderatedSection);
-            }
+        $moderatedSectionIds = $request->user()->sections->pluck('id');
+        $unmoderatedSections = Section::onlyTrashed()
+            ->whereIn('parent_id', $moderatedSectionIds)
+            ->where('user_id', '!=', $request->user()->id)
+            ->with('trashedTopics')
+            ->get();
+        foreach ($unmoderatedSections as $unmoderatedSection) {
+            $trashedSections->push($unmoderatedSection);
         }
 
         $trashedSections = $trashedSections->sortByDesc('deleted_at');
@@ -61,9 +58,7 @@ class RestoreController extends Controller
 
         RestoreHelper::restoreSectionToSection($trashedSection, $destinationSection);
 
-        $redirect = action('App\Http\Controllers\Nexus\SectionController@show', ['section' => $trashedSection->id]);
-
-        return redirect($redirect);
+        return redirect()->route('section.show', ['section' => $trashedSection->id]);
     }
 
     /**
@@ -82,8 +77,6 @@ class RestoreController extends Controller
 
         RestoreHelper::restoreTopicToSection($trashedTopic, $destinationSection);
 
-        $redirect = action('App\Http\Controllers\Nexus\SectionController@show', ['section' => $destinationSection->id]);
-
-        return redirect($redirect);
+        return redirect()->route('section.show', ['section' => $destinationSection->id]);
     }
 }

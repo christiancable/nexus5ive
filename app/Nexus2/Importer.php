@@ -115,7 +115,7 @@ class Importer
         ]);
 
         if ($nexus2Theme) {
-            $this->command->line("  Created default mode with Nexus 2 theme (override enabled)");
+            $this->command->line('  Created default mode with Nexus 2 theme (override enabled)');
         } else {
             $this->command->line('  Created default mode (no Nexus 2 theme found — run nexus:theme add first)');
         }
@@ -132,6 +132,7 @@ class Importer
         sort($dirs, SORT_NATURAL);
 
         // Pre-parse all UDB files so we can sort duplicates by LastOn
+        /** @var array<int, array{dir: string, dirNum: string, legacyKey: string, data: array<string, mixed>, nick: string}> $entries */
         $entries = [];
         foreach ($dirs as $dir) {
             $udbPath = $dir.'/NEXUS.UDB';
@@ -171,24 +172,16 @@ class Importer
             $entries[] = ['dir' => $dir, 'dirNum' => $dirNum, 'legacyKey' => $legacyKey, 'data' => $data, 'nick' => $nick];
         }
 
-        // Sort so the most recently active account for each nick is processed first
-        usort($entries, function ($a, $b) {
-            $dateA = $this->parseNexus2Date($a['data']['LastOn']);
-            $dateB = $this->parseNexus2Date($b['data']['LastOn']);
+        // Sort so the most recently active account for each nick is processed first.
+        // Entries with no LastOn date sort last (PHP_INT_MIN is smallest when descending).
+        $entries = collect($entries)
+            ->sortByDesc(function (array $entry): int {
+                $date = $this->parseNexus2Date($entry['data']['LastOn']);
 
-            // Nulls sort last
-            if (! $dateA && ! $dateB) {
-                return 0;
-            }
-            if (! $dateA) {
-                return 1;
-            }
-            if (! $dateB) {
-                return -1;
-            }
-
-            return $dateB->timestamp <=> $dateA->timestamp;
-        });
+                return $date ? $date->timestamp : PHP_INT_MIN;
+            })
+            ->values()
+            ->all();
 
         foreach ($entries as $entry) {
             $dir = $entry['dir'];
