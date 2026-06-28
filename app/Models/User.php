@@ -95,43 +95,24 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         parent::boot();
         // Attach event handler, on deleting of the user
-        User::deleting(
-            function ($user) {
-                Log::notice("Deleting user $user->username $user->id");
-                // for each post that the user has modified set the modified by user to null
-                Log::info('- resetting author from '.$user->modifiedPosts->count().' modifiedPosts');
-                foreach ($user->modifiedPosts as $modifiedPost) {
-                    $modifiedPost->update_user_id = null;
-                    $modifiedPost->update();
-                }
+        User::deleting(function ($user) {
+            Log::notice("Deleting user $user->username $user->id");
 
-                /*
-                to keep a cascading delete when using softDeletes we must remove the related models here
-                */
-                $children = ['posts',
-                    'comments',
-                    'sections',
-                    'views',
-                    'activity',
-                    'givenComments'];
-                foreach ($children as $child) {
-                    if ($user->$child !== null) {
-                        // we need to call delete on the grandchilden to trigger their delete() events
-                        if (get_class($user->$child) === 'Illuminate\Database\Eloquent\Collection') {
-                            Log::info('- removing '.$user->$child->count()." $child");
-                            foreach ($user->$child as $grandchild) {
-                                $grandchild->delete();
-                            }
-                        } else {
-                            Log::info("- removing $child ");
-                            if ($user->$child) {
-                                $user->$child->delete();
-                            }
-                        }
-                    }
-                }
+            // Clear the modified-by reference in bulk — no model events needed here
+            Log::info('- resetting author from '.$user->modifiedPosts()->count().' modifiedPosts');
+            $user->modifiedPosts()->update(['update_user_id' => null]);
+
+            // Delete collections one record at a time so each model's own delete events fire
+            // (e.g. Section::deleting cascades into topics). Bulk delete would skip those events.
+            foreach (['posts', 'comments', 'sections', 'views', 'givenComments'] as $relation) {
+                Log::info('- removing '.$user->$relation->count()." $relation");
+                $user->$relation->each->delete();
             }
-        );
+
+            // Activity is a single HasOne record, not a collection
+            Log::info('- removing activity');
+            $user->activity?->delete();
+        });
 
         // log new users
         User::created(
@@ -203,18 +184,14 @@ class User extends Authenticatable implements MustVerifyEmail
     */
     public function getTrashedTopicsAttribute(): Collection
     {
-        /*
-            @todo: why does the hasManyThrough not work here?
-            return $this->hasManyThrough('App\Topic', 'App\Section', 'user_id', 'section_id');
-        */
-
+        // hasManyThrough cannot be used here because Topic uses SoftDeletes —
+        // a standard relationship only returns non-trashed records and has no
+        // onlyTrashed() equivalent. Querying via section IDs is the correct approach.
         $sectionIDs = $this->sections->pluck('id')->toArray();
 
-        $trashedTopics = Topic::onlyTrashed()
+        return Topic::onlyTrashed()
             ->whereIn('section_id', $sectionIDs)
             ->get();
-
-        return $trashedTopics;
     }
     /* helper methods */
 

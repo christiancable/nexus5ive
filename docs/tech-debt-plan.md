@@ -152,7 +152,7 @@ Three issues in one method:
 ### 9. Fix `User::boot()` deleting hook
 **Priority**: Medium  
 **Effort**: M (2–3 hrs)  
-**Status**: [ ] Todo
+**Status**: [x] Done
 
 Two issues:
 1. Uses `get_class($user->$child) === 'Illuminate\Database\Eloquent\Collection'` — fragile string class comparison; use `instanceof` instead
@@ -170,7 +170,7 @@ Two issues:
 ### 10. Type the `Chat` Livewire component's public properties
 **Priority**: Low  
 **Effort**: S (30 min)  
-**Status**: [ ] Todo
+**Status**: [x] Done
 
 8 untyped public properties (`$users`, `$messages`, `$chats`, `$user`, `$newMessage`, `$selectedUser`, `$selectedChat`, `$pollingInterval`, `$newChatUser`). Livewire 4 serialises public properties; untyped props can cause unexpected hydration behaviour.
 
@@ -185,7 +185,7 @@ Two issues:
 ### 11. Resolve `User::getTrashedTopicsAttribute` TODO
 **Priority**: Low  
 **Effort**: M (1–2 hrs)  
-**Status**: [ ] Todo
+**Status**: [x] Done
 
 A 5+ year old comment: `// @todo: why does the hasManyThrough not work here?`. The accessor manually loads sections then topics. Either wire up `hasManyThrough(Topic::class, Section::class)` correctly, or document _why_ the accessor approach is intentional and remove the TODO.
 
@@ -226,7 +226,7 @@ Non-security updates available:
 | 6 | Clean up `SearchController::find` | Medium | S | ✅ Done |
 | 7 | Scope `User::all()` in `SectionController` | High | S | ✅ Done |
 | 8 | Migrate `action()` to `route()` | Medium | L | ✅ Done |
-| 9 | Fix `User::boot()` deleting hook | Medium | M | Backlog |
-| 10 | Type `Chat` Livewire properties | Low | S | Backlog |
-| 11 | Resolve `User` `hasManyThrough` TODO | Low | M | Backlog |
+| 9 | Fix `User::boot()` deleting hook | Medium | M | ✅ Done |
+| 10 | Type `Chat` Livewire properties | Low | S | ✅ Done |
+| 11 | Resolve `User` `hasManyThrough` TODO | Low | M | ✅ Done |
 | 12 | Bump minor/patch dependencies | Low | S | Backlog |
