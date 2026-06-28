@@ -7,13 +7,14 @@ use App\Helpers\BreadcrumbHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Nexus\SearchRequest;
 use App\Models\Post;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class SearchController extends Controller
 {
-    private static $stopWords = [
+    private static array $stopWords = [
         'the', 'and', 'an', 'of',
     ];
 
@@ -50,67 +51,11 @@ class SearchController extends Controller
     }
 
     /**
-     * perform a search against all the posts and
-     * return some results
-     *
-     *
-     * @todo - ignore word order
-     * @todo - remove stop words
-     * @todo - deal with exact phrases
+     * perform a search against all the posts and return results
      */
     public function find(Request $request, string $text): View
     {
-
-        $phraseSearch = false;
-        $displaySearchResults = true;
-
-        // if text is ^"(.*)"$ or ^'(.*)'$ then we are searching for a phrase
-        $pattern = <<< 'pattern'
-/^['|"](.*)['|"]$/
-pattern;
-
-        $matches = false;
-        preg_match($pattern, $text, $matches);
-
-        if (! $matches) {
-            // set initial results as nothing
-            $results = false;
-
-            // look for all the words
-            $rawSearchTerms = explode(' ', $text);
-            $searchTerms = [];
-
-            // remove stop words here
-            foreach ($rawSearchTerms as $word) {
-                if (! in_array(strtolower($word), self::$stopWords)) {
-                    $searchTerms[] = $word;
-                }
-            }
-
-            // dd($searchTerms);
-
-            foreach ($searchTerms as $word) {
-                // remove unwanted characters from the start and end
-                // @todo this does not remove multiple unwanted commas etc
-                $word = trim($word);
-
-                if (strlen($word) !== 0) {
-                    if ($results) {
-                        $results = $results->where('text', 'like', "%$word%");
-                    } else {
-                        // first where
-                        $results = Post::where('text', 'like', "%$word%");
-                    }
-                }
-            }
-        } else {
-            $phrase = trim($matches[1]);
-            $results = Post::where('text', 'like', "%$phrase%");
-        }
-
-        if ($results) {
-            $results->orderBy('time', 'desc');
-        }
+        $results = $this->buildSearchQuery($text);
 
         ActivityHelper::updateActivity(
             $request->user()->id,
@@ -119,10 +64,35 @@ pattern;
         );
 
         $breadcrumbs = BreadcrumbHelper::breadcumbForUtility('Search');
+        $displaySearchResults = true;
 
         return view(
             'nexus.search.results',
             compact('results', 'breadcrumbs', 'text', 'displaySearchResults')
         );
+    }
+
+    private function buildSearchQuery(string $text): ?Builder
+    {
+        // Wrap in quotes/apostrophes to search for an exact phrase
+        if (preg_match('/^[\'"](.+)[\'"]$/', $text, $matches)) {
+            return Post::where('text', 'like', '%'.trim($matches[1]).'%')->orderBy('time', 'desc');
+        }
+
+        $words = array_filter(
+            explode(' ', $text),
+            fn (string $word) => strlen(trim($word)) > 0 && ! in_array(strtolower($word), self::$stopWords)
+        );
+
+        if (empty($words)) {
+            return null;
+        }
+
+        $query = Post::query();
+        foreach ($words as $word) {
+            $query->where('text', 'like', '%'.trim($word).'%');
+        }
+
+        return $query->orderBy('time', 'desc');
     }
 }
