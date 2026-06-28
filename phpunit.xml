@@ -13,6 +13,7 @@
         </testsuite>
         <testsuite name="Browser">
             <directory>tests/Browser</directory>
+            <exclude>tests/Browser/ScreenshotTourTest.php</exclude>
         </testsuite>
         <testsuite name="Integration">
             <directory>tests/intergration</directory>

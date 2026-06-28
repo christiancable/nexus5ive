@@ -10,6 +10,7 @@
     "skills": [
         "laravel-best-practices",
         "livewire-development",
-        "pest-testing"
+        "pest-testing",
+        "technical-debt-manager-php-laravel"
     ]
 }
