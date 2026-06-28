@@ -97,6 +97,44 @@ beforeEach(function () {
             'intro' => 'Gadgets, code, and the internet of things.',
         ]);
 
+    // An open section — normal members can create topics here
+    $this->openSection = Section::factory()
+        ->for($this->bob, 'moderator')
+        ->for($this->home, 'parent')
+        ->create([
+            'title' => 'Off Topic',
+            'intro' => 'Films, food, music, and anything else. Anyone can start a topic here.',
+            'allow_user_topics' => true,
+        ]);
+
+    // A topic directly in the home section — makes the home page show both
+    // topics and subsections together in the same view
+    Post::factory()
+        ->for(
+            Topic::factory()
+                ->for($this->home, 'section')
+                ->create([
+                    'title' => 'Site announcements',
+                    'intro' => 'News and updates from the moderation team.',
+                ]),
+        )
+        ->for($this->alice, 'author')
+        ->create([
+            'title' => 'Welcome to The Lounge',
+            'text' => "This is the main hub for the BBS. Subsections are below — dive in and introduce yourself!",
+            'popname' => 'Down The Rabbit Hole',
+            'time' => now()->subDays(3),
+        ]);
+
+    // A couple of existing topics in the open section so it looks lived-in
+    Topic::factory()
+        ->for($this->openSection, 'section')
+        ->create(['title' => 'What are you watching this week?', 'intro' => 'Films, TV, anything.']);
+
+    Topic::factory()
+        ->for($this->openSection, 'section')
+        ->create(['title' => 'Recipe thread — share your favourites', 'intro' => 'Home cooking welcome.']);
+
     // A topic with rich posts — the viewer is subscribed here with older read progress
     $this->topic = Topic::factory()
         ->for($this->subSection, 'section')
@@ -554,4 +592,45 @@ test('22 notifications — viewing an unread chat message', function () {
         ->select('#usersDropdown', $this->alice->id)
         ->wait(0.8);
     snap($page, '22-notifications-unread-chat');
+});
+
+// -----------------------------------------------------------------------
+// Section structure and topic creation
+// -----------------------------------------------------------------------
+
+test('23 mixed section — topics and subsections together', function () {
+    actingAs($this->viewer);
+
+    // The home section has both a direct topic (announcements) and child
+    // subsections (General Chat, Tech Talk, Off Topic), showing the mixed layout
+    $page = visit('/section/' . $this->home->id)->resize(1280, 900);
+    $page->screenshot(true, '23-mixed-section-desktop');
+    $page->resize(390, 844);
+    $page->script('window.scrollTo(0, 0)');
+    $page->wait(0.1)->screenshot(false, '23-mixed-section-mobile');
+});
+
+test('24 creating a topic — add topic button visible', function () {
+    actingAs($this->viewer);
+
+    // Off Topic has allow_user_topics = true so the Add New Topic accordion
+    // is shown to a normal member who is not the section moderator
+    $page = visit('/section/' . $this->openSection->id)->resize(1280, 900);
+    $page->screenshot(true, '24-create-topic-button-desktop');
+    $page->resize(390, 844);
+    $page->script('window.scrollTo(0, 0)');
+    $page->wait(0.1)->screenshot(false, '24-create-topic-button-mobile');
+});
+
+test('25 creating a topic — form expanded and filled in', function () {
+    actingAs($this->viewer);
+
+    // Open the Add New Topic accordion and fill in the fields
+    $page = visit('/section/' . $this->openSection->id)
+        ->resize(1280, 900)
+        ->click('[data-bs-target="#addTopicForm"]')
+        ->wait(0.4)
+        ->type('#newTopicTitle', 'Does anyone have a good sourdough recipe?')
+        ->type('textarea[name="intro"]', "I've been trying to get a decent sourdough starter going for weeks with limited success. Tips from experienced bakers very welcome!");
+    snap($page, '25-create-topic-form');
 });
