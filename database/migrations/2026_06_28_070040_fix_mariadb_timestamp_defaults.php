@@ -6,19 +6,21 @@ use Illuminate\Support\Facades\DB;
 return new class extends Migration
 {
     /**
-     * Fix timestamp columns that have invalid '0000-00-00 00:00:00' defaults.
-     * This is required for MySQL strict mode compatibility.
-     * SQLite doesn't have this issue, so we skip it there.
+     * Apply timestamp default fixes for MariaDB.
+     *
+     * The two earlier migrations (fix_timestamp_defaults and add_supporting_indexes)
+     * guarded their ALTER TABLE statements with `DB::getDriverName() === 'mysql'`, which
+     * returns false when Laravel is configured with DB_CONNECTION=mariadb. Those
+     * statements were therefore skipped on MariaDB. This migration runs them for any
+     * database whose driver is 'mariadb'.
      */
     public function up(): void
     {
-        // Only run on MySQL/MariaDB - SQLite doesn't have this issue
-        if (DB::getDriverName() !== 'mysql') {
+        if (DB::getDriverName() !== 'mariadb') {
             return;
         }
 
-        // Must modify all timestamp columns in each table in a single statement
-        // because MySQL validates the entire table when altering any column
+        // From fix_timestamp_defaults — sections, topics, posts, users, comments, views
         DB::statement('ALTER TABLE `sections`
             MODIFY `created_at` TIMESTAMP NULL DEFAULT NULL,
             MODIFY `updated_at` TIMESTAMP NULL DEFAULT NULL');
@@ -44,13 +46,16 @@ return new class extends Migration
             MODIFY `latest_view_date` TIMESTAMP NULL DEFAULT NULL,
             MODIFY `created_at` TIMESTAMP NULL DEFAULT NULL,
             MODIFY `updated_at` TIMESTAMP NULL DEFAULT NULL');
+
+        // From add_supporting_indexes — activities
+        DB::statement('ALTER TABLE `activities`
+            MODIFY `time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            MODIFY `created_at` TIMESTAMP NULL DEFAULT NULL,
+            MODIFY `updated_at` TIMESTAMP NULL DEFAULT NULL');
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        // No need to reverse - the old defaults were invalid
+        // No need to reverse — the old defaults were invalid
     }
 };
