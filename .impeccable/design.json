@@ -1,0 +1,122 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-17T00:00:00Z",
+  "title": "Design System: Nexus 5ive — Default Theme",
+  "extensions": {
+    "colorMeta": {
+      "primary": { "role": "primary", "displayName": "Nexus Sky Blue", "canonical": "#2679a7", "tonalRamp": ["#061219", "#0f3043", "#194f6d", "#226d96", "#478db4", "#7dafca", "#b3d0e0", "#deebf2"] },
+      "secondary": { "role": "secondary", "displayName": "Soft Cyan", "canonical": "#8eb4cb", "tonalRamp": ["#151b1e", "#394851", "#5c7584", "#80a2b7", "#9fbfd3", "#bbd2e0", "#d7e5ed", "#eef4f7"] },
+      "success": { "role": "success", "displayName": "Leaf Green", "canonical": "#20865c", "tonalRamp": ["#05140e", "#0d3625", "#15573c", "#1d7953", "#419874", "#79b69d", "#b1d5c6", "#deede7"] },
+      "info": { "role": "info", "displayName": "Indigo Accent", "canonical": "#616fc5", "tonalRamp": ["#0f111e", "#272c4f", "#3f4880", "#5764b1", "#7985ce", "#a0a9dc", "#c8cdeb", "#e7e9f6"] },
+      "warning": { "role": "warning", "displayName": "Amber Orange", "canonical": "#f6993f", "tonalRamp": ["#251709", "#623d19", "#a06329", "#dd8a39", "#f7a85c", "#fac28c", "#fcdbbc", "#fef0e2"] },
+      "danger": { "role": "danger", "displayName": "Brick Red", "canonical": "#bf5329", "tonalRamp": ["#1d0c06", "#4c2110", "#7c361b", "#ac4b25", "#c96d49", "#d9987f", "#e9c3b4", "#f5e5df"] },
+      "neutral-bg": { "role": "neutral", "displayName": "Cool Mist", "canonical": "#f5f8fa", "tonalRamp": ["#252526", "#626364", "#9fa1a2", "#dcdfe1", "#f6f9fb", "#f9fbfc", "#fcfdfd", "#fefefe"] },
+      "neutral-text": { "role": "neutral", "displayName": "Slate Ink", "canonical": "#636b6f", "tonalRamp": ["#0f1011", "#282b2c", "#404648", "#596064", "#7a8185", "#a1a6a9", "#c8cbcd", "#e8e9e9"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Bootstrap .display-4 utility used directly by the <x-heading> component for page/section/topic titles." },
+      "headline": { "displayName": "Headline", "purpose": "Semantic h1 outside the heading component." },
+      "title": { "displayName": "Title", "purpose": "Card titles, topic headings, section titles (h3–h4)." },
+      "body": { "displayName": "Body", "purpose": "Post and comment content, general copy." },
+      "label": { "displayName": "Label", "purpose": "Timestamps, muted footer text, breadcrumb items." }
+    },
+    "shadows": [
+      { "name": "quote-callout", "value": "0 1px 3px rgba(0, 0, 0, 0.1)", "purpose": "Marks quoted/conversational content (blockquote only) — not a general elevation signal." }
+    ],
+    "motion": [
+      { "name": "collapse-fast", "value": "height 0.15s ease", "purpose": "Bootstrap navbar/accordion collapse, sped up from the 0.35s default for snappier feedback." },
+      { "name": "collapse-icon-rotate", "value": "transform 0.2s ease-in-out", "purpose": "Rotation transition for collapsible section/chevron icons." }
+    ],
+    "breakpoints": [
+      { "name": "lg", "value": "992px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Default action button — Nexus Sky Blue fill, white text, optional icon slot.",
+      "html": "<button type=\"button\" class=\"ds-btn ds-btn-primary\"><svg class=\"ds-btn-icon\" viewBox=\"0 0 20 20\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M10 3a1 1 0 0 1 1 1v5h5a1 1 0 1 1 0 2h-5v5a1 1 0 1 1-2 0v-5H4a1 1 0 1 1 0-2h5V4a1 1 0 0 1 1-1z\"/></svg>Post Reply</button>",
+      "css": ".ds-btn { display: inline-flex; align-items: center; gap: 0.25rem; font-family: 'Nunito', system-ui, sans-serif; font-size: 0.9rem; padding: 0.375rem 0.75rem; border-radius: 0.375rem; border: 1px solid transparent; cursor: pointer; transition: background-color 0.15s ease, border-color 0.15s ease; } .ds-btn-icon { width: 1rem; height: 1rem; } .ds-btn-primary { background-color: #2679a7; border-color: #2679a7; color: #ffffff; } .ds-btn-primary:hover { background-color: #226d96; border-color: #226d96; } .ds-btn-primary:focus-visible { outline: 2px solid #7dafca; outline-offset: 2px; }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Lower-emphasis action — Soft Cyan fill with explicit black text for contrast.",
+      "html": "<button type=\"button\" class=\"ds-btn ds-btn-secondary\">Cancel</button>",
+      "css": ".ds-btn-secondary { background-color: #8eb4cb; border: 1px solid #8eb4cb; color: #000000; font-family: 'Nunito', system-ui, sans-serif; font-size: 0.9rem; padding: 0.375rem 0.75rem; border-radius: 0.375rem; cursor: pointer; transition: background-color 0.15s ease; } .ds-btn-secondary:hover { background-color: #80a2b7; } .ds-btn-secondary:focus-visible { outline: 2px solid #5c7584; outline-offset: 2px; }"
+    },
+    {
+      "name": "Post Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Forum post — flat white card, optional colored header when the post has a title, quote-style content area.",
+      "html": "<div class=\"ds-card\"><div class=\"ds-card-header\">Topic Title</div><div class=\"ds-card-body\"><div class=\"ds-card-byline\">username &ndash; popname</div><small class=\"ds-card-time\">2 hours ago</small><p class=\"ds-card-text\">Post content goes here.</p></div></div>",
+      "css": ".ds-card { background: #ffffff; border: 1px solid rgba(0,0,0,0.125); border-radius: 0.375rem; font-family: 'Nunito', system-ui, sans-serif; color: #636b6f; overflow: hidden; margin-bottom: 1rem; } .ds-card-header { background: #2679a7; color: #ffffff; padding: 0.75rem 1rem; font-weight: 600; } .ds-card-body { padding: 1rem; } .ds-card-byline { font-size: 0.9rem; } .ds-card-time { color: #8a9297; } .ds-card-text { margin-top: 0.75rem; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 0.75rem; }"
+    },
+    {
+      "name": "Chat Bubble (Sent)",
+      "kind": "custom",
+      "refersTo": "chat-bubble-sent",
+      "description": "Outgoing chat message — pill shape with the trailing corner squared off, iMessage-style. Background is the theme's $success token, so it recolors per theme.",
+      "html": "<div class=\"ds-bubble ds-bubble-sent\">Hey, are you around?</div>",
+      "css": ".ds-bubble { display: inline-block; max-width: 75%; padding: 0.5rem 1rem; font-family: 'Nunito', system-ui, sans-serif; font-size: 0.9rem; color: #ffffff; border-radius: 50px; } .ds-bubble-sent { background-color: #20865c; border-bottom-right-radius: 0; }"
+    },
+    {
+      "name": "Chat Bubble (Received)",
+      "kind": "custom",
+      "refersTo": "chat-bubble-received",
+      "description": "Incoming chat message — pill shape with the leading corner squared off. Background is the theme's $primary token, so it recolors per theme.",
+      "html": "<div class=\"ds-bubble ds-bubble-received\">Yeah, just got back online.</div>",
+      "css": ".ds-bubble-received { background-color: #2679a7; border-bottom-left-radius: 0; display: inline-block; max-width: 75%; padding: 0.5rem 1rem; font-family: 'Nunito', system-ui, sans-serif; font-size: 0.9rem; color: #ffffff; border-radius: 50px; }"
+    },
+    {
+      "name": "Top Toolbar",
+      "kind": "nav",
+      "refersTo": "navigation",
+      "description": "Primary navbar — Nexus Sky Blue background, white icon+label links, collapses below lg.",
+      "html": "<nav class=\"ds-toolbar\"><a class=\"ds-toolbar-brand\" href=\"#\">Home</a><a class=\"ds-toolbar-link\" href=\"#\">Latest</a><a class=\"ds-toolbar-link\" href=\"#\">Next</a><a class=\"ds-toolbar-link\" href=\"#\">Users</a></nav>",
+      "css": ".ds-toolbar { display: flex; align-items: center; gap: 1rem; background-color: #2679a7; padding: 0.5rem 1rem; font-family: 'Nunito', system-ui, sans-serif; } .ds-toolbar-brand, .ds-toolbar-link { color: #ffffff; text-decoration: none; font-size: 0.9rem; } .ds-toolbar-link:hover, .ds-toolbar-brand:hover { text-decoration: underline; text-underline-offset: 0.33rem; }"
+    },
+    {
+      "name": "Blockquote",
+      "kind": "custom",
+      "refersTo": "quote-callout",
+      "description": "Quoted content — tinted background, oversized translucent quote mark, the only surface with a shadow.",
+      "html": "<blockquote class=\"ds-blockquote\">Quoted text from another post.</blockquote>",
+      "css": ".ds-blockquote { position: relative; padding: 1.25rem 1.5rem 1.25rem 3.5rem; margin: 0 0 1.5rem; background-color: rgba(0,0,0,0.03); border-radius: 0.5rem; font-style: italic; color: #636b6f; box-shadow: 0 1px 3px rgba(0,0,0,0.1); font-family: 'Nunito', system-ui, sans-serif; } .ds-blockquote::before { content: '\\201C'; position: absolute; top: 1rem; left: 1rem; font-size: 3rem; color: #2679a7; opacity: 0.3; line-height: 1; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Calm Common Room",
+    "overview": "The Default theme is the room everyone starts in: friendly, unpretentious, and deliberately quiet, built entirely on stock Bootstrap 5.3 behavior with a light coat of Nunito and Nexus Sky Blue. It exists so that the site's optional theme packs — Excelsior's black-and-neon terminal look, Halloween, Hotdog, Xmas, the legacy Nexus2 skin — are the ones that get to be visually loud. The Default theme's job is to stay out of the way: legible, warm, a little plain by design, and explicitly not sleek corporate SaaS.\n\nComponents come across as tidy and a little playful rather than austere: standard Bootstrap bones (navbar, cards, breadcrumbs, buttons) carry a few hand-placed touches — pill-shaped chat bubbles, icon-accented nav links, a quote-mark blockquote treatment — that give the app personality without asking it to look bolder than it is. This is a passion project for a small, invested community; the visual system should feel sturdy and familiar to a returning user, never like a relaunch.",
+    "keyCharacteristics": [
+      "Cool, mist-and-slate neutral canvas with one confident accent (Nexus Sky Blue) doing most of the color work.",
+      "Stock Bootstrap grid, spacing, and component shapes — no attempt to hide or restyle the framework.",
+      "Flat by default; the rare soft shadow marks a quote or a message bubble, never generic 'raised UI.'",
+      "Personality lives in small, specific details (icon sizing, chat bubbles, blockquote quote-mark), not in a system-wide visual statement.",
+      "The Default theme is one of several installable Bootstrap-variable themes; nothing here should assume it's the only skin the app will ever wear."
+    ],
+    "rules": [
+      { "name": "The Readable-Text Rule", "body": "Every theme color has an explicit, hand-picked text color rather than relying on Bootstrap's automatic contrast calculation. Don't remove the explicit overrides in favor of automatic contrast.", "section": "colors" },
+      { "name": "The One Signature Blue Rule", "body": "Nexus Sky Blue is the only color that should read as 'the site's color' — new UI should reach for $primary before introducing a new hue.", "section": "colors" },
+      { "name": "The AA-Or-Darker Rule", "body": "$primary, $success, and $info are calibrated so their white-text pairing (and $primary as link text on $neutral-bg) clears 4.5:1. Re-check contrast against both white and #f5f8fa before changing these hues.", "section": "colors" },
+      { "name": "The Single-Typeface Rule", "body": "Don't introduce a second font family for emphasis or distinction — weight and size carry all the hierarchy this system needs.", "section": "typography" },
+      { "name": "The Flat-Unless-Quoted Rule", "body": "Don't add a shadow to a card, button, or nav element to make it feel important. Shadow is reserved for content that is literally being quoted back to the reader.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do keep every new color decision inside the existing $theme-colors map so it survives a theme switch to Excelsior, Halloween, Hotdog, Xmas, or Nexus2 without extra work.",
+      "Do give every new colored button/badge variant an explicit text-color override rather than trusting automatic contrast.",
+      "Do use the three fixed icon-size classes (icon_mini / icon_medium / icon_large) for any new Heroicon usage.",
+      "Do treat shadow as a signal reserved for quoted/conversational content, not general UI weight."
+    ],
+    "donts": [
+      "Don't hardcode a new hex color for chat, badges, or alerts when a $theme-colors entry already covers the intent — this drifted once for the chat bubbles and was fixed by switching to $success/$primary.",
+      "Don't introduce a second typeface. Nunito plus weight variation is the entire type system.",
+      "Don't add drop shadows to cards, nav, or buttons to signal elevation or importance.",
+      "Don't assume the Default theme's exact colors, radius, or font are load-bearing outside it — the override mechanism used by Excelsior, Halloween, Hotdog, Xmas, and Nexus2 is a first-class product feature, not a shortcut to work around."
+    ]
+  }
+}
