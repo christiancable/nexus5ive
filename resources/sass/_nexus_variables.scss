@@ -13,10 +13,13 @@ $body-bg: #f5f8fa;
 $body-color: #636b6f;
 
 // Base color overrides
-$blue:    #3097D1;
+// blue/green/indigo darkened from their original hues so white button/nav
+// text and link text on the body background both clear WCAG AA (4.5:1) —
+// see DESIGN.md Colors > Named Rules.
+$blue:    #2679a7;
 $cyan:    #8eb4cb;
-$green:   #2ab27b;
-$indigo:  #6574cd;
+$green:   #20865c;
+$indigo:  #616fc5;
 $orange:  #f6993f;
 $pink:    #f66D9b;
 $purple:  #9561e2;
