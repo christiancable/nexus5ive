@@ -57,13 +57,24 @@ $theme-colors: (
 
 #top-toolbar .navbar {
     background-color: $festive-red !important;
-    color: $festive-green;
+    // snow, not green, on red: green-on-red was 1.77:1 (a severe WCAG AA
+    // failure, worsened by red/green being the hardest pairing for
+    // red-green color blindness). Snow-on-red clears 5.3:1 and keeps the
+    // same candy-cane identity.
+    color: $festive-snow;
 
     * {
-        color: $festive-green;
+        color: $festive-snow;
     }
 
     .navbar-toggler-icon {
-        background-color: $festive-green;
+        background-color: $festive-snow;
     }
+}
+
+// mobile bottom nav — match the toolbar's red so the hardcoded white nav
+// text (see _footer-navigation.blade.php) has something to read against;
+// left unset this fell back to bg-primary (dark green) at 4.36:1.
+#footer-navigation .fixed-bottom {
+    background-color: $festive-red !important;
 }

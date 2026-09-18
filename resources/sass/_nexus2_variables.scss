@@ -113,7 +113,9 @@ $input-border-color:       $dos-dark-gray;
 $input-focus-bg:           $dos-black;
 $input-focus-color:        $dos-yellow;
 $input-focus-border-color: $dos-bright-cyan;
-$input-placeholder-color:  $dos-dark-gray;
+// was $dos-dark-gray (#555): 2.82:1 on the black input background. CGA only
+// has two grays, so $dos-light-gray is the nearest authentic fix (9.04:1).
+$input-placeholder-color:  $dos-light-gray;
 
 // ── Dropdowns — blue panel, red selection bar ─────────────────────────────────
 $dropdown-bg:                $dos-dark-blue;
@@ -127,7 +129,9 @@ $dropdown-link-active-color: $dos-white;
 
 // ── Breadcrumbs ───────────────────────────────────────────────────────────────
 $breadcrumb-active-color:   $dos-light-gray;
-$breadcrumb-divider-color:  $dos-dark-gray;
+// was $dos-dark-gray: 1.78:1 on the dark-blue breadcrumb bar. Matches
+// $breadcrumb-active-color now (5.72:1).
+$breadcrumb-divider-color:  $dos-light-gray;
 $breadcrumb-border-radius:  0;
 $breadcrumb-padding-y:      0.4rem;
 $breadcrumb-padding-x:      1rem;
@@ -157,7 +161,9 @@ $kbd-color:  $dos-white;
 // ── Misc ──────────────────────────────────────────────────────────────────────
 $mark-bg:    $dos-dark-red;
 $mark-color: $dos-white;
-$text-muted: $dos-dark-gray;
+// $text-muted was set here but has been dead since Bootstrap 5.3.0 deprecated
+// it in favour of --bs-secondary-color, which .text-muted uses directly and
+// unconditionally — this line never affected anything.
 
 // ── Buttons ───────────────────────────────────────────────────────────────────
 $btn-border-radius:    0;
@@ -296,13 +302,17 @@ $modal-content-border-color: $dos-dark-gray;
     // Status prefix on h2.card-title for topic headings in card-header context
     .card-title:has(.text-danger)::before  { content: '[*]'; color: $dos-bright-red;   margin-right: 0.4em; }
     .card-title:has(.text-success)::before { content: '[+]'; color: $dos-bright-green; margin-right: 0.4em; }
-    .card-title:has(.text-muted)::before   { content: '[-]'; color: $dos-dark-gray;    margin-right: 0.4em; }
-    .card-title:has(.text-primary)::before { content: '[\00B7]'; color: $dos-dark-gray; margin-right: 0.4em; }
+    // both were $dos-dark-gray (2.82:1 on the transparent/black header) —
+    // these are status glyphs, not decoration, so they need to be readable.
+    .card-title:has(.text-muted)::before   { content: '[-]'; color: $dos-light-gray;    margin-right: 0.4em; }
+    .card-title:has(.text-primary)::before { content: '[\00B7]'; color: $dos-light-gray; margin-right: 0.4em; }
 
     // Subtitle line ("Latest post N ago by @user in Section") — keep muted, no prefix
     .card-subtitle {
       font-size: 1em;
-      color: $dos-dark-gray;
+      // was $dos-dark-gray: 2.82:1 on black. CGA only has two grays, so
+      // $dos-light-gray is the nearest authentic fix (9.04:1).
+      color: $dos-light-gray;
       a { color: $dos-dark-green; &:hover { color: $dos-bright-green; } }
     }
   }
@@ -523,10 +533,10 @@ pre {
     &:has(.text-danger)::before  { content: '[*]'; color: $dos-bright-red;   margin-right: 0.4em; }
     // never read → [+] in bright green
     &:has(.text-success)::before { content: '[+]'; color: $dos-bright-green; margin-right: 0.4em; }
-    // unsubscribed → [-] in dark gray
-    &:has(.text-muted)::before   { content: '[-]'; color: $dos-dark-gray;    margin-right: 0.4em; }
-    // read, nothing new → [·] in dark gray
-    &:has(.text-primary)::before { content: '[\00B7]'; color: $dos-dark-gray; margin-right: 0.4em; }
+    // unsubscribed → [-] in light gray (was dark gray: 2.82:1 on black)
+    &:has(.text-muted)::before   { content: '[-]'; color: $dos-light-gray;    margin-right: 0.4em; }
+    // read, nothing new → [·] in light gray (was dark gray: 2.82:1 on black)
+    &:has(.text-primary)::before { content: '[\00B7]'; color: $dos-light-gray; margin-right: 0.4em; }
   }
 
   // Intro text and latest-post footer: minimal vertical spacing
@@ -539,8 +549,13 @@ pre {
 // (the prominent blue Bootstrap button is out of place)
 .card-body .btn.btn-primary {
   background-color: transparent;
-  border: 1px solid $dos-dark-gray;
-  color: $dos-dark-gray;
+  // resting state was $dos-dark-gray for both: 2.82:1 on black, a real
+  // WCAG failure on the primary reply action before it's ever hovered.
+  // CGA only has two grays, so $dos-light-gray is the nearest authentic
+  // fix (9.04:1) — the hover state below still carries the "de-emphasised
+  // until you engage it" feeling.
+  border: 1px solid $dos-light-gray;
+  color: $dos-light-gray;
   font-size: 1em;
   padding: 0.1rem 0.5rem;
   &:hover {

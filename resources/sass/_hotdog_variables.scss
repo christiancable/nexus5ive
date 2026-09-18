@@ -43,7 +43,9 @@ $navbar-dark-hover-color: $white;
 
 $breadcrumb-bg: $yellow;
 $breadcrumb-divider-color: $black;
-$breadcrumb-active-color: $gray;
+// was $gray (#c6c6c6): 1.59:1 on yellow, nearly invisible for the current-page
+// crumb. Black matches the divider above and clears 19.6:1.
+$breadcrumb-active-color: $black;
 
 // Typography
 @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
@@ -52,7 +54,6 @@ $headings-font-family: 'VT323', monospace;
 $font-family-sans-serif: Roboto,  Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 $font-size-base: 1rem;
 $line-height-base: 1.6;
-$text-muted: $black;
 
 .user-comments  {
   .comment {
