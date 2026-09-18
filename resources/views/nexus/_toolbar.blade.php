@@ -7,7 +7,7 @@
             </a>
 
             <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
-                aria-expanded="true" aria-controls="navbar">
+                aria-expanded="true" aria-controls="navbar" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
                 @php
                     $notificationCount = auth()->user()->notificationCount();
@@ -24,8 +24,6 @@
 
                 <ul class="nav navbar-nav me-auto">
                     <li class="nav-item">
-
-                    <li class="nav-item">
                         <a {!! App\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Latest') !!}
                             href="{{ action('App\Http\Controllers\Nexus\SectionController@latest') }}"
                             class="nav-link me-1">
@@ -39,9 +37,10 @@
                             <x-heroicon-s-arrow-right-circle class="icon_mini me-1" aria-hidden="true" />Next</a>
                     </li>
 
-                    <a {!! App\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Users') !!} href="{{ action('App\Http\Controllers\Nexus\UserController@index') }}"
-                        class="nav-link">
-                        <x-heroicon-s-users class="icon_mini me-1" aria-hidden="true" />Users</a>
+                    <li class="nav-item">
+                        <a {!! App\Helpers\GoogleAnalyticsHelper::onClickEvent('TopNavigation', 'Users') !!} href="{{ action('App\Http\Controllers\Nexus\UserController@index') }}"
+                            class="nav-link">
+                            <x-heroicon-s-users class="icon_mini me-1" aria-hidden="true" />Users</a>
                     </li>
 
                     <li class="nav-item">

@@ -40,7 +40,13 @@ $info: $orange;
   .navbar-toggler-icon {
     background-color: $orange;
   }
-    
+
+}
+
+// mobile bottom nav — match the toolbar's black; left unset this fell back
+// to bg-primary (#0097f2) under the hardcoded white nav text at 3.13:1.
+#footer-navigation .fixed-bottom {
+  background-color: $black !important;
 }
 
 .dropdown-menu {

@@ -14,7 +14,9 @@ $blue: rgb(0, 151, 242);
 
 $green: rgb(9, 255, 0);
 $orange: rgba(255, 154, 0);
-$purple: rgba(201, 0, 255);
+// darkened slightly from rgb(201,0,255): white text on the original purple
+// card-header measured 4.26:1, just under AA; this clears 4.58:1.
+$purple: rgb(193, 0, 245);
 
 $body-color: $green;
 $headings-color: $orange;

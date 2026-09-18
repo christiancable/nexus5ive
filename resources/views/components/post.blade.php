@@ -17,7 +17,10 @@
             
             @if($preview != true)
             <div>
-                <a href="{{ action('App\Http\Controllers\Nexus\PostController@report', ['post' => $id]) }}"><x-heroicon-s-flag class="icon_mini" /></a>
+                <a href="{{ action('App\Http\Controllers\Nexus\PostController@report', ['post' => $id]) }}"
+                    class="d-inline-flex p-2" aria-label="Report post">
+                    <x-heroicon-s-flag class="icon_mini" aria-hidden="true" />
+                </a>
             </div>
             @endif
         </div>
