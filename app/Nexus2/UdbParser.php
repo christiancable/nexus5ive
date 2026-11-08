@@ -113,6 +113,7 @@ class UdbParser
         }
     }
 
+    /** @return array<string, mixed> */
     public function parse(): array
     {
         $fields = unpack(
@@ -138,6 +139,10 @@ class UdbParser
             'CMaxLogins',        // uchar (1 byte)
             $this->data
         );
+
+        if ($fields === false) {
+            throw new RuntimeException('Failed to unpack UDB binary data');
+        }
 
         // Clean null bytes from string fields
         $stringFields = ['Nick', 'UserID', 'RealName', 'PopName', 'Password',

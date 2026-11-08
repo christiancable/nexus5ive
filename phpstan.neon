@@ -18,3 +18,11 @@ parameters:
           paths:
               - app/View/Components
               - app/Http/Controllers/Auth/ConfirmablePasswordController.php
+
+        # PHPStan cannot track the array shape of $entries through incremental loop
+        # mutations when one element comes from unpack(), which PHP types as
+        # array<string, int|string>|false. The false case is guarded in UdbParser::parse()
+        # and the full shape is documented via @var at the declaration site.
+        - identifier: argument.unresolvableType
+          paths:
+              - app/Nexus2/Importer.php

@@ -1,11 +1,11 @@
 services:
     laravel.test:
         build:
-            context: ./vendor/laravel/sail/runtimes/8.3
+            context: ./vendor/laravel/sail/runtimes/8.5
             dockerfile: Dockerfile
             args:
                 WWWGROUP: '${WWWGROUP}'
-        image: sail-8.3/app
+        image: sail-8.5/app
         extra_hosts:
             - 'host.docker.internal:host-gateway'
         ports:
@@ -38,7 +38,7 @@ services:
             MYSQL_ALLOW_EMPTY_PASSWORD: 1
         volumes:
             - 'sail-mysql:/var/lib/mysql'
-            - './vendor/laravel/sail/database/mysql/create-testing-database.sh:/docker-entrypoint-initdb.d/10-create-testing-database.sh'
+            - './docker/mysql/create-testing-database.sh:/docker-entrypoint-initdb.d/10-create-testing-database.sh'
         networks:
             - sail
         healthcheck:
@@ -64,7 +64,6 @@ services:
                 - ping
             retries: 3
             timeout: 5s
-
     selenium:
         image: 'seleniarm/standalone-chromium:latest'
         extra_hosts:
@@ -74,18 +73,18 @@ services:
         networks:
             - sail
         environment:
-            # Reduce session timeouts to fail fast
             - SE_SESSION_REQUEST_TIMEOUT=60
             - SE_SESSION_RETRY_INTERVAL=5
-            # Allow faster session cleanup
             - SE_NODE_SESSION_TIMEOUT=60
-            # Limit concurrent sessions to reduce resource contention
             - SE_NODE_MAX_SESSIONS=1
             - SE_NODE_OVERRIDE_MAX_SESSIONS=true
-            # Faster startup
             - SE_START_XVFB=false
         healthcheck:
-            test: ["CMD", "curl", "-f", "http://localhost:4444/wd/hub/status"]
+            test:
+                - CMD
+                - curl
+                - '-f'
+                - 'http://localhost:4444/wd/hub/status'
             interval: 15s
             timeout: 10s
             retries: 3

@@ -31,7 +31,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     /* Sections */
     Route::get('/', [SectionController::class, 'index'])->name('dashboard');
     Route::get('/home', [SectionController::class, 'index']);
-    Route::get('leap', [SectionController::class, 'leap']);
+    Route::get('leap', [SectionController::class, 'leap'])->name('leap');
     Route::get('/section/latest', [SectionController::class, 'latest'])->name('latest');
     Route::resource('section', SectionController::class);
 
@@ -58,15 +58,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('report/{type}/{id}', [ReportController::class, 'store']);
 
     /* messages */
-    Route::get('chat/{user?}', [ChatController::class, 'index']);
+    Route::get('chat/{user?}', [ChatController::class, 'index'])->name('chat.index');
 
     /* Search */
-    Route::get('search', [SearchController::class, 'index']);
-    Route::get('search/{text}', [SearchController::class, 'find']);
-    Route::post('search', [SearchController::class, 'submitSearch']);
+    Route::get('search', [SearchController::class, 'index'])->name('search.index');
+    Route::get('search/{text}', [SearchController::class, 'find'])->name('search.find');
+    Route::post('search', [SearchController::class, 'submitSearch'])->name('search.submit');
 
     /* misc */
-    Route::get('updateSubscriptions', [TopicController::class, 'markAllSubscribedTopicsAsRead']);
+    Route::get('updateSubscriptions', [TopicController::class, 'markAllSubscribedTopicsAsRead'])->name('topic.markAllRead');
     Route::resource('here', ActivityController::class);
 
     // restore

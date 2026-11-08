@@ -25,7 +25,7 @@ class UserController extends Controller
         ActivityHelper::updateActivity(
             $request->user()->id,
             'Viewing list of Users',
-            action('App\Http\Controllers\Nexus\UserController@index')
+            route('users.index')
         );
         $breadcrumbs = BreadcrumbHelper::breadcumbForUtility('Users');
 
@@ -49,7 +49,7 @@ class UserController extends Controller
         ActivityHelper::updateActivity(
             $request->user()->id,
             "Examining <em>{$user->username}</em>",
-            action('App\Http\Controllers\Nexus\UserController@show', ['user' => $user->username])
+            route('users.show', ['user' => $user->username])
         );
 
         // get default theme and then the others sorted by name
@@ -97,6 +97,6 @@ class UserController extends Controller
 
         FlashHelper::showAlert('Profile Updated!', 'success');
 
-        return redirect(action('App\Http\Controllers\Nexus\UserController@show', ['user' => $user]));
+        return redirect()->route('users.show', ['user' => $user]);
     }
 }

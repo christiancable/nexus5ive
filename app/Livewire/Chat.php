@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Helpers\ChatHelper;
 use App\Models\Chat as ChatModel;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
@@ -12,29 +13,30 @@ use Livewire\Component;
 
 class Chat extends Component
 {
-    public $users;
+    public Collection $users;
 
-    public $user;
+    public ?User $user = null;
 
-    public $messages;
+    public Collection $messages;
 
-    public $newMessage;
+    public ?string $newMessage = null;
 
-    public $chats;
+    public Collection $chats;
 
-    public $selectedUser = null;
+    public ?User $selectedUser = null;
 
-    public $selectedChat = null;
+    public ?ChatModel $selectedChat = null;
 
-    public $pollingInterval;
+    public int $pollingInterval = 0;
 
-    public $newChatUser;
+    public ?int $newChatUser = null;
 
     public function mount(Request $request): void
     {
         $this->pollingInterval = config('nexus.chat_poll_interval');
         $this->users = User::where('id', '!=', Auth::id())->verified()->orderBy('username')->get();
-        $this->messages = collect();
+        $this->messages = new Collection;
+        $this->chats = new Collection;
         $this->user = $request->user();
         $this->loadMessages();
     }
@@ -81,7 +83,7 @@ class Chat extends Component
                 $this->selectedChat->save();
             }
         } else {
-            $this->messages = collect();
+            $this->messages = new Collection;
         }
 
         if ($this->selectedUser) {
